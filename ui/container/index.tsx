@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-
 export const Main = styled.main`
   background-color: ${({theme}) => theme.contenedor};
-  color: ${({theme}) => theme.color};
+  color: ${({theme}: any) => theme.color};
   padding: 2rem 1rem;
   display: flex;
   justify-content: center;
@@ -11,6 +10,14 @@ export const Main = styled.main`
   @media (max-width: 550px) {
     grid-template-columns: 100%;
   }
+`;
+export const DivMain = styled(Main)`
+  flex-direction: column;
+  align-items: center;
+`;
+export const DivButton = styled.div`
+  background-color: #242936;
+  border-radius: 5px;
 `;
 export const ContainerMain = styled.div`
   display: inherit;
@@ -50,4 +57,11 @@ export const DivAllPublicaciones = styled(DivPublicar)`
     width: auto;
   }
 `;
-  
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  width: 100%;
+`;

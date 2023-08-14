@@ -1,5 +1,5 @@
 'use client';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState} from 'react';
 import Logo from '@/public/logo.svg';
 import {
   HeaderNav,
@@ -25,11 +25,9 @@ const stylelinkIcon = {
 
 export function Header() {
   const [menu, setMenu] = useState(false);
-  const refMenu: any = useRef();
 
   const handleMenu = (e: any) => {
     e.preventDefault();
-    console.log('sd');
     if (menu) {
       setMenu(false);
       return;

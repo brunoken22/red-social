@@ -1,4 +1,6 @@
 import {useForm} from 'react-hook-form';
+import {Form} from '@/ui/container';
+import {Label, Input} from '@/ui/input';
 export function Signin() {
   const {
     register: registerForm1,
@@ -8,26 +10,28 @@ export function Signin() {
   const onSubmit = (data: any) => console.log(data);
 
   return (
-    <div>
-      <form onSubmit={handleSubmitForm1(onSubmit)}>
-        <label htmlFor='email'>Email: </label>
-        <input
+    <Form onSubmit={handleSubmitForm1(onSubmit)}>
+      <div>
+        <Label htmlFor='email'>Email: </Label>
+        <Input
           type='text'
           defaultValue='test'
           {...(registerForm1('email'), {required: true})}
           id='email'
         />
-
-        <label htmlFor='password'>Contraseña</label>
-        <input
+      </div>
+      <div>
+        <Label htmlFor='password'>Contraseña</Label>
+        <Input
           type='password'
           {...registerForm1('password', {required: true})}
           id='password'
         />
-        {error1.exampleRequired && <span>This field is required</span>}
 
-        <input type='submit' />
-      </form>
-    </div>
+        {error1.exampleRequired && <span>This field is required</span>}
+      </div>
+
+      <Input type='submit' />
+    </Form>
   );
 }

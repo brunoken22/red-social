@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev ",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -12,9 +12,20 @@
     "@types/node": "20.4.10",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
+    "firebase": "^10.1.0",
+    "jsonwebtoken": "^9.0.1",
     "next": "13.4.13",
+    "next-svgr": "^0.0.2",
+    "parse-bearer-token": "^1.0.1",
+    "pg": "^8.11.2",
+    "pg-hstore": "^2.3.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.4",
+    "recoil": "^0.7.7",
+    "sequelize": "^6.32.1",
+    "styled-components": "^6.0.7",
+    "swr": "^2.2.1",
     "typescript": "5.1.6"
   }
 }

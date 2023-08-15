@@ -22,6 +22,14 @@ export const DivImage = styled.div`
   justify-content: center;
   padding: 1rem;
 `;
+export const DivImageSug = styled(DivImage)`
+  background-image: url(./portafolio.png);
+  background-position: center;
+  background-size: cover;
+  padding: 0;
+  border-radius: 10px;
+  height: 60%;
+`;
 export const DivCantidad = styled(DivPerfil)`
   gap: 0;
   justify-content: space-around;

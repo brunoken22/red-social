@@ -56,6 +56,16 @@ export const DivAllChat = styled(DivPublicar)`
     width: auto;
   }
 `;
+export const DivAllAmistades = styled(DivPublicar)`
+  width: 185px;
+  height: 300px;
+  padding: 0;
+  text-align: center;
+  display: block;
+  @media (max-width: 550px) {
+    width: 160px;
+  }
+`;
 export const DivAllPublicaciones = styled(DivPublicar)`
   @media (max-width: 550px) {
     width: auto;

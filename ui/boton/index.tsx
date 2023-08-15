@@ -17,8 +17,25 @@ export const ButtonNoti = styled(Button)`
   gap: 1rem;
   border-bottom: 1px solid #2f2f2f;
   border-radius: 0;
+  font-size: 1rem;
+  width: 100%;
   &:hover {
     background-color: #707070;
+  }
+`;
+export const ButtonAgregar = styled.button<any>`
+  background-color: ${(props: any) => (props.$bg ? '#ff5252' : '#4298ed')};
+  border: 0;
+  font-size: 0.8rem;
+  padding: 0.7rem;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props: any) => (props.$bg ? '#f86868' : '#71b3f5')};
+  }
+  @media (max-width: 550px) {
+    padding: 0.5rem;
   }
 `;
 export const BotonForm = styled.button`

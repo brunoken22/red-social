@@ -1,37 +1,53 @@
 import {useForm} from 'react-hook-form';
 import {Form} from '@/ui/container';
 import {Label, Input} from '@/ui/input';
+import {BotonForm} from '@/ui/boton';
+import {Span} from './styled';
+import {useRouter} from 'next/navigation';
+
 export function Signin() {
+  const router = useRouter();
+
   const {
-    register: registerForm1,
-    handleSubmit: handleSubmitForm1,
+    register,
+    handleSubmit,
     formState: {errors: error1},
   } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) => {
+    console.log(data);
+    if (data) {
+      router.push('/home');
+    }
+  };
 
   return (
-    <Form onSubmit={handleSubmitForm1(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <Label htmlFor='email'>Email: </Label>
+        <Label htmlFor='email'>
+          Email <Span>*</Span>
+        </Label>
         <Input
-          type='text'
-          defaultValue='test'
-          {...(registerForm1('email'), {required: true})}
+          type='email'
           id='email'
+          {...register('email', {required: true})}
         />
       </div>
       <div>
-        <Label htmlFor='password'>Contraseña</Label>
+        <Label htmlFor='password'>
+          Contraseña <Span>*</Span>
+        </Label>
         <Input
           type='password'
-          {...registerForm1('password', {required: true})}
           id='password'
+          {...register('password', {required: true})}
         />
 
-        {error1.exampleRequired && <span>This field is required</span>}
+        {error1.email && <span>This field is required</span>}
       </div>
-
-      <Input type='submit' />
+      <div style={{textAlign: 'center'}}>
+        {' '}
+        <BotonForm type='submit'>Continuar</BotonForm>
+      </div>{' '}
     </Form>
   );
 }

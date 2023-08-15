@@ -6,7 +6,7 @@ import {Signup} from '@/components/crearSesion';
 import {useState} from 'react';
 import {Button} from '@/ui/boton';
 import {useRef, useEffect} from 'react';
-
+import {Footer} from '@/components/footer';
 export default function Home() {
   const [inicio, setInicio] = useState(true);
   const boton1: any = useRef();
@@ -24,7 +24,6 @@ export default function Home() {
 
   const handleClick = (e: any) => {
     e.preventDefault();
-    console.log(e.target.style.backgroundColor);
     e.target.style.backgroundColor = '#566383';
     e.target.style.fontSize = '1.3rem';
 
@@ -40,16 +39,19 @@ export default function Home() {
     boton1.current.style.backgroundColor = 'inherit';
   };
   return (
-    <DivMain>
-      <DivButton>
-        <Button onClick={handleClick} ref={boton1} id='1'>
-          Inicio Sesion
-        </Button>
-        <Button onClick={handleClick} ref={boton2} id='2'>
-          Crear Cuenta
-        </Button>
-      </DivButton>
-      {inicio ? <Signin /> : <Signup />}
-    </DivMain>
+    <>
+      <DivMain>
+        <DivButton>
+          <Button onClick={handleClick} ref={boton1} id='1'>
+            Inicio Sesion
+          </Button>
+          <Button onClick={handleClick} ref={boton2} id='2'>
+            Crear Cuenta
+          </Button>
+        </DivButton>
+        {inicio ? <Signin /> : <Signup />}
+      </DivMain>
+      <Footer />
+    </>
   );
 }

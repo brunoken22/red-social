@@ -14,8 +14,16 @@ export function Layout({children}: {children: React.ReactNode}) {
   return (
     <StyledComponentsRegistry>
       <ThemeProvider theme={theme.default}>
-        <Header />
-        {children}
+        <div
+          style={{
+            height: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: '#1c1c1c',
+          }}>
+          <Header />
+          {children}
+        </div>
       </ThemeProvider>
     </StyledComponentsRegistry>
   );

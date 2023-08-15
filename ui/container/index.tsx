@@ -7,9 +7,7 @@ export const Main = styled.main`
   justify-content: center;
   gap: 3rem;
   flex-wrap: wrap;
-  @media (max-width: 550px) {
-    grid-template-columns: 100%;
-  }
+  height: 100%;
 `;
 export const DivMain = styled(Main)`
   flex-direction: column;
@@ -63,5 +61,7 @@ export const Form = styled.form`
   flex-direction: column;
   gap: 1rem;
   max-width: 500px;
-  width: 100%;
+  width: 90%;
+  padding: 1rem;
+  height: 430px;
 `;

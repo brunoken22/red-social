@@ -19,7 +19,12 @@ export const Button = styled.button`
   margin: 0;
   background-color: transparent;
   border: 0;
-  color: #fff;
+  color: #ddd;
   font-size: 1rem;
   cursor: pointer;
+`;
+export const Span = styled.span`
+  &:hover {
+    color: #fff;
+  }
 `;

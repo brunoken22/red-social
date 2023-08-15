@@ -50,7 +50,7 @@ export function Header() {
               <Search />
             </EnlaceSearch>
           </Link>
-          <Link href={'/'} style={stylelinkIcon}>
+          <Link href={'/home'} style={stylelinkIcon}>
             <Enlaces>
               <Home />
             </Enlaces>

@@ -8,4 +8,5 @@ export const Input = styled.input`
   border-radius: 10px;
   border: 1px solid #fff;
   text-indent: 10px;
+  padding: 0;
 `;

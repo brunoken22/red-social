@@ -41,9 +41,6 @@ export default function Home() {
   };
   return (
     <>
-      <Head >
-        <title>Cuenta|UniRed</title>
-      </Head>
       <DivMain>
         <DivButton>
           <Button onClick={handleClick} ref={boton1} id='1'>

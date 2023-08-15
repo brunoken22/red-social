@@ -1,3 +1,4 @@
+'use client';
 import {Section, DivSection, DivIcons, DivResponse, DivResult} from './styled';
 import MyAmigos from '@/ui/icons/myAmigos.svg';
 import {ButtonNoti, ButtonAgregar} from '@/ui/boton';

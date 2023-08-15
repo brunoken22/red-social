@@ -1,3 +1,4 @@
+'use client';
 import {ButtonNoti} from '@/ui/boton';
 import {DivPublicar} from '@/ui/container';
 import {FotoPerfil} from '@/ui/FotoPerfil';

@@ -16,7 +16,7 @@ export function Layout({children}: {children: React.ReactNode}) {
       <ThemeProvider theme={theme.default}>
         <div
           style={{
-            height: '100vh',
+            minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
             backgroundColor: '#1c1c1c',

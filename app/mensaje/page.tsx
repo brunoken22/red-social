@@ -1,3 +1,11 @@
+'use client';
+import {TemMensaje} from '@/components/templateMensaje';
+import {DivMain} from '@/ui/container';
+
 export default function Mensaje() {
-  return <div>Mensaje</div>;
+  return (
+    <DivMain>
+      <TemMensaje></TemMensaje>
+    </DivMain>
+  );
 }

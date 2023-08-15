@@ -42,14 +42,20 @@ export const DivPublicar = styled.div`
   gap: 1rem;
   border-radius: 10px;
   border: 1px solid #3b3b3b;
-  margin: 0 auto;
   margin-bottom: 2rem;
   @media (max-width: 550px) {
     width: auto;
     margin-bottom: 1rem;
   }
 `;
-
+export const DivAllChat = styled(DivPublicar)`
+  flex-direction: row;
+  margin: 0;
+  align-items: center;
+  @media (max-width: 550px) {
+    width: auto;
+  }
+`;
 export const DivAllPublicaciones = styled(DivPublicar)`
   @media (max-width: 550px) {
     width: auto;

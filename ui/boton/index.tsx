@@ -3,11 +3,23 @@ export const Button = styled.button`
   background-color: transparent;
   border: 0;
   cursor: pointer;
-  height: 100%;
   font-size: 1.2rem;
   height: 4rem;
   color: #fff;
   border-radius: 5px;
+`;
+export const ButtonSms = styled(Button)`
+  height: 100%;
+`;
+export const ButtonNoti = styled(Button)`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid #2f2f2f;
+  border-radius: 0;
+  &:hover {
+    background-color: #707070;
+  }
 `;
 export const BotonForm = styled.button`
   margin-top: 1.5rem;
@@ -48,4 +60,8 @@ export const BotonForm = styled.button`
     -webkit-transition: all 0.35s;
     transition: all 0.35s;
   }
+`;
+export const BotonSms = styled(BotonForm)`
+  margin-top: 0;
+  width: auto;
 `;

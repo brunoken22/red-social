@@ -40,7 +40,7 @@ export default function Home() {
     boton1.current.style.backgroundColor = 'inherit';
   };
   return (
-    <>
+    <div>
       <DivMain>
         <DivButton>
           <Button onClick={handleClick} ref={boton1} id='1'>
@@ -53,6 +53,6 @@ export default function Home() {
         {inicio ? <Signin /> : <Signup />}
       </DivMain>
       <Footer />
-    </>
+    </div>
   );
 }

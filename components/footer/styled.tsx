@@ -5,4 +5,8 @@ export const DivFooter = styled.div`
   color: #fff;
   text-align: center;
   padding: 2rem;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
 `;

@@ -7,7 +7,6 @@ import {useState} from 'react';
 import {Button} from '@/ui/boton';
 import {useRef, useEffect} from 'react';
 import {Footer} from '@/components/footer';
-import Head from 'next/head';
 export default function Home() {
   const [inicio, setInicio] = useState(true);
   const boton1: any = useRef();

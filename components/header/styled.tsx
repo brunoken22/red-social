@@ -3,6 +3,9 @@ import sytled from 'styled-components';
 export const HeaderNav = sytled.header`
     padding: 0.4rem;
     background-color:var(--bg);
+    position: fixed;
+    right: 0;
+    left: 0;
 `;
 export const InputDiv = sytled.div`
     display: inherit;

@@ -3,13 +3,14 @@ import styled from 'styled-components';
 export const Main = styled.main`
   background-color: ${({theme}) => theme.contenedor};
   color: ${({theme}: any) => theme.color};
-  padding: 2rem 1rem;
+  padding: 5rem 1rem;
   display: flex;
   justify-content: center;
   gap: 3rem;
   flex-wrap: wrap;
   height: 100%;
 `;
+
 export const DivMain = styled(Main)`
   flex-direction: column;
   align-items: center;

@@ -1,5 +1,10 @@
+import {Auth} from '@/lib/models';
 import {NextResponse} from 'next/server';
-import '@/lib/sync';
+
+// sequelize.sync({force: true}).then((res: any) => {
+//   console.log('data', res);
+// });
+
 export async function GET() {
   try {
     return NextResponse.json({

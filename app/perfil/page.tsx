@@ -1,7 +1,6 @@
-'use client';
 import {Metadata} from 'next';
 import {PerfilUser} from '@/components/perfilUser';
-import {Main, DivPublicaciones, ContainerMain} from '@/ui/container';
+import {Main} from '@/ui/container';
 
 export const metadata: Metadata = {
   title: 'Perfil | UniRed',

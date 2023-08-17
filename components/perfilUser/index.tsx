@@ -1,3 +1,5 @@
+'use client';
+
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {
   DivPerfilUser,

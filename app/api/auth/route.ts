@@ -1,11 +1,23 @@
-import {NextResponse} from 'next/server';
-// import '@/lib/sync';
-export async function GET() {
+import {NextResponse, NextRequest} from 'next/server';
+import {findOrCreateAuth} from '@/lib/controllers/auth';
+import {findOrCreateUser} from '@/lib/controllers/user';
+import '@/lib/sync';
+
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  if (!body) {
+    return NextResponse.json({message: 'Faltan datos'});
+  }
   try {
-    return NextResponse.json({
-      message: 'Developer',
-    });
+    const [user, userCreated] = await findOrCreateUser(body);
+
+    if ((user as any).id) {
+      const [auth, token] = await findOrCreateAuth((user as any).id, body);
+      return NextResponse.json({user, token});
+    }
   } catch (e) {
     console.log(e);
   }
 }
+
+export async function GET() {}

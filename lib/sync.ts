@@ -1,6 +1,5 @@
 import {sequelize} from './models/conn';
 import './models';
-
-sequelize.sync({force: true}).then((res: any) => {
-  console.log('data', res);
+sequelize.sync({alter: true}).then((res: any) => {
+  console.log('data');
 });

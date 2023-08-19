@@ -8,7 +8,9 @@ type Data = {
   email: string;
   password: string;
 };
-
+type Token = {
+  id: number;
+};
 function getSHA256ofString(text: string) {
   return crypto.createHash('sha256').update(text).digest('hex');
 }
@@ -35,4 +37,19 @@ export async function signin(data: Data) {
     return [auth, token];
   }
   return [false, null];
+}
+
+export async function modAuth(token: string, data: Data) {
+  try {
+    const tokenData = jwt.verify(token, secrect);
+    const auth = await Auth.update(
+      {
+        password: getSHA256ofString(data.password),
+      },
+      {where: {userId: (tokenData as Token).id}}
+    );
+    return auth;
+  } catch (e) {
+    return false;
+  }
 }

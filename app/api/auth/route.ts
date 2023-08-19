@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   }
   try {
     const [user, userCreated] = await findOrCreateUser(body);
-
+    console.log('el user', user);
     if ((user as any).id) {
       const [auth, token] = await findOrCreateAuth((user as any).id, body);
       return NextResponse.json({user, token});

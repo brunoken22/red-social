@@ -17,7 +17,6 @@ export function decode(token: string) {
 
 export function authMiddelware(callback: any) {
   return function (request: NextRequest) {
-    t;
     const token = request.headers.get('authorization')!.split(' ')[1];
 
     if (!token) {

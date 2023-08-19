@@ -14,6 +14,8 @@ export const Main = styled.main`
 export const DivMain = styled(Main)`
   flex-direction: column;
   align-items: center;
+  padding: 0;
+  padding: 5rem 1rem;
 `;
 export const DivButton = styled.div`
   background-color: #242936;
@@ -81,5 +83,4 @@ export const Form = styled.form`
   max-width: 500px;
   width: 90%;
   padding: 1rem;
-  height: 430px;
 `;

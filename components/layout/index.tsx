@@ -20,6 +20,7 @@ export function Layout({children}: {children: React.ReactNode}) {
             display: 'flex',
             flexDirection: 'column',
             backgroundColor: '#1c1c1c',
+            justifyContent: 'space-between',
           }}>
           <Header />
           {children}

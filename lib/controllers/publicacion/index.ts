@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import {Publicar} from '@/lib/models';
 import {cloudinary} from '@/lib/cloudinary';
-
+import {Op} from 'sequelize';
+// import {User}
 const secrect = process.env.SECRECT as string;
 
 type Data = {
@@ -35,18 +36,35 @@ export async function createPublicacion(token: string, data: Data) {
     console.log('dsadasd', publicacion);
     return publicacion;
   } catch (e) {
-    console.log(e);
     return false;
   }
 }
 
-export async function getAllPulicacion(token: string) {
+export async function getAllPulicacionUser(token: string) {
   try {
     const tokenData = jwt.verify(token, secrect);
 
     const publicacion = await Publicar.findAll({
       where: {
         userId: (tokenData as Token).id,
+      },
+    });
+    if (!publicacion) {
+      return 'No hay publicaciones';
+    }
+    return publicacion;
+  } catch (e) {
+    return false;
+  }
+}
+
+export async function getAllPulicacionRedAmigos(token: string) {
+  try {
+    const tokenData = jwt.verify(token, secrect);
+    // (tokenData as Token).id,
+    const publicacion = await Publicar.findAll({
+      where: {
+        userId: {[Op.gte]: 10},
       },
     });
     if (!publicacion) {

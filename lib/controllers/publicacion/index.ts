@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import {Publicar} from '@/lib/models';
+import {Publicar, User} from '@/lib/models';
 import {cloudinary} from '@/lib/cloudinary';
 import {Op} from 'sequelize';
 // import {User}
@@ -62,11 +62,13 @@ export async function getAllPulicacionRedAmigos(token: string) {
   try {
     const tokenData = jwt.verify(token, secrect);
     // (tokenData as Token).id,
+    const amigosUser = await User.findByPk((tokenData as Token).id);
     const publicacion = await Publicar.findAll({
       where: {
-        userId: {[Op.gte]: 10},
+        userId: amigosUser?.get('amigos'),
       },
     });
+    console.log(publicacion);
     if (!publicacion) {
       return 'No hay publicaciones';
     }

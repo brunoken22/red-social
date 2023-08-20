@@ -1,8 +1,12 @@
-import {User} from '@/lib/models';
 import jwt from 'jsonwebtoken';
 import {cloudinary} from '@/lib/cloudinary';
+import {SolicitudAmistad, User} from '@/lib/models';
 
 const secrect = process.env.SECRECT as string;
+type Solicitud = {
+  amigoId: 2;
+  estado: 'pendiente';
+};
 
 type Data = {
   email: string;
@@ -10,10 +14,7 @@ type Data = {
   img: string;
   amigos: [];
 };
-type DataAmigo = {
-  amigoId: number;
-  mod: boolean;
-};
+
 type Token = {
   id: number;
 };
@@ -63,50 +64,59 @@ export async function modUser(token: string, data: Data) {
     return false;
   }
 }
-export async function modAmigos(token: string, data: DataAmigo) {
+
+export async function SolicitudDeAmistad(token: string, data: Solicitud) {
   try {
     const tokenData = jwt.verify(token, secrect);
-    if (data.mod) {
-      const user: any = await User.findByPk((tokenData as Token).id);
-      if (user) {
-        const amigosUser = user.get('amigos');
-        if (amigosUser?.length > 0) {
-          const updatedAmigos = [...user.get('amigos')];
-          if (updatedAmigos.indexOf(Number(data.amigoId)) !== -1)
-            return 'Ya existe este Id';
-          updatedAmigos.push(Number(data.amigoId));
-          const userResult = await User.update(
-            {
-              amigos: updatedAmigos,
-            },
-            {where: {id: (tokenData as Token).id}}
-          );
-
-          return userResult;
-        }
-
-        const userResult = await User.update(
-          {
-            amigos: [Number(data.amigoId)],
-          },
-          {where: {id: (tokenData as Token).id}}
-        );
-        return userResult;
-      }
-    }
-    const user: any = await User.findByPk((tokenData as Token).id);
-    const updatedAmigos = [...user.get('amigos')];
-    const indiceAmigo = updatedAmigos.indexOf(Number(data.amigoId));
-    if (indiceAmigo !== -1) {
-      updatedAmigos.splice(indiceAmigo, 1);
-      const userResult = await User.update(
-        {
-          amigos: updatedAmigos,
+    const solicitudUser = await SolicitudAmistad.create({
+      amigoId: data.amigoId,
+      estado: data.estado,
+      userId: (tokenData as Token).id,
+    });
+    const solicitudAmigo = await SolicitudAmistad.create({
+      amigoId: (tokenData as Token).id,
+      estado: data.estado,
+      userId: data.amigoId,
+    });
+    return solicitudAmigo;
+  } catch (e) {
+    return false;
+  }
+}
+export async function aceptarSolicitud(token: string, data: Solicitud) {
+  try {
+    const tokenData = jwt.verify(token, secrect);
+    await SolicitudAmistad.update(
+      {estado: data.estado},
+      {
+        where: {
+          amigoId: data.amigoId,
+          userId: (tokenData as Token).id,
         },
-        {where: {id: (tokenData as Token).id}}
-      );
-      return userResult;
+      }
+    );
+
+    const user = await User.findByPk((tokenData as Token).id);
+    if (user) {
+      // await User.update({
+      // })
     }
+
+    await SolicitudAmistad.update(
+      {estado: data.estado},
+      {
+        where: {
+          amigoId: (tokenData as Token).id,
+          userId: data.amigoId,
+        },
+      }
+    );
+  } catch (e) {
+    return false;
+  }
+}
+export async function eliminarSolicitud(token: string, data: Solicitud) {
+  try {
   } catch (e) {
     return false;
   }

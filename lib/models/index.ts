@@ -4,10 +4,6 @@ import {Publicar} from './publicacion';
 import {SolicitudAmistad} from './solicitud-amistad';
 User.hasOne(Auth);
 User.hasMany(Publicar);
-User.belongsToMany(User, {
-  through: SolicitudAmistad,
-  as: 'solicitante',
-  foreignKey: 'solicitanteId',
-});
+User.hasMany(SolicitudAmistad);
 
-export {Auth, User, Publicar};
+export {Auth, User, Publicar, SolicitudAmistad};

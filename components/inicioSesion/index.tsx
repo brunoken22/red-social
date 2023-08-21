@@ -4,8 +4,15 @@ import {Label, Input} from '@/ui/input';
 import {BotonForm} from '@/ui/boton';
 import {Span} from './styled';
 import {useRouter} from 'next/navigation';
+import {useState} from 'react';
+import {SigninUser} from '@/lib/hook';
 
 export function Signin() {
+  const [dataUser, setDataUser] = useState({
+    email: '',
+    password: '',
+  });
+  const {data, isLoading} = SigninUser(dataUser);
   const router = useRouter();
 
   const {
@@ -13,12 +20,23 @@ export function Signin() {
     handleSubmit,
     formState: {errors: error1},
   } = useForm();
+
   const onSubmit = (data: any) => {
-    console.log(data);
     if (data) {
-      router.push('/home');
+      setDataUser({
+        email: data.email,
+        password: data.password,
+      });
     }
   };
+
+  if (data?.auth == false) {
+    alert('Contraseña o usuario incorrecto');
+  }
+  if (data?.auth.id) {
+    localStorage.setItem('token', data.token);
+    router.push('/home');
+  }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

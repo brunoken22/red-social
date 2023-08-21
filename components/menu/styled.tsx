@@ -22,6 +22,9 @@ export const Button = styled.button`
   color: #ddd;
   font-size: 1rem;
   cursor: pointer;
+  span:hover {
+    color: #db4646;
+  }
 `;
 export const Span = styled.span`
   &:hover {

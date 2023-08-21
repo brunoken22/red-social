@@ -15,6 +15,11 @@ export function Menu(props: any) {
     const url = e.currentTarget.getAttribute('href');
     router.push(url);
   };
+  const handleCerrarSesion = (e: any) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    router.push('/');
+  };
   return (
     <DivMenu>
       <DivEnlaces>
@@ -24,7 +29,7 @@ export function Menu(props: any) {
         <Link href={'/configuracion'} onClick={handleClick} style={enla}>
           <Span> Configuracion</Span>
         </Link>
-        <Button>
+        <Button onClick={handleCerrarSesion}>
           <Span>Cerrar Sesion </Span>
         </Button>
       </DivEnlaces>

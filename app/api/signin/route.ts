@@ -4,9 +4,9 @@ import {signin} from '@/lib/controllers/auth';
 export async function POST(request: NextRequest) {
   const body = await request.json();
   try {
-    const [auth, token] = await signin(body);
+    const [user, token] = await signin(body);
     return NextResponse.json({
-      auth,
+      user,
       token,
     });
   } catch (e) {

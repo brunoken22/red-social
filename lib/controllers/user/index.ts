@@ -51,7 +51,7 @@ export async function modUser(token: string, data: Data) {
         discard_original_filename: true,
       });
     }
-    const user = await User.update(
+    const newuser = await User.update(
       {
         email: data.email,
         fullName: data.fullName,
@@ -59,7 +59,7 @@ export async function modUser(token: string, data: Data) {
       },
       {where: {id: (tokenData as Token).id}}
     );
-    return user;
+    return newuser;
   } catch (e) {
     return false;
   }

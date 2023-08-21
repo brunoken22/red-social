@@ -1,4 +1,4 @@
-import {Auth} from '@/lib/models';
+import {Auth, User} from '@/lib/models';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 
@@ -34,7 +34,8 @@ export async function signin(data: Data) {
   });
   if (auth) {
     const token = jwt.sign({id: auth.get('userId')}, secrect);
-    return [auth, token];
+    const user = await User.findByPk(auth.get('userId') as number);
+    return [user, token];
   }
   return [false, null];
 }

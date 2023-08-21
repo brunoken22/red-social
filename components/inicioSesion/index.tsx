@@ -12,7 +12,7 @@ export function Signin() {
     email: '',
     password: '',
   });
-  const {data, isLoading} = SigninUser(dataUser);
+  const {userData, isLoading} = SigninUser(dataUser);
   const router = useRouter();
 
   const {
@@ -30,11 +30,11 @@ export function Signin() {
     }
   };
 
-  if (data?.auth == false) {
+  if (userData?.token == '') {
     alert('Contraseña o usuario incorrecto');
   }
-  if (data?.auth.id) {
-    localStorage.setItem('token', data.token);
+  if (userData?.token) {
+    localStorage.setItem('token', userData.token);
     router.push('/home');
   }
 

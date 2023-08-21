@@ -1,12 +1,13 @@
 import useSWR from 'swr';
 import useSWRImmutable from 'swr/immutable';
-
 import {fetchApiSwr} from './api';
-
+import {useRecoilState} from 'recoil';
+import {user} from '@/lib/atom';
 type DataUser = {
-  fullName: string;
-  email: string;
-  password: string;
+  fullName?: string;
+  email?: string;
+  password?: string;
+  img?: string;
 };
 type DataSingin = {
   email: string;
@@ -29,6 +30,7 @@ export function CreateUser(dataUser: DataUser) {
 }
 
 export function SigninUser(dataUser: DataSingin) {
+  const [userData, setUserData] = useRecoilState(user);
   const api = '/signin';
   const option = {
     method: 'POST',
@@ -41,5 +43,38 @@ export function SigninUser(dataUser: DataSingin) {
     dataUser.email ? [api, option] : null,
     fetchApiSwr
   );
+  setUserData(data ? data : null);
+  return {userData, isLoading};
+}
+
+export function ModificarUser(dataUser: DataUser, token: string) {
+  const [userData, setUserData] = useRecoilState(user);
+  const api = '/user/token';
+  const option = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(dataUser),
+  };
+  const {data, isLoading, error} = useSWRImmutable(
+    dataUser?.email ? [api, option] : null,
+    fetchApiSwr
+  );
+  if (data && dataUser) {
+    const newUserData = {
+      ...userData,
+      user: {
+        ...userData.user,
+        fullName: dataUser.fullName || '',
+        img: dataUser.img || '',
+        email: dataUser.email || '',
+      },
+    };
+    setUserData(newUserData);
+  }
+  console.log(data);
+
   return {data, isLoading};
 }

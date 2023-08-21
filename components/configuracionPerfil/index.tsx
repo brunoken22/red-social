@@ -4,6 +4,7 @@ import {ButtonNoti} from '@/ui/boton';
 import {useState} from 'react';
 import {EmailYName} from '../conEmailName';
 import {Password} from '../conPassword';
+
 export function ConfigPerfil() {
   const [conEmailName, setConEmailName] = useState(true);
   const [conPassword, setConPassword] = useState(false);

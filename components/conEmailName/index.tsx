@@ -4,14 +4,11 @@ import {Form} from '@/ui/container';
 import {Input, Label} from '@/ui/input';
 import {BotonForm} from '@/ui/boton';
 import {ModificarUser} from '@/lib/hook';
-import {useState} from 'react';
-import {useRecoilValue} from 'recoil';
+import {useEffect, useState} from 'react';
 import {user} from '@/lib/atom';
+import {useRecoilValue} from 'recoil';
 
 export function EmailYName() {
-  const dataValor = useRecoilValue(user);
-  const [fullName, setFullName] = useState(dataValor?.user?.fullName);
-  const [email, setEmail] = useState(dataValor?.user?.email);
   const [newData, setNewData] = useState({
     token: '',
     data: {
@@ -19,13 +16,15 @@ export function EmailYName() {
       email: '',
     },
   });
-
   const {data} = ModificarUser(newData.data, newData.token);
   const {
     register,
     handleSubmit,
     formState: {errors: error1},
   } = useForm();
+  const dataValor = useRecoilValue(user);
+  const [fullName, setFullName] = useState(dataValor?.user?.fullName);
+  const [email, setEmail] = useState(dataValor?.user?.email);
   const onSubmit = (data: any) => {
     setNewData({
       token: localStorage.getItem('token') as string,
@@ -35,8 +34,17 @@ export function EmailYName() {
       },
     });
   };
+
   if (data) {
+    console.log(dataValor);
     alert('Modificado');
+    setNewData({
+      token: '',
+      data: {
+        fullName: '',
+        email: '',
+      },
+    });
   }
   return (
     <DivEmailName>

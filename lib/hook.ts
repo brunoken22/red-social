@@ -3,6 +3,7 @@ import useSWRImmutable from 'swr/immutable';
 import {fetchApiSwr} from './api';
 import {useRecoilState} from 'recoil';
 import {user} from '@/lib/atom';
+import {useEffect} from 'react';
 type DataUser = {
   fullName?: string;
   email?: string;
@@ -39,12 +40,14 @@ export function SigninUser(dataUser: DataSingin) {
     },
     body: JSON.stringify(dataUser),
   };
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading, error} = useSWR(
     dataUser.email ? [api, option] : null,
     fetchApiSwr
   );
-  setUserData(data ? data : null);
-  return {userData, isLoading};
+  useEffect(() => {
+    setUserData(data ? data : null);
+  }, [data]);
+  return {data, isLoading};
 }
 
 export function ModificarUser(dataUser: DataUser, token: string) {
@@ -62,19 +65,20 @@ export function ModificarUser(dataUser: DataUser, token: string) {
     dataUser?.email ? [api, option] : null,
     fetchApiSwr
   );
-  if (data && dataUser) {
-    const newUserData = {
-      ...userData,
-      user: {
-        ...userData.user,
-        fullName: dataUser.fullName || '',
-        img: dataUser.img || '',
-        email: dataUser.email || '',
-      },
-    };
-    setUserData(newUserData);
-  }
-  console.log(data);
 
+  useEffect(() => {
+    if (data && dataUser) {
+      const newUserData = {
+        ...userData,
+        user: {
+          ...userData.user,
+          fullName: dataUser.fullName || '',
+          img: dataUser.img || '',
+          email: dataUser.email || '',
+        },
+      };
+      setUserData(newUserData);
+    }
+  }, [data]);
   return {data, isLoading};
 }

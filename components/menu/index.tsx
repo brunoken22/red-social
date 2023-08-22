@@ -17,8 +17,8 @@ export function Menu(props: any) {
   };
   const handleCerrarSesion = (e: any) => {
     e.preventDefault();
-    localStorage.removeItem('token');
     router.push('/');
+    localStorage.removeItem('token');
   };
   return (
     <DivMenu>

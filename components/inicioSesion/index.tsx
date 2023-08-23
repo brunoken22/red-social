@@ -22,7 +22,7 @@ export function Signin() {
   } = useForm();
 
   useEffect(() => {
-    if (data?.token == false) {
+    if (data?.user == false) {
       alert('Contraseña o usuario incorrecto');
     }
     if (data?.token) {
@@ -31,7 +31,6 @@ export function Signin() {
     }
   }, [data]);
 
-  console.log(data);
   const onSubmit = (data: any) => {
     if (data) {
       setDataUser({

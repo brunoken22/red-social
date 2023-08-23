@@ -19,6 +19,9 @@ export function Menu(props: any) {
     e.preventDefault();
     router.push('/');
     localStorage.removeItem('token');
+    setTimeout(() => {
+      location.reload();
+    }, 500);
   };
   return (
     <DivMenu>

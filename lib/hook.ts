@@ -59,10 +59,12 @@ export function ModificarUser(dataUser: DataUser, token: string) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(dataUser),
+    body: JSON.stringify({
+      password: dataUser.password,
+    }),
   };
-  const {data, isLoading, error} = useSWRImmutable(
-    dataUser?.email ? [api, option] : null,
+  const {data, isLoading, error} = useSWR(
+    dataUser?.email || dataUser.password ? [api, option] : null,
     fetchApiSwr
   );
 
@@ -80,5 +82,7 @@ export function ModificarUser(dataUser: DataUser, token: string) {
       setUserData(newUserData);
     }
   }, [data]);
+  console.log(data);
+
   return {data, isLoading};
 }

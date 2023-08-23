@@ -36,7 +36,6 @@ export function EmailYName() {
   };
 
   if (data) {
-    console.log(dataValor);
     alert('Modificado');
     setNewData({
       token: '',

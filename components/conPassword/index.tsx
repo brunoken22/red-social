@@ -6,7 +6,7 @@ import {Input, Label} from '@/ui/input';
 import {useState} from 'react';
 import {ModificarUser} from '@/lib/hook';
 
-function ValidarPassword(con1: string, con2: string) {
+function validarPassword(con1: string, con2: string) {
   if (con1 === con2) return true;
   return false;
 }
@@ -22,22 +22,33 @@ export function Password() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: {errors: error1},
   } = useForm();
 
   const onSubmit = (data: any) => {
-    const validar = ValidarPassword(data.password, data.repassword);
+    const validar = validarPassword(data.password, data.repassword);
     if (validar) {
       setNewData({
-        token: localStorage.getItem('token') as string,
         data: {
           password: data?.password,
         },
+        token: localStorage.getItem('token') as string,
       });
+      reset();
+      return;
     }
+    alert('La contraseña no coinciden');
   };
+
   if (data) {
     alert('Cambiado');
+    setNewData({
+      token: '',
+      data: {
+        password: '',
+      },
+    });
   }
   return (
     <DivEmailName>

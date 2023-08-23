@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Logo from '@/public/logo.svg';
 import {
   HeaderNav,
@@ -27,7 +27,8 @@ const stylelinkIcon = {
 
 export function Header() {
   const [menu, setMenu] = useState(false);
-  const token = localStorage.getItem('token');
+  const token =
+    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
   const {data} = GetUser(token ? token : '');
 

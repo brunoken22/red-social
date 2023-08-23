@@ -17,6 +17,7 @@ export function EmailYName() {
     },
   });
   const {data} = ModificarUser(newData.data, newData.token);
+
   const {
     register,
     handleSubmit,
@@ -34,17 +35,18 @@ export function EmailYName() {
       },
     });
   };
-
-  if (data) {
-    alert('Modificado');
-    setNewData({
-      token: '',
-      data: {
-        fullName: '',
-        email: '',
-      },
-    });
-  }
+  useEffect(() => {
+    if (data) {
+      alert('Modificado');
+      setNewData({
+        token: '',
+        data: {
+          fullName: '',
+          email: '',
+        },
+      });
+    }
+  }, [data]);
   return (
     <DivEmailName>
       <div>

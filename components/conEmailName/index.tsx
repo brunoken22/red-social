@@ -6,7 +6,7 @@ import {BotonForm} from '@/ui/boton';
 import {ModificarUser} from '@/lib/hook';
 import {useEffect, useState} from 'react';
 import {user} from '@/lib/atom';
-import {useRecoilValue} from 'recoil';
+import {useRecoilState} from 'recoil';
 
 export function EmailYName() {
   const [newData, setNewData] = useState({
@@ -23,9 +23,8 @@ export function EmailYName() {
     handleSubmit,
     formState: {errors: error1},
   } = useForm();
-  const dataValor = useRecoilValue(user);
-  const [fullName, setFullName] = useState(dataValor?.user?.fullName);
-  const [email, setEmail] = useState(dataValor?.user?.email);
+  const [userData, setUserData] = useRecoilState(user);
+
   const onSubmit = (data: any) => {
     setNewData({
       token: localStorage.getItem('token') as string,
@@ -60,8 +59,16 @@ export function EmailYName() {
               type='text'
               {...register('fullName', {required: true})}
               id='fullName'
-              value={fullName}
-              onChange={(e: any) => setFullName(e.target.value)}
+              value={userData.user.fullName}
+              onChange={(e: any) =>
+                setUserData({
+                  ...userData,
+                  user: {
+                    ...userData.user,
+                    fullName: e.target.value || '', // Asegúrate de manejar el caso de valor falsy
+                  },
+                })
+              }
             />
           </div>
           <div>
@@ -70,8 +77,16 @@ export function EmailYName() {
               type='email'
               {...register('email', {required: true})}
               id='email'
-              value={email}
-              onChange={(e: any) => setEmail(e.target.value)}
+              value={userData.user.email}
+              onChange={(e: any) =>
+                setUserData({
+                  ...userData,
+                  user: {
+                    ...userData.user,
+                    email: e.target.value || '', // Asegúrate de manejar el caso de valor falsy
+                  },
+                })
+              }
             />
           </div>
           {error1.exampleRequired && <span>This field is required</span>}

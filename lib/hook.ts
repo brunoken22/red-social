@@ -82,3 +82,30 @@ export function ModificarUser(dataUser: DataUser, token: string) {
   }, [data]);
   return {data, isLoading};
 }
+
+export function GetUser(token: string) {
+  const [userData, setUserData] = useRecoilState(user);
+  const api = '/user';
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data, isLoading, error} = useSWR(
+    token ? [api, option] : null,
+    fetchApiSwr
+  );
+  useEffect(() => {
+    if (data) {
+      setUserData({
+        token,
+        user: {
+          ...data,
+        },
+      });
+    }
+  }, [data]);
+  return {data, isLoading};
+}

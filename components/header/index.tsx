@@ -1,5 +1,5 @@
 'use client';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Logo from '@/public/logo.svg';
 import {
   HeaderNav,
@@ -19,12 +19,17 @@ import Search from '@/ui/icons/search.svg';
 import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
+import {GetUser} from '@/lib/hook';
+
 const stylelinkIcon = {
   fill: '#b3b3b3',
 };
 
 export function Header() {
   const [menu, setMenu] = useState(false);
+  const token = localStorage.getItem('token');
+
+  const {data} = GetUser(token ? token : '');
 
   const handleMenu = (e: any) => {
     e.preventDefault();

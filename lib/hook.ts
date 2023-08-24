@@ -85,7 +85,6 @@ export function ModificarUser(dataUser: DataUser, token: string) {
         user: {
           ...userData?.user,
           fullName: dataUser.fullName || '',
-          img: dataUser.img || '',
           email: dataUser.email || '',
         },
       };

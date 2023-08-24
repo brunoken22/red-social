@@ -6,6 +6,8 @@ export const HeaderNav = sytled.header`
     position: fixed;
     right: 0;
     left: 0;
+    z-index: 10;
+
 `;
 export const InputDiv = sytled.div`
     display: inherit;

@@ -1,4 +1,3 @@
-'use client';
 import React, {useState} from 'react';
 import Logo from '@/public/logo.svg';
 import {
@@ -79,7 +78,7 @@ export function Header() {
         </DivEnlaces>
         <div style={{position: 'relative'}}>
           <Button onClick={handleMenu}>
-            <FotoPerfil />
+            <FotoPerfil wid='40' hei='40' />
           </Button>
           {menu ? <Menu click={handleClick} /> : null}
         </div>

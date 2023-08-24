@@ -24,14 +24,7 @@ const iconConLike = {
   padding: '2px',
   backgroundColor: '#5a81ff',
 };
-const iconConComentar = {
-  height: ' 10px',
-  width: ' 10px',
-  border: '1px solid #ddd',
-  'border-radius': '50%',
-  padding: '2px',
-  'background-color': '#84e981',
-};
+
 export function Publicaciones() {
   return (
     <div>

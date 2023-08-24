@@ -59,7 +59,7 @@ export async function modUser(token: string, data: Data) {
       },
       {where: {id: (tokenData as Token).id}}
     );
-    return newuser;
+    return {newuser, img: imagenUrl?.secure_url ? imagenUrl.secure_url : null};
   } catch (e) {
     return false;
   }

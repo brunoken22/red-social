@@ -52,7 +52,6 @@ export function SigninUser(dataUser: DataSingin) {
 
 export function ModificarUser(dataUser: DataUser, token: string) {
   const [userData, setUserData] = useRecoilState(user);
-
   const api = '/user/token';
   const option = {
     method: 'PATCH',
@@ -63,10 +62,22 @@ export function ModificarUser(dataUser: DataUser, token: string) {
     body: JSON.stringify(dataUser),
   };
   const {data, isLoading, error} = useSWR(
-    dataUser?.email || dataUser.password ? [api, option] : null,
+    dataUser?.email || dataUser.password || dataUser.img ? [api, option] : null,
     fetchApiSwr
   );
   useEffect(() => {
+    console.log(data?.user.img);
+    if (data?.user.img) {
+      const newUserData = {
+        ...userData,
+        user: {
+          ...userData.user,
+          img: data?.user.img,
+        },
+      };
+      setUserData(newUserData);
+      return;
+    }
     if (data && dataUser?.email) {
       const newUserData = {
         ...userData,

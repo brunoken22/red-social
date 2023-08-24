@@ -1,5 +1,4 @@
 import {NextResponse, NextRequest} from 'next/server';
-import {getUser, modUser} from '@/lib/controllers/user';
 import {
   aceptarSolicitud,
   getAllAmigos,

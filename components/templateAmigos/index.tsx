@@ -5,7 +5,6 @@ import {ButtonNoti, ButtonAgregar} from '@/ui/boton';
 import {DivAllAmistades} from '@/ui/container';
 import {useState} from 'react';
 import {DivImageSug} from '../publicaciones/styled';
-import Image from 'next/image';
 
 export function TemAmigos() {
   const [sugerencia, setSugerencia] = useState(false);

@@ -27,7 +27,7 @@ export function PerfilUser() {
   useEffect(() => {
     if (image.current) {
       if (image.current.dropzone) {
-        image.current.dropzone.destroy(); // Eliminar instancia previa
+        image.current.dropzone.destroy();
       }
       const myDropzone = new Dropzone(image.current, {
         url: '/false',
@@ -35,7 +35,6 @@ export function PerfilUser() {
       });
 
       myDropzone.on('thumbnail', function (file) {
-        // usando este evento pueden acceder al dataURL directamente
         setDataImg(file.dataURL as string);
       });
     }

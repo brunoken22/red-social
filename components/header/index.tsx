@@ -1,3 +1,4 @@
+'use client';
 import React, {useState} from 'react';
 import Logo from '@/public/logo.svg';
 import {
@@ -26,10 +27,12 @@ const stylelinkIcon = {
 
 export function Header() {
   const [menu, setMenu] = useState(false);
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-  const {data} = GetUser(token ? token : '');
+  GetUser(
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : ''
+  );
 
   const handleMenu = (e: any) => {
     e.preventDefault();

@@ -28,12 +28,14 @@ export function Password() {
 
   const onSubmit = (data: any) => {
     const validar = validarPassword(data.password, data.repassword);
+    const token =
+      typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     if (validar) {
       setNewData({
         data: {
           password: data?.password,
         },
-        token: localStorage.getItem('token') as string,
+        token: token as string,
       });
       reset();
       return;

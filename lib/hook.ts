@@ -62,7 +62,9 @@ export function ModificarUser(dataUser: DataUser, token: string) {
     body: JSON.stringify(dataUser),
   };
   const {data, isLoading, error} = useSWR(
-    dataUser?.email || dataUser.password || dataUser.img ? [api, option] : null,
+    dataUser?.email || dataUser?.password || dataUser?.img
+      ? [api, option]
+      : null,
     fetchApiSwr
   );
   useEffect(() => {
@@ -70,7 +72,7 @@ export function ModificarUser(dataUser: DataUser, token: string) {
       const newUserData = {
         ...userData,
         user: {
-          ...userData.user,
+          ...userData?.user,
           img: data?.user.img,
         },
       };
@@ -81,7 +83,7 @@ export function ModificarUser(dataUser: DataUser, token: string) {
       const newUserData = {
         ...userData,
         user: {
-          ...userData.user,
+          ...userData?.user,
           fullName: dataUser.fullName || '',
           img: dataUser.img || '',
           email: dataUser.email || '',
@@ -94,6 +96,7 @@ export function ModificarUser(dataUser: DataUser, token: string) {
 }
 
 export function GetUser(token: string) {
+  console.log(token);
   const [userData, setUserData] = useRecoilState(user);
   const api = '/user';
   const option = {
@@ -107,15 +110,15 @@ export function GetUser(token: string) {
     token ? [api, option] : null,
     fetchApiSwr
   );
+  console.log(data);
   useEffect(() => {
-    if (data) {
+    if (data?.user) {
       setUserData({
         token,
         user: {
-          ...data,
+          ...data.user,
         },
       });
     }
   }, [data]);
-  return {data, isLoading};
 }

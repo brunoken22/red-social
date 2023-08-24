@@ -16,7 +16,7 @@ export function EmailYName() {
       email: '',
     },
   });
-  const {data} = ModificarUser(newData.data, newData.token);
+  const {data} = ModificarUser(newData?.data, newData?.token);
 
   const {
     register,
@@ -59,16 +59,17 @@ export function EmailYName() {
               type='text'
               {...register('fullName', {required: true})}
               id='fullName'
-              value={userData.user.fullName}
+              value={userData?.user?.fullName}
               onChange={(e: any) =>
                 setUserData({
                   ...userData,
                   user: {
-                    ...userData.user,
+                    ...userData?.user,
                     fullName: e.target.value || '', // Asegúrate de manejar el caso de valor falsy
                   },
                 })
               }
+              autoComplete='current-password'
             />
           </div>
           <div>
@@ -77,16 +78,17 @@ export function EmailYName() {
               type='email'
               {...register('email', {required: true})}
               id='email'
-              value={userData.user.email}
+              value={userData?.user?.email}
               onChange={(e: any) =>
                 setUserData({
                   ...userData,
                   user: {
-                    ...userData.user,
+                    ...userData?.user,
                     email: e.target.value || '', // Asegúrate de manejar el caso de valor falsy
                   },
                 })
               }
+              autoComplete='current-password'
             />
           </div>
           {error1.exampleRequired && <span>This field is required</span>}

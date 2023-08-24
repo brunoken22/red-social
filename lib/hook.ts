@@ -14,6 +14,7 @@ type DataSingin = {
   email: string;
   password: string;
 };
+
 export function CreateUser(dataUser: DataUser) {
   const api = '/auth';
   const option = {
@@ -29,7 +30,6 @@ export function CreateUser(dataUser: DataUser) {
   );
   return {data, isLoading};
 }
-
 export function SigninUser(dataUser: DataSingin) {
   const [userData, setUserData] = useRecoilState(user);
   const api = '/signin';
@@ -49,7 +49,6 @@ export function SigninUser(dataUser: DataSingin) {
   }, [data]);
   return {data, isLoading};
 }
-
 export function ModificarUser(dataUser: DataUser, token: string) {
   const [userData, setUserData] = useRecoilState(user);
   const api = '/user/token';
@@ -70,8 +69,6 @@ export function ModificarUser(dataUser: DataUser, token: string) {
 
   useEffect(() => {
     if (data?.user?.img) {
-      console.log('img', userData);
-
       const newUserData = {
         ...userData,
         user: {
@@ -83,8 +80,6 @@ export function ModificarUser(dataUser: DataUser, token: string) {
       return;
     }
     if (data && dataUser?.email) {
-      console.log(userData);
-
       const newUserData = {
         ...userData,
         user: {
@@ -98,7 +93,6 @@ export function ModificarUser(dataUser: DataUser, token: string) {
   }, [data]);
   return {data, isLoading};
 }
-
 export function GetUser(token: string) {
   const [userData, setUserData] = useRecoilState(user);
   const api = '/user/token';
@@ -123,4 +117,5 @@ export function GetUser(token: string) {
       });
     }
   }, [data]);
+  return {data, isLoading};
 }

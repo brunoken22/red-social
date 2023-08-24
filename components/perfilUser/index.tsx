@@ -69,7 +69,7 @@ export function PerfilUser() {
             </div>
             <FotoPerfil wid='80' hei='80' />
           </div>
-          <h2 style={{textAlign: 'center'}}>{dataValor.user.fullName}</h2>
+          <h2 style={{textAlign: 'center'}}>{dataValor?.user?.fullName}</h2>
         </DivFotoName>
         <DivButton>
           <Link

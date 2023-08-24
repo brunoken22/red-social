@@ -32,6 +32,6 @@ export const DivButton = styled.div`
 export const DivPublicaciones = styled.div`
   margin: 1rem 20%;
   @media (max-width: 550px) {
-    margin: 1rem;
+    margin: 0;
   }
 `;

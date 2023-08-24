@@ -56,7 +56,8 @@ export function Signup() {
         <Input
           type='text'
           {...register('fullName', {required: true})}
-          id='name'
+          id='fullName'
+          autoComplete='fullName'
         />
       </div>
       <div>
@@ -67,6 +68,7 @@ export function Signup() {
           type='email'
           {...register('email', {required: true})}
           id='email'
+          autoComplete='email'
         />
       </div>
       <div>
@@ -77,6 +79,7 @@ export function Signup() {
           type='password'
           {...register('password', {required: true})}
           id='password'
+          autoComplete='password'
         />
       </div>
       <div>
@@ -88,6 +91,7 @@ export function Signup() {
           type='password'
           {...register('repassword', {required: true})}
           id='repassword'
+          autoComplete='password'
         />
       </div>
       {error1.exampleRequired && <span>This field is required</span>}

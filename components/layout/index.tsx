@@ -4,6 +4,7 @@ import {Header} from '@/components/header';
 import {ThemeProvider} from 'styled-components';
 import React from 'react';
 import {RecoilRoot} from 'recoil';
+
 export function Layout({children}: {children: React.ReactNode}) {
   const theme = {
     default: {
@@ -12,6 +13,7 @@ export function Layout({children}: {children: React.ReactNode}) {
       contenedor: '#1c1c1c',
     },
   };
+
   return (
     <RecoilRoot>
       <StyledComponentsRegistry>

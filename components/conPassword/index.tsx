@@ -62,8 +62,9 @@ export function Password() {
           <Label htmlFor='password'>Nueva contraseña</Label>
           <Input
             type='password'
-            {...register('password', {required: true})}
             id='password'
+            {...register('password', {required: true})}
+            autoComplete='password'
           />
         </div>
         <div>
@@ -72,6 +73,7 @@ export function Password() {
             type='password'
             {...register('repassword', {required: true})}
             id='repassword'
+            autoComplete='password'
           />
         </div>
         {error1.exampleRequired && <span>This field is required</span>}

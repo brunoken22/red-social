@@ -47,25 +47,21 @@ function ThemplatePubli(props: any) {
           <DivSpan>11/20/26</DivSpan>
         </div>
       </DivPerfil>
-      <div style={{padding: '1rem'}}>
+      <div style={{padding: '1rem', fontSize: '0.9rem', fontWeight: '100'}}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam amet
         temporibus deleniti nisi dicta saepe soluta velit perspiciatis quia
         cumque dolorum ad, porro perferendis tenetur enim! Iusto ullam
-        recusandae minus. Aliquid illo eum officia eos distinctio accusamus,
-        aliquam inventore placeat! Adipisci cumque quam ipsa incidunt delectus,
-        veniam facere autem commodi ex totam quae porro architecto, facilis est
-        pariatur eaque ut. Eaque saepe ratione quod, reprehenderit quis cum
-        nostrum qui magni, aut est harum error repellat repudiandae reiciendis
-        maiores? Nesciunt libero nobis ex exercitationem eveniet maiores
-        asperiores, quisquam repellat non deleniti.
+        recusandae minus.
       </div>
       <DivImage>
         <Image
           src={'/portafolio.png'}
-          width={10}
-          height={0}
           alt='portafolio'
-          layout='responsive'
+          fill
+          priority
+          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+          loading='eager'
+          style={{objectFit: 'cover'}}
         />
       </DivImage>
       <DivCantidad>

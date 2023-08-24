@@ -14,13 +14,21 @@ export function Span() {
         <Body>Visita mi portafolio</Body>
         <Link
           href={'https://portafolio-taupe-nine.vercel.app/'}
-          target='_blank'>
+          target='_blank'
+          style={{
+            position: 'relative',
+            height: '100px',
+            width: '90%',
+            margin: 'auto',
+          }}>
           <Image
             src={'/portafolio.png'}
-            width={10}
-            height={0}
             alt='portafolio'
-            layout='responsive'
+            fill
+            priority
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            loading='eager'
+            style={{objectFit: 'cover'}}
           />
         </Link>
         <DivSvg>

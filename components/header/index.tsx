@@ -1,5 +1,6 @@
 'use client';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {useRouter} from 'next/navigation';
 import Logo from '@/public/logo.svg';
 import {
   HeaderNav,
@@ -20,6 +21,7 @@ import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
 import {GetUser} from '@/lib/hook';
+import {usePathname} from 'next/navigation';
 
 const stylelinkIcon = {
   fill: '#b3b3b3',
@@ -27,12 +29,20 @@ const stylelinkIcon = {
 
 export function Header() {
   const [menu, setMenu] = useState(false);
+  const pathname = usePathname();
 
-  GetUser(
+  const router = useRouter();
+  const {data, isLoading} = GetUser(
     typeof window !== 'undefined'
       ? (localStorage.getItem('token') as string)
       : ''
   );
+
+  useEffect(() => {
+    if (!data) {
+      router.push('/');
+    }
+  }, [data, pathname]);
 
   const handleMenu = (e: any) => {
     e.preventDefault();
@@ -45,7 +55,8 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
-  return (
+
+  return data ? (
     <HeaderNav>
       <Nav>
         <InputDiv>
@@ -87,5 +98,5 @@ export function Header() {
         </div>
       </Nav>
     </HeaderNav>
-  );
+  ) : null;
 }

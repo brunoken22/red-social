@@ -17,10 +17,11 @@ export const SpanIco = styled(DivSpan)`
   margin-bottom: 0.2rem;
 `;
 export const DivImage = styled.div`
-  height: 80%;
   display: flex;
   justify-content: center;
-  padding: 1rem;
+  position: relative;
+  margin: 1rem;
+  height: 300px;
 `;
 export const DivImageSug = styled(DivImage)`
   background-image: url(./portafolio.png);

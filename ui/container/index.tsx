@@ -73,6 +73,7 @@ export const DivAllAmistades = styled(DivPublicar)`
 export const DivAllPublicaciones = styled(DivPublicar)`
   @media (max-width: 550px) {
     width: auto;
+    padding: 10px;
   }
 `;
 

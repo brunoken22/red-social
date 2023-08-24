@@ -50,6 +50,7 @@ export function Signin() {
           type='email'
           id='email'
           {...register('email', {required: true})}
+          autoComplete='email'
         />
       </div>
       <div>
@@ -60,6 +61,7 @@ export function Signin() {
           type='password'
           id='password'
           {...register('password', {required: true})}
+          autoComplete='password'
         />
 
         {error1.email && <span>This field is required</span>}

@@ -7,7 +7,6 @@ export async function PATCH(request: NextRequest) {
   try {
     const data = await request.json();
     const token = request.headers.get('authorization')!.split(' ')[1];
-    console.log(data);
     const user = await modUser(token, data);
     const auth = await modAuth(token, data);
     if (!user) return NextResponse.json({message: 'Token Incorñrecto'});

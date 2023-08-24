@@ -24,6 +24,7 @@ export function Signin() {
   useEffect(() => {
     if (data?.user == false) {
       alert('Contraseña o usuario incorrecto');
+      return;
     }
     if (data?.token) {
       localStorage.setItem('token', data?.token);

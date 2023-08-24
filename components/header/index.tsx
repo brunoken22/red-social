@@ -39,10 +39,20 @@ export function Header() {
   );
 
   useEffect(() => {
-    if (!data) {
-      router.push('/');
+    if (data && pathname == '/') {
+      router.push('/home');
     }
-  }, [data, pathname]);
+  }, [data]);
+
+  // useEffect(() => {
+  //   console.log(pathname);
+  //   console.log(data);
+
+  //   if (data && pathname !== '/') {
+  //     router.push('/home');
+  //     return;
+  //   }
+  // }, [data]);
 
   const handleMenu = (e: any) => {
     e.preventDefault();

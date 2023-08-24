@@ -13,7 +13,7 @@ export const DivASubir = styled.div`
   display: inherit;
   align-items: center;
   gap: 1rem;
-  z-index: 10;
+  z-index: 9;
   margin: 0.5rem;
   height: 25px;
 `;

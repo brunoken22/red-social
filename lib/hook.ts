@@ -66,7 +66,6 @@ export function ModificarUser(dataUser: DataUser, token: string) {
     fetchApiSwr
   );
   useEffect(() => {
-    console.log(data?.user.img);
     if (data?.user.img) {
       const newUserData = {
         ...userData,

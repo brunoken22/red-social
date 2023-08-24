@@ -20,7 +20,9 @@ export function Menu(props: any) {
     router.push('/');
     localStorage.removeItem('token');
     setTimeout(() => {
-      location.reload();
+      if (typeof window !== 'undefined' && window.location) {
+        location.reload();
+      }
     }, 500);
   };
   return (

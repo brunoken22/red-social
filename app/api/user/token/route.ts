@@ -1,7 +1,7 @@
 import {NextResponse, NextRequest} from 'next/server';
 import {modUser} from '@/lib/controllers/user';
 import {modAuth} from '@/lib/controllers/auth';
-import '@/lib/sync';
+// import '@/lib/sync';
 
 export async function PATCH(request: NextRequest) {
   try {

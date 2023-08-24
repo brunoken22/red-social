@@ -1,6 +1,6 @@
 import {NextResponse, NextRequest} from 'next/server';
 import {getAllPulicacionRedAmigos} from '@/lib/controllers/publicacion';
-import '@/lib/sync';
+// import '@/lib/sync';
 
 export async function GET(request: NextRequest) {
   try {

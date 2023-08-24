@@ -1,6 +1,6 @@
 import {NextResponse, NextRequest} from 'next/server';
 import {getUser} from '@/lib/controllers/user';
-import '@/lib/sync';
+// import '@/lib/sync';
 
 export async function GET(request: NextRequest) {
   try {

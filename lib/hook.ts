@@ -67,8 +67,11 @@ export function ModificarUser(dataUser: DataUser, token: string) {
       : null,
     fetchApiSwr
   );
+
   useEffect(() => {
-    if (data?.user.img) {
+    if (data?.user?.img) {
+      console.log('img', userData);
+
       const newUserData = {
         ...userData,
         user: {
@@ -80,6 +83,8 @@ export function ModificarUser(dataUser: DataUser, token: string) {
       return;
     }
     if (data && dataUser?.email) {
+      console.log(userData);
+
       const newUserData = {
         ...userData,
         user: {
@@ -95,7 +100,6 @@ export function ModificarUser(dataUser: DataUser, token: string) {
 }
 
 export function GetUser(token: string) {
-  console.log(token);
   const [userData, setUserData] = useRecoilState(user);
   const api = '/user/token';
   const option = {
@@ -109,7 +113,6 @@ export function GetUser(token: string) {
     token ? [api, option] : null,
     fetchApiSwr
   );
-  console.log(data);
   useEffect(() => {
     if (data?.id) {
       setUserData({

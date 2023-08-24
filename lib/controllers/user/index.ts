@@ -55,7 +55,7 @@ export async function modUser(token: string, data: Data) {
       {
         email: data.email,
         fullName: data.fullName,
-        img: imagenUrl ? imagenUrl.secure_url : '',
+        img: imagenUrl && imagenUrl.secure_url,
       },
       {where: {id: (tokenData as Token).id}}
     );

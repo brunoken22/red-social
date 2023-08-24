@@ -112,11 +112,11 @@ export function GetUser(token: string) {
   );
   console.log(data);
   useEffect(() => {
-    if (data?.user) {
+    if (data?.id) {
       setUserData({
         token,
         user: {
-          ...data.user,
+          ...data,
         },
       });
     }

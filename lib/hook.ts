@@ -98,7 +98,7 @@ export function ModificarUser(dataUser: DataUser, token: string) {
 export function GetUser(token: string) {
   console.log(token);
   const [userData, setUserData] = useRecoilState(user);
-  const api = '/user';
+  const api = '/user/token';
   const option = {
     method: 'GET',
     headers: {

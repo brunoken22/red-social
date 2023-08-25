@@ -6,3 +6,9 @@ body {
   box-sizing: border-box;
   margin: 0;
 }
+
+.dz-error-message,
+.dz-success-mark,
+.dz-error-mark {
+  display: none;
+}

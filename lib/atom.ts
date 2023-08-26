@@ -1,4 +1,9 @@
 import {atom} from 'recoil';
+type Publicacion = {
+  id: string;
+  description: string;
+  img: string;
+};
 
 export const user = atom({
   key: 'user',
@@ -12,4 +17,9 @@ export const user = atom({
     },
     token: '',
   },
+});
+
+export const publicacionUser = atom({
+  key: 'publicacionUser',
+  default: [] as Publicacion[],
 });

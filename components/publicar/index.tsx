@@ -21,7 +21,8 @@ import {useEffect, useState} from 'react';
 import {ImageSVG} from '@/ui/icons';
 import ImageSubir from '@/ui/icons/image.svg';
 import CloseSvg from '@/ui/icons/close.svg';
-
+import {publicacionUser} from '@/lib/atom';
+import {useRecoilState} from 'recoil';
 export function Publicar() {
   const [dataImg, setDataImg] = useState('');
   const [formClick, setFormClick] = useState(false);
@@ -37,7 +38,11 @@ export function Publicar() {
     <DivPublicar>
       <DivText>
         <FotoPerfil />
-        <Input type='text' placeholder='Crear publicacion' />
+        <Input
+          type='text'
+          placeholder='Crear publicacion'
+          onClick={() => setFormClick(true)}
+        />
       </DivText>
       <DivSubir>
         <DivASubir onClick={() => setFormClick(true)}>
@@ -55,8 +60,8 @@ export function Publicar() {
   );
 }
 
-// className='previews-container'
 function TemplateFormPublicar(props: any) {
+  const [newPublicacion, setNewPublicacion] = useRecoilState(publicacionUser);
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
   const [dataUrl, setDataUrl] = useState('');
@@ -65,11 +70,16 @@ function TemplateFormPublicar(props: any) {
   useEffect(() => {
     if (content.length == 0) {
       setPlaceinput(true);
+      setContent('');
     }
     if (content.length < 250 && content.length > 0) {
       setPlaceinput(false);
     }
   }, [content]);
+
+  useEffect(() => {
+    console.log(newPublicacion);
+  }, [newPublicacion]);
 
   const handleclose = (e: any) => {
     e.preventDefault();
@@ -90,7 +100,18 @@ function TemplateFormPublicar(props: any) {
   };
   const handleClickForm = (e: any) => {
     e.preventDefault();
-    console.log(dataUrl);
+    const nuevaPublicacion = {
+      id: Date.now(),
+      description: content,
+      img: dataUrl,
+    };
+    setNewPublicacion((prevPublicaciones: any) => [
+      ...prevPublicaciones,
+      nuevaPublicacion,
+    ]);
+    setDataUrl('');
+    setContent('');
+    props.close(false);
   };
   return (
     <DivForm>
@@ -133,7 +154,7 @@ function TemplateFormPublicar(props: any) {
                   }?`
                 : null
             }>
-            {content.length >= 250 && content}
+            {content.length === 0 && content}
           </InputP>
           {/* <div className='previews-container'></div> */}
           <div>

@@ -9,6 +9,19 @@ body {
 
 .dz-error-message,
 .dz-success-mark,
+.dz-progress,
 .dz-error-mark {
   display: none;
+}
+.dz-remove {
+  text-decoration: none;
+  margin: 1rem;
+  background-color: #ff8686;
+  color: #fff;
+  border-radius: 10px;
+  padding: 0.5rem;
+  &:hover {
+    background-color: #df9a9a;
+    text-decoration: underline;
+  }
 }

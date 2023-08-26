@@ -31,6 +31,7 @@ export const DivForm = styled.div`
   align-items: center;
   backdrop-filter: blur(10px);
   z-index: 10;
+  color: #000;
 `;
 export const Form = styled.form`
   background-color: #fff;
@@ -38,6 +39,7 @@ export const Form = styled.form`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 `;
 export const Button = styled.button`
   border: none;
@@ -52,13 +54,11 @@ export const Button = styled.button`
 
 export const InputP = styled.p<any>`
   color: #000;
-  text-indent: 10px;
-  &:focus {
-    border: none;
-  }
-
+  outline: none;
+  width: 100%;
+  margin: 10px auto;
   &::before {
-    content: ${(props: any) => (props.content ? 'attr(placeholder)' : '')};
+    content: ${({content}) => (content ? 'attr(placeholder)' : '')};
     color: #696969;
   }
 `;

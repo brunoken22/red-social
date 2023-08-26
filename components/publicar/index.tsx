@@ -19,15 +19,11 @@ import {useEffect, useState} from 'react';
 import {ImageSVG} from '@/ui/icons';
 import ImageSubir from '@/ui/icons/image.svg';
 import CloseSvg from '@/ui/icons/close.svg';
-import 'dropzone/dist/basic.css';
 
 export function Publicar() {
   const [dataImg, setDataImg] = useState('');
   const [formClick, setFormClick] = useState(false);
-  // const dataUrlSvg = (dataUrl: string) => {
-  //   console.log(dataUrl);
-  //   // setDataImg(dataUrl);
-  // };
+
   useEffect(() => {
     if (formClick) {
       (document as any).body.style.overflow = 'hidden';
@@ -60,16 +56,30 @@ export function Publicar() {
 function TemplateFormPublicar(props: any) {
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
-  const [inputValue, setInputValue] = useState('');
+  const [content, setContent] = useState('');
+
+  // useEffect(() => {
+  //   if (content.length >= 250) {
+  //     setPlaceinput(!placeInput);
+  //     setContent(content);
+  //   }
+  // }, [content]);
+
+  useEffect(() => {
+    if (content.length !== 0) {
+      setPlaceinput(false);
+    } else {
+      setPlaceinput(!placeInput);
+    }
+  }, [content]);
 
   const handleclose = (e: any) => {
     e.preventDefault();
     props.close(false);
   };
-
   const handleClickInput = (e: any) => {
     e.preventDefault();
-    // console.log(e.target.textContent.length);
+    console.log(e.target.textContent.length);
     if (e.target.textContent.length !== 0) {
       setPlaceinput(false);
       return;
@@ -77,15 +87,16 @@ function TemplateFormPublicar(props: any) {
       setPlaceinput(!placeInput);
     }
   };
-  const handleClickChange = (e: any) => {
-    // e.preventDefault();
-    console.log(e.target);
-    setInputValue(e.target.value);
+  const handleInput = (event: any) => {
+    console.log(event.target.textContent.length);
 
-    if (e.target.textContent.length) {
-      // console.log(e.target.textContent.length);
+    const text = event.target.textContent;
+
+    if (text.length <= 250) {
+      setContent(text);
     }
   };
+
   return (
     <DivForm>
       <div style={{maxWidth: '550px', width: '90%'}}>
@@ -98,6 +109,7 @@ function TemplateFormPublicar(props: any) {
               alignItems: 'flex-start',
               fontWeight: 'bolder',
               justifyContent: 'space-between',
+              width: '100%',
             }}>
             <div
               style={{
@@ -114,19 +126,24 @@ function TemplateFormPublicar(props: any) {
             </Button>
           </div>
           <InputP
-            // onFocus={handleFocus}
-            // onBlur={handleBlur}
-            onChange={handleClickChange}
-            // onFocus={handleClickInput}
-            contentEditable='true'
-            content={placeInput}
-            placeholder={`Qué estás pensado, ${
-              dataUser?.user?.fullName.split(' ')[0]
-            }?`}>
-            {inputValue}
-          </InputP>
-          <div className='previews-container'></div>
-          <ImageSVG></ImageSVG>
+            onInput={handleInput}
+            suppressContentEditableWarning={true}
+            contentEditable={true}
+            content={placeInput.toString()}
+            placeholder={
+              placeInput
+                ? `Qué estás pensado, ${
+                    dataUser?.user?.fullName.split(' ')[0]
+                  }?`
+                : null
+            }></InputP>
+          {/* <div className='previews-container'></div> */}
+          <div>
+            <div>
+              <Body>Agregar a tu publicación</Body>
+            </div>
+            <ImageSVG></ImageSVG>
+          </div>
         </Form>
       </div>
     </DivForm>

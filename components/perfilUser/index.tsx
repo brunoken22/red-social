@@ -15,6 +15,7 @@ import {useEffect, useRef, useState} from 'react';
 import {user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {ModificarUser} from '@/lib/hook';
+import 'dropzone/dist/dropzone.css';
 
 export function PerfilUser() {
   const image: any = useRef(null);

@@ -52,24 +52,24 @@ export function Publicar() {
     </DivPublicar>
   );
 }
+
 // className='previews-container'
 function TemplateFormPublicar(props: any) {
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
   const [content, setContent] = useState('');
 
-  // useEffect(() => {
-  //   if (content.length >= 250) {
-  //     setPlaceinput(!placeInput);
-  //     setContent(content);
-  //   }
-  // }, [content]);
-
   useEffect(() => {
-    if (content.length !== 0) {
+    console.log(content.length);
+    if (content.length == 0) {
+      setPlaceinput(true);
+    }
+    if (content.length < 250 && content.length > 0) {
       setPlaceinput(false);
-    } else {
-      setPlaceinput(!placeInput);
+    }
+    if (content.length >= 250) {
+      // setPlaceinput(!placeInput);
+      setContent(content);
     }
   }, [content]);
 
@@ -77,23 +77,16 @@ function TemplateFormPublicar(props: any) {
     e.preventDefault();
     props.close(false);
   };
-  const handleClickInput = (e: any) => {
-    e.preventDefault();
-    console.log(e.target.textContent.length);
-    if (e.target.textContent.length !== 0) {
-      setPlaceinput(false);
-      return;
-    } else {
-      setPlaceinput(!placeInput);
-    }
-  };
-  const handleInput = (event: any) => {
-    console.log(event.target.textContent.length);
 
+  const handleInput = (event: any) => {
     const text = event.target.textContent;
 
     if (text.length <= 250) {
       setContent(text);
+    } else {
+      // Truncar el texto a 250 caracteres
+      event.target.textContent = text.substring(0, 250);
+      setContent(text.substring(0, 250));
     }
   };
 
@@ -136,7 +129,9 @@ function TemplateFormPublicar(props: any) {
                     dataUser?.user?.fullName.split(' ')[0]
                   }?`
                 : null
-            }></InputP>
+            }>
+            {content}
+          </InputP>
           {/* <div className='previews-container'></div> */}
           <div>
             <div>

@@ -39,7 +39,6 @@ export const Form = styled.form`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 `;
 export const Button = styled.button`
   border: none;
@@ -58,7 +57,25 @@ export const InputP = styled.p<any>`
   width: 100%;
   margin: 10px auto;
   &::before {
-    content: ${({content}) => (content ? 'attr(placeholder)' : '')};
+    content: ${({$content}) => ($content ? 'attr(placeholder)' : '')};
     color: #696969;
+  }
+`;
+
+export const DivButton = styled.div`
+  margin: 0.5rem 0;
+`;
+
+export const ButtonPublicar = styled.button<any>`
+  width: 100%;
+  padding: 0.5rem;
+  background-color: ${({$color}) => ($color ? '#419aff' : '#3e485e')};
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: ${({$color}) => ($color ? 'pointer' : 'not-allowed')};
+  &:hover {
+    opacity: 0.6;
   }
 `;

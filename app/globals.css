@@ -11,7 +11,7 @@ body {
 .dz-success-mark,
 .dz-progress,
 .dz-error-mark {
-  display: none;
+  display: none !important;
 }
 .dz-remove {
   text-decoration: none;
@@ -24,4 +24,15 @@ body {
     background-color: #df9a9a;
     text-decoration: underline;
   }
+}
+
+.dropzone {
+  border: 1px solid #ababab !important;
+}
+
+.dz-message {
+  margin: 1rem !important;
+}
+.dropzone.dz-clickable {
+  text-align: center;
 }

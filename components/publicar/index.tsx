@@ -13,6 +13,8 @@ import {
   Form,
   Button,
   InputP,
+  DivButton,
+  ButtonPublicar,
 } from './styled';
 import VideoSubir from '@/ui/icons/video.svg';
 import {useEffect, useState} from 'react';
@@ -57,19 +59,15 @@ export function Publicar() {
 function TemplateFormPublicar(props: any) {
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
+  const [dataUrl, setDataUrl] = useState('');
   const [content, setContent] = useState('');
 
   useEffect(() => {
-    console.log(content.length);
     if (content.length == 0) {
       setPlaceinput(true);
     }
     if (content.length < 250 && content.length > 0) {
       setPlaceinput(false);
-    }
-    if (content.length >= 250) {
-      // setPlaceinput(!placeInput);
-      setContent(content);
     }
   }, [content]);
 
@@ -84,16 +82,20 @@ function TemplateFormPublicar(props: any) {
     if (text.length <= 250) {
       setContent(text);
     } else {
-      // Truncar el texto a 250 caracteres
-      event.target.textContent = text.substring(0, 250);
-      setContent(text.substring(0, 250));
+      event.target.textContent = content;
     }
   };
-
+  const dataUrlImg = (data: string) => {
+    setDataUrl(data);
+  };
+  const handleClickForm = (e: any) => {
+    e.preventDefault();
+    console.log(dataUrl);
+  };
   return (
     <DivForm>
       <div style={{maxWidth: '550px', width: '90%'}}>
-        <Form action=''>
+        <Form onSubmit={handleClickForm}>
           <div
             style={{
               display: 'flex',
@@ -120,9 +122,10 @@ function TemplateFormPublicar(props: any) {
           </div>
           <InputP
             onInput={handleInput}
+            required
             suppressContentEditableWarning={true}
             contentEditable={true}
-            content={placeInput.toString()}
+            $content={placeInput}
             placeholder={
               placeInput
                 ? `Qué estás pensado, ${
@@ -130,15 +133,20 @@ function TemplateFormPublicar(props: any) {
                   }?`
                 : null
             }>
-            {content}
+            {content.length >= 250 && content}
           </InputP>
           {/* <div className='previews-container'></div> */}
           <div>
             <div>
               <Body>Agregar a tu publicación</Body>
             </div>
-            <ImageSVG></ImageSVG>
+            <ImageSVG dataUrl={dataUrlImg}></ImageSVG>
           </div>
+          <DivButton>
+            <ButtonPublicar $color={!placeInput} disabled={placeInput}>
+              Publicar
+            </ButtonPublicar>
+          </DivButton>
         </Form>
       </div>
     </DivForm>

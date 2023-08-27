@@ -13,7 +13,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang='en'>
       <body className={poppins.className}>
-        <Layout>{children}</Layout>
+        {/* <Layout>{children}</Layout> */}
+        {children}
       </body>
     </html>
   );

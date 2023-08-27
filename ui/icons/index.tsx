@@ -9,7 +9,7 @@ export function ImageSVG(props: any) {
       autoProcessQueue: false,
       uploadMultiple: false,
       maxFiles: 1,
-      maxFilesize: 2,
+      maxFilesize: 10,
       addRemoveLinks: true,
       acceptedFiles: 'image/png, image/jpeg',
       dictRemoveFile: 'Eliminar',

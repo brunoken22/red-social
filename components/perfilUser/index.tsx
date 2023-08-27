@@ -29,6 +29,9 @@ export function PerfilUser() {
     const myDropzone = new Dropzone('.dropzoneClick', {
       url: '/false',
       autoProcessQueue: false,
+      maxFiles: 1,
+      maxFilesize: 10,
+      acceptedFiles: 'image/png, image/jpeg',
     });
 
     myDropzone.on('thumbnail', function (file) {

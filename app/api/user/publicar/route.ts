@@ -3,7 +3,7 @@ import {
   createPublicacion,
   getAllPulicacionUser,
 } from '@/lib/controllers/publicacion';
-// import '@/lib/sync';
+import '@/lib/sync';
 
 export async function POST(request: NextRequest) {
   try {

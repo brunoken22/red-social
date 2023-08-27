@@ -10,6 +10,7 @@ type Data = {
   like: number;
   img: string;
   comentarios: any;
+  fecha: string;
 };
 
 type Token = {
@@ -31,6 +32,7 @@ export async function createPublicacion(token: string, data: Data) {
       like: Number(data.like),
       img: imagenUrl?.secure_url ? imagenUrl.secure_url : '',
       comentarios: data.comentarios,
+      fecha: data.fecha,
       userId: (tokenData as Token).id,
     });
 

@@ -16,6 +16,7 @@ type DataPublicacion = {
   like: number;
   img: string;
   comentarios: [];
+  fecha: string;
 };
 type DataSingin = {
   email: string;

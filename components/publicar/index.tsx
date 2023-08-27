@@ -67,6 +67,7 @@ function TemplateFormPublicar(props: any) {
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
   const [dataUrl, setDataUrl] = useState('');
+  const [fecha, setFecha] = useState('');
   const [content, setContent] = useState('');
   const [newid, setNewId] = useState(0);
 
@@ -79,6 +80,7 @@ function TemplateFormPublicar(props: any) {
       like: 0,
       img: dataUrl,
       comentarios: [],
+      fecha: fecha,
     },
     token as string
   );
@@ -125,6 +127,7 @@ function TemplateFormPublicar(props: any) {
       img: dataUrl,
       fecha: `${dia}/${mes}/${año}`,
     };
+    setFecha(`${dia}/${mes}/${año}`);
     setNewPublicacion((prevPublicaciones: any) => [
       ...prevPublicaciones,
       nuevaPublicacion,

@@ -33,7 +33,7 @@ export async function createPublicacion(token: string, data: Data) {
       comentarios: data.comentarios,
       userId: (tokenData as Token).id,
     });
-    console.log('dsadasd', publicacion);
+
     return publicacion;
   } catch (e) {
     return false;

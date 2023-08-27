@@ -10,6 +10,13 @@ type DataUser = {
   password?: string;
   img?: string;
 };
+type DataPublicacion = {
+  id: number;
+  description: string;
+  like: number;
+  img: string;
+  comentarios: [];
+};
 type DataSingin = {
   email: string;
   password: string;
@@ -117,5 +124,22 @@ export function GetUser(token: string) {
       });
     }
   }, [data]);
+  return {data, isLoading};
+}
+
+export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
+  const api = '/user/publicar';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(dataPubli),
+  };
+  const {data, isLoading, error} = useSWRImmutable(
+    dataPubli.id !== 0 ? [api, option] : null,
+    fetchApiSwr
+  );
   return {data, isLoading};
 }

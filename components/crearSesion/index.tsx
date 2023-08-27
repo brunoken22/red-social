@@ -6,6 +6,7 @@ import {Span} from '../inicioSesion/styled';
 import {useRouter} from 'next/navigation';
 import {CreateUser} from '@/lib/hook';
 import {useState} from 'react';
+import {Loader} from '../loader';
 
 function ValidarPassword(con1: string, con2: string) {
   if (con1 === con2) return true;
@@ -40,6 +41,9 @@ export function Signup() {
       }
     }
   };
+  if (isLoading) {
+    return <Loader />;
+  }
   if (data == 'Usuario Registrado') {
     alert('Usuario registrado');
   }

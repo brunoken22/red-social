@@ -6,6 +6,7 @@ import {Span} from './styled';
 import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {SigninUser} from '@/lib/hook';
+import {Loader} from '../loader';
 
 export function Signin() {
   const [dataUser, setDataUser] = useState({
@@ -40,7 +41,9 @@ export function Signin() {
       });
     }
   };
-
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <div>

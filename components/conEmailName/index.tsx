@@ -7,6 +7,7 @@ import {ModificarUser} from '@/lib/hook';
 import {useEffect, useState} from 'react';
 import {user} from '@/lib/atom';
 import {useRecoilState} from 'recoil';
+import {Loader} from '../loader';
 
 export function EmailYName() {
   const [newData, setNewData] = useState({
@@ -16,7 +17,7 @@ export function EmailYName() {
       email: '',
     },
   });
-  const {data} = ModificarUser(newData?.data, newData?.token);
+  const {data, isLoading} = ModificarUser(newData?.data, newData?.token);
 
   const {
     register,
@@ -46,6 +47,9 @@ export function EmailYName() {
       });
     }
   }, [data]);
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <DivEmailName>
       <div>

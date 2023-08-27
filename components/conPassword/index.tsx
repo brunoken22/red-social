@@ -5,6 +5,7 @@ import {Form} from '@/ui/container';
 import {Input, Label} from '@/ui/input';
 import {useState} from 'react';
 import {ModificarUser} from '@/lib/hook';
+import {Loader} from '../loader';
 
 function validarPassword(con1: string, con2: string) {
   if (con1 === con2) return true;
@@ -42,7 +43,9 @@ export function Password() {
     }
     alert('La contraseña no coinciden');
   };
-
+  if (isLoading) {
+    return <Loader />;
+  }
   if (data) {
     alert('Cambiado');
     setNewData({

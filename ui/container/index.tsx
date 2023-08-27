@@ -31,8 +31,8 @@ export const ContainerMain = styled.div`
   }
 `;
 export const DivPublicaciones = styled.div`
-  min-width: 100px;
-  max-width: 600px;
+  max-width: 500px;
+  width: 100%;
   @media (max-width: 800px) {
     width: 100%;
   }

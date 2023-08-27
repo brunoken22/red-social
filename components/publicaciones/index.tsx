@@ -24,15 +24,28 @@ const iconConLike = {
   padding: '2px',
   backgroundColor: '#5a81ff',
 };
+import {publicacionUser, user} from '@/lib/atom';
+import {useRecoilValue} from 'recoil';
 
 export function Publicaciones() {
+  const publicacionesUser = useRecoilValue(publicacionUser);
+  const dataUser = useRecoilValue(user);
+
   return (
     <div>
-      {[1, 2, 3, 4, 5].map((item) => (
-        <DivAllPublicaciones key={item}>
-          <ThemplatePubli />
-        </DivAllPublicaciones>
-      ))}
+      {publicacionesUser.length > 0 ? (
+        publicacionesUser.map((item) => (
+          <DivAllPublicaciones key={item.id}>
+            <ThemplatePubli
+              name={dataUser?.user.fullName}
+              description={item.description}
+              img={item.img}
+            />
+          </DivAllPublicaciones>
+        ))
+      ) : (
+        <p style={{textAlign: 'center'}}>No hay publicaciones</p>
+      )}
     </div>
   );
 }
@@ -43,27 +56,32 @@ function ThemplatePubli(props: any) {
       <DivPerfil>
         <FotoPerfil></FotoPerfil>
         <div>
-          <Body $margin='0'>Bruno ken</Body>
+          <Body $margin='0'>{props.name}</Body>
           <DivSpan>11/20/26</DivSpan>
         </div>
       </DivPerfil>
-      <div style={{padding: '1rem', fontSize: '0.9rem', fontWeight: '100'}}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam amet
-        temporibus deleniti nisi dicta saepe soluta velit perspiciatis quia
-        cumque dolorum ad, porro perferendis tenetur enim! Iusto ullam
-        recusandae minus.
+      <div
+        style={{
+          padding: '1rem',
+          fontSize: '0.9rem',
+          fontWeight: '100',
+          overflowWrap: 'anywhere',
+        }}>
+        <p>{props.description}</p>
       </div>
-      <DivImage>
-        <Image
-          src={'/portafolio.png'}
-          alt='portafolio'
-          fill
-          priority
-          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-          loading='eager'
-          style={{objectFit: 'cover'}}
-        />
-      </DivImage>
+      {props.img ? (
+        <DivImage>
+          <Image
+            src={props?.img}
+            alt='portafolio'
+            fill
+            priority
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            loading='eager'
+            style={{objectFit: 'cover'}}
+          />
+        </DivImage>
+      ) : null}
       <DivCantidad>
         <SpanIco>
           {' '}

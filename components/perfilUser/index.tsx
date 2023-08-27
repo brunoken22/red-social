@@ -16,7 +16,7 @@ import {user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {ModificarUser} from '@/lib/hook';
 import 'dropzone/dist/dropzone.css';
-
+import {Loader} from '../loader';
 export function PerfilUser() {
   const image: any = useRef(null);
   const dataValor = useRecoilValue(user);
@@ -24,7 +24,7 @@ export function PerfilUser() {
   const token =
     typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-  const {data} = ModificarUser({img: dataImg}, token as string);
+  const {data, isLoading} = ModificarUser({img: dataImg}, token as string);
   useEffect(() => {
     if (image.current) {
       if (image.current.dropzone) {
@@ -40,7 +40,9 @@ export function PerfilUser() {
       });
     }
   }, [image]);
-
+  if (isLoading) {
+    return <Loader />;
+  }
   useEffect(() => {
     setDataImg('');
   }, [data, dataImg]);

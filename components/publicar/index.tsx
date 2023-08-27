@@ -23,8 +23,9 @@ import ImageSubir from '@/ui/icons/image.svg';
 import CloseSvg from '@/ui/icons/close.svg';
 import {publicacionUser} from '@/lib/atom';
 import {useRecoilState} from 'recoil';
+import {CreatePublicacion} from '@/lib/hook';
+import {Loader} from '../loader';
 export function Publicar() {
-  const [dataImg, setDataImg] = useState('');
   const [formClick, setFormClick] = useState(false);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export function Publicar() {
       (document as any).body.style.overflow = 'auto';
     }
   }, [formClick]);
+
   return (
     <DivPublicar>
       <DivText>
@@ -66,6 +68,20 @@ function TemplateFormPublicar(props: any) {
   const [placeInput, setPlaceinput] = useState(true);
   const [dataUrl, setDataUrl] = useState('');
   const [content, setContent] = useState('');
+  const [newid, setNewId] = useState(0);
+
+  const token =
+    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const {data, isLoading} = CreatePublicacion(
+    {
+      description: content,
+      id: newid,
+      like: 0,
+      img: dataUrl,
+      comentarios: [],
+    },
+    token as string
+  );
 
   useEffect(() => {
     if (content.length == 0) {
@@ -78,8 +94,10 @@ function TemplateFormPublicar(props: any) {
   }, [content]);
 
   useEffect(() => {
-    console.log(newPublicacion);
-  }, [newPublicacion]);
+    if (data) {
+      props.close(false);
+    }
+  }, [data]);
 
   const handleclose = (e: any) => {
     e.preventDefault();
@@ -109,10 +127,13 @@ function TemplateFormPublicar(props: any) {
       ...prevPublicaciones,
       nuevaPublicacion,
     ]);
+    setNewId(Date.now() as number);
     setDataUrl('');
     setContent('');
-    props.close(false);
   };
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <DivForm>
       <div style={{maxWidth: '550px', width: '90%'}}>
@@ -156,7 +177,6 @@ function TemplateFormPublicar(props: any) {
             }>
             {content.length === 0 && content}
           </InputP>
-          {/* <div className='previews-container'></div> */}
           <div>
             <div>
               <Body>Agregar a tu publicación</Body>

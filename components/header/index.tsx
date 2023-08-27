@@ -56,9 +56,6 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
-  if (isLoading) {
-    return <Loader />;
-  }
   return data ? (
     <HeaderNav>
       <Nav>

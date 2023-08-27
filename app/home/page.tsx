@@ -9,13 +9,13 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <Main>
-      {/* <ContainerMain>
+      <ContainerMain>
         <DivPublicaciones>
           <Publicar />
           <Publicaciones />
         </DivPublicaciones>
         <Span />
-      </ContainerMain> */}
+      </ContainerMain>
     </Main>
   );
 }

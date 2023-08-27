@@ -4,6 +4,7 @@ import {fetchApiSwr} from './api';
 import {useRecoilState} from 'recoil';
 import {user, publicacionUser} from '@/lib/atom';
 import {useEffect} from 'react';
+
 type DataUser = {
   fullName?: string;
   email?: string;
@@ -125,6 +126,7 @@ export function GetUser(token: string) {
       });
     }
   }, [data]);
+
   return {data, isLoading};
 }
 

@@ -1,8 +1,6 @@
 import jwt from 'jsonwebtoken';
 import {Publicar, User} from '@/lib/models';
 import {cloudinary} from '@/lib/cloudinary';
-import {Op} from 'sequelize';
-// import {User}
 const secrect = process.env.SECRECT as string;
 
 type Data = {
@@ -69,7 +67,6 @@ export async function getAllPulicacionRedAmigos(token: string) {
         userId: amigosUser?.get('amigos'),
       },
     });
-    console.log(publicacion);
     if (!publicacion) {
       return 'No hay publicaciones';
     }

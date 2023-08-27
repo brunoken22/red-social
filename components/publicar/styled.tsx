@@ -61,7 +61,19 @@ export const InputP = styled.p<any>`
     color: #696969;
   }
 `;
-
+export const DivCrear = styled.div`
+  width: 100%;
+  background-color: #fff;
+  color: #000;
+  border-radius: 10px;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background-color: #ddd;
+    border: 0.5px solid #ddd;
+  }
+`;
 export const DivButton = styled.div`
   margin: 0.5rem 0;
 `;

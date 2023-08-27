@@ -17,6 +17,7 @@ import {useRecoilValue} from 'recoil';
 import {ModificarUser} from '@/lib/hook';
 import 'dropzone/dist/dropzone.css';
 import {Loader} from '../loader';
+
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
   const [dataImg, setDataImg] = useState('');
@@ -103,3 +104,33 @@ export function PerfilUser() {
     </DivPerfilUser>
   );
 }
+
+// const canvas = document.createElement("canvas");
+// const ctx = canvas.getContext("2d");
+// let currentImg = "";
+// let webpImg = "";
+// let convertedImg = "";
+
+// function handleUploadedFile(data:any){
+
+//   if(currentImg != "" || webpImg != "" || convertedImg != ""){
+//     URL.revokeObjectURL(currentImg);
+//     convertedImg = "";
+//     currentImg = "";
+//     webpImg = "";
+//   }
+
+//   currentImg = URL.createObjectURL(data);
+
+//   webpImg = new Image();
+
+//   webpImg.onload = ()=>{
+//      canvas.width = webpImg.naturalWidth;
+//      canvas.height = webpImg.naturalHeight;
+//      ctx.drawImage(webpImg, 0, 0, canvas.width, canvas.height);
+//      convertedImg = canvas.toDataURL("image/webp", 1.0);
+//      console.log(convertedImg);
+//   }
+
+//   webpImg.src = currentImg;
+// }

@@ -1,6 +1,5 @@
 'use client';
 import {FotoPerfil} from '@/ui/FotoPerfil';
-import {Input} from '@/ui/input';
 import {Body} from '@/ui/typography';
 import {DivPublicar} from '@/ui/container';
 import {user} from '@/lib/atom';
@@ -15,6 +14,7 @@ import {
   InputP,
   DivButton,
   ButtonPublicar,
+  DivCrear,
 } from './styled';
 import VideoSubir from '@/ui/icons/video.svg';
 import {useEffect, useState} from 'react';
@@ -40,11 +40,9 @@ export function Publicar() {
     <DivPublicar>
       <DivText>
         <FotoPerfil />
-        <Input
-          type='text'
-          placeholder='Crear publicacion'
-          onClick={() => setFormClick(true)}
-        />
+        <DivCrear onClick={() => setFormClick(true)}>
+          <p style={{margin: '0'}}>Crear publicacion</p>
+        </DivCrear>
       </DivText>
       <DivSubir>
         <DivASubir onClick={() => setFormClick(true)}>

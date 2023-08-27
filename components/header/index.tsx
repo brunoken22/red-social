@@ -22,7 +22,6 @@ import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
 import {GetUser, GetPublicaciones} from '@/lib/hook';
 import {usePathname} from 'next/navigation';
-import {Loader} from '../loader';
 
 const stylelinkIcon = {
   fill: '#b3b3b3',
@@ -60,6 +59,7 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
+
   return data ? (
     <HeaderNav>
       <Nav>

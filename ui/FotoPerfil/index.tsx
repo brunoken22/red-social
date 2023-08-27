@@ -3,11 +3,6 @@ import {Figure} from './styled';
 import {useRecoilValue} from 'recoil';
 import {user} from '@/lib/atom';
 
-const imgPerfil = {
-  borderRadius: '50%',
-  'object-fit': 'cover',
-};
-
 const noimg = {
   padding: ' 0.5rem',
   borderRadius: '50%',
@@ -29,7 +24,7 @@ export function FotoPerfil(props: any) {
           width={props.wid || 40}
           height={props.hei || 40}
           alt='perfil'
-          style={imgPerfil}
+          style={{borderRadius: '50%', objectFit: 'cover'}}
         />
       ) : props.wid ? (
         <div

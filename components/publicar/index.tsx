@@ -84,13 +84,6 @@ function TemplateFormPublicar(props: any) {
   );
 
   useEffect(() => {
-    // if (content.length == 0) {
-    //   setPlaceinput(true);
-    //   setContent('');
-    // }
-    // if (content.length < 250 && content.length > 0) {
-    //   setPlaceinput(false);
-    // }
     if (content.length <= 0) {
       setPlaceinput(true);
     }
@@ -109,7 +102,6 @@ function TemplateFormPublicar(props: any) {
 
   const handleInput = (event: any) => {
     const text = event.target.textContent;
-    console.log(text);
     setPlaceinput(false);
     if (text.length <= 250) {
       setContent(text);

@@ -9,13 +9,12 @@ export const metadata: Metadata = {
 
 export default function Configuracion() {
   return (
-    <DivMain>
-      //{' '}
-      {/* <ContainerMain>
-        // <ConfigPerfil />
-        // <Span />
-        //{' '}
-      </ContainerMain> */}
-    </DivMain>
+    <></>
+    // <DivMain>
+    //   <ContainerMain>
+    //     <ConfigPerfil />
+    //     <Span />
+    //   </ContainerMain>
+    // </DivMain>
   );
 }

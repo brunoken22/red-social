@@ -20,7 +20,7 @@ import Search from '@/ui/icons/search.svg';
 import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
-import {GetUser} from '@/lib/hook';
+import {GetUser, GetPublicaciones} from '@/lib/hook';
 import {usePathname} from 'next/navigation';
 import {Loader} from '../loader';
 
@@ -38,7 +38,11 @@ export function Header() {
       ? (localStorage.getItem('token') as string)
       : ''
   );
-
+  GetPublicaciones(
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : ''
+  );
   useEffect(() => {
     if (data && pathname == '/') {
       router.push('/home');

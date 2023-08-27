@@ -34,16 +34,21 @@ export function Publicaciones() {
   return (
     <div>
       {publicacionesUser.length > 0 ? (
-        publicacionesUser.map((item) => (
-          <DivAllPublicaciones key={item.id}>
-            <ThemplatePubli
-              name={dataUser?.user.fullName}
-              description={item.description}
-              img={item.img}
-              fecha={item.fecha}
-            />
-          </DivAllPublicaciones>
-        ))
+        publicacionesUser
+          .slice()
+          .reverse()
+          .map((item) => (
+            <DivAllPublicaciones key={item.id}>
+              <ThemplatePubli
+                name={dataUser?.user.fullName}
+                description={item.description}
+                img={item.img}
+                fecha={item.fecha}
+                like={item.like}
+                comentarios={item.comentarios?.length}
+              />
+            </DivAllPublicaciones>
+          ))
       ) : (
         <p style={{textAlign: 'center'}}>No hay publicaciones</p>
       )}
@@ -87,10 +92,10 @@ function ThemplatePubli(props: any) {
         <SpanIco>
           {' '}
           <Like style={iconConLike} />
-          30 personas
+          {props.like || 0}
         </SpanIco>
         <SpanIco>
-          <DivSpan> 30 comentarios</DivSpan>
+          <DivSpan>Comentarios {props.comentarios || 0} </DivSpan>
         </SpanIco>
       </DivCantidad>
       <DivInteractuar>

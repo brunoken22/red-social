@@ -4,6 +4,8 @@ type Publicacion = {
   description: string;
   img: string;
   fecha: string;
+  like: 0;
+  comentarios: [];
 };
 
 export const user = atom({

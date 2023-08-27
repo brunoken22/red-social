@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import {fetchApiSwr} from './api';
 import {useRecoilState} from 'recoil';
-import {user} from '@/lib/atom';
+import {user, publicacionUser} from '@/lib/atom';
 import {useEffect} from 'react';
 type DataUser = {
   fullName?: string;
@@ -128,7 +128,6 @@ export function GetUser(token: string) {
 }
 
 export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
-  console.log(dataPubli);
   const api = '/user/publicar';
   const option = {
     method: 'POST',
@@ -143,4 +142,26 @@ export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
     fetchApiSwr
   );
   return {data, isLoading};
+}
+
+export function GetPublicaciones(token: string) {
+  const [publicaciones, setPublicaciones] = useRecoilState(publicacionUser);
+  const api = '/user/publicar';
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data, isLoading, error} = useSWR(
+    token ? [api, option] : null,
+    fetchApiSwr
+  );
+  useEffect(() => {
+    if (data) {
+      setPublicaciones(data);
+    }
+  }, [data]);
+  return {dataPubli: data};
 }

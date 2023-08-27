@@ -61,7 +61,6 @@ export async function getAllPulicacionUser(token: string) {
 export async function getAllPulicacionRedAmigos(token: string) {
   try {
     const tokenData = jwt.verify(token, secrect);
-    // (tokenData as Token).id,
     const amigosUser = await User.findByPk((tokenData as Token).id);
     const publicacion = await Publicar.findAll({
       where: {

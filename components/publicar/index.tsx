@@ -84,12 +84,15 @@ function TemplateFormPublicar(props: any) {
   );
 
   useEffect(() => {
-    if (content.length == 0) {
+    // if (content.length == 0) {
+    //   setPlaceinput(true);
+    //   setContent('');
+    // }
+    // if (content.length < 250 && content.length > 0) {
+    //   setPlaceinput(false);
+    // }
+    if (content.length <= 0) {
       setPlaceinput(true);
-      setContent('');
-    }
-    if (content.length < 250 && content.length > 0) {
-      setPlaceinput(false);
     }
   }, [content]);
 
@@ -106,10 +109,12 @@ function TemplateFormPublicar(props: any) {
 
   const handleInput = (event: any) => {
     const text = event.target.textContent;
-
+    console.log(text);
+    setPlaceinput(false);
     if (text.length <= 250) {
       setContent(text);
-    } else {
+    }
+    if (text.length >= 250) {
       event.target.textContent = content;
     }
   };
@@ -133,8 +138,6 @@ function TemplateFormPublicar(props: any) {
       nuevaPublicacion,
     ]);
     setNewId(Date.now() as number);
-    setDataUrl('');
-    setContent('');
   };
   if (isLoading) {
     return <Loader />;
@@ -169,19 +172,16 @@ function TemplateFormPublicar(props: any) {
           </div>
           <InputP
             onInput={handleInput}
-            required
             suppressContentEditableWarning={true}
             contentEditable={true}
             $content={placeInput}
             placeholder={
-              placeInput
+              content == ''
                 ? `Qué estás pensado, ${
                     dataUser?.user?.fullName.split(' ')[0]
                   }?`
                 : null
-            }>
-            {content.length === 0 && content}
-          </InputP>
+            }></InputP>
           <div>
             <div>
               <Body>Agregar a tu publicación</Body>

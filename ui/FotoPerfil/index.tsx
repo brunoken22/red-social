@@ -5,6 +5,7 @@ import {user} from '@/lib/atom';
 
 const imgPerfil = {
   borderRadius: '50%',
+  'object-fit': 'cover',
 };
 
 const noimg = {

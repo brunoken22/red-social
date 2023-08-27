@@ -128,6 +128,7 @@ export function GetUser(token: string) {
 }
 
 export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
+  console.log(dataPubli);
   const api = '/user/publicar';
   const option = {
     method: 'POST',

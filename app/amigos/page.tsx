@@ -8,10 +8,10 @@ export const metadata: Metadata = {
 export default function Amigos() {
   return (
     <DivMain>
-      {/* <ContainerMain>
+      <ContainerMain>
         <TemAmigos />
         <Span />
-      </ContainerMain> */}
+      </ContainerMain>
     </DivMain>
   );
 }

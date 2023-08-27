@@ -8,10 +8,10 @@ export const metadata: Metadata = {
 export default function Notificaciones() {
   return (
     <DivMain>
-      {/* <ContainerMain> */}
-      {/* <TemNoti /> */}
-      {/* <Span /> */}
-      {/* </ContainerMain> */}
+      <ContainerMain>
+        <TemNoti />
+        <Span />
+      </ContainerMain>
     </DivMain>
   );
 }

@@ -38,24 +38,12 @@ export function Header() {
       ? (localStorage.getItem('token') as string)
       : ''
   );
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
+
   useEffect(() => {
     if (data && pathname == '/') {
       router.push('/home');
     }
   }, [data]);
-
-  // useEffect(() => {
-  //   console.log(pathname);
-  //   console.log(data);
-
-  //   if (data && pathname !== '/') {
-  //     router.push('/home');
-  //     return;
-  //   }
-  // }, [data]);
 
   const handleMenu = (e: any) => {
     e.preventDefault();
@@ -68,7 +56,9 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
-
+  if (isLoading) {
+    return <Loader />;
+  }
   return data ? (
     <HeaderNav>
       <Nav>

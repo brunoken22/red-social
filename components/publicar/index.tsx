@@ -63,7 +63,7 @@ export function Publicar() {
 }
 
 function TemplateFormPublicar(props: any) {
-  const [newPublicacion, setNewPublicacion] = useRecoilState(publicacionUser);
+  const [, setNewPublicacion] = useRecoilState(publicacionUser);
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
   const [dataUrl, setDataUrl] = useState('');
@@ -113,15 +113,20 @@ function TemplateFormPublicar(props: any) {
       event.target.textContent = content;
     }
   };
-  const dataUrlImg = (data: string) => {
-    setDataUrl(data);
-  };
+
   const handleClickForm = (e: any) => {
     e.preventDefault();
+    let fechaActual = new Date();
+
+    let año = fechaActual.getFullYear();
+    let mes = fechaActual.getMonth() + 1; // Los meses en JavaScript son indexados desde 0
+    let dia = fechaActual.getDate();
+
     const nuevaPublicacion = {
       id: Date.now(),
       description: content,
       img: dataUrl,
+      fecha: `${dia}/${mes}/${año}`,
     };
     setNewPublicacion((prevPublicaciones: any) => [
       ...prevPublicaciones,
@@ -181,7 +186,7 @@ function TemplateFormPublicar(props: any) {
             <div>
               <Body>Agregar a tu publicación</Body>
             </div>
-            <ImageSVG dataUrl={dataUrlImg}></ImageSVG>
+            <ImageSVG dataUrl={(data: string) => setDataUrl(data)}></ImageSVG>
           </div>
           <DivButton>
             <ButtonPublicar $color={!placeInput} disabled={placeInput}>

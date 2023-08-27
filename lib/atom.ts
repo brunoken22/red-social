@@ -3,6 +3,7 @@ type Publicacion = {
   id: string;
   description: string;
   img: string;
+  fecha: string;
 };
 
 export const user = atom({

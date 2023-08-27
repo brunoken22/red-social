@@ -40,6 +40,7 @@ export function Publicaciones() {
               name={dataUser?.user.fullName}
               description={item.description}
               img={item.img}
+              fecha={item.fecha}
             />
           </DivAllPublicaciones>
         ))
@@ -57,7 +58,7 @@ function ThemplatePubli(props: any) {
         <FotoPerfil></FotoPerfil>
         <div>
           <Body $margin='0'>{props.name}</Body>
-          <DivSpan>11/20/26</DivSpan>
+          <DivSpan>{props.fecha}</DivSpan>
         </div>
       </DivPerfil>
       <div

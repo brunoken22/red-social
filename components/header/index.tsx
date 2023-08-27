@@ -38,9 +38,9 @@ export function Header() {
       ? (localStorage.getItem('token') as string)
       : ''
   );
-  if (isLoading) {
-    return <Loader />;
-  }
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
   useEffect(() => {
     if (data && pathname == '/') {
       router.push('/home');

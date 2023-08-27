@@ -26,7 +26,7 @@ export function Layout({children}: {children: React.ReactNode}) {
               backgroundColor: '#1c1c1c',
               justifyContent: 'space-between',
             }}>
-            {/* <Header /> */}
+            <Header />
             {children}
           </div>
         </ThemeProvider>

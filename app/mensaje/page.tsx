@@ -5,9 +5,5 @@ export const metadata: Metadata = {
   title: 'Mensajes | UniRed',
 };
 export default function Mensaje() {
-  return (
-    <DivMain>
-      <TemMensaje></TemMensaje>
-    </DivMain>
-  );
+  return <DivMain>{/* <TemMensaje></TemMensaje> */}</DivMain>;
 }

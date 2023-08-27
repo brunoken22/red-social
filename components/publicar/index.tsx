@@ -23,7 +23,7 @@ import ImageSubir from '@/ui/icons/image.svg';
 import CloseSvg from '@/ui/icons/close.svg';
 import {publicacionUser} from '@/lib/atom';
 import {useRecoilState} from 'recoil';
-import {CreatePublicacion} from '@/lib/hook';
+// import {CreatePublicacion} from '@/lib/hook';
 import {Loader} from '../loader';
 export function Publicar() {
   const [formClick, setFormClick] = useState(false);
@@ -72,16 +72,16 @@ function TemplateFormPublicar(props: any) {
 
   const token =
     typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const {data, isLoading} = CreatePublicacion(
-    {
-      description: content,
-      id: newid,
-      like: 0,
-      img: dataUrl,
-      comentarios: [],
-    },
-    token as string
-  );
+  // const {data, isLoading} = CreatePublicacion(
+  //   {
+  //     description: content,
+  //     id: newid,
+  //     like: 0,
+  //     img: dataUrl,
+  //     comentarios: [],
+  //   },
+  //   token as string
+  // );
 
   useEffect(() => {
     if (content.length == 0) {
@@ -93,11 +93,11 @@ function TemplateFormPublicar(props: any) {
     }
   }, [content]);
 
-  useEffect(() => {
-    if (data) {
-      props.close(false);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     props.close(false);
+  //   }
+  // }, [data]);
 
   const handleclose = (e: any) => {
     e.preventDefault();
@@ -136,9 +136,9 @@ function TemplateFormPublicar(props: any) {
     setDataUrl('');
     setContent('');
   };
-  if (isLoading) {
-    return <Loader />;
-  }
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
   return (
     <DivForm>
       <div style={{maxWidth: '550px', width: '90%'}}>

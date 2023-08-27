@@ -11,8 +11,8 @@ export default function Home() {
     <Main>
       <ContainerMain>
         <DivPublicaciones>
-          <Publicar />
-          <Publicaciones />
+          {/* <Publicar />
+          <Publicaciones /> */}
         </DivPublicaciones>
         <Span />
       </ContainerMain>

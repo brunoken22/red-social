@@ -6,5 +6,5 @@ export const metadata: Metadata = {
   title: 'Perfil | UniRed',
 };
 export default function Perfil() {
-  return <Main>{/* <PerfilUser /> */}</Main>;
+  return <Main><PerfilUser /> </Main>;
 }

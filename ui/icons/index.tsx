@@ -9,7 +9,7 @@ export function ImageSVG(props: any) {
       autoProcessQueue: false,
       uploadMultiple: false,
       maxFiles: 1,
-      maxFilesize: 10,
+      maxFilesize: 30,
       addRemoveLinks: true,
       acceptedFiles: 'image/png, image/jpeg',
       dictRemoveFile: 'Eliminar',
@@ -26,6 +26,18 @@ export function ImageSVG(props: any) {
     });
 
     myDropzone.on('thumbnail', function (file) {
+      const fileSizeInBytes = file.size;
+      const fileSizeInKB = fileSizeInBytes / 1024;
+      const fileSizeInMB = fileSizeInKB / 1024;
+      if (fileSizeInMB > 30) {
+        alert(
+          `Tamaño del archivo excedido: ${fileSizeInMB.toFixed(
+            2
+          )}MB (MAXIMO 30MB)`
+        );
+        myDropzone.removeFile(file);
+        return;
+      }
       props.dataUrl(file.dataURL);
     });
     // }

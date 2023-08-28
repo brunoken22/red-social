@@ -23,6 +23,7 @@ export async function createPublicacion(token: string, data: Data) {
       imagenUrl = await cloudinary.v2.uploader.upload(data.img, {
         resource_type: 'image',
         discard_original_filename: true,
+        format: 'webp',
       });
     }
     const publicacion = await Publicar.create({

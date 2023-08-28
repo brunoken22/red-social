@@ -35,6 +35,18 @@ export function PerfilUser() {
     });
 
     myDropzone.on('thumbnail', function (file) {
+      const fileSizeInBytes = file.size;
+      const fileSizeInKB = fileSizeInBytes / 1024;
+      const fileSizeInMB = fileSizeInKB / 1024;
+      if (fileSizeInMB > 30) {
+        alert(
+          `Tamaño del archivo excedido: ${fileSizeInMB.toFixed(
+            2
+          )}MB (MAXIMO 30MB)`
+        );
+        myDropzone.removeFile(file);
+        return;
+      }
       setDataImg(file.dataURL as string);
     });
   }, []);

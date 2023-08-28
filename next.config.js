@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const withSvgr = require("next-svgr");
  
-const nextConfig =withSvgr({
+const nextConfig = withSvgr({
+  api: {
+    bodyParser: {
+      sizeLimit: '35mb',
+    },
+  },
   images: {
     domains: ['res.cloudinary.com'], // Agrega los dominios permitidos aquí
   },

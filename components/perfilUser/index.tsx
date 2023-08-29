@@ -46,6 +46,8 @@ export function PerfilUser() {
             2
           )}MB (MAXIMO 30MB)`
         );
+        console.log('maxim');
+
         myDropzone.removeFile(file);
         return;
       }

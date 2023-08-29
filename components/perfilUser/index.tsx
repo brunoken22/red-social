@@ -51,7 +51,7 @@ export function PerfilUser() {
       }
       const optimizedBase64 = await urltoBlob(file.dataURL as any);
       const optimizedBase = await compressAccurately(optimizedBase64, {
-        size: 3072 ,
+        size: 3072,
         quality: 1,
       });
       const dataFinal = await filetoDataURL(optimizedBase);
@@ -152,18 +152,3 @@ export function PerfilUser() {
 //   console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
 //   return dataFinal;
 // }
-
-const initializeDropzone = () => {
-  const myDropzone = new Dropzone('.dropzoneClick', {
-    url: '/false',
-    autoProcessQueue: false,
-    maxFiles: 1,
-    maxFilesize: 100,
-    maxThumbnailFilesize: 100,
-    resizeQuality: 0.5,
-  });
-
-  myDropzone.on('thumbnail', async function (file) {
-    // Resto de tu código aquí
-  });
-};

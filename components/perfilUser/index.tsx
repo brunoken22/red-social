@@ -17,7 +17,7 @@ import {useRecoilValue} from 'recoil';
 import {ModificarUser} from '@/lib/hook';
 import 'dropzone/dist/dropzone.css';
 import {Loader} from '../loader';
-import {Cloudinary} from '@cloudinary/url-gen';
+import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
 
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
@@ -48,9 +48,15 @@ export function PerfilUser() {
         myDropzone.removeFile(file);
         return;
       }
-      const datas: any = await convertToWebP(file.dataURL as string);
-      console.log(datas.length);
-      setDataImg(datas as string);
+      const optimizedBase64 = await urltoBlob(file.dataURL as any);
+      const optimizedBase = await compressAccurately(optimizedBase64, {
+        size: 4000,
+      });
+      console.log(optimizedBase);
+      const dataFinal = await filetoDataURL(optimizedBase);
+      console.log(dataFinal.length);
+
+      setDataImg(dataFinal);
     });
   }, []);
 
@@ -122,33 +128,3 @@ export function PerfilUser() {
     </DivPerfilUser>
   );
 }
-
-const convertToWebP = async (pngBase64: string) => {
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.src = pngBase64;
-
-    image.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = image.width;
-      canvas.height = image.height;
-
-      const ctx = canvas.getContext('2d')!;
-      ctx.drawImage(image, 0, 0);
-
-      canvas.toBlob(
-        (blob) => {
-          const reader = new FileReader();
-
-          reader.onloadend = () => {
-            resolve(reader.result);
-          };
-
-          reader.readAsDataURL(blob as any);
-        },
-        'image/webp',
-        1.0
-      );
-    };
-  });
-};

@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@cloudinary/url-gen": "^1.11.2",
     "@types/dropzone": "^5.7.4",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "20.4.10",
@@ -20,6 +19,7 @@
     "cloudinary": "^1.40.0",
     "dropzone": "^6.0.0-beta.2",
     "firebase": "^10.1.0",
+    "image-conversion": "^2.1.1",
     "jsonwebtoken": "^9.0.1",
     "next": "13.4.13",
     "next-svgr": "^0.0.2",

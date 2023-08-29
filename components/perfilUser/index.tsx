@@ -49,6 +49,7 @@ export function PerfilUser() {
         myDropzone.removeFile(file);
         return;
       }
+      console.log('antes');
       const dataFinal = await optimizar(file.dataURL as string);
       setDataImg(dataFinal);
     });

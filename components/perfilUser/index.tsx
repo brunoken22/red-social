@@ -134,7 +134,6 @@ async function optimizar(dataUrl: string): Promise<string> {
   var data = dataFinal.split(',')[1];
   var decodedData = atob(data);
 
-  // Calcula el tamaño en megabytes
   var sizeInMB = decodedData.length / (1024 * 1024);
 
   console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');

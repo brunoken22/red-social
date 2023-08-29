@@ -126,7 +126,6 @@ export function PerfilUser() {
 }
 
 async function optimizar(dataUrl: string): Promise<string> {
-  console.log('optim');
   const optimizedBase64 = await urltoBlob(dataUrl);
   const optimizedBase = await compressAccurately(optimizedBase64, {
     size: 3072,

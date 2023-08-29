@@ -61,6 +61,7 @@ export function SigninUser(dataUser: DataSingin) {
 export function ModificarUser(dataUser: DataUser, token: string) {
   const [userData, setUserData] = useRecoilState(user);
   const api = '/user/token';
+
   const option = {
     method: 'PATCH',
     headers: {

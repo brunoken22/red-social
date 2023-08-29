@@ -18,6 +18,7 @@ import {ModificarUser} from '@/lib/hook';
 import 'dropzone/dist/dropzone.css';
 import {Loader} from '../loader';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
+import Compressor from 'compressorjs';
 
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
@@ -48,15 +49,7 @@ export function PerfilUser() {
         myDropzone.removeFile(file);
         return;
       }
-      const optimizedBase64 = await urltoBlob(file.dataURL as any);
-      const optimizedBase = await compressAccurately(optimizedBase64, {
-        size: 4000,
-        width: 100,
-      });
-      console.log(optimizedBase);
-      const dataFinal = await filetoDataURL(optimizedBase);
-      console.log(dataFinal.length);
-
+      const dataFinal = await optimizar(file.dataURL as string);
       setDataImg(dataFinal);
     });
   }, []);
@@ -128,4 +121,22 @@ export function PerfilUser() {
       </DivPublicaciones>
     </DivPerfilUser>
   );
+}
+
+async function optimizar(dataUrl: string): Promise<string> {
+  const optimizedBase64 = await urltoBlob(dataUrl);
+  const optimizedBase = await compressAccurately(optimizedBase64, {
+    size: 5120,
+    quality: 1,
+  });
+
+  const dataFinal = await filetoDataURL(optimizedBase);
+  var data = dataFinal.split(',')[1];
+  var decodedData = atob(data);
+
+  // Calcula el tamaño en megabytes
+  var sizeInMB = decodedData.length / (1024 * 1024);
+
+  console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
+  return dataFinal;
 }

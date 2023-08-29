@@ -19,7 +19,7 @@ export function FotoPerfil(props: any) {
   return (
     <Figure $wid={props.wid} $hei={props.hei}>
       {dataUser?.user.img ? (
-        <Image
+        <img
           src={dataUser.user.img}
           width={props.wid || 40}
           height={props.hei || 40}

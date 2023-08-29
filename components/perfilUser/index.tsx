@@ -51,6 +51,7 @@ export function PerfilUser() {
       const optimizedBase64 = await urltoBlob(file.dataURL as any);
       const optimizedBase = await compressAccurately(optimizedBase64, {
         size: 4000,
+        width: 100,
       });
       console.log(optimizedBase);
       const dataFinal = await filetoDataURL(optimizedBase);

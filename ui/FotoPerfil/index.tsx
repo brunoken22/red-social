@@ -24,6 +24,7 @@ export function FotoPerfil(props: any) {
           width={props.wid || 40}
           height={props.hei || 40}
           alt='perfil'
+          loading='lazy'
           style={{borderRadius: '50%', objectFit: 'cover'}}
         />
       ) : props.wid ? (

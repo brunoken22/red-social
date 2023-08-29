@@ -65,7 +65,6 @@ export async function modUser(token: string, data: Data) {
     return false;
   }
 }
-
 export async function SolicitudDeAmistad(token: string, data: Solicitud) {
   try {
     const tokenData = jwt.verify(token, secrect);

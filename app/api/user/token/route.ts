@@ -6,24 +6,21 @@ import {modAuth} from '@/lib/controllers/auth';
 export async function PATCH(request: NextRequest) {
   try {
     const data = await request.json();
-    const token = request.headers.get('authorization')!.split(' ')[1];
+    const token = request.headers.get('token') as string;
     const user = await modUser(token, data);
     const auth = await modAuth(token, data);
-    if (!user) return NextResponse.json({message: 'Token Incorñrecto'});
     return NextResponse.json({user, auth});
   } catch {
-    return NextResponse.json({message: 'Falta Token'});
+    return NextResponse.json({message: 'Token Incorrecto'});
   }
 }
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.headers.get('Authorization')?.substring(7);
+    const token = request.headers.get('token');
     const user = await getUser(token as string);
-    if (!user) return NextResponse.json({message: 'Token Incorrecto'});
     return NextResponse.json(user);
   } catch (e) {
-    console.log(e);
-    return NextResponse.json(e);
+    return NextResponse.json({message: 'Token Incorrecto'});
   }
 }

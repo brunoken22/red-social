@@ -2,13 +2,14 @@
 const withSvgr = require("next-svgr");
  
 const nextConfig = withSvgr({
+
+  images: {
+    domains: ['res.cloudinary.com'], // Agrega los dominios permitidos aquí
+  },
   api: {
     bodyParser: {
       sizeLimit: '35mb',
     },
-  },
-  images: {
-    domains: ['res.cloudinary.com'], // Agrega los dominios permitidos aquí
   },
     compiler: {
       styledComponents: true

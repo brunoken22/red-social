@@ -25,9 +25,8 @@ export function Span() {
             src={'/portafolio.png'}
             alt='portafolio'
             fill
-            priority
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-            loading='eager'
+            loading='lazy'
             style={{objectFit: 'cover'}}
           />
         </Link>

@@ -17,6 +17,7 @@ import {useRecoilValue} from 'recoil';
 import {ModificarUser} from '@/lib/hook';
 import 'dropzone/dist/dropzone.css';
 import {Loader} from '../loader';
+import {Cloudinary} from '@cloudinary/url-gen';
 
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
@@ -34,7 +35,7 @@ export function PerfilUser() {
       acceptedFiles: 'image/png, image/jpeg',
     });
 
-    myDropzone.on('thumbnail', function (file) {
+    myDropzone.on('thumbnail', async function (file) {
       const fileSizeInBytes = file.size;
       const fileSizeInKB = fileSizeInBytes / 1024;
       const fileSizeInMB = fileSizeInKB / 1024;
@@ -47,7 +48,9 @@ export function PerfilUser() {
         myDropzone.removeFile(file);
         return;
       }
-      setDataImg(file.dataURL as string);
+      const datas: any = await convertToWebP(file.dataURL as string);
+      console.log(datas.length);
+      setDataImg(datas as string);
     });
   }, []);
 
@@ -120,32 +123,32 @@ export function PerfilUser() {
   );
 }
 
-// const canvas = document.createElement("canvas");
-// const ctx = canvas.getContext("2d");
-// let currentImg = "";
-// let webpImg = "";
-// let convertedImg = "";
+const convertToWebP = async (pngBase64: string) => {
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.src = pngBase64;
 
-// function handleUploadedFile(data:any){
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = image.width;
+      canvas.height = image.height;
 
-//   if(currentImg != "" || webpImg != "" || convertedImg != ""){
-//     URL.revokeObjectURL(currentImg);
-//     convertedImg = "";
-//     currentImg = "";
-//     webpImg = "";
-//   }
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(image, 0, 0);
 
-//   currentImg = URL.createObjectURL(data);
+      canvas.toBlob(
+        (blob) => {
+          const reader = new FileReader();
 
-//   webpImg = new Image();
+          reader.onloadend = () => {
+            resolve(reader.result);
+          };
 
-//   webpImg.onload = ()=>{
-//      canvas.width = webpImg.naturalWidth;
-//      canvas.height = webpImg.naturalHeight;
-//      ctx.drawImage(webpImg, 0, 0, canvas.width, canvas.height);
-//      convertedImg = canvas.toDataURL("image/webp", 1.0);
-//      console.log(convertedImg);
-//   }
-
-//   webpImg.src = currentImg;
-// }
+          reader.readAsDataURL(blob as any);
+        },
+        'image/webp',
+        1.0
+      );
+    };
+  });
+};

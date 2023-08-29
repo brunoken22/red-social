@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cloudinary/url-gen": "^1.11.2",
     "@types/dropzone": "^5.7.4",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "20.4.10",

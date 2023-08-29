@@ -7,25 +7,21 @@ import {
 
 export async function POST(request: NextRequest) {
   try {
-    const token = request.headers.get('authorization')!.split(' ')[1];
+    const token = request.headers.get('token') as string;
     const body = await request.json();
     const publicacion = await createPublicacion(token, body);
-
-    if (!publicacion) return NextResponse.json({message: 'Token Incorrecto'});
     return NextResponse.json(publicacion);
   } catch {
-    return NextResponse.json({message: 'Falta Token'});
+    return NextResponse.json({message: 'Token Incorrecto'});
   }
 }
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.headers.get('authorization')!.split(' ')[1];
+    const token = request.headers.get('token') as string;
     const publicacion = await getAllPulicacionUser(token);
-
-    if (!publicacion) return NextResponse.json({message: 'Token Incorrecto'});
     return NextResponse.json(publicacion);
   } catch {
-    return NextResponse.json({message: 'Falta Token'});
+    return NextResponse.json({message: 'Token Incorrecto'});
   }
 }

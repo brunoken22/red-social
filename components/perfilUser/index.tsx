@@ -11,14 +11,13 @@ import {
 import {Publicar} from '../publicar';
 import {Publicaciones} from '../publicaciones';
 import Link from 'next/link';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {ModificarUser} from '@/lib/hook';
 import 'dropzone/dist/dropzone.css';
 import {Loader} from '../loader';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
-import Compressor from 'compressorjs';
 
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
@@ -32,8 +31,9 @@ export function PerfilUser() {
       url: '/false',
       autoProcessQueue: false,
       maxFiles: 1,
-      maxFilesize: 10,
-      acceptedFiles: 'image/png, image/jpeg',
+      maxFilesize: 100,
+      maxThumbnailFilesize: 100,
+      resizeQuality: 0.5,
     });
 
     myDropzone.on('thumbnail', async function (file) {
@@ -54,7 +54,6 @@ export function PerfilUser() {
         size: 5120,
         quality: 1,
       });
-
       const dataFinal = await filetoDataURL(optimizedBase);
       var data = dataFinal.split(',')[1];
       var decodedData = atob(data);
@@ -153,3 +152,18 @@ export function PerfilUser() {
 //   console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
 //   return dataFinal;
 // }
+
+const initializeDropzone = () => {
+  const myDropzone = new Dropzone('.dropzoneClick', {
+    url: '/false',
+    autoProcessQueue: false,
+    maxFiles: 1,
+    maxFilesize: 100,
+    maxThumbnailFilesize: 100,
+    resizeQuality: 0.5,
+  });
+
+  myDropzone.on('thumbnail', async function (file) {
+    // Resto de tu código aquí
+  });
+};

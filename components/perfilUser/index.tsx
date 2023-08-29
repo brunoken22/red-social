@@ -34,6 +34,7 @@ export function PerfilUser() {
       maxFilesize: 100,
       maxThumbnailFilesize: 100,
       resizeQuality: 0.5,
+      acceptedFiles: 'image/png, image/jpeg, image/jpg',
     });
 
     myDropzone.on('thumbnail', async function (file) {
@@ -49,19 +50,8 @@ export function PerfilUser() {
         myDropzone.removeFile(file);
         return;
       }
-      const optimizedBase64 = await urltoBlob(file.dataURL as any);
-      const optimizedBase = await compressAccurately(optimizedBase64, {
-        size: 3072,
-        quality: 1,
-      });
-      const dataFinal = await filetoDataURL(optimizedBase);
-      var data = dataFinal.split(',')[1];
-      var decodedData = atob(data);
+      const dataFinal = await optimizar(file.dataURL as string);
 
-      // Calcula el tamaño en megabytes
-      var sizeInMB = decodedData.length / (1024 * 1024);
-
-      console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
       setDataImg(dataFinal);
     });
   }, []);
@@ -135,20 +125,20 @@ export function PerfilUser() {
   );
 }
 
-// async function optimizar(dataUrl: string): Promise<string> {
-//   console.log('optim');
-//   const optimizedBase64 = await urltoBlob(dataUrl);
-//   const optimizedBase = await compressAccurately(optimizedBase64, {
-//     size: 3072,
-//     quality: 1,
-//   });
+async function optimizar(dataUrl: string): Promise<string> {
+  console.log('optim');
+  const optimizedBase64 = await urltoBlob(dataUrl);
+  const optimizedBase = await compressAccurately(optimizedBase64, {
+    size: 3072,
+    quality: 0.6,
+  });
 
-//   const dataFinal = await filetoDataURL(optimizedBase);
-//   var data = dataFinal.split(',')[1];
-//   var decodedData = atob(data);
+  const dataFinal = await filetoDataURL(optimizedBase);
+  var data = dataFinal.split(',')[1];
+  var decodedData = atob(data);
 
-//   var sizeInMB = decodedData.length / (1024 * 1024);
+  var sizeInMB = decodedData.length / (1024 * 1024);
 
-//   console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
-//   return dataFinal;
-// }
+  console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
+  return dataFinal;
+}

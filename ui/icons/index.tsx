@@ -2,6 +2,7 @@ import Dropzone from 'dropzone';
 import {useEffect} from 'react';
 import {Body} from '../typography';
 import 'dropzone/dist/dropzone.css';
+import {optimizar} from '@/components/perfilUser';
 export function ImageSVG(props: any) {
   useEffect(() => {
     const myDropzone = new Dropzone('.dropzone', {
@@ -9,23 +10,27 @@ export function ImageSVG(props: any) {
       autoProcessQueue: false,
       uploadMultiple: false,
       maxFiles: 1,
-      maxFilesize: 30,
+      maxFilesize: 100,
+      maxThumbnailFilesize: 100,
+      resizeQuality: 0.5,
+      acceptedFiles: 'image/png, image/jpeg, image/jpg',
       addRemoveLinks: true,
-      acceptedFiles: 'image/png, image/jpeg',
       dictRemoveFile: 'Eliminar',
       init: function () {
         this.on('maxfilesexceeded', function (file) {
           alert('Solo un archivo porfavor!');
         });
       },
-      maxfilesexceeded: function (files) {
+      maxfilesexceeded: async function (files) {
         (this as any).removeAllFiles();
         (this as any).addFile(files);
-        props.dataUrl(files.dataURL);
+        const dataFinal = await optimizar(files.dataURL as string);
+
+        props.dataUrl(dataFinal);
       },
     });
 
-    myDropzone.on('thumbnail', function (file) {
+    myDropzone.on('thumbnail', async function (file) {
       const fileSizeInBytes = file.size;
       const fileSizeInKB = fileSizeInBytes / 1024;
       const fileSizeInMB = fileSizeInKB / 1024;
@@ -38,7 +43,8 @@ export function ImageSVG(props: any) {
         myDropzone.removeFile(file);
         return;
       }
-      props.dataUrl(file.dataURL);
+      const dataFinal = await optimizar(file.dataURL as string);
+      props.dataUrl(dataFinal);
     });
     // }
   }, []);

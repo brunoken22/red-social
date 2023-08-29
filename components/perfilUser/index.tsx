@@ -46,13 +46,23 @@ export function PerfilUser() {
             2
           )}MB (MAXIMO 30MB)`
         );
-        console.log('maxim');
-
         myDropzone.removeFile(file);
         return;
       }
-      console.log('antes');
-      const dataFinal = await optimizar(file.dataURL as string);
+      const optimizedBase64 = await urltoBlob(file.dataURL as any);
+      const optimizedBase = await compressAccurately(optimizedBase64, {
+        size: 5120,
+        quality: 1,
+      });
+
+      const dataFinal = await filetoDataURL(optimizedBase);
+      var data = dataFinal.split(',')[1];
+      var decodedData = atob(data);
+
+      // Calcula el tamaño en megabytes
+      var sizeInMB = decodedData.length / (1024 * 1024);
+
+      console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
       setDataImg(dataFinal);
     });
   }, []);
@@ -126,20 +136,20 @@ export function PerfilUser() {
   );
 }
 
-async function optimizar(dataUrl: string): Promise<string> {
-  console.log('optim');
-  const optimizedBase64 = await urltoBlob(dataUrl);
-  const optimizedBase = await compressAccurately(optimizedBase64, {
-    size: 3072,
-    quality: 1,
-  });
+// async function optimizar(dataUrl: string): Promise<string> {
+//   console.log('optim');
+//   const optimizedBase64 = await urltoBlob(dataUrl);
+//   const optimizedBase = await compressAccurately(optimizedBase64, {
+//     size: 3072,
+//     quality: 1,
+//   });
 
-  const dataFinal = await filetoDataURL(optimizedBase);
-  var data = dataFinal.split(',')[1];
-  var decodedData = atob(data);
+//   const dataFinal = await filetoDataURL(optimizedBase);
+//   var data = dataFinal.split(',')[1];
+//   var decodedData = atob(data);
 
-  var sizeInMB = decodedData.length / (1024 * 1024);
+//   var sizeInMB = decodedData.length / (1024 * 1024);
 
-  console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
-  return dataFinal;
-}
+//   console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
+//   return dataFinal;
+// }

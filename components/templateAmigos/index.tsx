@@ -67,7 +67,7 @@ export function TemAmigos() {
             <h3 style={{marginTop: '0'}}>Sugerencias de amistad</h3>
             <DivResponse>
               {dataAllUser
-                ? dataAllUser.map((e: User) => (
+                ? dataAllUser?.map((e: User) => (
                     <DivAllAmistades key={e.id}>
                       {' '}
                       <DivImageSug $img={e.img}></DivImageSug>

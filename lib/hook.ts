@@ -178,7 +178,7 @@ export function GetAllUser(token: string) {
     },
   };
   const {data, isLoading, error} = useSWR(
-    token ? [api, option] : null,
+    token !== '' ? [api, option] : null,
     fetchApiSwr
   );
   useEffect(() => {

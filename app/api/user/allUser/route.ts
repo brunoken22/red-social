@@ -1,6 +1,6 @@
 import {NextResponse, NextRequest} from 'next/server';
 import {getAllUser} from '@/lib/controllers/user';
-
+export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     const token = request.headers.get('token') as string;

@@ -7,6 +7,7 @@ import {useState} from 'react';
 import {DivImageSug} from '../publicaciones/styled';
 import {useRecoilValue} from 'recoil';
 import {User, getAllUser} from '@/lib/atom';
+export const dynamic = 'force-dynamic';
 
 export function TemAmigos() {
   const dataAllUser = useRecoilValue(getAllUser);

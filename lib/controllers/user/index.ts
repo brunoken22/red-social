@@ -141,16 +141,17 @@ export async function getAllAmigos(token: string) {
 export async function getAllUser(token: string) {
   try {
     const tokenData = jwt.verify(token, secrect);
-    const users = await User.findAll({
-      where: {
-        id: {
-          [Op.ne]: (tokenData as Token).id,
-        },
-      },
-    });
-    if (users) {
-      return users;
-    }
+    // const users = await User.findAll({
+    //   where: {
+    //     id: {
+    //       [Op.ne]: (tokenData as Token).id,
+    //     },
+    //   },
+    // });
+    // if (users) {
+    //   return users;
+    // }
+    console.log(tokenData);
     return 'Sin amigos';
   } catch (e) {
     return e;

@@ -66,7 +66,7 @@ export function TemAmigos() {
           <>
             <h3 style={{marginTop: '0'}}>Sugerencias de amistad</h3>
             <DivResponse>
-              {dataAllUser
+              {dataAllUser.length > 0
                 ? dataAllUser?.map((e: User) => (
                     <DivAllAmistades key={e.id}>
                       {' '}

@@ -95,6 +95,11 @@ function TemplateFormPublicar(props: any) {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (dataUrl !== '') {
+      setPlaceinput(false);
+    }
+  }, [dataUrl]);
   const handleclose = (e: any) => {
     e.preventDefault();
     props.close(false);
@@ -179,7 +184,9 @@ function TemplateFormPublicar(props: any) {
             <div>
               <Body>Agregar a tu publicación</Body>
             </div>
-            <ImageSVG dataUrl={(data: string) => setDataUrl(data)}></ImageSVG>
+            <ImageSVG
+              dataUrl={(data: string) => setDataUrl(data)}
+              archivo={(data: boolean) => setPlaceinput(data)}></ImageSVG>
           </div>
           <DivButton>
             <ButtonPublicar $color={!placeInput} disabled={placeInput}>

@@ -8,3 +8,11 @@ export function Loader() {
     </DivLoader>
   );
 }
+
+export function LoaderComponent() {
+  return (
+    <DivLoader>
+      <Ring size={40} lineWeight={5} speed={2} color='black' />
+    </DivLoader>
+  );
+}

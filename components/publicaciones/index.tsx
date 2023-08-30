@@ -15,6 +15,8 @@ import {
 } from './styled';
 import Like from '@/ui/icons/like.svg';
 import Comentar from '@/ui/icons/comentar.svg';
+import {publicacionUser, user} from '@/lib/atom';
+import {useRecoilValue} from 'recoil';
 
 const iconConLike = {
   height: ' 10px',
@@ -24,8 +26,6 @@ const iconConLike = {
   padding: '2px',
   backgroundColor: '#5a81ff',
 };
-import {publicacionUser, user} from '@/lib/atom';
-import {useRecoilValue} from 'recoil';
 
 export function Publicaciones() {
   const publicacionesUser = useRecoilValue(publicacionUser);

@@ -1,9 +1,13 @@
 import Dropzone from 'dropzone';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {Body} from '../typography';
 import 'dropzone/dist/dropzone.css';
-import {optimizar} from '@/components/perfilUser';
+import {OptimizarImage} from '@/lib/hook';
+import {LoaderComponent} from '@/components/loader';
 export function ImageSVG(props: any) {
+  const [dataUrlOp, setDataUrlOp] = useState('');
+  const {data, isLoading} = OptimizarImage(dataUrlOp);
+
   useEffect(() => {
     const myDropzone = new Dropzone('.dropzone', {
       url: '/perfil',
@@ -24,12 +28,11 @@ export function ImageSVG(props: any) {
       maxfilesexceeded: async function (files) {
         (this as any).removeAllFiles();
         (this as any).addFile(files);
-        const dataFinal = await optimizar(files.dataURL as string);
-
-        props.dataUrl(dataFinal);
+        setDataUrlOp(files.dataURL as string);
+        props.archivo(true);
       },
     });
-
+    console.log(data);
     myDropzone.on('thumbnail', async function (file) {
       const fileSizeInBytes = file.size;
       const fileSizeInKB = fileSizeInBytes / 1024;
@@ -43,15 +46,20 @@ export function ImageSVG(props: any) {
         myDropzone.removeFile(file);
         return;
       }
-      const dataFinal = await optimizar(file.dataURL as string);
-      props.dataUrl(dataFinal);
+      setDataUrlOp(file.dataURL as string);
+      props.archivo(true);
     });
     // }
   }, []);
 
+  useEffect(() => {
+    if (data) {
+      props.dataUrl(data);
+    }
+  }, [data]);
   return (
     <>
-      <div className='dropzone'>
+      <div className='dropzone' style={{position: 'relative'}}>
         <div className='dz-default dz-message'>
           <button className='dz-button' type='button'>
             <svg
@@ -70,6 +78,13 @@ export function ImageSVG(props: any) {
             </div>
           </button>
         </div>
+        {!isLoading ? (
+          <div
+            className='dz-default dz-message"
+      '></div>
+        ) : (
+          <LoaderComponent />
+        )}
       </div>
     </>
   );

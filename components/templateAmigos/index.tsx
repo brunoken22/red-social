@@ -77,7 +77,7 @@ export function TemAmigos() {
                       </div>
                     </DivAllAmistades>
                   ))
-                : null}
+                : 'Sin Usuarios'}
             </DivResponse>
           </>
         ) : null}

@@ -1,6 +1,5 @@
 import {NextResponse} from 'next/server';
 import type {NextRequest} from 'next/server';
-export const dynamic = 'force-dynamic';
 export default async function middleware(request: NextRequest) {
   const token = request.headers.get('authorization')?.split(' ')[1];
   if (!token) return NextResponse.json({message: 'Falta Token'});

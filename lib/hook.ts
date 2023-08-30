@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import {fetchApiSwr} from './api';
 import {useRecoilState} from 'recoil';
-import {user, publicacionUser} from '@/lib/atom';
+import {user, publicacionUser, getAllUser} from '@/lib/atom';
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
 
@@ -130,7 +130,6 @@ export function GetUser(token: string) {
 
   return {data, isLoading};
 }
-
 export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
   const api = '/user/publicar';
   const option = {
@@ -147,7 +146,6 @@ export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
   );
   return {data, isLoading};
 }
-
 export function GetPublicaciones(token: string) {
   const [publicaciones, setPublicaciones] = useRecoilState(publicacionUser);
   const api = '/user/publicar';
@@ -169,7 +167,27 @@ export function GetPublicaciones(token: string) {
   }, [data]);
   return {dataPubli: data};
 }
-
+export function GetAllUser(token: string) {
+  const [userAllData, setUserAllData] = useRecoilState(getAllUser);
+  const api = '/user/allUser';
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data, isLoading, error} = useSWR(
+    token ? [api, option] : null,
+    fetchApiSwr
+  );
+  useEffect(() => {
+    if (data) {
+      setUserAllData(data);
+    }
+  }, [data]);
+  return {data, isLoading};
+}
 export function OptimizarImage(dataUrl: string) {
   const {data, isLoading, error} = useSWR(
     dataUrl ? dataUrl : null,

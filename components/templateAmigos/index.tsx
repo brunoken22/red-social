@@ -5,11 +5,15 @@ import {ButtonNoti, ButtonAgregar} from '@/ui/boton';
 import {DivAllAmistades} from '@/ui/container';
 import {useState} from 'react';
 import {DivImageSug} from '../publicaciones/styled';
+import {useRecoilValue} from 'recoil';
+import {User, getAllUser} from '@/lib/atom';
 
 export function TemAmigos() {
+  const dataAllUser = useRecoilValue(getAllUser);
   const [sugerencia, setSugerencia] = useState(false);
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);
+
   const handleClick = (e: any) => {
     e.preventDefault();
     if (e.target.id == 'suge') {
@@ -62,16 +66,18 @@ export function TemAmigos() {
           <>
             <h3 style={{marginTop: '0'}}>Sugerencias de amistad</h3>
             <DivResponse>
-              {[1, 2, 3, 4].map((e: any) => (
-                <DivAllAmistades key={e}>
-                  {' '}
-                  <DivImageSug></DivImageSug>
-                  <div>
-                    <p>Allison Lucia</p>
-                    <ButtonAgregar>Añadir amigo</ButtonAgregar>
-                  </div>
-                </DivAllAmistades>
-              ))}
+              {dataAllUser
+                ? dataAllUser.map((e: User) => (
+                    <DivAllAmistades key={e.id}>
+                      {' '}
+                      <DivImageSug $img={e.img}></DivImageSug>
+                      <div>
+                        <p>{e.fullName}</p>
+                        <ButtonAgregar id={e.id}>Añadir amigo</ButtonAgregar>
+                      </div>
+                    </DivAllAmistades>
+                  ))
+                : null}
             </DivResponse>
           </>
         ) : null}

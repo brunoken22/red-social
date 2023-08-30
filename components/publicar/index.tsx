@@ -25,6 +25,7 @@ import {publicacionUser} from '@/lib/atom';
 import {useRecoilState} from 'recoil';
 import {CreatePublicacion} from '@/lib/hook';
 import {Loader} from '../loader';
+
 export function Publicar() {
   const [formClick, setFormClick] = useState(false);
 

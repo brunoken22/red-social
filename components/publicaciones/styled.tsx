@@ -23,8 +23,8 @@ export const DivImage = styled.div`
   margin: 1rem;
   height: 300px;
 `;
-export const DivImageSug = styled(DivImage)`
-  background-image: url(./portafolio.png);
+export const DivImageSug = styled(DivImage)<any>`
+  background-image: ${({$img}) => ($img ? `url(${$img})` : 'url(/user.webp)')};
   background-position: center;
   background-size: cover;
   padding: 0;

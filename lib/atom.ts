@@ -7,7 +7,12 @@ type Publicacion = {
   like: 0;
   comentarios: [];
 };
-
+export type User = {
+  id: number;
+  fullName: string;
+  email: string;
+  img: string;
+};
 export const user = atom({
   key: 'user',
   default: {
@@ -25,4 +30,9 @@ export const user = atom({
 export const publicacionUser = atom({
   key: 'publicacionUser',
   default: [] as Publicacion[],
+});
+
+export const getAllUser = atom({
+  key: 'geAllUser',
+  default: [] as User[],
 });

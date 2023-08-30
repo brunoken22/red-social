@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import {cloudinary} from '@/lib/cloudinary';
 import {SolicitudAmistad, User} from '@/lib/models';
+import {Op} from 'sequelize';
 
 const secrect = process.env.SECRECT as string;
 type Solicitud = {
@@ -18,6 +19,7 @@ type Data = {
 type Token = {
   id: number;
 };
+
 export async function findOrCreateUser(data: Data) {
   const [user, userCreated] = await User.findOrCreate({
     where: {email: data.email},
@@ -132,6 +134,24 @@ export async function getAllAmigos(token: string) {
       }
       return 'Sin amigos';
     }
+  } catch (e) {
+    return false;
+  }
+}
+export async function getAllUser(token: string) {
+  try {
+    const tokenData = jwt.verify(token, secrect);
+    const users = await User.findAll({
+      where: {
+        id: {
+          [Op.ne]: (tokenData as Token).id,
+        },
+      },
+    });
+    if (users) {
+      return users;
+    }
+    return 'Sin amigos';
   } catch (e) {
     return false;
   }

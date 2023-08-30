@@ -179,7 +179,11 @@ export function GetAllUser(token: string) {
   };
   const {data, isLoading, error} = useSWR(
     token !== '' ? [api, option] : null,
-    fetchApiSwr
+    fetchApiSwr,
+    {
+      revalidateOnMount: true, // Realizar nueva solicitud al montar el componente
+      revalidateOnFocus: true, // Realizar nueva solicitud cuando se regresa al foco
+    }
   );
   useEffect(() => {
     if (data) {

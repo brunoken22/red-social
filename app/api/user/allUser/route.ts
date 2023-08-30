@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const users = await getAllUser(token);
     console.log(users);
     return NextResponse.json(users);
-  } catch {
-    return NextResponse.json({message: 'Token Incorrecto'});
+  } catch (e) {
+    return NextResponse.json(e);
   }
 }

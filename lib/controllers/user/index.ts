@@ -153,6 +153,6 @@ export async function getAllUser(token: string) {
     }
     return 'Sin amigos';
   } catch (e) {
-    return false;
+    return e;
   }
 }

@@ -4,6 +4,7 @@ import {fetchApiSwr} from './api';
 import {useRecoilState} from 'recoil';
 import {user, publicacionUser} from '@/lib/atom';
 import {useEffect} from 'react';
+import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
 
 type DataUser = {
   fullName?: string;
@@ -167,4 +168,27 @@ export function GetPublicaciones(token: string) {
     }
   }, [data]);
   return {dataPubli: data};
+}
+
+export function OptimizarImage(dataUrl: string) {
+  const {data, isLoading, error} = useSWR(
+    dataUrl ? dataUrl : null,
+    async (dataUrl) => {
+      const optimizedBase64 = await urltoBlob(dataUrl);
+      const optimizedBase = await compressAccurately(optimizedBase64, {
+        size: 1024,
+        quality: 0.8,
+      });
+
+      const dataFinal = await filetoDataURL(optimizedBase);
+      var data = dataFinal.split(',')[1];
+      var decodedData = atob(data);
+
+      var sizeInMB = decodedData.length / (1024 * 1024);
+
+      console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
+      return dataFinal;
+    }
+  );
+  return {data, isLoading};
 }

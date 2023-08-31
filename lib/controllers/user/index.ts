@@ -288,11 +288,13 @@ export async function getAllUser(token: string) {
     const solicitudesReci = await SolicitudAmistad.findAll({
       where: {
         amigoId: (tokenData as Token).id,
+        estado: 'false',
       },
     });
     const solicitudesEnv = await SolicitudAmistad.findAll({
       where: {
         userId: (tokenData as Token).id,
+        estado: 'false',
       },
     });
 
@@ -313,6 +315,7 @@ export async function getAllUser(token: string) {
         (tokenData as Token).id,
         ...solicitudIdsReci,
       ];
+
       const usersAll = await User.findAll({
         where: {
           id: {
@@ -323,17 +326,6 @@ export async function getAllUser(token: string) {
       if (usersAll) {
         return usersAll;
       }
-    }
-
-    const usersAll = await User.findAll({
-      where: {
-        id: {
-          [Op.ne]: (tokenData as Token).id,
-        },
-      },
-    });
-    if (usersAll) {
-      return usersAll;
     }
     return [];
   } catch (e) {

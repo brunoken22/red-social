@@ -16,4 +16,9 @@ try {
 } catch (error) {
   console.error('Error');
 }
+process.on('beforeExit', async () => {
+  console.log('Closing the connection...');
+  await sequelize.close();
+  console.log('Connection closed.');
+});
 export {sequelize};

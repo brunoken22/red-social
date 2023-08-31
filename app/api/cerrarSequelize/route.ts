@@ -3,9 +3,10 @@ import {sequelize} from '@/lib/models/conn';
 
 export async function GET(request: NextRequest) {
   try {
-    sequelize.close().then(() => {
-      return NextResponse.json('cerrado correctamente');
-    });
+    // sequelize.close().then(() => {
+    // return NextResponse.json('cerrado correctamente');
+    // });
+    return NextResponse.json('ok,.');
   } catch (e) {
     return NextResponse.json({message: 'Falta Token'});
   }

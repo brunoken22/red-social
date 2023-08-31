@@ -284,6 +284,7 @@ export async function getAllAmigos(token: string) {
 export async function getAllUser(token: string) {
   try {
     const tokenData = jwt.verify(token, secrect);
+    const user = await User.findByPk((tokenData as Token).id);
     const solicitudesReci = await SolicitudAmistad.findAll({
       where: {
         amigoId: (tokenData as Token).id,
@@ -301,9 +302,14 @@ export async function getAllUser(token: string) {
     const solicitudIdsEnv = solicitudesEnv.map((solicitud) =>
       solicitud.get('amigoId')
     );
-    if (solicitudIdsReci.length > 0 || solicitudIdsEnv.length > 0) {
+    if (
+      solicitudIdsReci.length > 0 ||
+      solicitudIdsEnv.length > 0 ||
+      user?.get('amigos')
+    ) {
       const diferUsers = [
         ...solicitudIdsEnv,
+        ...(user?.get('amigos') as []),
         (tokenData as Token).id,
         ...solicitudIdsReci,
       ];

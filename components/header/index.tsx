@@ -20,7 +20,13 @@ import Search from '@/ui/icons/search.svg';
 import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
-import {GetUser, GetPublicaciones, GetAllUser} from '@/lib/hook';
+import {
+  GetUser,
+  GetPublicaciones,
+  GetAllUser,
+  GetAllSolicitudes,
+  GetAllAmigos,
+} from '@/lib/hook';
 import {usePathname} from 'next/navigation';
 
 const stylelinkIcon = {
@@ -32,21 +38,12 @@ export function Header() {
   const pathname = usePathname();
 
   const router = useRouter();
-  const {data, isLoading} = GetUser(
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : ''
-  );
-  GetPublicaciones(
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : ''
-  );
-  GetAllUser(
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : ''
-  );
+  const {data, isLoading} = GetUser();
+  GetPublicaciones();
+  GetAllUser();
+  GetAllAmigos();
+  GetAllSolicitudes();
+
   useEffect(() => {
     if (data && pathname == '/') {
       router.push('/home');

@@ -2,10 +2,20 @@ import useSWR from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import {fetchApiSwr} from './api';
 import {useRecoilState} from 'recoil';
-import {user, publicacionUser, getAllUser} from '@/lib/atom';
+import {
+  user,
+  publicacionUser,
+  getAllUser,
+  getAllSolicitudesRecibidas,
+  getAllAmigos,
+  getAllSolicitudesEnviadas,
+} from '@/lib/atom';
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
-
+const token =
+  typeof window !== 'undefined'
+    ? (localStorage.getItem('token') as string)
+    : '';
 type DataUser = {
   fullName?: string;
   email?: string;
@@ -24,7 +34,11 @@ type DataSingin = {
   email: string;
   password: string;
 };
-
+type Solicitud = {
+  amigoId: number;
+  estado: boolean;
+  userId?: number;
+};
 export function CreateUser(dataUser: DataUser) {
   const api = '/auth';
   const option = {
@@ -103,7 +117,7 @@ export function ModificarUser(dataUser: DataUser, token: string) {
   }, [data]);
   return {data, isLoading};
 }
-export function GetUser(token: string) {
+export function GetUser() {
   const [userData, setUserData] = useRecoilState(user);
   const api = '/user/token';
   const option = {
@@ -146,7 +160,7 @@ export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
   );
   return {data, isLoading};
 }
-export function GetPublicaciones(token: string) {
+export function GetPublicaciones() {
   const [publicaciones, setPublicaciones] = useRecoilState(publicacionUser);
   const api = '/user/publicar';
   const option = {
@@ -167,7 +181,7 @@ export function GetPublicaciones(token: string) {
   }, [data]);
   return {dataPubli: data};
 }
-export function GetAllUser(token: string) {
+export function GetAllUser() {
   const [userAllData, setUserAllData] = useRecoilState(getAllUser);
   const api = '/user/allUser';
   const option = {
@@ -191,6 +205,129 @@ export function GetAllUser(token: string) {
     }
   }, [data]);
   return {data, isLoading};
+}
+export function GetAllAmigos() {
+  const [userAllData, setUserAllData] = useRecoilState(getAllAmigos);
+  const api = '/user/amigos';
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data, isLoading, error} = useSWR(
+    token ? [api, option] : null,
+    fetchApiSwr
+  );
+  useEffect(() => {
+    if (data) {
+      setUserAllData(data);
+    }
+  }, [data]);
+  return {data, isLoading};
+}
+export function CreateSolicitud(dataSoli: Solicitud) {
+  const [userAllData, setUserAllData] = useRecoilState(
+    getAllSolicitudesEnviadas
+  );
+  const api = '/user/solicitudAmistad';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(dataSoli),
+  };
+  const {data, isLoading, error} = useSWR(
+    dataSoli.amigoId > -1 ? [api, option] : null,
+    fetchApiSwr
+  );
+  useEffect(() => {
+    if (data) {
+      setUserAllData((prevSoli) => [...prevSoli, data]);
+    }
+  }, [data]);
+  return {data, isLoading};
+}
+export function AceptarSolicitud(dataSoli: Solicitud) {
+  const api = '/user/amigos';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(dataSoli),
+  };
+  const {data, isLoading, error} = useSWR(
+    dataSoli.amigoId > -1 ? [api, option] : null,
+    fetchApiSwr
+  );
+
+  return {dataAcep: data, isLoadingAcep: isLoading};
+}
+export function RechazarSolicitud(dataSoli: any) {
+  const api = '/user/solicitudAmistad';
+  const option = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(dataSoli),
+  };
+  const {data, isLoading, error} = useSWR(
+    dataSoli.userId > -1 ? [api, option] : null,
+    fetchApiSwr
+  );
+
+  return {dataRech: data, isLoadingRech: isLoading};
+}
+export function GetAllSolicitudes() {
+  const [soliAllReci, setSoliAllReci] = useRecoilState(
+    getAllSolicitudesRecibidas
+  );
+  const [soliAllEnv, setSoliAllEnv] = useRecoilState(getAllSolicitudesEnviadas);
+  const api = '/user/solicitudAmistad';
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data, isLoading, error} = useSWR(
+    token ? [api, option] : null,
+    fetchApiSwr
+  );
+  useEffect(() => {
+    if (data) {
+      setSoliAllEnv(data.usersEnv || []);
+    }
+    if (data) {
+      setSoliAllReci(data.usersReci || []);
+    }
+  }, [data]);
+  return {data, isLoading};
+}
+export function EliminarAmigo(datas: any) {
+  const api = '/user/amigos';
+  const option = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(datas),
+  };
+  const {data, isLoading, error} = useSWR(
+    token && datas.userId > -1 ? [api, option] : null,
+    fetchApiSwr
+  );
+
+  return {dataElimAmigo: data, isLoadingElimAmigo: isLoading};
 }
 export function OptimizarImage(dataUrl: string) {
   const {data, isLoading, error} = useSWR(

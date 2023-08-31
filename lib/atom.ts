@@ -36,3 +36,16 @@ export const getAllUser = atom({
   key: 'geAllUser',
   default: [] as User[],
 });
+export const getAllAmigos = atom({
+  key: 'getAllAmigos',
+  default: [] as User[],
+});
+export const getAllSolicitudesRecibidas = atom({
+  key: 'getAllSolicitudesRecibidas',
+  default: [] as User[],
+});
+
+export const getAllSolicitudesEnviadas = atom({
+  key: 'getAllSolicitudesEnviadas',
+  default: [] as User[],
+});

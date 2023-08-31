@@ -20,7 +20,7 @@ export const DivImage = styled.div`
   display: flex;
   justify-content: center;
   position: relative;
-  margin: 1rem;
+  margin: 0.1rem;
   height: 300px;
 `;
 export const DivImageSug = styled(DivImage)<any>`

@@ -3,38 +3,114 @@ import {Section, DivSection, DivIcons, DivResponse, DivResult} from './styled';
 import MyAmigos from '@/ui/icons/myAmigos.svg';
 import {ButtonNoti, ButtonAgregar} from '@/ui/boton';
 import {DivAllAmistades} from '@/ui/container';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {DivImageSug} from '../publicaciones/styled';
 import {useRecoilValue} from 'recoil';
-import {User, getAllUser} from '@/lib/atom';
+import {
+  User,
+  getAllUser,
+  getAllAmigos,
+  getAllSolicitudesRecibidas,
+  getAllSolicitudesEnviadas,
+} from '@/lib/atom';
+import {
+  CreateSolicitud,
+  AceptarSolicitud,
+  RechazarSolicitud,
+  EliminarAmigo,
+} from '@/lib/hook';
+import {Loader} from '../loader';
 
 export function TemAmigos() {
   const dataAllUser = useRecoilValue(getAllUser);
+  const dataAllAmigos = useRecoilValue(getAllAmigos);
+  const dataAllSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
+  const dataAllSoliEnv = useRecoilValue(getAllSolicitudesEnviadas);
+
   const [sugerencia, setSugerencia] = useState(false);
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);
+  const [soliEnv, setSoliEnv] = useState(false);
+  const [amigoId, setAmigoId] = useState(Number(-1));
+  const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
+  const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
+  const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
 
+  const {data, isLoading} = CreateSolicitud({
+    amigoId,
+    estado: false,
+  });
+  const {dataAcep, isLoadingAcep} = AceptarSolicitud({
+    amigoId: acepAmigoId,
+    estado: true,
+  });
+  const {dataRech, isLoadingRech} = RechazarSolicitud({
+    userId: rechazarAmigo,
+  });
+  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
+    userId: eliminarAmigo,
+  });
   const handleClick = (e: any) => {
     e.preventDefault();
     if (e.target.id == 'suge') {
       setSugerencia(true);
       setSoliAmis(false);
       setAllAmig(false);
+      setSoliEnv(false);
       return;
     }
     if (e.target.id == 'soli') {
       setSoliAmis(true);
       setSugerencia(false);
       setAllAmig(false);
+      setSoliEnv(false);
+
       return;
     }
     if (e.target.id == 'all') {
       setAllAmig(true);
       setSugerencia(false);
       setSoliAmis(false);
+      setSoliEnv(false);
+
+      return;
+    }
+    if (e.target.id == 'SoliEnv') {
+      setAllAmig(false);
+      setSugerencia(false);
+      setSoliEnv(true);
+      setSoliAmis(false);
       return;
     }
   };
+  const handleSolicitudEnv = (e: any) => {
+    const id = e.target.id;
+    setAmigoId(Number(id));
+  };
+  const handleSolicitudAcep = (e: any) => {
+    const id = e.target.id;
+    setAcepAmigoId(Number(id));
+  };
+  const handleSolicitudRecha = (e: any) => {
+    const id = e.target.id;
+    setRechazarAmigo(Number(id));
+  };
+  const handleEliminarAmigo = (e: any) => {
+    const id = e.target.id;
+    setEliminarAmigo(Number(id));
+  };
+
+  useEffect(() => {
+    if (data || dataAcep || dataRech || dataElimAmigo) {
+      setAmigoId(Number(-1));
+      setAcepAmigoId(Number(-1));
+      setRechazarAmigo(Number(-1));
+      setEliminarAmigo(Number(-1));
+    }
+  }, [data, dataAcep, dataRech, eliminarAmigo]);
+  if (isLoading || isLoadingAcep || isLoadingRech || isLoadingElimAmigo) {
+    return <Loader></Loader>;
+  }
   return (
     <Section>
       <DivSection>
@@ -59,6 +135,12 @@ export function TemAmigos() {
             </DivIcons>
             Todos tus amigos
           </ButtonNoti>
+          <ButtonNoti onClick={handleClick} id='SoliEnv'>
+            <DivIcons>
+              <MyAmigos />
+            </DivIcons>
+            Solicitud Enviado
+          </ButtonNoti>
         </div>
       </DivSection>
       <DivResult>
@@ -72,8 +154,15 @@ export function TemAmigos() {
                       {' '}
                       <DivImageSug $img={e.img}></DivImageSug>
                       <div>
-                        <p>{e.fullName}</p>
-                        <ButtonAgregar id={e.id}>Añadir amigo</ButtonAgregar>
+                        <p style={{overflow: 'hidden', height: '1.5rem'}}>
+                          {e.fullName}
+                        </p>
+                        <ButtonAgregar
+                          id={e.id}
+                          onClick={handleSolicitudEnv}
+                          $bg={data ? true : false}>
+                          {data ? 'Cancelar Solicitud' : 'Añadir amigo'}
+                        </ButtonAgregar>
                       </div>
                     </DivAllAmistades>
                   ))
@@ -85,21 +174,32 @@ export function TemAmigos() {
           <>
             <h3 style={{marginTop: '0'}}>Solicitudes de amistad</h3>
             <DivResponse>
-              {true
-                ? [1, 2, 3, 4].map((e: any) => (
-                    <DivAllAmistades key={e}>
+              {dataAllSoliReci.length > 0
+                ? dataAllSoliReci.map((e: any) => (
+                    <DivAllAmistades key={e.id}>
                       {' '}
-                      <DivImageSug></DivImageSug>
+                      <DivImageSug $img={e.img}></DivImageSug>
                       <div>
-                        <p>Allison Lucia</p>
+                        <p style={{overflow: 'hidden', height: '1.5rem'}}>
+                          {e.fullName}
+                        </p>
                         <div
                           style={{
                             display: 'flex',
                             justifyContent: 'center',
                             gap: '1rem',
                           }}>
-                          <ButtonAgregar>Aceptar </ButtonAgregar>
-                          <ButtonAgregar $bg='red'>Rechazar</ButtonAgregar>
+                          <ButtonAgregar
+                            id={e.id}
+                            onClick={handleSolicitudAcep}>
+                            Aceptar{' '}
+                          </ButtonAgregar>
+                          <ButtonAgregar
+                            id={e.id}
+                            onClick={handleSolicitudRecha}
+                            $bg='red'>
+                            Rechazar
+                          </ButtonAgregar>
                         </div>
                       </div>
                     </DivAllAmistades>
@@ -112,25 +212,65 @@ export function TemAmigos() {
           <>
             <h3 style={{marginTop: '0'}}>Todos tus amigos</h3>
             <DivResponse>
-              {true
-                ? [1, 2, 3, 4].map((e: any) => (
-                    <DivAllAmistades key={e}>
-                      <DivImageSug></DivImageSug>
+              {dataAllAmigos.length > 0
+                ? dataAllAmigos.map((e: any) => (
+                    <DivAllAmistades key={e.id}>
+                      <DivImageSug $img={e.img}></DivImageSug>
 
                       <div>
-                        <p>Allison Lucia</p>
+                        <p style={{overflow: 'hidden', height: '1.5rem'}}>
+                          {e.fullName}
+                        </p>
                         <div
                           style={{
                             display: 'flex',
                             justifyContent: 'center',
                             gap: '1rem',
                           }}>
-                          <ButtonAgregar $bg='red'>Eliminar</ButtonAgregar>
+                          <ButtonAgregar
+                            id={e.id}
+                            onClick={handleEliminarAmigo}
+                            $bg='red'>
+                            Eliminar
+                          </ButtonAgregar>
                         </div>
                       </div>
                     </DivAllAmistades>
                   ))
                 : 'No tienes amigos'}
+            </DivResponse>
+          </>
+        ) : null}
+        {soliEnv ? (
+          <>
+            <h3 style={{marginTop: '0'}}>Solicitud Enviado</h3>
+            <DivResponse>
+              {dataAllSoliEnv.length > 0
+                ? dataAllSoliEnv.map((e: any) => (
+                    <DivAllAmistades key={e.id}>
+                      <DivImageSug $img={e.img}></DivImageSug>
+
+                      <div>
+                        <p style={{overflow: 'hidden', height: '1.5rem'}}>
+                          {e.fullName}
+                        </p>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: '1rem',
+                          }}>
+                          <ButtonAgregar
+                            id={e.id}
+                            onClick={handleSolicitudRecha}
+                            $bg='red'>
+                            Eliminar Solicitud
+                          </ButtonAgregar>
+                        </div>
+                      </div>
+                    </DivAllAmistades>
+                  ))
+                : 'No enviastes solicitudes'}
             </DivResponse>
           </>
         ) : null}

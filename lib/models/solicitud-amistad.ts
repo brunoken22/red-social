@@ -5,7 +5,7 @@ export class SolicitudAmistad extends Model {}
 SolicitudAmistad.init(
   {
     amigoId: DataTypes.INTEGER,
-    estado: DataTypes.STRING,
+    estado: DataTypes.BOOLEAN,
   },
   {sequelize, modelName: 'solicitudAmistad'}
 );

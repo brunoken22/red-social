@@ -1,7 +1,6 @@
 import {NextResponse, NextRequest} from 'next/server';
 import {findOrCreateAuth} from '@/lib/controllers/auth';
 import {findOrCreateUser} from '@/lib/controllers/user';
-// import '@/lib/sync';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -19,5 +18,3 @@ export async function POST(request: NextRequest) {
     console.log(e);
   }
 }
-
-export async function GET() {}

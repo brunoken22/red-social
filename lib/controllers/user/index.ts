@@ -3,7 +3,7 @@ import {cloudinary} from '@/lib/cloudinary';
 import {SolicitudAmistad, User} from '@/lib/models';
 import {Op, Sequelize} from 'sequelize';
 import {sequelize} from '@/lib/models/conn';
-const {Pool} = require('pg');
+// const {Pool} = require('pg');
 
 const secrect = process.env.SECRECT as string;
 
@@ -36,8 +36,8 @@ export async function findOrCreateUser(data: Data) {
   return [user, userCreated];
 }
 export async function getUser(token: string) {
-  const pool = new Pool();
-  const client = await pool.connect();
+  // const pool = new Pool();
+  // const client = await pool.connect();
   try {
     const tokenData = jwt.verify(token, secrect);
     const user = await User.findOne({
@@ -48,7 +48,7 @@ export async function getUser(token: string) {
   } catch (e) {
     return false;
   } finally {
-    await client.end();
+    // await client.end();
   }
 }
 export async function modUser(token: string, data: Data) {
@@ -96,8 +96,8 @@ export async function solicitudDeAmistad(token: string, data: Solicitud) {
   }
 }
 export async function getSolicitudAmistad(token: string) {
-  const pool = new Pool();
-  const client = await pool.connect();
+  // const pool = new Pool();
+  // const client = await pool.connect();
   try {
     const tokenData = jwt.verify(token, secrect);
     const solicitudesReci = await SolicitudAmistad.findAll({
@@ -143,7 +143,7 @@ export async function getSolicitudAmistad(token: string) {
   } catch (e) {
     return e;
   } finally {
-    await client.end();
+    // await client.end();
   }
 }
 export async function getSolicitudAmistadEnvi(token: string) {
@@ -178,7 +178,7 @@ export async function getSolicitudAmistadEnvi(token: string) {
   } catch (e) {
     return false;
   } finally {
-    await sequelize.close();
+    // await sequelize.close();
   }
 }
 export async function aceptarSolicitud(token: string, data: Solicitud) {
@@ -295,7 +295,7 @@ export async function getAllAmigos(token: string) {
   } catch (e) {
     return false;
   } finally {
-    await sequelize.close();
+    // await sequelize.close();
   }
 }
 export async function getAllUser(token: string) {
@@ -348,6 +348,6 @@ export async function getAllUser(token: string) {
   } catch (e) {
     return e;
   } finally {
-    await sequelize.close();
+    // await sequelize.close();
   }
 }

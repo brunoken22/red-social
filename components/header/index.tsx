@@ -48,6 +48,9 @@ export function Header() {
     if (data && pathname == '/') {
       router.push('/home');
     }
+    if (!data) {
+      router.push('/');
+    }
   }, [data]);
 
   const handleMenu = (e: any) => {

@@ -52,7 +52,7 @@ export async function getAllPulicacionUser(token: string) {
       },
     });
     if (!publicacion) {
-      return 'No hay publicaciones';
+      return [];
     }
     return publicacion;
   } catch (e) {
@@ -70,9 +70,8 @@ export async function getAllPulicacionRedAmigos(token: string) {
       },
     });
     if (!publicacion) {
-      return 'No hay publicaciones';
+      return [];
     }
-
     return publicacion;
   } catch (e) {
     return false;

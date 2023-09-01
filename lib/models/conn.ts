@@ -1,8 +1,6 @@
 const {Sequelize, DataTypes, Model} = require('sequelize');
 
-const sequelize = new Sequelize(process.env.SEQUELIZE, {
-  dialect: 'postgres',
-});
+const sequelize = new Sequelize(process.env.SEQUELIZE, {});
 
 try {
   sequelize.authenticate();

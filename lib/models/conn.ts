@@ -1,10 +1,7 @@
 import {Sequelize} from 'sequelize';
 import pg from 'pg';
 
-const sequelize = new Sequelize(process.env.SEQUELIZE as string, {
-  dialect: 'postgres',
-  dialectModule: pg,
-});
+const sequelize = new Sequelize(process.env.SEQUELIZE as string);
 (async () => {
   try {
     await sequelize.authenticate();

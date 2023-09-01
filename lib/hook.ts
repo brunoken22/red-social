@@ -192,7 +192,7 @@ export function GetAllUser() {
     },
   };
   const {data, isLoading, error} = useSWR(
-    token !== '' ? [api, option] : null,
+    token ? [api, option] : null,
     fetchApiSwr,
     {
       revalidateOnMount: true, // Realizar nueva solicitud al montar el componente

@@ -3,6 +3,7 @@ import pg from 'pg';
 
 const sequelize = new Sequelize(process.env.SEQUELIZE as string, {
   dialect: 'postgres',
+  dialectModule: pg,
 });
 try {
   sequelize.authenticate();

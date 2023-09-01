@@ -5,11 +5,12 @@ const sequelize = new Sequelize(process.env.SEQUELIZE as string, {
   dialect: 'postgres',
   dialectModule: pg,
 });
-try {
-  sequelize.authenticate();
-  console.log('Connection has been established successfully.');
-} catch (error) {
-  console.error('Error', error);
-}
-
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Error', error);
+  }
+})();
 export {sequelize};

@@ -3,6 +3,11 @@ import pg from 'pg';
 
 let sequelize = new Sequelize(process.env.SEQUELIZE as string, {
   dialectModule: pg,
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000,
+  },
 });
 let conn = false;
 (async () => {

@@ -1,10 +1,14 @@
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.SEQUELIZE as string);
+import {Sequelize} from 'sequelize';
+import pg from 'pg';
+
+const sequelize = new Sequelize(process.env.SEQUELIZE as string, {
+  dialect: 'postgres',
+});
 try {
   sequelize.authenticate();
   console.log('Connection has been established successfully.');
 } catch (error) {
-  console.error('Error');
+  console.error(error);
 }
 
 export {sequelize};

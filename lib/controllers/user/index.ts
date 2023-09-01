@@ -3,8 +3,6 @@ import {cloudinary} from '@/lib/cloudinary';
 import {SolicitudAmistad, User} from '@/lib/models';
 import {Op, Sequelize} from 'sequelize';
 import {sequelize} from '@/lib/models/conn';
-// import { Pool } from "pg"
-
 const secrect = process.env.SECRECT as string;
 
 type Solicitud = {
@@ -45,6 +43,8 @@ export async function getUser(token: string) {
     return user;
   } catch (e) {
     return false;
+  } finally {
+    await sequelize.close();
   }
 }
 export async function modUser(token: string, data: Data) {
@@ -69,6 +69,8 @@ export async function modUser(token: string, data: Data) {
     return {newuser, img: imagenUrl?.secure_url ? imagenUrl.secure_url : null};
   } catch (e) {
     return false;
+  } finally {
+    await sequelize.close();
   }
 }
 export async function solicitudDeAmistad(token: string, data: Solicitud) {
@@ -89,6 +91,8 @@ export async function solicitudDeAmistad(token: string, data: Solicitud) {
     return solicitudUser;
   } catch (e) {
     return false;
+  } finally {
+    await sequelize.close();
   }
 }
 export async function getSolicitudAmistad(token: string) {
@@ -136,6 +140,8 @@ export async function getSolicitudAmistad(token: string) {
     return [];
   } catch (e) {
     return e;
+  } finally {
+    await sequelize.close();
   }
 }
 export async function getSolicitudAmistadEnvi(token: string) {
@@ -169,6 +175,8 @@ export async function getSolicitudAmistadEnvi(token: string) {
     return [];
   } catch (e) {
     return false;
+  } finally {
+    await sequelize.close();
   }
 }
 export async function aceptarSolicitud(token: string, data: Solicitud) {
@@ -207,6 +215,8 @@ export async function aceptarSolicitud(token: string, data: Solicitud) {
     return 'Algo fallo';
   } catch (e) {
     return false;
+  } finally {
+    await sequelize.close();
   }
 }
 export async function eliminarSolicitud(token: string, data: Solicitud) {
@@ -233,6 +243,8 @@ export async function eliminarSolicitud(token: string, data: Solicitud) {
     return 'No existe solicitud';
   } catch (e) {
     return e;
+  } finally {
+    await sequelize.close();
   }
 }
 export async function eliminarAmigo(token: string, data: Solicitud) {
@@ -264,6 +276,8 @@ export async function eliminarAmigo(token: string, data: Solicitud) {
     return 'No existe Amigo';
   } catch (e) {
     return e;
+  } finally {
+    await sequelize.close();
   }
 }
 export async function getAllAmigos(token: string) {
@@ -284,6 +298,8 @@ export async function getAllAmigos(token: string) {
     }
   } catch (e) {
     return false;
+  } finally {
+    await sequelize.close();
   }
 }
 export async function getAllUser(token: string) {
@@ -335,5 +351,7 @@ export async function getAllUser(token: string) {
     return [];
   } catch (e) {
     return e;
+  } finally {
+    await sequelize.close();
   }
 }

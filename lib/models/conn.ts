@@ -4,6 +4,11 @@ import pg from 'pg';
 const sequelize = new Sequelize(process.env.SEQUELIZE as string, {
   dialect: 'postgres',
   dialectModule: pg,
+  pool: {
+    max: Infinity, // Número ilimitado de conexiones en el pool
+    min: 0,
+    idle: 10000,
+  },
 });
 try {
   sequelize.authenticate();

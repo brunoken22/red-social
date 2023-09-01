@@ -1,4 +1,4 @@
-import {Sequelize} from 'sequelize';
+const Sequelize = require('sequelize');
 import pg from 'pg'; // Importa el controlador
 const sequelize = new Sequelize(process.env.SEQUELIZE as string);
 try {

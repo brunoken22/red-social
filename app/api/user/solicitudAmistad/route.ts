@@ -4,7 +4,6 @@ import {
   getSolicitudAmistad,
   eliminarSolicitud,
 } from '@/lib/controllers/user';
-// import '@/lib/sync';
 
 export async function POST(request: NextRequest) {
   try {

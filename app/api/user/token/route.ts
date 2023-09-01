@@ -2,7 +2,7 @@ import {NextResponse, NextRequest} from 'next/server';
 import {modUser, getUser} from '@/lib/controllers/user';
 import {modAuth} from '@/lib/controllers/auth';
 // import '@/lib/sync';
-
+import {sequelize} from '@/lib/models/conn';
 export async function PATCH(request: NextRequest) {
   try {
     const data = await request.json();
@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
   try {
     const token = request.headers.get('token');
     const user = await getUser(token as string);
+    await sequelize.close();
     return NextResponse.json(user);
   } catch (e) {
     return NextResponse.json({message: 'Token Incorrecto'});

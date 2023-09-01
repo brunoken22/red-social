@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
 import pg from 'pg'; // Importa el controlador
-const sequelize = new Sequelize(process.env.SEQUELIZE as string);
+const sequelize = new Sequelize(process.env.SEQUELIZE as string, {
+  dialectModule: pg,
+});
 try {
   sequelize.authenticate();
   console.log('Connection has been established successfully.');

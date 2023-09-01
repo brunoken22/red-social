@@ -3,7 +3,6 @@ import {cloudinary} from '@/lib/cloudinary';
 import {SolicitudAmistad, User} from '@/lib/models';
 import {Op, Sequelize} from 'sequelize';
 import {sequelize} from '@/lib/models/conn';
-
 const secrect = process.env.SECRECT as string;
 
 type Solicitud = {
@@ -230,7 +229,7 @@ export async function eliminarAmigo(token: string, data: Solicitud) {
   try {
     const tokenData = jwt.verify(token, secrect);
     const user1 = await User.update(
-      {amigos: sequelize.literal(`array_remove(amigos, ${data.userId})`)},
+      {amigos: sequelize?.literal(`array_remove(amigos, ${data.userId})`)},
       {
         where: {
           id: (tokenData as Token).id,

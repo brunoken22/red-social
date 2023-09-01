@@ -1,7 +1,5 @@
 import {NextResponse, NextRequest} from 'next/server';
 import {getAllPulicacionRedAmigos} from '@/lib/controllers/publicacion';
-// import '@/lib/sync';
-
 export async function GET(request: NextRequest) {
   try {
     const token = request.headers.get('token') as string;

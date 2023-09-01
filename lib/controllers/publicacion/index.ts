@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import {Publicar, User} from '@/lib/models';
 import {cloudinary} from '@/lib/cloudinary';
-import {sequelize} from '@/lib/models/conn';
 const secrect = process.env.SECRECT as string;
 
 type Data = {

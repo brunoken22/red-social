@@ -3,8 +3,10 @@ import {cloudinary} from '@/lib/cloudinary';
 import {SolicitudAmistad, User} from '@/lib/models';
 import {Op, Sequelize} from 'sequelize';
 import {sequelize} from '@/lib/models/conn';
+// import { Pool } from "pg"
 
 const secrect = process.env.SECRECT as string;
+
 type Solicitud = {
   amigoId: string;
   estado: boolean;
@@ -126,6 +128,9 @@ export async function getSolicitudAmistad(token: string) {
           },
         },
       });
+
+      // await client.release()
+      // await client.end()
       return {usersReci, usersEnv};
     }
     return [];

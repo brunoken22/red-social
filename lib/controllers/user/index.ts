@@ -3,7 +3,6 @@ import {cloudinary} from '@/lib/cloudinary';
 import {SolicitudAmistad, User} from '@/lib/models';
 import {Op, Sequelize} from 'sequelize';
 import {sequelize} from '@/lib/models/conn';
-// const {Pool} = require('pg');
 
 const secrect = process.env.SECRECT as string;
 
@@ -36,14 +35,11 @@ export async function findOrCreateUser(data: Data) {
   return [user, userCreated];
 }
 export async function getUser(token: string) {
-  // const pool = new Pool();
-  // const client = await pool.connect();
   try {
     const tokenData = jwt.verify(token, secrect);
     const user = await User.findOne({
       where: {id: (tokenData as Token).id},
     });
-    sequelize.close();
     return user;
   } catch (e) {
     return false;
@@ -130,8 +126,6 @@ export async function getSolicitudAmistad(token: string) {
           },
         },
       });
-      await sequelize.close();
-
       return {usersReci, usersEnv};
     }
     return [];
@@ -148,12 +142,7 @@ export async function getSolicitudAmistadEnvi(token: string) {
         estado: 'false',
       },
     });
-    const solicitudesEnv = await SolicitudAmistad.findAll({
-      where: {
-        userId: (tokenData as Token).id,
-        estado: 'false',
-      },
-    });
+
     if (solicitudesReci.length > 0) {
       const solicitudidsReci = solicitudesReci.map((solicitud) =>
         solicitud.get('userId')
@@ -165,11 +154,8 @@ export async function getSolicitudAmistadEnvi(token: string) {
           },
         },
       });
-      await sequelize.close();
-
       return users;
     }
-    await sequelize.close();
 
     return [];
   } catch (e) {
@@ -283,12 +269,8 @@ export async function getAllAmigos(token: string) {
             id: amigos,
           },
         });
-        await sequelize.close();
-
         return users;
       }
-      await sequelize.close();
-
       return [];
     }
   } catch (e) {
@@ -338,12 +320,9 @@ export async function getAllUser(token: string) {
         },
       });
       if (usersAll) {
-        await sequelize.close();
-
         return usersAll;
       }
     }
-    await sequelize.close();
 
     return [];
   } catch (e) {

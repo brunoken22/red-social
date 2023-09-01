@@ -54,7 +54,6 @@ export async function getAllPulicacionUser(token: string) {
     if (!publicacion) {
       return 'No hay publicaciones';
     }
-    await sequelize.close();
     return publicacion;
   } catch (e) {
     return false;
@@ -74,7 +73,6 @@ export async function getAllPulicacionRedAmigos(token: string) {
       return 'No hay publicaciones';
     }
 
-    await sequelize.close();
     return publicacion;
   } catch (e) {
     return false;

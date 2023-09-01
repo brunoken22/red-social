@@ -43,12 +43,10 @@ export async function getUser(token: string) {
     const user = await User.findOne({
       where: {id: (tokenData as Token).id},
     });
-
+    sequelize.close();
     return user;
   } catch (e) {
     return false;
-  } finally {
-    // await client.end();
   }
 }
 export async function modUser(token: string, data: Data) {
@@ -96,8 +94,6 @@ export async function solicitudDeAmistad(token: string, data: Solicitud) {
   }
 }
 export async function getSolicitudAmistad(token: string) {
-  // const pool = new Pool();
-  // const client = await pool.connect();
   try {
     const tokenData = jwt.verify(token, secrect);
     const solicitudesReci = await SolicitudAmistad.findAll({
@@ -134,16 +130,13 @@ export async function getSolicitudAmistad(token: string) {
           },
         },
       });
+      await sequelize.close();
 
-      // await client.release()
-      // await client.end()
       return {usersReci, usersEnv};
     }
     return [];
   } catch (e) {
     return e;
-  } finally {
-    // await client.end();
   }
 }
 export async function getSolicitudAmistadEnvi(token: string) {
@@ -172,13 +165,15 @@ export async function getSolicitudAmistadEnvi(token: string) {
           },
         },
       });
+      await sequelize.close();
+
       return users;
     }
+    await sequelize.close();
+
     return [];
   } catch (e) {
     return false;
-  } finally {
-    // await sequelize.close();
   }
 }
 export async function aceptarSolicitud(token: string, data: Solicitud) {
@@ -288,14 +283,16 @@ export async function getAllAmigos(token: string) {
             id: amigos,
           },
         });
+        await sequelize.close();
+
         return users;
       }
+      await sequelize.close();
+
       return [];
     }
   } catch (e) {
     return false;
-  } finally {
-    // await sequelize.close();
   }
 }
 export async function getAllUser(token: string) {
@@ -341,13 +338,15 @@ export async function getAllUser(token: string) {
         },
       });
       if (usersAll) {
+        await sequelize.close();
+
         return usersAll;
       }
     }
+    await sequelize.close();
+
     return [];
   } catch (e) {
     return e;
-  } finally {
-    // await sequelize.close();
   }
 }

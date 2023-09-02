@@ -1,9 +1,7 @@
-import {User} from './user';
-import {Auth} from './auth';
-import {Publicar} from './publicacion';
-import {SolicitudAmistad} from './solicitud-amistad';
-User.hasOne(Auth);
-User.hasMany(Publicar);
-User.hasMany(SolicitudAmistad);
+import {conn} from './conn';
 
-export {Auth, User, Publicar, SolicitudAmistad};
+conn.User.hasOne(conn.Auth);
+conn.User.hasMany(conn.Publicar);
+conn.User.hasMany(conn.SolicitudAmistad);
+
+// export {conn.Auth, User, Publicar, SolicitudAmistad};

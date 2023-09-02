@@ -6,9 +6,9 @@ const nextConfig = withSvgr({
   images: {
     domains: ['res.cloudinary.com'], // Agrega los dominios permitidos aquí
   },
-
-    compiler: {
+  compiler: {
       styledComponents: true
-    },
+  },
+
   });
 module.exports = nextConfig

@@ -1,8 +1,16 @@
 import jwt from 'jsonwebtoken';
 import {cloudinary} from '@/lib/cloudinary';
-import {SolicitudAmistad, User} from '@/lib/models';
+import {conn} from '@/lib/models/conn';
 import {Op, Sequelize} from 'sequelize';
-import {sequelize} from '@/lib/models/conn';
+(async () => {
+  if (!conn.initialized) {
+    await conn.connection();
+  }
+})();
+
+const User = conn.User;
+const SolicitudAmistad = conn.SolicitudAmistad;
+
 const secrect = process.env.SECRECT as string;
 
 type Solicitud = {
@@ -35,6 +43,7 @@ export async function findOrCreateUser(data: Data) {
 }
 export async function getUser(token: string) {
   try {
+    console.log('holaa', User);
     const tokenData = jwt.verify(token, secrect);
     const user = await User.findOne({
       where: {id: (tokenData as Token).id},
@@ -105,10 +114,10 @@ export async function getSolicitudAmistad(token: string) {
     });
 
     if (solicitudesReci.length > 0 || solicitudesEnv.length > 0) {
-      const solicitudidsReci = solicitudesReci.map((solicitud) =>
+      const solicitudidsReci = solicitudesReci.map((solicitud: any) =>
         solicitud.get('userId')
       );
-      const solicitudidsEnv = solicitudesEnv.map((solicitud) =>
+      const solicitudidsEnv = solicitudesEnv.map((solicitud: any) =>
         solicitud.get('amigoId')
       );
       const usersReci = await User.findAll({
@@ -143,7 +152,7 @@ export async function getSolicitudAmistadEnvi(token: string) {
     });
 
     if (solicitudesReci.length > 0) {
-      const solicitudidsReci = solicitudesReci.map((solicitud) =>
+      const solicitudidsReci = solicitudesReci.map((solicitud: any) =>
         solicitud.get('userId')
       );
       const users = await User.findAll({
@@ -226,35 +235,35 @@ export async function eliminarSolicitud(token: string, data: Solicitud) {
   }
 }
 export async function eliminarAmigo(token: string, data: Solicitud) {
-  try {
-    const tokenData = jwt.verify(token, secrect);
-    const user1 = await User.update(
-      {amigos: sequelize?.literal(`array_remove(amigos, ${data.userId})`)},
-      {
-        where: {
-          id: (tokenData as Token).id,
-        },
-      }
-    );
-    const user2 = await User.update(
-      {
-        amigos: sequelize.literal(
-          `array_remove(amigos, ${(tokenData as Token).id})`
-        ),
-      },
-      {
-        where: {
-          id: data.userId,
-        },
-      }
-    );
-    if (user1 && user2) {
-      return {user1, user2};
-    }
-    return 'No existe Amigo';
-  } catch (e) {
-    return e;
-  }
+  // try {
+  //   const tokenData = jwt.verify(token, secrect);
+  //   const user1 = await User.update(
+  //     {amigos: sequelize?.literal(`array_remove(amigos, ${data.userId})`)},
+  //     {
+  //       where: {
+  //         id: (tokenData as Token).id,
+  //       },
+  //     }
+  //   );
+  //   const user2 = await User.update(
+  //     {
+  //       amigos: sequelize.literal(
+  //         `array_remove(amigos, ${(tokenData as Token).id})`
+  //       ),
+  //     },
+  //     {
+  //       where: {
+  //         id: data.userId,
+  //       },
+  //     }
+  //   );
+  //   if (user1 && user2) {
+  //     return {user1, user2};
+  //   }
+  //   return 'No existe Amigo';
+  // } catch (e) {
+  //   return e;
+  // }
 }
 export async function getAllAmigos(token: string) {
   try {
@@ -293,10 +302,10 @@ export async function getAllUser(token: string) {
       },
     });
 
-    const solicitudIdsReci = solicitudesReci.map((solicitud) =>
+    const solicitudIdsReci = solicitudesReci.map((solicitud: any) =>
       solicitud.get('userId')
     );
-    const solicitudIdsEnv = solicitudesEnv.map((solicitud) =>
+    const solicitudIdsEnv = solicitudesEnv.map((solicitud: any) =>
       solicitud.get('amigoId')
     );
     if (

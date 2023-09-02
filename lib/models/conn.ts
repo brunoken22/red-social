@@ -1,25 +1,28 @@
 import {Sequelize} from 'sequelize';
 import pg from 'pg';
+import {auth} from './auth';
+import {user} from './user';
+import {publicacion} from './publicacion';
+import {solicitudAmistad} from './solicitud-amistad';
 
-let sequelize = new Sequelize(process.env.SEQUELIZE as string, {
-  dialectModule: pg,
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000,
-  },
-});
-let conn = false;
-(async () => {
-  try {
-    console.log('CONN', conn);
-    if (!conn) {
-      conn = true;
-      await sequelize.authenticate();
-      console.log('Connection has been established successfully.');
-    }
-  } catch (error) {
-    console.error('Error', error);
-  }
-})();
-export {sequelize};
+export const conn: any = {
+  initialized: false,
+  connection,
+};
+
+async function connection() {
+  const sequelize = new Sequelize(process.env.SEQUELIZE as string, {
+    dialectModule: pg,
+    pool: {
+      max: 1,
+      min: 0,
+      idle: 1000,
+    },
+  });
+  conn.Auth = auth(sequelize);
+  conn.User = user(sequelize);
+  conn.Publicacion = publicacion(sequelize);
+  conn.SolicitudAmistad = solicitudAmistad(sequelize);
+
+  conn.initialized = true;
+}

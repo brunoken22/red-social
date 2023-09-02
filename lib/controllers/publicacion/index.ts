@@ -1,7 +1,14 @@
 import jwt from 'jsonwebtoken';
-import {Publicar, User} from '@/lib/models';
 import {cloudinary} from '@/lib/cloudinary';
+import {conn} from '@/lib/models/conn';
+(async () => {
+  if (!conn.initialized) {
+    await conn.connection();
+  }
+})();
 const secrect = process.env.SECRECT as string;
+const Publicar = conn.Publicacion;
+const User = conn.User;
 
 type Data = {
   description: string;

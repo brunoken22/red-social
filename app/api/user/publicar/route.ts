@@ -3,7 +3,6 @@ import {
   createPublicacion,
   getAllPulicacionUser,
 } from '@/lib/controllers/publicacion';
-import {sequelize} from '@/lib/models/conn';
 
 export async function POST(request: NextRequest) {
   try {

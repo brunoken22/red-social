@@ -1,8 +1,14 @@
-import {Auth, User} from '@/lib/models';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-
+import {conn} from '@/lib/models/conn';
+(async () => {
+  if (!conn.initialized) {
+    await conn.connection();
+  }
+})();
 const secrect = process.env.SECRECT as string;
+const Auth = conn.Auth;
+const User = conn.User;
 
 type Data = {
   email: string;

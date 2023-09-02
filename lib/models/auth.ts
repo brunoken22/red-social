@@ -1,12 +1,14 @@
 import {Model, DataTypes} from 'sequelize';
-import {sequelize} from './conn';
 
-export class Auth extends Model {}
+export function auth(sequelize: any) {
+  class Auth extends Model {}
 
-Auth.init(
-  {
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-  },
-  {sequelize, modelName: 'auth'}
-);
+  Auth.init(
+    {
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+    },
+    {sequelize, modelName: 'auth'}
+  );
+  return Auth;
+}

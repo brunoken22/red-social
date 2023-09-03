@@ -20,13 +20,7 @@ import Search from '@/ui/icons/search.svg';
 import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
-import {
-  GetUser,
-  GetPublicaciones,
-  GetAllUser,
-  GetAllSolicitudes,
-  GetAllAmigos,
-} from '@/lib/hook';
+import {GetUser} from '@/lib/hook';
 import {usePathname} from 'next/navigation';
 
 const stylelinkIcon = {

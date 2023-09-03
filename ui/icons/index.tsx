@@ -32,7 +32,6 @@ export function ImageSVG(props: any) {
         props.archivo(true);
       },
     });
-    console.log(data);
     myDropzone.on('thumbnail', async function (file) {
       const fileSizeInBytes = file.size;
       const fileSizeInKB = fileSizeInBytes / 1024;

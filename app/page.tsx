@@ -20,7 +20,7 @@ export default function Home() {
     }
     boton2.current.style.backgroundColor = '#566383';
     boton2.current.style.fontSize = '1.3rem';
-  }, []);
+  }, [inicio]);
 
   const handleClick = (e: any) => {
     e.preventDefault();

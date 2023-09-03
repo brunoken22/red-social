@@ -174,6 +174,30 @@ export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
   );
   return {data, isLoading};
 }
+export function CreateSolicitud(dataSoli: Solicitud) {
+  const [userAllData, setUserAllData] = useRecoilState(
+    getAllSolicitudesEnviadas
+  );
+  const api = '/user/solicitudAmistad';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(dataSoli),
+  };
+  const {data, isLoading, error} = useSWR(
+    dataSoli.amigoId > -1 ? [api, option] : null,
+    fetchApiSwr
+  );
+  useEffect(() => {
+    if (data) {
+      setUserAllData((prevSoli) => [...prevSoli, data]);
+    }
+  }, [data]);
+  return {data, isLoading};
+}
 export function AceptarSolicitud(dataSoli: Solicitud) {
   const api = '/user/amigos';
   const option = {

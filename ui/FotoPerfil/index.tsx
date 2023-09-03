@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import {Figure} from './styled';
 import {useRecoilValue} from 'recoil';
 import {user} from '@/lib/atom';

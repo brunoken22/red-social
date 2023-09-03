@@ -38,6 +38,7 @@ export function PerfilUser() {
     });
 
     myDropzone.on('thumbnail', async function (file) {
+      const dataFinal = await optimizar(file.dataURL as string);
       const fileSizeInBytes = file.size;
       const fileSizeInKB = fileSizeInBytes / 1024;
       const fileSizeInMB = fileSizeInKB / 1024;
@@ -50,7 +51,6 @@ export function PerfilUser() {
         myDropzone.removeFile(file);
         return;
       }
-      const dataFinal = await optimizar(file.dataURL as string);
 
       setDataImg(dataFinal);
     });
@@ -128,7 +128,7 @@ export function PerfilUser() {
 export async function optimizar(dataUrl: string): Promise<string> {
   const optimizedBase64 = await urltoBlob(dataUrl);
   const optimizedBase = await compressAccurately(optimizedBase64, {
-    size: 3072,
+    size: 520,
     quality: 0.6,
   });
 

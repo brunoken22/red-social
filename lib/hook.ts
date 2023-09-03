@@ -119,6 +119,14 @@ export function ModificarUser(dataUser: DataUser, token: string) {
 }
 export function GetUser() {
   const [userData, setUserData] = useRecoilState(user);
+  const [publicaciones, setPublicaciones] = useRecoilState(publicacionUser);
+  const [getAllUserData, setGetAllUserData] = useRecoilState(getAllUser);
+  const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
+  const [soliAllEnv, setSoliAllEnv] = useRecoilState(getAllSolicitudesEnviadas);
+  const [soliAllReci, setSoliAllReci] = useRecoilState(
+    getAllSolicitudesRecibidas
+  );
+
   const api = '/user/token';
   const option = {
     method: 'GET',
@@ -131,14 +139,20 @@ export function GetUser() {
     token ? [api, option] : null,
     fetchApiSwr
   );
+  console.log(data);
   useEffect(() => {
-    if (data?.id) {
+    if (data?.getUserRes.id) {
       setUserData({
         token,
         user: {
-          ...data,
+          ...data.getUserRes,
         },
       });
+      setPublicaciones(data.getAllPulicacionUserRes);
+      setGetAllUserData(data.getAllUserRes);
+      setAmigosAllData(data.getAllAmigosRes);
+      setSoliAllEnv(data.getSolicitudAmistadEnviRes?.usersEnv);
+      setSoliAllReci(data.getSolicitudAmistadEnviRes?.usersReci);
     }
   }, [data]);
 
@@ -162,7 +176,7 @@ export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
 }
 export function GetPublicaciones() {
   const [publicaciones, setPublicaciones] = useRecoilState(publicacionUser);
-  const api = '/user/publicar';
+  const api = '/user/amigos/publicaciones';
   const option = {
     method: 'GET',
     headers: {
@@ -335,7 +349,7 @@ export function OptimizarImage(dataUrl: string) {
     async (dataUrl) => {
       const optimizedBase64 = await urltoBlob(dataUrl);
       const optimizedBase = await compressAccurately(optimizedBase64, {
-        size: 1024,
+        size: 520,
         quality: 0.8,
       });
 

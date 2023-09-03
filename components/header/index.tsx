@@ -39,11 +39,6 @@ export function Header() {
 
   const router = useRouter();
   const {data, isLoading} = GetUser();
-  GetPublicaciones();
-  GetAllUser();
-  GetAllAmigos();
-  GetAllSolicitudes();
-
   useEffect(() => {
     if (data && pathname == '/') {
       router.push('/home');

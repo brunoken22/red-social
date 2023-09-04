@@ -142,6 +142,7 @@ export function GetUser(token: string) {
       revalidateOnMount: true,
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
+      refreshInterval: 1000,
     }
   );
 
@@ -198,7 +199,8 @@ export function CreateSolicitud(dataSoli: Solicitud) {
   );
   useEffect(() => {
     if (data) {
-      setUserAllData((prevSoli) => [...prevSoli, data]);
+      const soli = userAllData ? userAllData : [];
+      setUserAllData([...soli, data]);
     }
   }, [data]);
   return {data, isLoading};

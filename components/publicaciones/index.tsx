@@ -15,7 +15,12 @@ import {
 } from './styled';
 import Like from '@/ui/icons/like.svg';
 import Comentar from '@/ui/icons/comentar.svg';
-import {publicacionUser, user} from '@/lib/atom';
+import {
+  publicacionUser,
+  user,
+  publicacionAmigos,
+  getAllAmigos,
+} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 
 const iconConLike = {
@@ -29,12 +34,14 @@ const iconConLike = {
 
 export function Publicaciones() {
   const publicacionesUser = useRecoilValue(publicacionUser);
-  const dataUser = useRecoilValue(user);
+  const publicacionesAmigos = useRecoilValue(publicacionAmigos);
 
+  const dataUser = useRecoilValue(user);
+  const allPublicaciones = [...publicacionesUser, ...publicacionesAmigos];
   return (
     <div>
-      {publicacionesUser.length > 0 ? (
-        publicacionesUser
+      {allPublicaciones.length > 0 ? (
+        allPublicaciones
           .slice()
           .reverse()
           .map((item) => (
@@ -46,6 +53,8 @@ export function Publicaciones() {
                 fecha={item.fecha}
                 like={item.like}
                 comentarios={item.comentarios?.length}
+                imgUser={item}
+                id={item.userId}
               />
             </DivAllPublicaciones>
           ))
@@ -57,12 +66,14 @@ export function Publicaciones() {
 }
 
 function ThemplatePubli(props: any) {
+  const getAllAmigosData = useRecoilValue(getAllAmigos);
+  const user: any = getAllAmigosData.find((user: any) => user.id == props.id);
   return (
     <div style={{height: '100%'}}>
       <DivPerfil>
-        <FotoPerfil></FotoPerfil>
+        <FotoPerfil img={user?.img} fullName={user?.fullName[0]}></FotoPerfil>
         <div>
-          <Body $margin='0'>{props.name}</Body>
+          <Body $margin='0'>{user?.fullName || props.name}</Body>
           <DivSpan>{props.fecha}</DivSpan>
         </div>
       </DivPerfil>

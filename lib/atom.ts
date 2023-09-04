@@ -6,6 +6,7 @@ type Publicacion = {
   fecha: string;
   like: 0;
   comentarios: [];
+  userId: number;
 };
 export type User = {
   id: number;
@@ -48,4 +49,9 @@ export const getAllSolicitudesRecibidas = atom({
 export const getAllSolicitudesEnviadas = atom({
   key: 'getAllSolicitudesEnviadas',
   default: [] as User[],
+});
+
+export const publicacionAmigos = atom({
+  key: 'publicacionAmigos',
+  default: [] as Publicacion[],
 });

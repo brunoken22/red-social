@@ -17,9 +17,9 @@ export function FotoPerfil(props: any) {
   const dataUser = useRecoilValue(user);
   return (
     <Figure $wid={props.wid} $hei={props.hei}>
-      {dataUser?.user.img ? (
+      {dataUser?.user.img || props.img ? (
         <img
-          src={dataUser.user.img}
+          src={props.img || dataUser.user.img}
           width={props.wid || 40}
           height={props.hei || 40}
           alt='perfil'
@@ -41,7 +41,7 @@ export function FotoPerfil(props: any) {
       ) : (
         <div style={{...noimg, width: '25px'}}>
           <span style={{textAlign: 'center'}}>
-            {dataUser?.user.fullName[0]}
+            {props?.fullName || dataUser?.user.fullName[0]}
           </span>
         </div>
       )}

@@ -9,6 +9,7 @@ import {
   getAllSolicitudesRecibidas,
   getAllAmigos,
   getAllSolicitudesEnviadas,
+  publicacionAmigos,
 } from '@/lib/atom';
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
@@ -123,6 +124,9 @@ export function GetUser(token: string) {
   const [getAllUserData, setGetAllUserData] = useRecoilState(getAllUser);
   const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
   const [soliAllEnv, setSoliAllEnv] = useRecoilState(getAllSolicitudesEnviadas);
+  const [publicanionesAmigos, setPublicanionesAmigos] =
+    useRecoilState(publicacionAmigos);
+
   const [soliAllReci, setSoliAllReci] = useRecoilState(
     getAllSolicitudesRecibidas
   );
@@ -154,11 +158,15 @@ export function GetUser(token: string) {
           ...data.getUserRes,
         },
       });
+      const datapublicAmigos = data.getAllPulicacionRedAmigosRes.map(
+        (data: any) => data.publicaciones.map((datapubli: any) => datapubli)
+      );
       setPublicaciones(data.getAllPulicacionUserRes);
       setGetAllUserData(data.getAllUserRes);
       setAmigosAllData(data.getAllAmigosRes);
       setSoliAllEnv(data.getSolicitudAmistadRes?.usersEnv);
       setSoliAllReci(data.getSolicitudAmistadRes?.usersReci);
+      setPublicanionesAmigos(datapublicAmigos[0]);
     }
   }, [data]);
 

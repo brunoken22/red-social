@@ -190,6 +190,7 @@ export function CreateSolicitud(dataSoli: Solicitud) {
     dataSoli.amigoId > -1 ? [api, option] : null,
     fetchApiSwr
   );
+  console.log(data);
   useEffect(() => {
     if (data) {
       setUserAllData((prevSoli) => [...prevSoli, data]);

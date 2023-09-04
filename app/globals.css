@@ -31,7 +31,7 @@ body {
 }
 
 .dz-message {
-  margin: 1rem !important;
+  margin: 1rem;
 }
 .dropzone.dz-clickable {
   text-align: center;

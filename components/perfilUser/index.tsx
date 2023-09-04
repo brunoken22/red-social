@@ -15,54 +15,72 @@ import {useEffect, useState} from 'react';
 import {user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {ModificarUser} from '@/lib/hook';
-import 'dropzone/dist/dropzone.css';
 import {Loader} from '../loader';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
 
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
   const [dataImg, setDataImg] = useState('');
+  const [subirImg, setSubirImg] = useState(false);
   const token =
     typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
   const {data, isLoading} = ModificarUser({img: dataImg}, token as string);
   useEffect(() => {
-    const myDropzone = new Dropzone('.dropzoneClick', {
-      url: '/false',
-      autoProcessQueue: false,
-      maxFiles: 1,
-      maxFilesize: 100,
-      maxThumbnailFilesize: 100,
-      resizeQuality: 0.5,
-      acceptedFiles: 'image/png, image/jpeg, image/jpg',
-    });
+    const dropzoneElement = document.querySelector('.dropzoneClick');
 
-    myDropzone.on('thumbnail', async function (file) {
-      const dataFinal = await optimizar(file.dataURL as string);
-      const fileSizeInBytes = file.size;
-      const fileSizeInKB = fileSizeInBytes / 1024;
-      const fileSizeInMB = fileSizeInKB / 1024;
-      if (fileSizeInMB > 30) {
-        alert(
-          `Tamaño del archivo excedido: ${fileSizeInMB.toFixed(
-            2
-          )}MB (MAXIMO 30MB)`
-        );
-        myDropzone.removeFile(file);
-        return;
+    if (dropzoneElement && data) {
+      const existingDropzoneInstance = Dropzone.forElement(
+        dropzoneElement as HTMLElement
+      );
+      if (existingDropzoneInstance) {
+        existingDropzoneInstance.destroy(); // Elimina la instancia anterior
       }
+    }
+    if (dropzoneElement) {
+      const myDropzone = new Dropzone('.dropzoneClick', {
+        url: '/perfil',
+        autoProcessQueue: false,
+        uploadMultiple: false,
+        maxFiles: 1,
+        maxFilesize: 100,
+        maxThumbnailFilesize: 100,
+        resizeQuality: 0.5,
+        acceptedFiles: 'image/png, image/jpeg, image/jpg',
+      });
+      myDropzone.on('addedfile', (file: any) => {
+        setSubirImg(true);
 
-      setDataImg(dataFinal);
-    });
-  }, []);
+        file.previewElement.innerHTML = '';
+      });
+      myDropzone.on('thumbnail', async function (file) {
+        const fileSizeInBytes = file.size;
+        const fileSizeInKB = fileSizeInBytes / 1024;
+        const fileSizeInMB = fileSizeInKB / 1024;
+        if (fileSizeInMB > 30) {
+          alert(
+            `Tamaño del archivo excedido: ${fileSizeInMB.toFixed(
+              2
+            )}MB (MAXIMO 30MB)`
+          );
+          myDropzone.removeFile(file);
+          return;
+        }
+
+        const dataFinal = await optimizar(file.dataURL as string);
+        setDataImg(dataFinal);
+      });
+    }
+  }, [data]);
 
   useEffect(() => {
     if (data) {
       setDataImg('');
+      setSubirImg(false);
     }
   }, [data]);
 
-  if (isLoading) {
+  if (isLoading || subirImg) {
     return <Loader />;
   }
   return (
@@ -79,7 +97,7 @@ export function PerfilUser() {
               <div className='dropzoneClick' style={{height: '24px'}}>
                 <div
                   className='dz-default dz-message'
-                  style={{margin: '0 !important', height: '24px'}}>
+                  style={{margin: '0', height: '24px'}}>
                   <button
                     className='dz-button'
                     type='button'
@@ -138,6 +156,5 @@ export async function optimizar(dataUrl: string): Promise<string> {
 
   var sizeInMB = decodedData.length / (1024 * 1024);
 
-  console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
   return dataFinal;
 }

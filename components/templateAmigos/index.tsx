@@ -148,7 +148,7 @@ export function TemAmigos() {
           <>
             <h3 style={{marginTop: '0'}}>Sugerencias de amistad</h3>
             <DivResponse>
-              {dataAllUser.length > 0
+              {dataAllUser?.length > 0
                 ? dataAllUser?.map((e: User) => (
                     <DivAllAmistades key={e.id}>
                       {' '}
@@ -174,7 +174,7 @@ export function TemAmigos() {
           <>
             <h3 style={{marginTop: '0'}}>Solicitudes de amistad</h3>
             <DivResponse>
-              {dataAllSoliReci.length > 0
+              {dataAllSoliReci?.length > 0
                 ? dataAllSoliReci.map((e: any) => (
                     <DivAllAmistades key={e.id}>
                       {' '}
@@ -212,7 +212,7 @@ export function TemAmigos() {
           <>
             <h3 style={{marginTop: '0'}}>Todos tus amigos</h3>
             <DivResponse>
-              {dataAllAmigos.length > 0
+              {dataAllAmigos?.length > 0
                 ? dataAllAmigos.map((e: any) => (
                     <DivAllAmistades key={e.id}>
                       <DivImageSug $img={e.img}></DivImageSug>
@@ -245,7 +245,7 @@ export function TemAmigos() {
           <>
             <h3 style={{marginTop: '0'}}>Solicitud Enviado</h3>
             <DivResponse>
-              {dataAllSoliEnv.length > 0
+              {dataAllSoliEnv?.length > 0
                 ? dataAllSoliEnv.map((e: any) => (
                     <DivAllAmistades key={e.id}>
                       <DivImageSug $img={e.img}></DivImageSug>

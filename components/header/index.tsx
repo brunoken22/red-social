@@ -22,19 +22,21 @@ import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
 import {GetUser} from '@/lib/hook';
 import {usePathname} from 'next/navigation';
-
+import {useRecoilValue} from 'recoil';
+import {user} from '@/lib/atom';
 const stylelinkIcon = {
   fill: '#b3b3b3',
 };
 
 export function Header() {
+  const dataUser = useRecoilValue(user);
   const [menu, setMenu] = useState(false);
   const pathname = usePathname();
 
   const router = useRouter();
   const {data, isLoading} = GetUser();
   useEffect(() => {
-    if (data && pathname == '/') {
+    if (data && pathname === '/') {
       router.push('/home');
     }
     if (!data) {
@@ -53,8 +55,7 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
-
-  return data ? (
+  return data || dataUser?.user?.id ? (
     <HeaderNav>
       <Nav>
         <InputDiv>

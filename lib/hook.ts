@@ -139,7 +139,6 @@ export function GetUser() {
     token ? [api, option] : null,
     fetchApiSwr
   );
-  console.log(data);
   useEffect(() => {
     if (data?.getUserRes.id) {
       setUserData({

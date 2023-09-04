@@ -34,7 +34,11 @@ export function Header() {
   const pathname = usePathname();
 
   const router = useRouter();
-  const {data, isLoading} = GetUser();
+  const token =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
+  const {data, isLoading} = GetUser(token);
   useEffect(() => {
     if (data && pathname === '/') {
       router.push('/home');

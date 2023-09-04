@@ -117,7 +117,7 @@ export function ModificarUser(dataUser: DataUser, token: string) {
   }, [data]);
   return {data, isLoading};
 }
-export function GetUser() {
+export function GetUser(token: string) {
   const [userData, setUserData] = useRecoilState(user);
   const [publicaciones, setPublicaciones] = useRecoilState(publicacionUser);
   const [getAllUserData, setGetAllUserData] = useRecoilState(getAllUser);
@@ -137,8 +137,14 @@ export function GetUser() {
   };
   const {data, isLoading, error} = useSWR(
     token ? [api, option] : null,
-    fetchApiSwr
+    fetchApiSwr,
+    {
+      revalidateOnMount: true,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+    }
   );
+
   useEffect(() => {
     if (data?.getUserRes.id) {
       setUserData({
@@ -150,8 +156,8 @@ export function GetUser() {
       setPublicaciones(data.getAllPulicacionUserRes);
       setGetAllUserData(data.getAllUserRes);
       setAmigosAllData(data.getAllAmigosRes);
-      setSoliAllEnv(data.getSolicitudAmistadEnviRes?.usersEnv);
-      setSoliAllReci(data.getSolicitudAmistadEnviRes?.usersReci);
+      setSoliAllEnv(data.getSolicitudAmistadRes?.usersEnv);
+      setSoliAllReci(data.getSolicitudAmistadRes?.usersReci);
     }
   }, [data]);
 
@@ -190,7 +196,6 @@ export function CreateSolicitud(dataSoli: Solicitud) {
     dataSoli.amigoId > -1 ? [api, option] : null,
     fetchApiSwr
   );
-  console.log(data);
   useEffect(() => {
     if (data) {
       setUserAllData((prevSoli) => [...prevSoli, data]);

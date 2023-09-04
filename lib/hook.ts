@@ -166,7 +166,7 @@ export function GetUser(token: string) {
       setAmigosAllData(data.getAllAmigosRes);
       setSoliAllEnv(data.getSolicitudAmistadRes?.usersEnv);
       setSoliAllReci(data.getSolicitudAmistadRes?.usersReci);
-      setPublicanionesAmigos(datapublicAmigos[0]);
+      setPublicanionesAmigos(datapublicAmigos[0] || []);
     }
   }, [data]);
 

@@ -9,7 +9,7 @@ import {
   DivPublicaciones,
 } from './styled';
 import {Publicar} from '../publicar';
-import {Publicaciones} from '../publicaciones';
+import {PublicacionesUser} from '../publicaciones';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {user} from '@/lib/atom';
@@ -137,7 +137,7 @@ export function PerfilUser() {
 
       <DivPublicaciones>
         <Publicar />
-        <Publicaciones />
+        <PublicacionesUser />
       </DivPublicaciones>
     </DivPerfilUser>
   );

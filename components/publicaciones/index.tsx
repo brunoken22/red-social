@@ -32,7 +32,7 @@ const iconConLike = {
   backgroundColor: '#5a81ff',
 };
 
-export function Publicaciones() {
+export function PublicacionesAll() {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
 
@@ -55,6 +55,35 @@ export function Publicaciones() {
                 comentarios={item.comentarios?.length}
                 imgUser={item}
                 id={item.userId}
+              />
+            </DivAllPublicaciones>
+          ))
+      ) : (
+        <p style={{textAlign: 'center'}}>No hay publicaciones</p>
+      )}
+    </div>
+  );
+}
+
+export function PublicacionesUser() {
+  const publicacionesUser = useRecoilValue(publicacionUser);
+  const dataUser = useRecoilValue(user);
+
+  return (
+    <div>
+      {publicacionesUser.length > 0 ? (
+        publicacionesUser
+          .slice()
+          .reverse()
+          .map((item) => (
+            <DivAllPublicaciones key={item.id}>
+              <ThemplatePubli
+                name={dataUser?.user.fullName}
+                description={item.description}
+                img={item.img}
+                fecha={item.fecha}
+                like={item.like}
+                comentarios={item.comentarios?.length}
               />
             </DivAllPublicaciones>
           ))

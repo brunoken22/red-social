@@ -1,6 +1,6 @@
 import {Main, DivPublicaciones, ContainerMain} from '@/ui/container';
 import {Publicar} from '@/components/publicar';
-import {Publicaciones} from '@/components/publicaciones';
+import {PublicacionesAll} from '@/components/publicaciones';
 import {Span} from '@/components/span';
 import {Metadata} from 'next';
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export default function Home() {
       <ContainerMain>
         <DivPublicaciones>
           <Publicar />
-          <Publicaciones />
+          <PublicacionesAll />
         </DivPublicaciones>
         <Span />
       </ContainerMain>

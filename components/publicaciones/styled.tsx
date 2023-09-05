@@ -33,6 +33,7 @@ export const DivImageSug = styled(DivImage)<any>`
 `;
 export const DivCantidad = styled(DivPerfil)`
   gap: 0;
+  margin-top: 1rem;
   justify-content: space-around;
 `;
 export const DivInteractuar = styled(DivPerfil)`

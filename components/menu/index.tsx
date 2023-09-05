@@ -17,13 +17,8 @@ export function Menu(props: any) {
   };
   const handleCerrarSesion = (e: any) => {
     e.preventDefault();
-    router.push('/');
     localStorage.removeItem('token');
-    setTimeout(() => {
-      if (typeof window !== 'undefined' && window.location) {
-        location.reload();
-      }
-    }, 500);
+    router.push('/');
   };
   return (
     <DivMenu>

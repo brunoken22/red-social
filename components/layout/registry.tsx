@@ -1,17 +1,33 @@
 'use client';
 
-import React, {useState} from 'react';
-import {useServerInsertedHTML} from 'next/navigation';
+import React, {useEffect, useState} from 'react';
+import {usePathname, useRouter, useServerInsertedHTML} from 'next/navigation';
 import {ServerStyleSheet, StyleSheetManager} from 'styled-components';
-
+import {GetUser} from '@/lib/hook';
 export function StyledComponentsRegistry({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Only create stylesheet once with lazy initial state
-  // x-ref: https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
+  const router = useRouter();
+  const pathname = usePathname();
+  const token =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
+  const {data, isLoading} = GetUser(token);
+
   const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet());
+  useEffect(() => {
+    if (!isLoading) {
+      if (!data) {
+        router.push('/');
+      }
+      if (data && pathname === '/') {
+        router.push('/home');
+      }
+    }
+  }, [isLoading]);
 
   useServerInsertedHTML(() => {
     const styles = styledComponentsStyleSheet.getStyleElement();
@@ -20,7 +36,6 @@ export function StyledComponentsRegistry({
   });
 
   if (typeof window !== 'undefined') return <>{children}</>;
-
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
       {children}

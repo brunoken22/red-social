@@ -20,7 +20,7 @@ import Search from '@/ui/icons/search.svg';
 import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
-import {GetUser} from '@/lib/hook';
+import {Loader} from '../loader';
 import {usePathname} from 'next/navigation';
 import {useRecoilValue} from 'recoil';
 import {user} from '@/lib/atom';
@@ -34,19 +34,18 @@ export function Header() {
   const pathname = usePathname();
 
   const router = useRouter();
-  const token =
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : '';
-  const {data, isLoading} = GetUser(token);
-  useEffect(() => {
-    if (data && pathname === '/') {
-      router.push('/home');
-    }
-    if (!data) {
-      router.push('/');
-    }
-  }, [data]);
+
+  // const {data, isLoading} = GetUser(token);
+
+  // useEffect(() => {
+  //   console.log(dataUser?.user?.id);
+  //   if (!dataUser?.user?.id) {
+  //     router.push('/');
+  //   }
+  //   if (dataUser?.user?.id && pathname === '/') {
+  //     router.push('/home');
+  //   }
+  // }, [dataUser]);
 
   const handleMenu = (e: any) => {
     e.preventDefault();
@@ -60,7 +59,10 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
-  return data || dataUser?.user?.id ? (
+  if (!dataUser?.user?.id) {
+    return;
+  }
+  return dataUser?.user?.id ? (
     <HeaderNav>
       <Nav>
         <InputDiv>

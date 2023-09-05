@@ -7,12 +7,8 @@ import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {SigninUser} from '@/lib/hook';
 import {Loader} from '../loader';
-import {useRecoilValue} from 'recoil';
-import {user} from '@/lib/atom';
 
 export function Signin() {
-  const userActual = useRecoilValue(user);
-
   const [dataUser, setDataUser] = useState({
     email: '',
     password: '',
@@ -31,13 +27,13 @@ export function Signin() {
       alert('Contraseña o usuario incorrecto');
       return;
     }
-    if (data?.token || userActual?.token) {
+    if (data?.token) {
       if (data?.token) {
         localStorage.setItem('token', data?.token);
       }
       router.push('/home');
     }
-  }, [data, userActual]);
+  }, [data]);
 
   const onSubmit = (data: any) => {
     if (data) {

@@ -13,6 +13,7 @@ import {
 } from '@/lib/atom';
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
+import {Loader} from '@/components/loader';
 const token =
   typeof window !== 'undefined'
     ? (localStorage.getItem('token') as string)

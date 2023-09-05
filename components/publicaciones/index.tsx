@@ -33,15 +33,12 @@ const iconConLike = {
 };
 
 export function PublicacionesAll() {
-  const publicacionesUser = useRecoilValue(publicacionUser);
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
-
   const dataUser = useRecoilValue(user);
-  const allPublicaciones = [...publicacionesUser, ...publicacionesAmigos];
   return (
     <div>
-      {allPublicaciones.length > 0 ? (
-        allPublicaciones
+      {publicacionesAmigos?.length > 0 ? (
+        publicacionesAmigos
           .slice()
           .reverse()
           .map((item) => (

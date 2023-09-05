@@ -158,15 +158,15 @@ export function GetUser(token: string) {
           ...data.getUserRes,
         },
       });
-      const datapublicAmigos = data.getAllPulicacionRedAmigosRes.map(
-        (data: any) => data.publicaciones.map((datapubli: any) => datapubli)
+      const datapubliUser = data.getAllPulicacionRedAmigosRes.filter(
+        (dataPubli: any) => dataPubli.userId == data?.getUserRes?.id
       );
-      setPublicaciones(data.getAllPulicacionUserRes);
+      setPublicaciones(datapubliUser);
       setGetAllUserData(data.getAllUserRes);
       setAmigosAllData(data.getAllAmigosRes);
       setSoliAllEnv(data.getSolicitudAmistadRes?.usersEnv);
       setSoliAllReci(data.getSolicitudAmistadRes?.usersReci);
-      setPublicanionesAmigos(datapublicAmigos[0] || []);
+      setPublicanionesAmigos(data.getAllPulicacionRedAmigosRes);
     }
   }, [data]);
 

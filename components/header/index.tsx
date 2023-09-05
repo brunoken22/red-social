@@ -56,6 +56,7 @@ export function Header() {
     }
     setMenu(true);
   };
+
   const handleClick = (data: boolean) => {
     setMenu(data);
   };

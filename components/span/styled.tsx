@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 
 export const DivSpan = styled.div`
-  width: 20%;
+  min-width: 250px;
+  max-width: 20%;
+  margin-left: 5rem;
   text-align: center;
+  position: relative;
   @media (max-width: 800px) {
     display: none;
   }

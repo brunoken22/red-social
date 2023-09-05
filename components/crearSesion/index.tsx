@@ -5,10 +5,10 @@ import {BotonForm} from '@/ui/boton';
 import {Span} from '../inicioSesion/styled';
 import {useRouter} from 'next/navigation';
 import {CreateUser} from '@/lib/hook';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Loader} from '../loader';
 
-function ValidarPassword(con1: string, con2: string) {
+function validarPassword(con1: string, con2: string) {
   if (con1 === con2) return true;
   return false;
 }
@@ -30,7 +30,7 @@ export function Signup() {
 
   const onSubmit = (data: any) => {
     if (data) {
-      const validar = ValidarPassword(data.repassword, data.password);
+      const validar = validarPassword(data.repassword, data.password);
       if (validar) {
         const newDataUser = {
           fullName: data.fullName,
@@ -41,15 +41,24 @@ export function Signup() {
       }
     }
   };
+
+  useEffect(() => {
+    if (data == 'Usuario Registrado') {
+      alert('Usuario registrado');
+    }
+    if (data?.user?.id) {
+      setDataUser({
+        fullName: '',
+        email: '',
+        password: '',
+      });
+      alert('Usuario registrado con exito');
+      localStorage.setItem('token', data.token);
+      router.push('/home');
+    }
+  }, [data]);
   if (isLoading) {
     return <Loader />;
-  }
-  if (data == 'Usuario Registrado') {
-    alert('Usuario registrado');
-  }
-  if (data?.user?.id) {
-    localStorage.setItem('token', data.token);
-    router.push('/home');
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

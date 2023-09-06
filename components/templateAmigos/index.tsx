@@ -36,7 +36,7 @@ export function TemAmigos() {
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
 
-  const {data, isLoading} = CreateSolicitud({
+  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud({
     amigoId,
     estado: false,
   });
@@ -101,14 +101,19 @@ export function TemAmigos() {
   };
 
   useEffect(() => {
-    if (data || dataAcep || dataRech || dataElimAmigo) {
+    if (dataCreateSoli || dataAcep || dataRech || dataElimAmigo) {
       setAmigoId(Number(-1));
       setAcepAmigoId(Number(-1));
       setRechazarAmigo(Number(-1));
       setEliminarAmigo(Number(-1));
     }
-  }, [data, dataAcep, dataRech, eliminarAmigo]);
-  if (isLoading || isLoadingAcep || isLoadingRech || isLoadingElimAmigo) {
+  }, [dataAcep, dataRech, eliminarAmigo, dataCreateSoli]);
+  if (
+    isLoadCreateSoli ||
+    isLoadingAcep ||
+    isLoadingRech ||
+    isLoadingElimAmigo
+  ) {
     return <Loader></Loader>;
   }
   return (
@@ -160,8 +165,10 @@ export function TemAmigos() {
                         <ButtonAgregar
                           id={e.id}
                           onClick={handleSolicitudEnv}
-                          $bg={data ? true : false}>
-                          {data ? 'Cancelar Solicitud' : 'Añadir amigo'}
+                          $bg={dataCreateSoli ? 'red' : 'blue'}>
+                          {dataCreateSoli
+                            ? 'Cancelar Solicitud'
+                            : 'Añadir amigo'}
                         </ButtonAgregar>
                       </div>
                     </DivAllAmistades>

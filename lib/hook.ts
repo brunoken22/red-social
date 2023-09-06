@@ -152,7 +152,7 @@ export function GetUser(token: string) {
   );
 
   useEffect(() => {
-    if (data?.getUserRes.id) {
+    if (data?.getUserRes?.id) {
       setUserData({
         token,
         user: {
@@ -171,6 +171,27 @@ export function GetUser(token: string) {
     }
   }, [data]);
 
+  return {data, isLoading};
+}
+export function GetAmigo(id: string) {
+  const api = '/user/amigos/' + id;
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data, isLoading, error} = useSWRImmutable(
+    token && id ? [api, option] : null,
+    fetchApiSwr,
+    {
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+      revalidateOnMount: true,
+      refreshInterval: 10000,
+    }
+  );
   return {data, isLoading};
 }
 export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
@@ -212,7 +233,7 @@ export function CreateSolicitud(dataSoli: Solicitud) {
       setUserAllData([...soli, data]);
     }
   }, [data]);
-  return {data, isLoading};
+  return {dataCreateSoli: data, isLoadCreateSoli: isLoading};
 }
 export function AceptarSolicitud(dataSoli: Solicitud) {
   const api = '/user/amigos';

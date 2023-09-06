@@ -20,7 +20,6 @@ import Search from '@/ui/icons/search.svg';
 import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
-import {Loader} from '../loader';
 import {usePathname} from 'next/navigation';
 import {useRecoilValue} from 'recoil';
 import {user} from '@/lib/atom';
@@ -31,22 +30,6 @@ const stylelinkIcon = {
 export function Header() {
   const dataUser = useRecoilValue(user);
   const [menu, setMenu] = useState(false);
-  const pathname = usePathname();
-
-  const router = useRouter();
-
-  // const {data, isLoading} = GetUser(token);
-
-  // useEffect(() => {
-  //   console.log(dataUser?.user?.id);
-  //   if (!dataUser?.user?.id) {
-  //     router.push('/');
-  //   }
-  //   if (dataUser?.user?.id && pathname === '/') {
-  //     router.push('/home');
-  //   }
-  // }, [dataUser]);
-
   const handleMenu = (e: any) => {
     e.preventDefault();
     if (menu) {
@@ -55,7 +38,6 @@ export function Header() {
     }
     setMenu(true);
   };
-
   const handleClick = (data: boolean) => {
     setMenu(data);
   };

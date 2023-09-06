@@ -9,14 +9,23 @@ import {
   DivPublicaciones,
 } from './styled';
 import {Publicar} from '../publicar';
-import {PublicacionesUser} from '../publicaciones';
+import {PublicacionesUser, ThemplatePubli} from '../publicaciones';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
-import {ModificarUser} from '@/lib/hook';
+import {
+  ModificarUser,
+  GetAmigo,
+  EliminarAmigo,
+  CreateSolicitud,
+  RechazarSolicitud,
+} from '@/lib/hook';
 import {Loader} from '../loader';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
+import {useParams} from 'next/navigation';
+import {DivAllPublicaciones} from '@/ui/container';
+import {ButtonAgregar} from '@/ui/boton';
 
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
@@ -140,6 +149,107 @@ export function PerfilUser() {
         <PublicacionesUser />
       </DivPublicaciones>
     </DivPerfilUser>
+  );
+}
+
+export function PerfilAmigo() {
+  const {id} = useParams();
+  const dataValor = useRecoilValue(user);
+  const {data, isLoading} = GetAmigo(id as string);
+  const [isClient, setIsClient] = useState(false);
+  const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
+  const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
+  const [amigoId, setAmigoId] = useState(Number(-1));
+
+  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
+    userId: eliminarAmigo,
+  });
+  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud({
+    amigoId,
+    estado: false,
+  });
+  const {dataRech, isLoadingRech} = RechazarSolicitud({
+    userId: rechazarAmigo,
+  });
+  useEffect(() => {
+    if (isLoading) {
+      setIsClient(true);
+    }
+    if (dataElimAmigo) {
+      setEliminarAmigo(Number(-1));
+      alert('Amigo Eliminado con exito');
+    }
+  }, [isLoading, dataElimAmigo, dataValor]);
+
+  const handleEliminarAmigo = (e: any) => {
+    const id = e.target.id;
+    setEliminarAmigo(Number(id));
+    setAmigoId(Number(-1));
+  };
+  const handleSolicitudEnv = (e: any) => {
+    const id = e.target.id;
+    setAmigoId(Number(id));
+  };
+  const handleSolicitudRecha = (e: any) => {
+    const id = e.target.id;
+    setRechazarAmigo(Number(id));
+    setAmigoId(Number(-1));
+  };
+  if (isLoadingElimAmigo || isLoadCreateSoli || isLoadingRech) {
+    return <Loader></Loader>;
+  }
+  console.log(data?.amigo);
+  return data ? (
+    <DivPerfilUser>
+      <DivHeadPerfil>
+        <DivFotoName>
+          <div style={{display: 'flex', gap: '1.5rem'}}>
+            <FotoPerfil wid='80' hei='80' img={data?.user?.img} />
+            <h2 style={{textAlign: 'center'}}>{data?.user?.fullName}</h2>
+          </div>
+          <div>
+            {amigoId == -1 ? (
+              <ButtonAgregar
+                id={data.user.id}
+                onClick={data.amigo ? handleEliminarAmigo : handleSolicitudEnv}
+                $bg={data.amigo !== false ? 'red' : 'blue'}>
+                {data.amigo ? 'Eliminar Amigo' : 'Agregar'}
+              </ButtonAgregar>
+            ) : (
+              <ButtonAgregar
+                id={data.user.id}
+                onClick={handleSolicitudRecha}
+                $bg='red'>
+                Eliminar solicitud
+              </ButtonAgregar>
+            )}
+          </div>
+        </DivFotoName>
+      </DivHeadPerfil>
+      <DivPublicaciones>
+        {data.publicaciones.length > 0 ? (
+          data.publicaciones
+            .slice()
+            .reverse()
+            .map((item: any) => (
+              <DivAllPublicaciones key={item.id}>
+                <ThemplatePubli
+                  name={data?.user.fullName}
+                  description={item.description}
+                  img={item.img}
+                  fecha={item.fecha}
+                  like={item.like}
+                  comentarios={item.comentarios?.length}
+                />
+              </DivAllPublicaciones>
+            ))
+        ) : (
+          <p style={{textAlign: 'center'}}>No hay publicaciones</p>
+        )}
+      </DivPublicaciones>
+    </DivPerfilUser>
+  ) : (
+    isClient && <Loader></Loader>
   );
 }
 

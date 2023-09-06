@@ -62,7 +62,7 @@ export function PublicacionesAll() {
   );
 }
 
-export function PublicacionesUser() {
+export function PublicacionesUser(props?: any) {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
 
@@ -91,7 +91,7 @@ export function PublicacionesUser() {
   );
 }
 
-function ThemplatePubli(props: any) {
+export function ThemplatePubli(props: any) {
   const getAllAmigosData = useRecoilValue(getAllAmigos);
   const user: any = getAllAmigosData.find((user: any) => user.id == props.id);
   return (

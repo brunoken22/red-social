@@ -22,7 +22,7 @@ export const user = atom({
       email: '',
       fullName: '',
       img: '',
-      amigos: '',
+      amigos: [],
     },
     token: '',
   },

@@ -24,7 +24,8 @@ export const ButtonNoti = styled(Button)`
   }
 `;
 export const ButtonAgregar = styled.button<any>`
-  background-color: ${(props: any) => (props.$bg ? '#ff5252' : '#4298ed')};
+  background-color: ${(props: any) =>
+    props.$bg == 'red' ? '#ff5252' : '#4298ed'};
   border: 0;
   font-size: 0.8rem;
   padding: 0.7rem;
@@ -32,7 +33,8 @@ export const ButtonAgregar = styled.button<any>`
   color: #fff;
   cursor: pointer;
   &:hover {
-    background-color: ${(props: any) => (props.$bg ? '#f86868' : '#71b3f5')};
+    background-color: ${(props: any) =>
+      props.$bg == 'red' ? '#f86868' : '#71b3f5'};
   }
   @media (max-width: 550px) {
     padding: 0.5rem;

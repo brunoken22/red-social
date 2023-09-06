@@ -17,6 +17,8 @@ export const DivFotoName = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+  width: 100%;
+  justify-content: space-evenly;
   @media (max-width: 550px) {
     gap: 0;
 

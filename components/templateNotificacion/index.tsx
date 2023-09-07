@@ -8,7 +8,7 @@ export function TemNoti() {
       {[1, 2, 3, 4]
         ? [1, 2, 3, 4].map((e: any, p: any) => (
             <ButtonNoti key={p}>
-              <FotoPerfil />
+              {/* <FotoPerfil /> */}
               <p>Nueva publicacion de Allison Lucia</p>
             </ButtonNoti>
           ))

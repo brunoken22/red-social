@@ -2,7 +2,6 @@
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Body} from '@/ui/typography';
 import {DivPublicar} from '@/ui/container';
-import {user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {
   DivSubir,
@@ -21,13 +20,14 @@ import {useEffect, useState} from 'react';
 import {ImageSVG} from '@/ui/icons';
 import ImageSubir from '@/ui/icons/image.svg';
 import CloseSvg from '@/ui/icons/close.svg';
-import {publicacionUser} from '@/lib/atom';
+import {publicacionUser, user} from '@/lib/atom';
 import {useRecoilState} from 'recoil';
 import {CreatePublicacion} from '@/lib/hook';
 import {Loader} from '../loader';
 
 export function Publicar() {
   const [formClick, setFormClick] = useState(false);
+  const dataValor = useRecoilValue(user);
 
   useEffect(() => {
     if (formClick) {
@@ -40,7 +40,10 @@ export function Publicar() {
   return (
     <DivPublicar>
       <DivText>
-        <FotoPerfil />
+        <FotoPerfil
+          img={dataValor.user.img}
+          fullName={dataValor.user.fullName}
+        />
         <DivCrear onClick={() => setFormClick(true)}>
           <p style={{margin: '0'}}>Crear publicacion</p>
         </DivCrear>
@@ -162,7 +165,12 @@ function TemplateFormPublicar(props: any) {
                 color: '#000',
                 alignItems: 'flex-start',
               }}>
-              <FotoPerfil wid='80' hei='80' />
+              <FotoPerfil
+                wid='80'
+                hei='80'
+                img={dataUser?.user?.img}
+                fullName={dataUser?.user?.fullName}
+              />
               <h3>{dataUser?.user?.fullName}</h3>
             </div>
             <Button onClick={handleclose}>

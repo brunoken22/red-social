@@ -5,6 +5,7 @@ import {
   DivPerfilUser,
   DivHeadPerfil,
   DivFotoName,
+  DivFotoNameLink,
   DivButton,
   DivPublicaciones,
 } from './styled';
@@ -131,7 +132,7 @@ export function PerfilUser() {
                 </div>
               </div>
             </div>
-            <FotoPerfil wid='80' hei='80' />
+            <FotoPerfil wid='80' hei='80' img={dataValor.user.img} />
           </div>
           <h2 style={{textAlign: 'center'}}>{dataValor?.user?.fullName}</h2>
         </DivFotoName>
@@ -198,19 +199,20 @@ export function PerfilAmigo() {
   if (isLoadingElimAmigo || isLoadCreateSoli || isLoadingRech) {
     return <Loader></Loader>;
   }
-  console.log(data?.amigo);
   return data ? (
     <DivPerfilUser>
       <DivHeadPerfil>
-        <DivFotoName>
+        <DivFotoNameLink>
           <div style={{display: 'flex', gap: '1.5rem'}}>
-            <FotoPerfil wid='80' hei='80' img={data?.user?.img} />
+            {data.user.id && (
+              <FotoPerfil wid='80' hei='80' img={data?.user?.img} />
+            )}
             <h2 style={{textAlign: 'center'}}>{data?.user?.fullName}</h2>
           </div>
           <div>
             {amigoId == -1 ? (
               <ButtonAgregar
-                id={data.user.id}
+                id={data?.user?.id}
                 onClick={data.amigo ? handleEliminarAmigo : handleSolicitudEnv}
                 $bg={data.amigo !== false ? 'red' : 'blue'}>
                 {data.amigo ? 'Eliminar Amigo' : 'Agregar'}
@@ -224,10 +226,10 @@ export function PerfilAmigo() {
               </ButtonAgregar>
             )}
           </div>
-        </DivFotoName>
+        </DivFotoNameLink>
       </DivHeadPerfil>
       <DivPublicaciones>
-        {data.publicaciones.length > 0 ? (
+        {data?.publicaciones?.length > 0 ? (
           data.publicaciones
             .slice()
             .reverse()

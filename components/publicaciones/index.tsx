@@ -22,6 +22,7 @@ import {
   getAllAmigos,
 } from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
+import Link from 'next/link';
 
 const iconConLike = {
   height: ' 10px',
@@ -50,8 +51,8 @@ export function PublicacionesAll() {
                 fecha={item.fecha}
                 like={item.like}
                 comentarios={item.comentarios?.length}
-                imgUser={item}
                 id={item.userId}
+                imgUserPro={dataUser.user.img}
               />
             </DivAllPublicaciones>
           ))
@@ -75,12 +76,14 @@ export function PublicacionesUser(props?: any) {
           .map((item) => (
             <DivAllPublicaciones key={item.id}>
               <ThemplatePubli
+                id={item.id}
                 name={dataUser?.user.fullName}
                 description={item.description}
                 img={item.img}
                 fecha={item.fecha}
                 like={item.like}
                 comentarios={item.comentarios?.length}
+                imgUserPro={dataUser.user.img}
               />
             </DivAllPublicaciones>
           ))
@@ -94,10 +97,18 @@ export function PublicacionesUser(props?: any) {
 export function ThemplatePubli(props: any) {
   const getAllAmigosData = useRecoilValue(getAllAmigos);
   const user: any = getAllAmigosData.find((user: any) => user.id == props.id);
+
   return (
     <div style={{height: '100%'}}>
       <DivPerfil>
-        <FotoPerfil img={user?.img} fullName={user?.fullName[0]}></FotoPerfil>
+        {props?.img || user ? (
+          <Link href={'/amigos/' + props.id}>
+            <FotoPerfil img={props.img}></FotoPerfil>
+          </Link>
+        ) : (
+          <FotoPerfil img={props.imgUserPro}></FotoPerfil>
+        )}
+
         <div>
           <Body $margin='0'>{user?.fullName || props.name}</Body>
           <DivSpan>{props.fecha}</DivSpan>

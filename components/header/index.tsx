@@ -1,6 +1,5 @@
 'use client';
-import React, {useEffect, useState} from 'react';
-import {useRouter} from 'next/navigation';
+import React, {useState} from 'react';
 import Logo from '@/public/logo.svg';
 import {
   HeaderNav,
@@ -20,7 +19,6 @@ import Search from '@/ui/icons/search.svg';
 import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
-import {usePathname} from 'next/navigation';
 import {useRecoilValue} from 'recoil';
 import {user} from '@/lib/atom';
 const stylelinkIcon = {
@@ -48,7 +46,9 @@ export function Header() {
     <HeaderNav>
       <Nav>
         <InputDiv>
-          <Logo style={{borderRadius: '10px', fill: '#fff'}} />
+          <Link href={'/home'}>
+            <Logo style={{borderRadius: '10px', fill: '#fff'}} />
+          </Link>
           <Input type='text' placeholder='Buscador'></Input>
         </InputDiv>
         <DivEnlaces>
@@ -80,7 +80,12 @@ export function Header() {
         </DivEnlaces>
         <div style={{position: 'relative'}}>
           <Button onClick={handleMenu}>
-            <FotoPerfil wid='40' hei='40' />
+            <FotoPerfil
+              wid='40'
+              hei='40'
+              img={dataUser.user.img}
+              fullName={dataUser.user.fullName}
+            />
           </Button>
           {menu ? <Menu click={handleClick} /> : null}
         </div>

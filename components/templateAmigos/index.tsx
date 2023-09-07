@@ -20,6 +20,7 @@ import {
   EliminarAmigo,
 } from '@/lib/hook';
 import {Loader} from '../loader';
+import Link from 'next/link';
 
 export function TemAmigos() {
   const dataAllUser = useRecoilValue(getAllUser);
@@ -157,7 +158,10 @@ export function TemAmigos() {
                 ? dataAllUser?.map((e: User) => (
                     <DivAllAmistades key={e.id}>
                       {' '}
-                      <DivImageSug $img={e.img}></DivImageSug>
+                      <Link href={'/amigos/' + e.id}>
+                        {' '}
+                        <DivImageSug $img={e.img}></DivImageSug>
+                      </Link>
                       <div>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
@@ -185,7 +189,10 @@ export function TemAmigos() {
                 ? dataAllSoliReci.map((e: any) => (
                     <DivAllAmistades key={e.id}>
                       {' '}
-                      <DivImageSug $img={e.img}></DivImageSug>
+                      <Link href={'/amigos/' + e.id}>
+                        {' '}
+                        <DivImageSug $img={e.img}></DivImageSug>
+                      </Link>{' '}
                       <div>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
@@ -222,8 +229,10 @@ export function TemAmigos() {
               {dataAllAmigos?.length > 0
                 ? dataAllAmigos.map((e: any) => (
                     <DivAllAmistades key={e.id}>
-                      <DivImageSug $img={e.img}></DivImageSug>
-
+                      <Link href={'/amigos/' + e.id}>
+                        {' '}
+                        <DivImageSug $img={e.img}></DivImageSug>
+                      </Link>
                       <div>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
@@ -255,8 +264,10 @@ export function TemAmigos() {
               {dataAllSoliEnv?.length > 0
                 ? dataAllSoliEnv.map((e: any) => (
                     <DivAllAmistades key={e.id}>
-                      <DivImageSug $img={e.img}></DivImageSug>
-
+                      <Link href={'/amigos/' + e.id}>
+                        {' '}
+                        <DivImageSug $img={e.img}></DivImageSug>
+                      </Link>
                       <div>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}

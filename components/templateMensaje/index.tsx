@@ -15,7 +15,7 @@ export function TemMensaje() {
             ? arr.map((e: any, p: any) => (
                 <ButtonSms key={p} id={e}>
                   <DivAllChat>
-                    <FotoPerfil />
+                    {/* <FotoPerfil /> */}
                     <h4 style={{color: '#fff', margin: 0}}>Allison Lucia</h4>
                   </DivAllChat>
                 </ButtonSms>

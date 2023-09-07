@@ -161,7 +161,6 @@ export function PerfilUser() {
 export function PerfilAmigo() {
   const {id} = useParams();
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
-  const soliEnv = useRecoilValue(getAllSolicitudesEnviadas);
   const {data, isLoading} = GetAmigo(id as string);
   const [isClient, setIsClient] = useState(false);
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
@@ -184,6 +183,9 @@ export function PerfilAmigo() {
     userId: rechazarAmigo,
   });
   useEffect(() => {
+    if (data) {
+      setIsClient(false);
+    }
     if (
       isLoading ||
       isLoadingElimAmigo ||
@@ -225,8 +227,7 @@ export function PerfilAmigo() {
     setRechazarAmigo(Number(id));
     setAmigoId(Number(-1));
   };
-
-  return !isClient && data?.id ? (
+  return !isClient && data?.user?.id ? (
     <DivPerfilUser>
       <DivHeadPerfil>
         <DivFotoNameLink>
@@ -237,18 +238,17 @@ export function PerfilAmigo() {
             <h2 style={{textAlign: 'center'}}>{data?.user?.fullName}</h2>
           </div>
           <div>
-            {soliReci?.length > 0 &&
-            soliReci.find((user) => user.id !== data.user.id) &&
-            amigoId == -1 ? (
+            {amigoId < 0 && data.amigo !== 'pendiente' ? (
               <ButtonAgregar
                 id={data?.user?.id}
                 onClick={data?.amigo ? handleEliminarAmigo : handleSolicitudEnv}
                 $bg={data?.amigo !== false ? 'red' : 'blue'}>
                 {data?.amigo ? 'Eliminar Amigo' : 'Agregar'}
               </ButtonAgregar>
-            ) : soliReci?.length > 0 &&
+            ) : data.amigo == 'pendiente' &&
+              soliReci?.length > 0 &&
               soliReci.find((user) => user.id == data.user.id) ? (
-              <>
+              <div style={{gap: '1rem', display: 'inherit'}}>
                 <ButtonAgregar
                   id={data?.user?.id}
                   onClick={handleSolicitudRecha}
@@ -260,7 +260,7 @@ export function PerfilAmigo() {
                   onClick={handleSolicitudAcep}>
                   Aceptar
                 </ButtonAgregar>
-              </>
+              </div>
             ) : (
               <>
                 <ButtonAgregar

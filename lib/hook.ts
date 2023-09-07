@@ -147,7 +147,7 @@ export function GetUser(token: string) {
       revalidateOnMount: true,
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
-      refreshInterval: 1000,
+      refreshInterval: 5000,
     }
   );
 

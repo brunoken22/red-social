@@ -1,8 +1,10 @@
-const Api_url = 'https://backend-red-social-theta.vercel.app';
+const Api_url = 'http://localhost:3000';
 export async function fetchApiSwr(prop: [string, object]) {
   const api = prop[1] || {};
   const response = await fetch(`${Api_url}/api` + prop[0], api);
   const data = await response.json();
   return data;
 }
-// ||' http://localhost:3001'
+// 'http://localhost:3001'
+
+// 'https://backend-red-social-theta.vercel.app'

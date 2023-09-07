@@ -8,6 +8,7 @@ import {
   DivFotoNameLink,
   DivButton,
   DivPublicaciones,
+  DivButtonEliAcep,
 } from './styled';
 import {Publicar} from '../publicar';
 import {PublicacionesUser, ThemplatePubli} from '../publicaciones';
@@ -231,48 +232,46 @@ export function PerfilAmigo() {
     <DivPerfilUser>
       <DivHeadPerfil>
         <DivFotoNameLink>
-          <div style={{display: 'flex', gap: '1.5rem'}}>
-            {data?.user?.id && (
-              <FotoPerfil wid='80' hei='80' img={data?.user?.img} />
-            )}
-            <h2 style={{textAlign: 'center'}}>{data?.user?.fullName}</h2>
-          </div>
-          <div>
-            {amigoId < 0 && data.amigo !== 'pendiente' ? (
+          {data?.user?.id && (
+            <FotoPerfil wid='80' hei='80' img={data?.user?.img} />
+          )}
+          <h2 style={{textAlign: 'center', marginTop: '0'}}>
+            {data?.user?.fullName}
+          </h2>
+        </DivFotoNameLink>
+        <div>
+          {amigoId < 0 && data.amigo !== 'pendiente' ? (
+            <ButtonAgregar
+              id={data?.user?.id}
+              onClick={data?.amigo ? handleEliminarAmigo : handleSolicitudEnv}
+              $bg={data?.amigo !== false ? 'red' : 'blue'}>
+              {data?.amigo ? 'Eliminar Amigo' : 'Agregar'}
+            </ButtonAgregar>
+          ) : data.amigo == 'pendiente' &&
+            soliReci?.length > 0 &&
+            soliReci.find((user) => user.id == data.user.id) ? (
+            <DivButtonEliAcep>
               <ButtonAgregar
                 id={data?.user?.id}
-                onClick={data?.amigo ? handleEliminarAmigo : handleSolicitudEnv}
-                $bg={data?.amigo !== false ? 'red' : 'blue'}>
-                {data?.amigo ? 'Eliminar Amigo' : 'Agregar'}
+                onClick={handleSolicitudRecha}
+                $bg='red'>
+                Eliminar solicitud
               </ButtonAgregar>
-            ) : data.amigo == 'pendiente' &&
-              soliReci?.length > 0 &&
-              soliReci.find((user) => user.id == data.user.id) ? (
-              <div style={{gap: '1rem', display: 'inherit'}}>
-                <ButtonAgregar
-                  id={data?.user?.id}
-                  onClick={handleSolicitudRecha}
-                  $bg='red'>
-                  Eliminar solicitud
-                </ButtonAgregar>
-                <ButtonAgregar
-                  id={data?.user?.id}
-                  onClick={handleSolicitudAcep}>
-                  Aceptar
-                </ButtonAgregar>
-              </div>
-            ) : (
-              <>
-                <ButtonAgregar
-                  id={data?.user?.id}
-                  onClick={handleSolicitudRecha}
-                  $bg='red'>
-                  Eliminar solicitud
-                </ButtonAgregar>
-              </>
-            )}
-          </div>
-        </DivFotoNameLink>
+              <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudAcep}>
+                Aceptar
+              </ButtonAgregar>
+            </DivButtonEliAcep>
+          ) : (
+            <>
+              <ButtonAgregar
+                id={data?.user?.id}
+                onClick={handleSolicitudRecha}
+                $bg='red'>
+                Eliminar solicitud
+              </ButtonAgregar>
+            </>
+          )}
+        </div>
       </DivHeadPerfil>
       <DivPublicaciones>
         {data?.publicaciones?.length > 0 ? (

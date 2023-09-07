@@ -25,14 +25,17 @@ export const DivFotoName = styled.div`
   }
 `;
 export const DivFotoNameLink = styled(DivFotoName)`
-  width: 100%;
   justify-content: space-evenly;
 `;
+
 export const DivButton = styled.div`
   @media (max-width: 550px) {
-    display: inherit;
-    flex-direction: column;
+    display: flex;
   }
+`;
+export const DivButtonEliAcep = styled(DivButton)`
+  display: flex;
+  gap: 1rem;
 `;
 export const DivPublicaciones = styled.div`
   margin: 1rem 30%;

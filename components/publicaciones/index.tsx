@@ -103,7 +103,7 @@ export function ThemplatePubli(props: any) {
       <DivPerfil>
         {user?.img || user ? (
           <Link href={'/amigos/' + props.id}>
-            <FotoPerfil img={props.img}></FotoPerfil>
+            <FotoPerfil img={user.img}></FotoPerfil>
           </Link>
         ) : (
           <FotoPerfil img={props.imgUserPro}></FotoPerfil>

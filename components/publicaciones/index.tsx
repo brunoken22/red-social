@@ -101,7 +101,7 @@ export function ThemplatePubli(props: any) {
   return (
     <div style={{height: '100%'}}>
       <DivPerfil>
-        {user?.img || user ? (
+        {user ? (
           <Link href={'/amigos/' + props.id}>
             <FotoPerfil img={user.img}></FotoPerfil>
           </Link>

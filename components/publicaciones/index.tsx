@@ -43,7 +43,7 @@ export function PublicacionesAll() {
           .slice()
           .reverse()
           .map((item) => (
-            <DivAllPublicaciones key={item.id}>
+            <DivAllPublicaciones key={item.userId}>
               <ThemplatePubli
                 name={dataUser?.user.fullName}
                 description={item.description}
@@ -52,7 +52,7 @@ export function PublicacionesAll() {
                 like={item.like}
                 comentarios={item.comentarios?.length}
                 id={item.userId}
-                imgUserPro={dataUser.user.img}
+                imgUserPro={dataUser?.user?.img}
               />
             </DivAllPublicaciones>
           ))
@@ -76,7 +76,6 @@ export function PublicacionesUser(props?: any) {
           .map((item) => (
             <DivAllPublicaciones key={item.id}>
               <ThemplatePubli
-                id={item.id}
                 name={dataUser?.user.fullName}
                 description={item.description}
                 img={item.img}
@@ -97,18 +96,16 @@ export function PublicacionesUser(props?: any) {
 export function ThemplatePubli(props: any) {
   const getAllAmigosData = useRecoilValue(getAllAmigos);
   const user: any = getAllAmigosData.find((user: any) => user.id == props.id);
-
   return (
     <div style={{height: '100%'}}>
       <DivPerfil>
         {user ? (
           <Link href={'/amigos/' + props.id}>
-            <FotoPerfil img={user.img}></FotoPerfil>
+            <FotoPerfil img={user?.img}></FotoPerfil>
           </Link>
         ) : (
-          <FotoPerfil img={props.imgUserPro}></FotoPerfil>
+          <FotoPerfil img={props.imgUser || props.imgUserPro}></FotoPerfil>
         )}
-
         <div>
           <Body $margin='0'>{user?.fullName || props.name}</Body>
           <DivSpan>{props.fecha}</DivSpan>

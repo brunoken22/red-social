@@ -41,8 +41,8 @@ export function Publicar() {
     <DivPublicar>
       <DivText>
         <FotoPerfil
-          img={dataValor.user.img}
-          fullName={dataValor.user.fullName}
+          img={dataValor?.user?.img}
+          fullName={dataValor?.user?.fullName}
         />
         <DivCrear onClick={() => setFormClick(true)}>
           <p style={{margin: '0'}}>Crear publicacion</p>

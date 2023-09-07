@@ -13,7 +13,11 @@ import {Publicar} from '../publicar';
 import {PublicacionesUser, ThemplatePubli} from '../publicaciones';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
-import {user} from '@/lib/atom';
+import {
+  user,
+  getAllSolicitudesEnviadas,
+  getAllSolicitudesRecibidas,
+} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {
   ModificarUser,
@@ -21,6 +25,7 @@ import {
   EliminarAmigo,
   CreateSolicitud,
   RechazarSolicitud,
+  AceptarSolicitud,
 } from '@/lib/hook';
 import {Loader} from '../loader';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
@@ -155,12 +160,14 @@ export function PerfilUser() {
 
 export function PerfilAmigo() {
   const {id} = useParams();
-  const dataValor = useRecoilValue(user);
+  const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
+  const soliEnv = useRecoilValue(getAllSolicitudesEnviadas);
   const {data, isLoading} = GetAmigo(id as string);
   const [isClient, setIsClient] = useState(false);
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
   const [amigoId, setAmigoId] = useState(Number(-1));
+  const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
 
   const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
     userId: eliminarAmigo,
@@ -169,19 +176,41 @@ export function PerfilAmigo() {
     amigoId,
     estado: false,
   });
+  const {dataAcep, isLoadingAcep} = AceptarSolicitud({
+    amigoId: acepAmigoId,
+    estado: true,
+  });
   const {dataRech, isLoadingRech} = RechazarSolicitud({
     userId: rechazarAmigo,
   });
   useEffect(() => {
-    if (isLoading) {
+    if (
+      isLoading ||
+      isLoadingElimAmigo ||
+      isLoadCreateSoli ||
+      isLoadingRech ||
+      isLoadingAcep
+    ) {
       setIsClient(true);
     }
-    if (dataElimAmigo) {
+    if (dataElimAmigo || dataCreateSoli || dataAcep || dataRech || data) {
       setEliminarAmigo(Number(-1));
-      alert('Amigo Eliminado con exito');
+      setAmigoId(Number(-1));
+      setAcepAmigoId(Number(-1));
+      setRechazarAmigo(Number(-1));
+      setIsClient(false);
     }
-  }, [isLoading, dataElimAmigo, dataValor]);
-
+  }, [
+    isLoading,
+    isLoadingElimAmigo,
+    isLoadCreateSoli,
+    isLoadingRech,
+    isLoadingAcep,
+  ]);
+  const handleSolicitudAcep = (e: any) => {
+    const id = e.target.id;
+    setAcepAmigoId(Number(id));
+  };
   const handleEliminarAmigo = (e: any) => {
     const id = e.target.id;
     setEliminarAmigo(Number(id));
@@ -196,34 +225,51 @@ export function PerfilAmigo() {
     setRechazarAmigo(Number(id));
     setAmigoId(Number(-1));
   };
-  if (isLoadingElimAmigo || isLoadCreateSoli || isLoadingRech) {
-    return <Loader></Loader>;
-  }
-  return data ? (
+
+  return !isClient && data?.id ? (
     <DivPerfilUser>
       <DivHeadPerfil>
         <DivFotoNameLink>
           <div style={{display: 'flex', gap: '1.5rem'}}>
-            {data.user.id && (
+            {data?.user?.id && (
               <FotoPerfil wid='80' hei='80' img={data?.user?.img} />
             )}
             <h2 style={{textAlign: 'center'}}>{data?.user?.fullName}</h2>
           </div>
           <div>
-            {amigoId == -1 ? (
+            {soliReci?.length > 0 &&
+            soliReci.find((user) => user.id !== data.user.id) &&
+            amigoId == -1 ? (
               <ButtonAgregar
                 id={data?.user?.id}
-                onClick={data.amigo ? handleEliminarAmigo : handleSolicitudEnv}
-                $bg={data.amigo !== false ? 'red' : 'blue'}>
-                {data.amigo ? 'Eliminar Amigo' : 'Agregar'}
+                onClick={data?.amigo ? handleEliminarAmigo : handleSolicitudEnv}
+                $bg={data?.amigo !== false ? 'red' : 'blue'}>
+                {data?.amigo ? 'Eliminar Amigo' : 'Agregar'}
               </ButtonAgregar>
+            ) : soliReci?.length > 0 &&
+              soliReci.find((user) => user.id == data.user.id) ? (
+              <>
+                <ButtonAgregar
+                  id={data?.user?.id}
+                  onClick={handleSolicitudRecha}
+                  $bg='red'>
+                  Eliminar solicitud
+                </ButtonAgregar>
+                <ButtonAgregar
+                  id={data?.user?.id}
+                  onClick={handleSolicitudAcep}>
+                  Aceptar
+                </ButtonAgregar>
+              </>
             ) : (
-              <ButtonAgregar
-                id={data.user.id}
-                onClick={handleSolicitudRecha}
-                $bg='red'>
-                Eliminar solicitud
-              </ButtonAgregar>
+              <>
+                <ButtonAgregar
+                  id={data?.user?.id}
+                  onClick={handleSolicitudRecha}
+                  $bg='red'>
+                  Eliminar solicitud
+                </ButtonAgregar>
+              </>
             )}
           </div>
         </DivFotoNameLink>
@@ -242,6 +288,7 @@ export function PerfilAmigo() {
                   fecha={item.fecha}
                   like={item.like}
                   comentarios={item.comentarios?.length}
+                  imgUser={data?.user?.img}
                 />
               </DivAllPublicaciones>
             ))
@@ -251,7 +298,7 @@ export function PerfilAmigo() {
       </DivPublicaciones>
     </DivPerfilUser>
   ) : (
-    isClient && <Loader></Loader>
+    <Loader></Loader>
   );
 }
 

@@ -23,6 +23,7 @@ import {
 } from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
+import {useState} from 'react';
 
 const iconConLike = {
   height: ' 10px',
@@ -83,6 +84,7 @@ export function PublicacionesUser(props?: any) {
                 like={item.like}
                 comentarios={item.comentarios?.length}
                 imgUserPro={dataUser.user.img}
+                id={dataUser.user.id}
               />
             </DivAllPublicaciones>
           ))
@@ -96,6 +98,23 @@ export function PublicacionesUser(props?: any) {
 export function ThemplatePubli(props: any) {
   const getAllAmigosData = useRecoilValue(getAllAmigos);
   const user: any = getAllAmigosData.find((user: any) => user.id == props.id);
+  const isLike = props.like.lenght > 0 ? props.like.includes(props.id) : false;
+  console.log(isLike);
+  const [like, setLike] = useState(isLike ? 'disLike' : 'like');
+  const handleClickLike = (e: any) => {
+    e.preventDefault();
+    if (like == 'like') {
+      setLike('disLike');
+      return;
+    }
+    if (like == 'disLike') {
+      setLike('like');
+    }
+  };
+  const handleClickOpenComen = (e: any) => {
+    e.preventDefault();
+    e.target.style.fill = '#84e981';
+  };
   return (
     <div style={{height: '100%'}}>
       <DivPerfil>
@@ -136,17 +155,21 @@ export function ThemplatePubli(props: any) {
         <SpanIco>
           {' '}
           <Like style={iconConLike} />
-          {props.like || 0}
+          {props.like.lenght || 0}
         </SpanIco>
         <SpanIco>
           <DivSpan>Comentarios {props.comentarios || 0} </DivSpan>
         </SpanIco>
       </DivCantidad>
       <DivInteractuar>
-        <BottonLike type='button'>
+        <BottonLike
+          type='button'
+          like={isLike}
+          id={like}
+          onClick={handleClickLike}>
           <Like />
         </BottonLike>
-        <BottonComentar type='button'>
+        <BottonComentar onClick={handleClickOpenComen} type='button'>
           <Comentar />
         </BottonComentar>
       </DivInteractuar>

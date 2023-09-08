@@ -4,7 +4,7 @@ type Publicacion = {
   description: string;
   img: string;
   fecha: string;
-  like: 0;
+  like: [];
   comentarios: [];
   userId: number;
 };

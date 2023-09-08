@@ -42,7 +42,7 @@ export const DivInteractuar = styled(DivPerfil)`
   border-top: 1px solid #353434;
   padding-top: 1rem;
 `;
-export const BottonLike = styled.button`
+export const BottonLike = styled.button<any>`
   background-color: transparent;
   border: 0;
   cursor: pointer;
@@ -50,6 +50,9 @@ export const BottonLike = styled.button`
 
   path:hover {
     fill: #5a81ff;
+  }
+  path {
+    fill: ${(prop: any) => (prop.like ? '#5a81ff' : '#ddd')};
   }
 `;
 export const BottonComentar = styled(BottonLike)`

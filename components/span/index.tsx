@@ -27,7 +27,7 @@ export function Span() {
               alt='portafolio'
               fill
               sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-              loading='lazy'
+              priority={true}
               style={{objectFit: 'cover', borderRadius: '5px'}}
             />
           </Link>

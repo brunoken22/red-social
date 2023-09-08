@@ -48,6 +48,22 @@ export const DivEnlaces = sytled.div`
 
     }
 `;
+export const DivNotificacionActi = sytled.div`
+    height:18px;
+    width:18px;
+    background-color:red;
+    border-radius:50%;
+    position: absolute;
+    right: -10px;
+    color: white;
+    display: flex;
+    top: -10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+`;
 export const Enlaces = sytled.span`
     &:hover{
         fill:#fff

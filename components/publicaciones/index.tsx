@@ -43,7 +43,7 @@ export function PublicacionesAll() {
           .slice()
           .reverse()
           .map((item) => (
-            <DivAllPublicaciones key={item.userId}>
+            <DivAllPublicaciones key={item?.id}>
               <ThemplatePubli
                 name={dataUser?.user.fullName}
                 description={item.description}

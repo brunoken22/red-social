@@ -10,6 +10,7 @@ import {
   Enlaces,
   EnlaceSearch,
   Button,
+  DivNotificacionActi,
 } from './styled';
 import Home from '@/ui/icons/home.svg';
 import Amigos from '@/ui/icons/amigos.svg';
@@ -20,13 +21,15 @@ import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
 import {useRecoilValue} from 'recoil';
-import {user} from '@/lib/atom';
+import {user, getAllSolicitudesRecibidas} from '@/lib/atom';
 const stylelinkIcon = {
   fill: '#b3b3b3',
+  position: 'relative',
 };
 
 export function Header() {
   const dataUser = useRecoilValue(user);
+  const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const [menu, setMenu] = useState(false);
   const handleMenu = (e: any) => {
     e.preventDefault();
@@ -63,16 +66,25 @@ export function Header() {
             </Enlaces>
           </Link>
           <Link href={'/amigos'} style={stylelinkIcon}>
+            {dataSoliReci?.length > 0 && (
+              <DivNotificacionActi>{dataSoliReci?.length}</DivNotificacionActi>
+            )}
             <Enlaces>
-              <Amigos />{' '}
+              <Amigos />
             </Enlaces>
           </Link>
           <Link href={'/mensaje'} style={stylelinkIcon}>
+            {/* {dataSoliReci?.length > 0 && (
+              <DivNotificacionActi>{dataSoliReci?.length}</DivNotificacionActi>
+            )} */}
             <Enlaces>
               <Chat />{' '}
             </Enlaces>
           </Link>
           <Link href={'/notificaciones'} style={stylelinkIcon}>
+            {/* {dataSoliReci?.length > 0 && (
+              <DivNotificacionActi>{dataSoliReci?.length}</DivNotificacionActi>
+            )} */}
             <Enlaces>
               <Notificaciones />{' '}
             </Enlaces>

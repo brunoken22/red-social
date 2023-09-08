@@ -52,7 +52,7 @@ export const BottonLike = styled.button<any>`
     fill: #5a81ff;
   }
   path {
-    fill: ${(prop: any) => (prop.like ? '#5a81ff' : '#ddd')};
+    fill: ${(prop: any) => (prop.like == 'like' ? '#5a81ff' : '#ddd')};
   }
 `;
 export const BottonComentar = styled(BottonLike)`

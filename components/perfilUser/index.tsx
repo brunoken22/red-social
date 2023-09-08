@@ -184,9 +184,6 @@ export function PerfilAmigo() {
     userId: rechazarAmigo,
   });
   useEffect(() => {
-    if (data) {
-      setIsClient(false);
-    }
     if (
       isLoading ||
       isLoadingElimAmigo ||
@@ -213,22 +210,27 @@ export function PerfilAmigo() {
   const handleSolicitudAcep = (e: any) => {
     const id = e.target.id;
     setAcepAmigoId(Number(id));
+    // setIsClient(true);
   };
   const handleEliminarAmigo = (e: any) => {
     const id = e.target.id;
+
     setEliminarAmigo(Number(id));
-    setAmigoId(Number(-1));
+    // setIsClient(true);
   };
   const handleSolicitudEnv = (e: any) => {
     const id = e.target.id;
     setAmigoId(Number(id));
+    setAmigoId(Number(-1));
+    // setIsClient(true);
   };
   const handleSolicitudRecha = (e: any) => {
     const id = e.target.id;
     setRechazarAmigo(Number(id));
     setAmigoId(Number(-1));
   };
-  return !isClient && data?.user?.id ? (
+
+  return data && !isClient ? (
     <DivPerfilUser>
       <DivHeadPerfil>
         <DivFotoNameLink>
@@ -297,7 +299,7 @@ export function PerfilAmigo() {
       </DivPublicaciones>
     </DivPerfilUser>
   ) : (
-    <Loader></Loader>
+    <Loader />
   );
 }
 
@@ -311,8 +313,6 @@ export async function optimizar(dataUrl: string): Promise<string> {
   const dataFinal = await filetoDataURL(optimizedBase);
   var data = dataFinal.split(',')[1];
   var decodedData = atob(data);
-
-  var sizeInMB = decodedData.length / (1024 * 1024);
 
   return dataFinal;
 }

@@ -13,7 +13,6 @@ import {
 } from '@/lib/atom';
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
-import {Loader} from '@/components/loader';
 const token =
   typeof window !== 'undefined'
     ? (localStorage.getItem('token') as string)
@@ -189,7 +188,7 @@ export function GetAmigo(id: string) {
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
       revalidateOnMount: true,
-      refreshInterval: 10000,
+      refreshInterval: 5000,
     }
   );
   return {data, isLoading};
@@ -223,7 +222,7 @@ export function CreateSolicitud(dataSoli: Solicitud) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading, error} = useSWRImmutable(
     dataSoli.amigoId > -1 ? [api, option] : null,
     fetchApiSwr
   );
@@ -245,7 +244,7 @@ export function AceptarSolicitud(dataSoli: Solicitud) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading, error} = useSWRImmutable(
     dataSoli.amigoId > -1 ? [api, option] : null,
     fetchApiSwr
   );
@@ -262,7 +261,7 @@ export function RechazarSolicitud(dataSoli: any) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading, error} = useSWRImmutable(
     dataSoli.userId > -1 ? [api, option] : null,
     fetchApiSwr
   );

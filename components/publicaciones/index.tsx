@@ -164,7 +164,7 @@ export function ThemplatePubli(props: any) {
       <DivInteractuar>
         <BottonLike
           type='button'
-          like={isLike}
+          like={isLike.toString()}
           id={like}
           onClick={handleClickLike}>
           <Like />

@@ -98,9 +98,8 @@ export function PublicacionesUser(props?: any) {
 export function ThemplatePubli(props: any) {
   const getAllAmigosData = useRecoilValue(getAllAmigos);
   const user: any = getAllAmigosData.find((user: any) => user.id == props.id);
-  const isLike = props.like.lenght > 0 ? props.like.includes(props.id) : false;
-  console.log(isLike);
-  const [like, setLike] = useState(isLike ? 'disLike' : 'like');
+  const isLike = props.like.length > 0 ? props.like.includes(props.id) : false;
+  const [like, setLike] = useState(!isLike ? 'disLike' : 'like');
   const handleClickLike = (e: any) => {
     e.preventDefault();
     if (like == 'like') {
@@ -115,6 +114,7 @@ export function ThemplatePubli(props: any) {
     e.preventDefault();
     e.target.style.fill = '#84e981';
   };
+  console.log(like);
   return (
     <div style={{height: '100%'}}>
       <DivPerfil>
@@ -164,7 +164,7 @@ export function ThemplatePubli(props: any) {
       <DivInteractuar>
         <BottonLike
           type='button'
-          like={isLike.toString()}
+          like={like}
           id={like}
           onClick={handleClickLike}>
           <Like />

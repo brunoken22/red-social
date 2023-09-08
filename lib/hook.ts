@@ -194,7 +194,7 @@ export function GetAmigo(id: string) {
   return {data, isLoading};
 }
 export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
-  const api = '/user/publicar';
+  const api = '/user/publicacion';
   const option = {
     method: 'POST',
     headers: {
@@ -284,6 +284,27 @@ export function EliminarAmigo(datas: any) {
   );
 
   return {dataElimAmigo: data, isLoadingElimAmigo: isLoading};
+}
+export function LikeODisLike(datas: any) {
+  const api = '/user/publicacion/' + datas.id;
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({tipo: datas.tipo}),
+  };
+
+  const {data, isLoading, error} = useSWR(
+    token && datas.click ? [api, option] : null,
+    fetchApiSwr,
+    {
+      revalidateOnMount: true,
+    }
+  );
+
+  return {dataLike: data, isLoadingLike: isLoading};
 }
 export function OptimizarImage(dataUrl: string) {
   const {data, isLoading, error} = useSWR(

@@ -23,8 +23,9 @@ import {
 } from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
-import {useState} from 'react';
-
+import {useEffect, useState} from 'react';
+import {LikeODisLike} from '@/lib/hook';
+import {Loader} from '../loader';
 const iconConLike = {
   height: ' 10px',
   width: ' 10px',
@@ -54,6 +55,7 @@ export function PublicacionesAll() {
                 comentarios={item.comentarios?.length}
                 id={item.userId}
                 imgUserPro={dataUser?.user?.img}
+                idPublicacion={item.id}
               />
             </DivAllPublicaciones>
           ))
@@ -85,6 +87,7 @@ export function PublicacionesUser(props?: any) {
                 comentarios={item.comentarios?.length}
                 imgUserPro={dataUser.user.img}
                 id={dataUser.user.id}
+                idPublicacion={item.id}
               />
             </DivAllPublicaciones>
           ))
@@ -100,21 +103,39 @@ export function ThemplatePubli(props: any) {
   const user: any = getAllAmigosData.find((user: any) => user.id == props.id);
   const isLike = props.like.length > 0 ? props.like.includes(props.id) : false;
   const [like, setLike] = useState(!isLike ? 'disLike' : 'like');
+  const [click, setClick] = useState(false);
+
+  const {dataLike, isLoadingLike} = LikeODisLike({
+    tipo: like,
+    id: props.idPublicacion,
+    click: click,
+  });
+  useEffect(() => {
+    if (dataLike) {
+      setClick(false);
+    }
+  }, [dataLike]);
   const handleClickLike = (e: any) => {
     e.preventDefault();
+
     if (like == 'like') {
       setLike('disLike');
+      setClick(true);
+
       return;
     }
     if (like == 'disLike') {
       setLike('like');
+      setClick(true);
     }
   };
   const handleClickOpenComen = (e: any) => {
     e.preventDefault();
     e.target.style.fill = '#84e981';
   };
-  console.log(like);
+  if (isLoadingLike) {
+    return <Loader />;
+  }
   return (
     <div style={{height: '100%'}}>
       <DivPerfil>
@@ -155,7 +176,7 @@ export function ThemplatePubli(props: any) {
         <SpanIco>
           {' '}
           <Like style={iconConLike} />
-          {props.like.lenght || 0}
+          {props.like.length || 0}
         </SpanIco>
         <SpanIco>
           <DivSpan>Comentarios {props.comentarios || 0} </DivSpan>

@@ -22,7 +22,7 @@ import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
 import {useRecoilValue} from 'recoil';
 import {user, getAllSolicitudesRecibidas} from '@/lib/atom';
-const stylelinkIcon = {
+const stylelinkIcon: {fill: string; position: any} = {
   fill: '#b3b3b3',
   position: 'relative',
 };

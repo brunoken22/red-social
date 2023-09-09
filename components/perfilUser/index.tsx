@@ -33,7 +33,7 @@ import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
 import {useParams} from 'next/navigation';
 import {DivAllPublicaciones} from '@/ui/container';
 import {ButtonAgregar} from '@/ui/boton';
-
+import {useRouter} from 'next/navigation';
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
   const [dataImg, setDataImg] = useState('');
@@ -161,6 +161,7 @@ export function PerfilUser() {
 
 export function PerfilAmigo() {
   const {id} = useParams();
+  const router = useRouter();
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataUser = useRecoilValue(user);
   const {data, isLoading} = GetAmigo(id as string);
@@ -185,6 +186,10 @@ export function PerfilAmigo() {
     userId: rechazarAmigo,
   });
   useEffect(() => {
+    if (dataUser.user.id == data.user.id) {
+      router.push('/perfil');
+      return;
+    }
     if (
       isLoading ||
       isLoadingElimAmigo ||

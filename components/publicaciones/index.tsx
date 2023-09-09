@@ -12,6 +12,7 @@ import {
   BottonComentar,
   DivCantidad,
   SpanIco,
+  ComentarioParrafo,
 } from './styled';
 import Like from '@/ui/icons/like.svg';
 import Comentar from '@/ui/icons/comentar.svg';
@@ -107,13 +108,14 @@ export function ThemplatePubli(props: any) {
   const isLike =
     props?.like?.length > 0 ? props.like?.includes(props.userId) : false;
   const [like, setLike] = useState(!isLike ? 'disLike' : 'like');
+  const [comentario, setComentario] = useState(false);
   const [click, setClick] = useState(false);
   const {dataLike, isLoadingLike} = LikeODisLike({
     tipo: like,
     id: props.idPublicacion,
     click: click,
   });
-  
+
   useEffect(() => {
     if (dataLike) {
       setClick(false);
@@ -135,7 +137,13 @@ export function ThemplatePubli(props: any) {
   };
   const handleClickOpenComen = (e: any) => {
     e.preventDefault();
-    e.target.style.fill = '#84e981';
+    if (!comentario) {
+      setComentario(true);
+      e.target.style.fill = '#84e981';
+      return;
+    }
+    setComentario(false);
+    e.target.style.fill = '#ddd';
   };
   if (isLoadingLike) {
     return <Loader />;
@@ -193,11 +201,32 @@ export function ThemplatePubli(props: any) {
           id={like}
           onClick={handleClickLike}>
           <Like />
+          Me gusta
         </BottonLike>
         <BottonComentar onClick={handleClickOpenComen} type='button'>
           <Comentar />
+          Comentar
         </BottonComentar>
       </DivInteractuar>
+      {/* {comentario ? (
+        <ComentarioPublic
+          imgUser={props.imgUser}
+          imgUserPro={props.imgUserPro}
+        />
+      ) : null} */}
+    </div>
+  );
+}
+
+function ComentarioPublic(props: any) {
+  return (
+    <div>
+      <DivPerfil>
+        <FotoPerfil img={props.imgUser || props.imgUserPro}></FotoPerfil>
+        <ComentarioParrafo
+          contentEditable
+          placeholder='Añadir un comentario'></ComentarioParrafo>
+      </DivPerfil>
     </div>
   );
 }

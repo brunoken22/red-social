@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import {InputP} from '../publicar/styled';
 export const DivPerfil = styled.div`
   display: flex;
   gap: 1rem;
@@ -42,21 +42,35 @@ export const DivInteractuar = styled(DivPerfil)`
   border-top: 1px solid #353434;
   padding-top: 1rem;
 `;
+
 export const BottonLike = styled.button<any>`
   background-color: transparent;
   border: 0;
   cursor: pointer;
   padding: 0px;
-
-  path:hover {
-    fill: #5a81ff;
+  color: #ddd;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  padding: 0.5rem;
+  &:hover {
+    background-color: #2d2c2c;
+    border-radius: 10px;
+    path {
+      fill: #5a81ff;
+    }
   }
   path {
     fill: ${(prop: any) => (prop.like == 'like' ? '#5a81ff' : '#ddd')};
   }
 `;
 export const BottonComentar = styled(BottonLike)`
-  path:hover {
-    fill: #84e981;
+  &:hover {
+    path {
+      fill: #84e981;
+    }
   }
 `;
+export const DivAñadirComentar = styled.div``;
+export const ComentarioParrafo = styled(InputP)``;

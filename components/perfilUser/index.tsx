@@ -186,6 +186,9 @@ export function PerfilAmigo() {
     userId: rechazarAmigo,
   });
   useEffect(() => {
+    console.log(dataUser?.user?.id);
+    console.log(data?.user?.id);
+
     if (dataUser?.user?.id == data?.user?.id) {
       router.push('/perfil');
       return;
@@ -212,6 +215,8 @@ export function PerfilAmigo() {
     isLoadCreateSoli,
     isLoadingRech,
     isLoadingAcep,
+    dataUser,
+    data,
   ]);
   const handleSolicitudAcep = (e: any) => {
     const id = e.target.id;

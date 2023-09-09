@@ -170,7 +170,6 @@ export function PerfilAmigo() {
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
   const [amigoId, setAmigoId] = useState(Number(-1));
   const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
-
   const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
     userId: eliminarAmigo,
   });
@@ -186,9 +185,6 @@ export function PerfilAmigo() {
     userId: rechazarAmigo,
   });
   useEffect(() => {
-    console.log(dataUser?.user?.id);
-    console.log(data?.user?.id);
-
     if (dataUser?.user?.id == data?.user?.id) {
       router.push('/perfil');
       return;

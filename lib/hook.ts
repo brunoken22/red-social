@@ -183,6 +183,7 @@ export function GetUser(token: string) {
   return {data, isLoading};
 }
 export function GetAmigo(id: string) {
+  console.log(id);
   const api = '/user/amigos/' + id;
   const option = {
     method: 'GET',
@@ -191,7 +192,7 @@ export function GetAmigo(id: string) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading, error} = useSWR(
     token && id ? [api, option] : null,
     fetchApiSwr,
     {

@@ -113,7 +113,7 @@ export function ThemplatePubli(props: any) {
     id: props.idPublicacion,
     click: click,
   });
-
+  
   useEffect(() => {
     if (dataLike) {
       setClick(false);

@@ -19,6 +19,7 @@ import {
   publicacionUser,
   user,
   publicacionAmigos,
+  getAllUser,
   getAllAmigos,
 } from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
@@ -38,6 +39,7 @@ const iconConLike = {
 export function PublicacionesAll() {
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
   const dataUser = useRecoilValue(user);
+
   return (
     <div>
       {publicacionesAmigos?.length > 0 ? (
@@ -56,6 +58,7 @@ export function PublicacionesAll() {
                 id={item.userId}
                 imgUserPro={dataUser?.user?.img}
                 idPublicacion={item.id}
+                userId={dataUser.user.id}
               />
             </DivAllPublicaciones>
           ))
@@ -69,7 +72,6 @@ export function PublicacionesAll() {
 export function PublicacionesUser(props?: any) {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
-
   return (
     <div>
       {publicacionesUser.length > 0 ? (
@@ -86,8 +88,9 @@ export function PublicacionesUser(props?: any) {
                 like={item.like}
                 comentarios={item.comentarios?.length}
                 imgUserPro={dataUser.user.img}
-                id={dataUser.user.id}
+                id={item.userId}
                 idPublicacion={item.id}
+                userId={dataUser.user.id}
               />
             </DivAllPublicaciones>
           ))
@@ -99,17 +102,18 @@ export function PublicacionesUser(props?: any) {
 }
 
 export function ThemplatePubli(props: any) {
-  const getAllAmigosData = useRecoilValue(getAllAmigos);
-  const user: any = getAllAmigosData.find((user: any) => user.id == props.id);
-  const isLike = props.like.length > 0 ? props.like.includes(props.id) : false;
+  const getAllUserData = useRecoilValue(getAllAmigos);
+  const user: any = getAllUserData.find((user: any) => user.id == props.id);
+  const isLike =
+    props?.like?.length > 0 ? props.like?.includes(props.userId) : false;
   const [like, setLike] = useState(!isLike ? 'disLike' : 'like');
   const [click, setClick] = useState(false);
-
   const {dataLike, isLoadingLike} = LikeODisLike({
     tipo: like,
     id: props.idPublicacion,
     click: click,
   });
+
   useEffect(() => {
     if (dataLike) {
       setClick(false);
@@ -147,7 +151,7 @@ export function ThemplatePubli(props: any) {
           <FotoPerfil img={props.imgUser || props.imgUserPro}></FotoPerfil>
         )}
         <div>
-          <Body $margin='0'>{user?.fullName || props.name}</Body>
+          <Body $margin='0'>{user?.fullName || (props.name && 'Tú')}</Body>
           <DivSpan>{props.fecha}</DivSpan>
         </div>
       </DivPerfil>
@@ -176,7 +180,7 @@ export function ThemplatePubli(props: any) {
         <SpanIco>
           {' '}
           <Like style={iconConLike} />
-          {props.like.length || 0}
+          {props.like?.length || 0}
         </SpanIco>
         <SpanIco>
           <DivSpan>Comentarios {props.comentarios || 0} </DivSpan>

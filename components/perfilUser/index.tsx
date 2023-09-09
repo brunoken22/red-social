@@ -162,6 +162,7 @@ export function PerfilUser() {
 export function PerfilAmigo() {
   const {id} = useParams();
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
+  const dataUser = useRecoilValue(user);
   const {data, isLoading} = GetAmigo(id as string);
   const [isClient, setIsClient] = useState(false);
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
@@ -290,6 +291,8 @@ export function PerfilAmigo() {
                   like={item.like}
                   comentarios={item.comentarios?.length}
                   imgUser={data?.user?.img}
+                  idPublicacion={item.id}
+                  userId={dataUser.user.id}
                 />
               </DivAllPublicaciones>
             ))

@@ -186,7 +186,7 @@ export function PerfilAmigo() {
     userId: rechazarAmigo,
   });
   useEffect(() => {
-    if (dataUser.user.id == data.user.id) {
+    if (dataUser?.user?.id == data?.user?.id) {
       router.push('/perfil');
       return;
     }

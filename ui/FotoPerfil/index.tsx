@@ -12,7 +12,7 @@ const noimg = {
 
 export function FotoPerfil(props: any) {
   return (
-    <Figure $wid={props.wid} $hei={props.hei}>
+    <Figure wid={props.wid + 'px'} hei={props.hei + 'px'}>
       <img
         src={props.img || '/user.webp'}
         width={props.wid || 40}

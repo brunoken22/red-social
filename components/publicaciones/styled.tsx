@@ -72,5 +72,26 @@ export const BottonComentar = styled(BottonLike)`
     }
   }
 `;
-export const DivAñadirComentar = styled.div``;
-export const ComentarioParrafo = styled(InputP)``;
+export const BottonSendComentario = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;
+export const DivAñadirComentar = styled.div`
+  border-radius: 10px;
+  width: 100%;
+  border: 1px solid #fff;
+  padding: 0.3rem;
+  display: grid;
+  align-items: center;
+  font-size: 0.9rem;
+  grid-template-columns: repeat(1, 90% 10%);
+  &:focus {
+    border: 2px solid red;
+  }
+`;
+export const ComentarioParrafo = styled(InputP)`
+  text-indent: 10px;
+  color: #ddd;
+  margin: 0;
+`;

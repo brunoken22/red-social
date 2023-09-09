@@ -13,6 +13,8 @@ import {
   DivCantidad,
   SpanIco,
   ComentarioParrafo,
+  DivAñadirComentar,
+  BottonSendComentario,
 } from './styled';
 import Like from '@/ui/icons/like.svg';
 import Comentar from '@/ui/icons/comentar.svg';
@@ -28,6 +30,7 @@ import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {LikeODisLike} from '@/lib/hook';
 import {Loader} from '../loader';
+import {SendComentPubli} from '@/ui/icons';
 const iconConLike = {
   height: ' 10px',
   width: ' 10px',
@@ -110,6 +113,7 @@ export function ThemplatePubli(props: any) {
   const [like, setLike] = useState(!isLike ? 'disLike' : 'like');
   const [comentario, setComentario] = useState(false);
   const [click, setClick] = useState(false);
+
   const {dataLike, isLoadingLike} = LikeODisLike({
     tipo: like,
     id: props.idPublicacion,
@@ -208,24 +212,104 @@ export function ThemplatePubli(props: any) {
           Comentar
         </BottonComentar>
       </DivInteractuar>
-      {/* {comentario ? (
+      {comentario ? (
         <ComentarioPublic
           imgUser={props.imgUser}
           imgUserPro={props.imgUserPro}
         />
-      ) : null} */}
+      ) : null}
     </div>
   );
 }
 
 function ComentarioPublic(props: any) {
+  const [placeInput, setPlaceinput] = useState(true);
+  const [content, setContent] = useState('');
+  useEffect(() => {
+    if (content.length <= 0) {
+      setPlaceinput(true);
+    }
+  }, [content]);
+  const handleInput = (event: any) => {
+    const text = event.target.textContent;
+    setPlaceinput(false);
+    if (text.length <= 250) {
+      setContent(text);
+    }
+    if (text.length >= 250) {
+      event.target.textContent = content;
+    }
+  };
   return (
     <div>
+      <div
+        style={{
+          marginTop: '0.5rem',
+          marginBottom: '0.5rem',
+        }}>
+        <DivPerfil>
+          <FotoPerfil
+            hei='30'
+            wid='30'
+            img={props.imgUser || props.imgUserPro}></FotoPerfil>
+          <DivAñadirComentar>
+            <div style={{maxWidth: '100%', minWidth: '200px'}}>
+              <ComentarioParrafo
+                onInput={handleInput}
+                suppressContentEditableWarning={true}
+                contentEditable={true}
+                $content={placeInput}
+                placeholder={
+                  content == '' ? `Añadir un comentario` : null
+                }></ComentarioParrafo>
+            </div>
+            <BottonSendComentario>
+              <SendComentPubli />
+            </BottonSendComentario>
+          </DivAñadirComentar>
+        </DivPerfil>
+      </div>
+      <div>
+        {['1', '2', '3'].map((e: any) => {
+          return (
+            <TemplateComentario
+              key={e}
+              imgUser={props.imgUser}
+              imgUserPro={props.imgUserPro}
+              fullName={'Bruno Ken'}
+              description='Hola como estan gente de UniRed(En prueba)'></TemplateComentario>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function TemplateComentario(props: any) {
+  return (
+    <div style={{margin: '1rem'}}>
       <DivPerfil>
-        <FotoPerfil img={props.imgUser || props.imgUserPro}></FotoPerfil>
-        <ComentarioParrafo
-          contentEditable
-          placeholder='Añadir un comentario'></ComentarioParrafo>
+        <FotoPerfil
+          hei='30'
+          wid='30'
+          img={props.imgUser || props.imgUserPro}></FotoPerfil>
+        <div
+          style={{
+            width: '100%',
+            backgroundColor: '#2d2d2d',
+            padding: '0.5rem',
+            borderRadius: '0px 0.5rem 0.5rem',
+          }}>
+          <p style={{fontSize: '0.9rem', margin: '0'}}>{props.fullName}</p>
+          <p
+            style={{
+              fontSize: '0.9rem',
+              color: 'rgb(189 189 189)',
+              margin: '0',
+            }}>
+            {props.description}
+          </p>
+        </div>
       </DivPerfil>
     </div>
   );

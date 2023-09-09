@@ -41,6 +41,7 @@ export const DivPublicaciones = styled.div`
 export const DivPublicar = styled.div`
   background-color: ${({theme}) => theme.bg};
   padding: 1rem;
+  padding-bottom: 0.1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;

@@ -40,7 +40,7 @@ export const DivInteractuar = styled(DivPerfil)`
   justify-content: space-around;
   gap: 0;
   border-top: 1px solid #353434;
-  padding-top: 1rem;
+  padding-top: 0.1rem;
 `;
 
 export const BottonLike = styled.button<any>`

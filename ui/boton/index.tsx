@@ -11,14 +11,15 @@ export const Button = styled.button`
 export const ButtonSms = styled(Button)`
   height: 100%;
 `;
-export const ButtonNoti = styled(Button)`
+export const ButtonNoti = styled.div<any>`
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-bottom: 1px solid #2f2f2f;
-  border-radius: 0;
-  font-size: 1rem;
   width: 100%;
+  border: 0;
+  height: 4rem;
+  border-radius: 5px;
+  background-color: ${(e: any) => (e.$visto ? '#707070' : '')};
   &:hover {
     background-color: #707070;
   }

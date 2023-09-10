@@ -22,15 +22,15 @@ import {
   publicacionUser,
   user,
   publicacionAmigos,
-  getAllUser,
   getAllAmigos,
 } from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
-import {LikeODisLike} from '@/lib/hook';
+import {LikeODisLike, ComentarPublicacion} from '@/lib/hook';
 import {Loader} from '../loader';
 import {SendComentPubli} from '@/ui/icons';
+
 const iconConLike = {
   height: ' 10px',
   width: ' 10px',
@@ -58,7 +58,7 @@ export function PublicacionesAll() {
                 img={item.img}
                 fecha={item.fecha}
                 like={item.like}
-                comentarios={item.comentarios?.length}
+                comentarios={item.comentarios}
                 id={item.userId}
                 imgUserPro={dataUser?.user?.img}
                 idPublicacion={item.id}
@@ -73,7 +73,7 @@ export function PublicacionesAll() {
   );
 }
 
-export function PublicacionesUser(props?: any) {
+export function PublicacionesUser() {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
   return (
@@ -90,7 +90,7 @@ export function PublicacionesUser(props?: any) {
                 img={item.img}
                 fecha={item.fecha}
                 like={item.like}
-                comentarios={item.comentarios?.length}
+                comentarios={item.comentarios}
                 imgUserPro={dataUser.user.img}
                 id={item.userId}
                 idPublicacion={item.id}
@@ -195,7 +195,7 @@ export function ThemplatePubli(props: any) {
           {props.like?.length || 0}
         </SpanIco>
         <SpanIco>
-          <DivSpan>Comentarios {props.comentarios || 0} </DivSpan>
+          <DivSpan>Comentarios {props.comentarios.length || 0} </DivSpan>
         </SpanIco>
       </DivCantidad>
       <DivInteractuar>
@@ -214,8 +214,14 @@ export function ThemplatePubli(props: any) {
       </DivInteractuar>
       {comentario ? (
         <ComentarioPublic
-          imgUser={props.imgUser}
+          idPublicacion={props.idPublicacion}
+          imgUser={props.imgUser || props.imgUserPro}
+          comentarios={props.comentarios}
+          userName={user?.fullName || (props.name && 'Tú')}
+          name={props.name}
           imgUserPro={props.imgUserPro}
+          userId={props.userId}
+          id={props.id}
         />
       ) : null}
     </div>
@@ -225,6 +231,23 @@ export function ThemplatePubli(props: any) {
 function ComentarioPublic(props: any) {
   const [placeInput, setPlaceinput] = useState(true);
   const [content, setContent] = useState('');
+  const [click, setClick] = useState(false);
+  const [open, setOpen] = useState(props.userId !== props.id ? true : false);
+  const {dataComentar, isLoadingComentar} = ComentarPublicacion({
+    id: props.idPublicacion,
+    fullName: props.name,
+    description: content,
+    img: props.imgUserPro,
+    userId: props.userId,
+    open,
+    click,
+  });
+  useEffect(() => {
+    if (dataComentar) {
+      setClick(false);
+      setContent('');
+    }
+  }, [dataComentar]);
   useEffect(() => {
     if (content.length <= 0) {
       setPlaceinput(true);
@@ -240,6 +263,9 @@ function ComentarioPublic(props: any) {
       event.target.textContent = content;
     }
   };
+  if (isLoadingComentar) {
+    return <Loader></Loader>;
+  }
   return (
     <div>
       <div
@@ -248,10 +274,7 @@ function ComentarioPublic(props: any) {
           marginBottom: '0.5rem',
         }}>
         <DivPerfil>
-          <FotoPerfil
-            hei='30'
-            wid='30'
-            img={props.imgUser || props.imgUserPro}></FotoPerfil>
+          <FotoPerfil hei='30' wid='30' img={props.imgUser}></FotoPerfil>
           <DivAñadirComentar>
             <div style={{maxWidth: '100%', minWidth: '200px'}}>
               <ComentarioParrafo
@@ -263,23 +286,28 @@ function ComentarioPublic(props: any) {
                   content == '' ? `Añadir un comentario` : null
                 }></ComentarioParrafo>
             </div>
-            <BottonSendComentario>
+            <BottonSendComentario onClick={() => setClick(true)}>
               <SendComentPubli />
             </BottonSendComentario>
           </DivAñadirComentar>
         </DivPerfil>
       </div>
       <div>
-        {['1', '2', '3'].map((e: any) => {
-          return (
-            <TemplateComentario
-              key={e}
-              imgUser={props.imgUser}
-              imgUserPro={props.imgUserPro}
-              fullName={'Bruno Ken'}
-              description='Hola como estan gente de UniRed(En prueba)'></TemplateComentario>
-          );
-        })}
+        {props.comentarios?.length > 0
+          ? props.comentarios
+              .slice()
+              .reverse()
+              .map((e: any, p: any) => {
+                return (
+                  <TemplateComentario
+                    key={p}
+                    userId={e.userId}
+                    imgUser={e.img}
+                    userName={e.userId == props.userId ? 'Tú' : e.fullName}
+                    description={e.description}></TemplateComentario>
+                );
+              })
+          : null}
       </div>
     </div>
   );
@@ -289,10 +317,14 @@ function TemplateComentario(props: any) {
   return (
     <div style={{margin: '1rem'}}>
       <DivPerfil>
-        <FotoPerfil
-          hei='30'
-          wid='30'
-          img={props.imgUser || props.imgUserPro}></FotoPerfil>
+        {props.userName !== 'Tú' ? (
+          <Link href={'/amigos/' + props.userId}>
+            <FotoPerfil hei='30' wid='30' img={props.imgUser}></FotoPerfil>
+          </Link>
+        ) : (
+          <FotoPerfil hei='30' wid='30' img={props.imgUser}></FotoPerfil>
+        )}
+
         <div
           style={{
             width: '100%',
@@ -300,7 +332,7 @@ function TemplateComentario(props: any) {
             padding: '0.5rem',
             borderRadius: '0px 0.5rem 0.5rem',
           }}>
-          <p style={{fontSize: '0.9rem', margin: '0'}}>{props.fullName}</p>
+          <p style={{fontSize: '0.9rem', margin: '0'}}>{props.userName}</p>
           <p
             style={{
               fontSize: '0.9rem',

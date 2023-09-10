@@ -295,7 +295,7 @@ export function PerfilAmigo() {
                   img={item.img}
                   fecha={item.fecha}
                   like={item.like}
-                  comentarios={item.comentarios?.length}
+                  comentarios={item.comentarios}
                   imgUser={data?.user?.img}
                   idPublicacion={item.id}
                   userId={dataUser.user.id}

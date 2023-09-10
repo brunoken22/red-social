@@ -21,7 +21,7 @@ import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
 import {useRecoilValue} from 'recoil';
-import {user, getAllSolicitudesRecibidas} from '@/lib/atom';
+import {user, getAllSolicitudesRecibidas, publicacionUser} from '@/lib/atom';
 const stylelinkIcon: {fill: string; position: any} = {
   fill: '#b3b3b3',
   position: 'relative',
@@ -30,6 +30,7 @@ const stylelinkIcon: {fill: string; position: any} = {
 export function Header() {
   const dataUser = useRecoilValue(user);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
+  const datapublicacionUser = useRecoilValue(publicacionUser);
   const [menu, setMenu] = useState(false);
   const handleMenu = (e: any) => {
     e.preventDefault();
@@ -74,17 +75,24 @@ export function Header() {
             </Enlaces>
           </Link>
           <Link href={'/mensaje'} style={stylelinkIcon}>
-            {/* {dataSoliReci?.length > 0 && (
+            {dataSoliReci?.length > 0 && (
               <DivNotificacionActi>{dataSoliReci?.length}</DivNotificacionActi>
-            )} */}
+            )}
             <Enlaces>
               <Chat />{' '}
             </Enlaces>
           </Link>
           <Link href={'/notificaciones'} style={stylelinkIcon}>
-            {/* {dataSoliReci?.length > 0 && (
-              <DivNotificacionActi>{dataSoliReci?.length}</DivNotificacionActi>
-            )} */}
+            {datapublicacionUser?.length > 0 &&
+              datapublicacionUser?.filter((e: any) => e.open == true).length !==
+                0 && (
+                <DivNotificacionActi>
+                  {
+                    datapublicacionUser?.filter((e: any) => e.open == true)
+                      .length
+                  }
+                </DivNotificacionActi>
+              )}
             <Enlaces>
               <Notificaciones />{' '}
             </Enlaces>

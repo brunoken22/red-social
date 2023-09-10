@@ -215,7 +215,7 @@ export function ThemplatePubli(props: any) {
       {comentario ? (
         <ComentarioPublic
           idPublicacion={props.idPublicacion}
-          imgUser={props.imgUser || props.imgUserPro}
+          imgUser={props.imgUser}
           comentarios={props.comentarios}
           userName={user?.fullName || (props.name && 'Tú')}
           name={props.name}

@@ -147,7 +147,7 @@ export function GetUser(token: string) {
       revalidateOnMount: true,
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
-      refreshInterval: 5000,
+      refreshInterval: 2000,
     }
   );
 
@@ -189,7 +189,7 @@ export function GetAmigo(id: string) {
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
       revalidateOnMount: true,
-      refreshInterval: 5000,
+      refreshInterval: 2000,
     }
   );
   return {data, isLoading};

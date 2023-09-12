@@ -36,6 +36,7 @@ export function TemMensaje() {
   const {dataMesssage} = EnviarMessage(messageUser);
 
   const chatrooms = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/messages');
+
   useEffect(() => {
     if (dataMesssage) {
       setMessageUser((prev: any) => ({...prev, message: ''}));
@@ -52,7 +53,6 @@ export function TemMensaje() {
   }, [dataMensajeUser]);
   useEffect(() => {
     if (containerRef.current) {
-      console.log(containerRef.current.scrollTop);
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
   }, [messagesAll]);
@@ -100,7 +100,7 @@ export function TemMensaje() {
             : 'Sin Conversaciones'}
         </TemplChat>
       </TemplMensaje>
-      {dataMensajeUser.id ? (
+      {dataMensajeUser.rtdb ? (
         <TemplSns>
           <div
             style={{
@@ -121,19 +121,25 @@ export function TemMensaje() {
             }}>
             <Sms ref={containerRef}>
               {messagesAll
-                ? messagesAll?.map((e: any, p: any) => (
-                    <div
-                      key={p}
-                      style={{
-                        display: 'block',
-                        textAlign: e.id == dataUser.user.id ? 'end' : 'start',
-                      }}>
-                      <Menssage
-                        $isUser={e.id == dataUser.user.id ? true : false}>
-                        {e.message}
-                      </Menssage>
-                    </div>
-                  ))
+                ? messagesAll?.map((e: any, p: any) => {
+                    //     console.log(e.id);
+                    //     console.log(dataUser?.user?.id);
+
+                    return (
+                      <div
+                        key={p}
+                        id={e.id}
+                        style={{
+                          display: 'block',
+                          textAlign: e.id == dataUser.user.id ? 'end' : 'start',
+                        }}>
+                        <Menssage
+                          $isUser={e.id == dataUser.user.id ? true : false}>
+                          {e.message}
+                        </Menssage>
+                      </div>
+                    );
+                  })
                 : null}
             </Sms>
             <div>

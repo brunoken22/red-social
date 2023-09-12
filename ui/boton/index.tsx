@@ -9,7 +9,7 @@ export const Button = styled.button`
   border-radius: 5px;
 `;
 export const ButtonSms = styled(Button)`
-  height: 100%;
+  height: 100% !important;
 `;
 export const ButtonNoti = styled.div<any>`
   display: flex;

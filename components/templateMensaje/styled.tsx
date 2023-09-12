@@ -32,6 +32,16 @@ export const TemplSns = styled.div`
 `;
 export const Sms = styled.div`
   display: inherit;
-  height: 90%;
+  height: 600px;
   background-color: #232323;
+  overflow-y: auto;
+  padding: 1rem;
+  flex-direction: column;
+`;
+export const DivSms = styled.div``;
+export const Menssage = styled.p<any>`
+  display: inline-block;
+  background-color: ${({$isUser}: any) => ($isUser ? '#0662ab' : '#575757')};
+  padding: 0.5rem;
+  border-radius: 40px;
 `;

@@ -12,6 +12,7 @@ import {Loader} from '../loader';
 export function TemNoti() {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
+
   return (
     <DivPublicar>
       {publicacionesUser.length > 0

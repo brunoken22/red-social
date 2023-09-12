@@ -13,6 +13,7 @@ export type User = {
   fullName: string;
   email: string;
   img: string;
+  rtdb: any[];
 };
 export const user = atom({
   key: 'user',
@@ -23,6 +24,7 @@ export const user = atom({
       fullName: '',
       img: '',
       amigos: [],
+      rtdb: [],
     },
     token: '',
   },

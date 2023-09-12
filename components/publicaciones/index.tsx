@@ -53,7 +53,7 @@ export function PublicacionesAll() {
           .map((item) => (
             <DivAllPublicaciones key={item?.id}>
               <ThemplatePubli
-                name={dataUser?.user.fullName}
+                name={dataUser?.user?.fullName}
                 description={item.description}
                 img={item.img}
                 fecha={item.fecha}
@@ -62,7 +62,7 @@ export function PublicacionesAll() {
                 id={item.userId}
                 imgUserPro={dataUser?.user?.img}
                 idPublicacion={item.id}
-                userId={dataUser.user.id}
+                userId={dataUser?.user?.id}
               />
             </DivAllPublicaciones>
           ))
@@ -274,7 +274,7 @@ function ComentarioPublic(props: any) {
           marginBottom: '0.5rem',
         }}>
         <DivPerfil>
-          <FotoPerfil hei='30' wid='30' img={props.imgUser}></FotoPerfil>
+          <FotoPerfil hei='30' wid='30' img={props.imgUserPro}></FotoPerfil>
           <DivAñadirComentar>
             <div style={{maxWidth: '100%', minWidth: '200px'}}>
               <ComentarioParrafo

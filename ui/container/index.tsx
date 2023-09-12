@@ -15,7 +15,7 @@ export const DivMain = styled(Main)`
   flex-direction: column;
   align-items: center;
   padding: 0;
-  padding: 5rem 1rem;
+  padding: 5rem 1rem 0rem;
 `;
 export const DivButton = styled.div`
   background-color: #242936;
@@ -57,6 +57,7 @@ export const DivAllChat = styled(DivPublicar)`
   flex-direction: row;
   margin: 0;
   align-items: center;
+  padding: 1rem;
   @media (max-width: 550px) {
     width: auto;
   }

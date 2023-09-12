@@ -10,6 +10,7 @@ export default function Notificaciones() {
     <DivMain>
       <ContainerMain>
         <TemplateNotifiId></TemplateNotifiId>
+        <Span></Span>
       </ContainerMain>
     </DivMain>
   );

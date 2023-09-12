@@ -245,7 +245,7 @@ export function AceptarSolicitud(dataSoli: Solicitud) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading, error} = useSWR(
     dataSoli.amigoId > -1 ? [api, option] : null,
     fetchApiSwr
   );
@@ -345,6 +345,26 @@ export function GetPublicacionId(id: string) {
     }
   );
   return {dataPubliId: data, isLoadGetPubliId: isLoading};
+}
+export function EnviarMessage(datas: any) {
+  const api = '/user/room';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(datas),
+  };
+  const {data, isLoading, error} = useSWRImmutable(
+    token && datas.message ? [api, option] : null,
+    fetchApiSwr,
+    {
+      revalidateOnReconnect: true,
+      revalidateOnMount: true,
+    }
+  );
+  return {dataMesssage: data, isLoadMessage: isLoading};
 }
 export function OptimizarImage(dataUrl: string) {
   const {data, isLoading, error} = useSWR(

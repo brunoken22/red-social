@@ -40,10 +40,6 @@ export function TemMensaje() {
     if (dataMesssage) {
       setMessageUser((prev: any) => ({...prev, message: ''}));
     }
-    if (containerRef.current) {
-      console.log(containerRef.current.scrollTop);
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
   }, [dataMesssage]);
   useEffect(() => {
     onValue(chatrooms, (snapshot: any) => {
@@ -53,7 +49,13 @@ export function TemMensaje() {
         setMessagesAll(datas); // Actualiza el estado aquí
       }
     });
-  }, [dataMensajeUser.rtdb]);
+  }, [dataMensajeUser]);
+  useEffect(() => {
+    if (containerRef.current) {
+      console.log(containerRef.current.scrollTop);
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [messagesAll]);
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setMessageUser((prev: any) => ({...prev, message: e.target.message.value}));
@@ -61,6 +63,7 @@ export function TemMensaje() {
       e.target.message.value = '';
     }, 200);
   };
+
   return (
     <DivTemMensaje>
       <TemplMensaje>
@@ -71,7 +74,6 @@ export function TemMensaje() {
                 return (
                   <ButtonSms
                     key={p}
-                    id={e}
                     onClick={() => {
                       const rtdbId = existenElementosSimilares(
                         e.rtdb,

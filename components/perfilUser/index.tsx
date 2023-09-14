@@ -228,13 +228,10 @@ export function PerfilAmigo() {
   const handleSolicitudEnv = (e: any) => {
     const id = e.target.id;
     setAmigoId(Number(id));
-    setAmigoId(Number(-1));
-    // setIsClient(true);
   };
   const handleSolicitudRecha = (e: any) => {
     const id = e.target.id;
     setRechazarAmigo(Number(id));
-    setAmigoId(Number(-1));
   };
 
   return data && !isClient ? (

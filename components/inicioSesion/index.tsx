@@ -48,6 +48,11 @@ export function Signin() {
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
+      {data && !data?.user && (
+        <div style={{color: '#d36161', textAlign: 'center'}}>
+          Datos incorrectos
+        </div>
+      )}
       <div>
         <Label htmlFor='email'>
           Email <Span>*</Span>

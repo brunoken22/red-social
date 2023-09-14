@@ -195,7 +195,7 @@ export function ThemplatePubli(props: any) {
           {props.like?.length || 0}
         </SpanIco>
         <SpanIco>
-          <DivSpan>Comentarios {props.comentarios.length || 0} </DivSpan>
+          <DivSpan>Comentarios {props.comentarios?.length || 0} </DivSpan>
         </SpanIco>
       </DivCantidad>
       <DivInteractuar>

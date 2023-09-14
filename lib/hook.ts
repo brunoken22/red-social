@@ -67,7 +67,10 @@ export function SigninUser(dataUser: DataSingin) {
   };
   const {data, isLoading, error} = useSWR(
     dataUser.email ? [api, option] : null,
-    fetchApiSwr
+    fetchApiSwr,
+    {
+      revalidateOnReconnect: true,
+    }
   );
   useEffect(() => {
     setUserData(data ? data : null);
@@ -346,7 +349,7 @@ export function GetPublicacionId(id: string) {
   );
   return {dataPubliId: data, isLoadGetPubliId: isLoading};
 }
-export function EnviarMessage(datas: any) {
+export function EnviarMessage(datas: any, token?: string) {
   const api = '/user/room';
   const option = {
     method: 'POST',

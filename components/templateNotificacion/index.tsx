@@ -36,7 +36,7 @@ export function TemNoti() {
                       e.comentarios
                         ?.slice()
                         .reverse()
-                        .find((e: any) => e.userId !== dataUser.user.id).img
+                        .find((e: any) => e.userId !== dataUser.user.id)?.img
                     }
                   />
                   <p>
@@ -46,7 +46,7 @@ export function TemNoti() {
                         ?.slice()
                         .reverse()
                         .find((e: any) => e.userId !== dataUser.user.id)
-                        .fullName
+                        ?.fullName
                     }
                   </p>
                 </ButtonNoti>
@@ -60,11 +60,15 @@ export function TemplateNotifiId() {
   const {id} = useParams();
   const {dataPubliId, isLoadGetPubliId} = GetPublicacionId(id as string);
   const dataUser = useRecoilValue(user);
+
   const {dataComentar, isLoadingComentar} = ComentarPublicacion({
     id,
     open: false,
     click: true,
   });
+  if (isLoadingComentar) {
+    return <Loader></Loader>;
+  }
   return dataPubliId ? (
     <div style={{maxWidth: '600px', width: '100%'}}>
       <DivAllPublicaciones>

@@ -33,7 +33,11 @@ export function TemMensaje() {
     message: '',
     rtdb: '' || undefined,
   });
-  const {dataMesssage} = EnviarMessage(messageUser);
+  const token =
+  typeof window !== 'undefined'
+    ? (localStorage.getItem('token') as string)
+    : '';
+  const {dataMesssage} = EnviarMessage(messageUser,token);
 
   const chatrooms = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/messages');
 

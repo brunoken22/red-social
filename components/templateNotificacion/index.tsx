@@ -12,11 +12,15 @@ import {Loader} from '../loader';
 export function TemNoti() {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
+  const filtradoPubliUser =
+    publicacionesUser.length > 0
+      ? publicacionesUser.filter((publi: any) => publi.comentarios.length > 0)
+      : [];
 
   return (
     <DivPublicar>
-      {publicacionesUser.length > 0
-        ? publicacionesUser
+      {filtradoPubliUser?.length > 0
+        ? filtradoPubliUser
             ?.slice()
             .reverse()
             .map((e: any, p: any) => (

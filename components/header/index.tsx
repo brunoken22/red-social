@@ -43,9 +43,7 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
-  if (!dataUser?.user?.id) {
-    return;
-  }
+
   return dataUser?.user?.id ? (
     <HeaderNav>
       <Nav>
@@ -75,9 +73,9 @@ export function Header() {
             </Enlaces>
           </Link>
           <Link href={'/mensaje'} style={stylelinkIcon}>
-            {dataSoliReci?.length > 0 && (
+            {/* {dataSoliReci?.length > 0 && (
               <DivNotificacionActi>{dataSoliReci?.length}</DivNotificacionActi>
-            )}
+            )} */}
             <Enlaces>
               <Chat />{' '}
             </Enlaces>

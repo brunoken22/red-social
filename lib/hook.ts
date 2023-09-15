@@ -150,7 +150,7 @@ export function GetUser(token: string) {
       revalidateOnMount: true,
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
-      refreshInterval: 2000,
+      refreshInterval: 1000,
     }
   );
 
@@ -226,7 +226,7 @@ export function CreateSolicitud(dataSoli: Solicitud) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading, error} = useSWR(
     dataSoli.amigoId > -1 ? [api, option] : null,
     fetchApiSwr
   );
@@ -265,7 +265,7 @@ export function RechazarSolicitud(dataSoli: any) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading, error} = useSWR(
     dataSoli.userId > -1 ? [api, option] : null,
     fetchApiSwr
   );

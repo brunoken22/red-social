@@ -91,7 +91,6 @@ export function TemAmigos() {
   };
   const handleSolicitudAcep = (e: any) => {
     const id = e.target.id;
-    console.log(id);
     setAcepAmigoId(Number(id));
   };
   const handleSolicitudRecha = (e: any) => {

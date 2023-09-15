@@ -15,7 +15,7 @@ import {useRecoilValue} from 'recoil';
 import {getAllAmigos, user} from '@/lib/atom';
 import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
-import {ref, onValue} from 'firebase/database';
+import {ref, onValue, onDisconnect} from 'firebase/database';
 import {EnviarMessage} from '@/lib/hook';
 
 export function TemMensaje() {
@@ -34,10 +34,10 @@ export function TemMensaje() {
     rtdb: '' || undefined,
   });
   const token =
-  typeof window !== 'undefined'
-    ? (localStorage.getItem('token') as string)
-    : '';
-  const {dataMesssage} = EnviarMessage(messageUser,token);
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
+  const {dataMesssage} = EnviarMessage(messageUser, token);
 
   const chatrooms = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/messages');
 
@@ -54,6 +54,7 @@ export function TemMensaje() {
         setMessagesAll(datas); // Actualiza el estado aquí
       }
     });
+    onDisconnect(chatrooms).set('I disconnected!');
   }, [dataMensajeUser]);
   useEffect(() => {
     if (containerRef.current) {

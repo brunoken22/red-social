@@ -43,7 +43,6 @@ const iconConLike = {
 export function PublicacionesAll() {
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
   const dataUser = useRecoilValue(user);
-
   return (
     <div>
       {publicacionesAmigos?.length > 0 ? (
@@ -189,14 +188,18 @@ export function ThemplatePubli(props: any) {
         </DivImage>
       ) : null}
       <DivCantidad>
-        <SpanIco>
-          {' '}
-          <Like style={iconConLike} />
-          {props.like?.length || 0}
-        </SpanIco>
-        <SpanIco>
-          <DivSpan>Comentarios {props.comentarios?.length || 0} </DivSpan>
-        </SpanIco>
+        {props.like?.length > 0 && (
+          <SpanIco>
+            {' '}
+            <Like style={iconConLike} />
+            {props.like?.length}
+          </SpanIco>
+        )}
+        {props.comentarios?.length > 0 && (
+          <SpanIco>
+            <DivSpan>Comentarios {props.comentarios?.length} </DivSpan>
+          </SpanIco>
+        )}
       </DivCantidad>
       <DivInteractuar>
         <BottonLike

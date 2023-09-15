@@ -7,6 +7,8 @@ import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {SigninUser} from '@/lib/hook';
 import {Loader} from '../loader';
+// import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
+// import jwt_decode from 'jwt-decode';
 
 export function Signin() {
   const [dataUser, setDataUser] = useState({
@@ -47,6 +49,8 @@ export function Signin() {
     return <Loader />;
   }
   return (
+    // <GoogleOAuthProvider
+    // clientId={process.env.NEXT_PUBLIC_CLIENT_GOOGLE as string}>
     <Form onSubmit={handleSubmit(onSubmit)}>
       {data && !data?.user && (
         <div style={{color: '#d36161', textAlign: 'center'}}>
@@ -81,6 +85,16 @@ export function Signin() {
         {' '}
         <BotonForm type='submit'>Continuar</BotonForm>
       </div>{' '}
+      {/* <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            const dataRes = jwt_decode(credentialResponse.credential as string);
+            console.log(dataRes);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        /> */}
+      {/* </GoogleOAuthProvider> */}
     </Form>
   );
 }

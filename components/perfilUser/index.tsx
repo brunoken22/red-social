@@ -164,7 +164,11 @@ export function PerfilAmigo() {
   const router = useRouter();
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataUser = useRecoilValue(user);
-  const {data, isLoading} = GetAmigo(id as string);
+  const token =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
+  const {data, isLoading} = GetAmigo(id as string, token);
   const [isClient, setIsClient] = useState(false);
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
@@ -254,8 +258,7 @@ export function PerfilAmigo() {
               {data?.amigo ? 'Eliminar Amigo' : 'Agregar'}
             </ButtonAgregar>
           ) : data.amigo == 'pendiente' &&
-            soliReci?.length > 0 &&
-            soliReci.find((user) => user.id == data.user.id) ? (
+            soliReci?.find((user) => user.id == data.user.id) ? (
             <DivButtonEliAcep>
               <ButtonAgregar
                 id={data?.user?.id}
@@ -267,16 +270,16 @@ export function PerfilAmigo() {
                 Aceptar
               </ButtonAgregar>
             </DivButtonEliAcep>
-          ) : (
-            <>
+          ) : null}
+          {dataCreateSoli ||
+            (data.amigo == 'pendiente' && (
               <ButtonAgregar
                 id={data?.user?.id}
                 onClick={handleSolicitudRecha}
                 $bg='red'>
                 Eliminar solicitud
               </ButtonAgregar>
-            </>
-          )}
+            ))}
         </div>
       </DivHeadPerfil>
       <DivPublicaciones>

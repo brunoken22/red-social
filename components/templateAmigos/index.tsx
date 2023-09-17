@@ -86,7 +86,6 @@ export function TemAmigos() {
   };
   const handleSolicitudEnv = (e: any) => {
     const id = e.target.id;
-
     setAmigoId(Number(id));
   };
   const handleSolicitudAcep = (e: any) => {

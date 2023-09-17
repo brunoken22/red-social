@@ -52,6 +52,8 @@ export function TemMensaje() {
       if (valor) {
         const datas: any = Object.values(valor);
         setMessagesAll(datas); // Actualiza el estado aquí
+      } else {
+        setMessagesAll(valor); // Actualiza el estado aquí
       }
     });
     onDisconnect(chatrooms).set('I disconnected!');
@@ -127,9 +129,6 @@ export function TemMensaje() {
             <Sms ref={containerRef}>
               {messagesAll
                 ? messagesAll?.map((e: any, p: any) => {
-                    //     console.log(e.id);
-                    //     console.log(dataUser?.user?.id);
-
                     return (
                       <div
                         key={p}

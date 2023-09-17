@@ -32,9 +32,11 @@ export const DivImageSug = styled(DivImage)<any>`
   height: 60%;
 `;
 export const DivCantidad = styled(DivPerfil)`
+  display: grid;
   gap: 0;
   margin-top: 1rem;
-  justify-content: space-around;
+  justify-items: center;
+  grid-template-columns: repeat(2, 1fr);
 `;
 export const DivInteractuar = styled(DivPerfil)`
   justify-content: space-around;

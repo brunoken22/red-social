@@ -148,9 +148,6 @@ export function ThemplatePubli(props: any) {
     setComentario(false);
     e.target.style.fill = '#ddd';
   };
-  if (isLoadingLike) {
-    return <Loader />;
-  }
   return (
     <div style={{height: '100%'}}>
       <DivPerfil>
@@ -266,9 +263,7 @@ function ComentarioPublic(props: any) {
       event.target.textContent = content;
     }
   };
-  if (isLoadingComentar) {
-    return <Loader></Loader>;
-  }
+
   return (
     <div>
       <div
@@ -285,9 +280,9 @@ function ComentarioPublic(props: any) {
                 suppressContentEditableWarning={true}
                 contentEditable={true}
                 $content={placeInput}
-                placeholder={
-                  content == '' ? `Añadir un comentario` : null
-                }></ComentarioParrafo>
+                placeholder={content == '' ? `Añadir un comentario` : null}>
+                {dataComentar && ''}
+              </ComentarioParrafo>
             </div>
             <BottonSendComentario onClick={() => setClick(true)}>
               <SendComentPubli />

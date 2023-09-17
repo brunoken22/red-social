@@ -176,7 +176,7 @@ export function GetUser(token: string) {
 
   return {data, isLoading};
 }
-export function GetAmigo(id: string) {
+export function GetAmigo(id: string, token: string) {
   const api = '/user/amigos/' + id;
   const option = {
     method: 'GET',

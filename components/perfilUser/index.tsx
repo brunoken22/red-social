@@ -270,16 +270,14 @@ export function PerfilAmigo() {
                 Aceptar
               </ButtonAgregar>
             </DivButtonEliAcep>
-          ) : null}
-          {dataCreateSoli ||
-            (data.amigo == 'pendiente' && (
-              <ButtonAgregar
-                id={data?.user?.id}
-                onClick={handleSolicitudRecha}
-                $bg='red'>
-                Eliminar solicitud
-              </ButtonAgregar>
-            ))}
+          ) : (
+            <ButtonAgregar
+              id={data?.user?.id}
+              onClick={handleSolicitudRecha}
+              $bg='red'>
+              Eliminar solicitud
+            </ButtonAgregar>
+          )}
         </div>
       </DivHeadPerfil>
       <DivPublicaciones>

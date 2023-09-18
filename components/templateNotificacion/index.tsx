@@ -64,12 +64,18 @@ export function TemplateNotifiId() {
   const {id} = useParams();
   const {dataPubliId, isLoadGetPubliId} = GetPublicacionId(id as string);
   const dataUser = useRecoilValue(user);
-
-  const {dataComentar, isLoadingComentar} = ComentarPublicacion({
-    id,
-    open: false,
-    click: true,
-  });
+  const token =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
+  const {dataComentar, isLoadingComentar} = ComentarPublicacion(
+    {
+      id,
+      open: false,
+      click: true,
+    },
+    token
+  );
   if (isLoadingComentar) {
     return <Loader></Loader>;
   }

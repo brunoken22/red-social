@@ -36,21 +36,36 @@ export function TemAmigos() {
   const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
-
-  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud({
-    amigoId,
-    estado: false,
-  });
-  const {dataAcep, isLoadingAcep} = AceptarSolicitud({
-    amigoId: acepAmigoId,
-    estado: true,
-  });
-  const {dataRech, isLoadingRech} = RechazarSolicitud({
-    userId: rechazarAmigo,
-  });
-  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
-    userId: eliminarAmigo,
-  });
+  const token =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
+  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud(
+    {
+      amigoId,
+      estado: false,
+    },
+    token
+  );
+  const {dataAcep, isLoadingAcep} = AceptarSolicitud(
+    {
+      amigoId: acepAmigoId,
+      estado: true,
+    },
+    token
+  );
+  const {dataRech, isLoadingRech} = RechazarSolicitud(
+    {
+      userId: rechazarAmigo,
+    },
+    token
+  );
+  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo(
+    {
+      userId: eliminarAmigo,
+    },
+    token
+  );
   const handleClick = (e: any) => {
     e.preventDefault();
     if (e.target.id == 'suge') {

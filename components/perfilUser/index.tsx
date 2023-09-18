@@ -174,20 +174,32 @@ export function PerfilAmigo() {
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
   const [amigoId, setAmigoId] = useState(Number(-1));
   const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
-  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
-    userId: eliminarAmigo,
-  });
-  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud({
-    amigoId,
-    estado: false,
-  });
-  const {dataAcep, isLoadingAcep} = AceptarSolicitud({
-    amigoId: acepAmigoId,
-    estado: true,
-  });
-  const {dataRech, isLoadingRech} = RechazarSolicitud({
-    userId: rechazarAmigo,
-  });
+  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo(
+    {
+      userId: eliminarAmigo,
+    },
+    token
+  );
+  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud(
+    {
+      amigoId,
+      estado: false,
+    },
+    token
+  );
+  const {dataAcep, isLoadingAcep} = AceptarSolicitud(
+    {
+      amigoId: acepAmigoId,
+      estado: true,
+    },
+    token
+  );
+  const {dataRech, isLoadingRech} = RechazarSolicitud(
+    {
+      userId: rechazarAmigo,
+    },
+    token
+  );
   useEffect(() => {
     if (dataUser?.user?.id == data?.user?.id) {
       router.push('/perfil');

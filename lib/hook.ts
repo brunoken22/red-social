@@ -213,7 +213,7 @@ export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
   );
   return {data, isLoading};
 }
-export function CreateSolicitud(dataSoli: Solicitud) {
+export function CreateSolicitud(dataSoli: Solicitud, token?: string) {
   const [userAllData, setUserAllData] = useRecoilState(
     getAllSolicitudesEnviadas
   );
@@ -238,7 +238,7 @@ export function CreateSolicitud(dataSoli: Solicitud) {
   }, [data]);
   return {dataCreateSoli: data, isLoadCreateSoli: isLoading};
 }
-export function AceptarSolicitud(dataSoli: Solicitud) {
+export function AceptarSolicitud(dataSoli: Solicitud, token?: string) {
   const api = '/user/amigos';
   const option = {
     method: 'POST',
@@ -255,7 +255,7 @@ export function AceptarSolicitud(dataSoli: Solicitud) {
 
   return {dataAcep: data, isLoadingAcep: isLoading};
 }
-export function RechazarSolicitud(dataSoli: any) {
+export function RechazarSolicitud(dataSoli: any, token?: string) {
   const api = '/user/solicitudAmistad';
   const option = {
     method: 'DELETE',
@@ -272,7 +272,7 @@ export function RechazarSolicitud(dataSoli: any) {
 
   return {dataRech: data, isLoadingRech: isLoading};
 }
-export function EliminarAmigo(datas: any) {
+export function EliminarAmigo(datas: any, token?: string) {
   const api = '/user/amigos';
   const option = {
     method: 'DELETE',

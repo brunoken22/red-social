@@ -148,6 +148,8 @@ export function ThemplatePubli(props: any) {
     setComentario(false);
     e.target.style.fill = '#ddd';
   };
+  console.log(props.imgUser);
+
   return (
     <div style={{height: '100%'}}>
       <DivPerfil>

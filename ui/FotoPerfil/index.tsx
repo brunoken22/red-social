@@ -14,7 +14,9 @@ export function FotoPerfil(props: any) {
   return (
     <Figure wid={props.wid + 'px'} hei={props.hei + 'px'}>
       <img
-        src={props.img || '/user.webp'}
+        src={
+          (props.img == 'false' && '/user.webp') || props.img || '/user.webp'
+        }
         width={props.wid || 40}
         height={props.hei || 40}
         alt='perfil'

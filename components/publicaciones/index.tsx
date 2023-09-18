@@ -159,7 +159,9 @@ export function ThemplatePubli(props: any) {
           <FotoPerfil img={props.imgUser || props.imgUserPro}></FotoPerfil>
         )}
         <div>
-          <Body $margin='0'>{user?.fullName || (props.name && 'Tú')}</Body>
+          <Body $margin='0'>
+            {props.nameUserPerfil || user?.fullName || (props.name && 'Tú')}
+          </Body>
           <DivSpan>{props.fecha}</DivSpan>
         </div>
       </DivPerfil>

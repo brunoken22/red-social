@@ -249,7 +249,6 @@ export function PerfilAmigo() {
     const id = e.target.id;
     setRechazarAmigo(Number(id));
   };
-
   return data && !isClient ? (
     <DivPerfilUser>
       <DivHeadPerfil>
@@ -300,16 +299,16 @@ export function PerfilAmigo() {
             .map((item: any) => (
               <DivAllPublicaciones key={item.id}>
                 <ThemplatePubli
-                  name={dataUser?.user.fullName}
+                  nameUserPerfil={data?.user?.fullName}
                   description={item.description}
                   img={item.img}
                   fecha={item.fecha}
                   like={item.like}
                   comentarios={item.comentarios}
-                  imgUserPro={dataUser?.user?.img}
-                  imgUser={data.user.img}
+                  imgUserPro={data?.user?.img}
+                  imgUser={data?.user?.img}
                   idPublicacion={item.id}
-                  userId={dataUser.user.id}
+                  userId={data?.user?.id}
                 />
               </DivAllPublicaciones>
             ))

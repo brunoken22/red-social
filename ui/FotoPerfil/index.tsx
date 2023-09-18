@@ -11,8 +11,6 @@ const noimg = {
 };
 
 export function FotoPerfil(props: any) {
-  console.log(props.img);
-
   return (
     <Figure wid={props.wid + 'px'} hei={props.hei + 'px'}>
       <img

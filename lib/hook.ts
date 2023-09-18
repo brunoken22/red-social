@@ -310,7 +310,7 @@ export function LikeODisLike(datas: any) {
 
   return {dataLike: data, isLoadingLike: isLoading};
 }
-export function ComentarPublicacion(datas: any) {
+export function ComentarPublicacion(datas: any, token: string) {
   const api = '/user/publicacion/' + datas.id;
   const option = {
     method: 'PATCH',

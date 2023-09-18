@@ -148,7 +148,6 @@ export function ThemplatePubli(props: any) {
     setComentario(false);
     e.target.style.fill = '#ddd';
   };
-  console.log(props.imgUser);
 
   return (
     <div style={{height: '100%'}}>
@@ -237,15 +236,22 @@ function ComentarioPublic(props: any) {
   const [content, setContent] = useState('');
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(props.userId !== props.id ? true : false);
-  const {dataComentar, isLoadingComentar} = ComentarPublicacion({
-    id: props.idPublicacion,
-    fullName: props.name,
-    description: content,
-    img: props.imgUserPro,
-    userId: props.userId,
-    open,
-    click,
-  });
+  const token =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
+  const {dataComentar, isLoadingComentar} = ComentarPublicacion(
+    {
+      id: props.idPublicacion,
+      fullName: props.name,
+      description: content,
+      img: props.imgUserPro,
+      userId: props.userId,
+      open,
+      click,
+    },
+    token
+  );
   useEffect(() => {
     if (dataComentar) {
       setClick(false);

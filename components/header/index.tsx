@@ -1,4 +1,9 @@
 'use client';
+import './style.css';
+import 'instantsearch.css/themes/satellite.css';
+import {usePathname} from 'next/navigation';
+import {SearchBox, Hits, useHits, Pagination} from 'react-instantsearch';
+import {Hit} from '../searchUsers';
 import React, {useState} from 'react';
 import Logo from '@/public/logo.svg';
 import {
@@ -6,7 +11,7 @@ import {
   Nav,
   DivEnlaces,
   InputDiv,
-  Input,
+  DivInputSearch,
   Enlaces,
   EnlaceSearch,
   Button,
@@ -28,10 +33,13 @@ const stylelinkIcon: {fill: string; position: any} = {
 };
 
 export function Header() {
+  const pathname = usePathname();
   const dataUser = useRecoilValue(user);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const datapublicacionUser = useRecoilValue(publicacionUser);
+  const [search, setSearch] = useState('');
   const [menu, setMenu] = useState(false);
+  const {hits} = useHits();
   const handleMenu = (e: any) => {
     e.preventDefault();
     if (menu) {
@@ -43,7 +51,6 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
-
   return dataUser?.user?.id ? (
     <HeaderNav>
       <Nav>
@@ -51,7 +58,38 @@ export function Header() {
           <Link href={'/home'}>
             <Logo style={{borderRadius: '10px', fill: '#fff'}} />
           </Link>
-          <Input type='text' placeholder='Buscador'></Input>
+          <DivInputSearch>
+            {pathname !== '/search' && (
+              <SearchBox
+                placeholder='UniRed'
+                onChangeCapture={(e: any) => {
+                  e.target.form
+                    .querySelector('.ais-SearchBox-reset')
+                    .addEventListener('click', () => setSearch(''));
+                  setSearch(e.target.value);
+                }}
+              />
+            )}
+
+            {search && pathname !== '/search' ? (
+              hits.length > 0 ? (
+                <>
+                  <Hits hitComponent={Hit} />
+                  {/* <Pagination /> */}
+                </>
+              ) : (
+                <p
+                  style={{
+                    position: 'absolute',
+                    backgroundColor: '#ff1100',
+                    padding: '1rem',
+                  }}>
+                  {' '}
+                  No se encontraron resultado
+                </p>
+              )
+            ) : null}
+          </DivInputSearch>
         </InputDiv>
         <DivEnlaces>
           <Link href={'/search'}>

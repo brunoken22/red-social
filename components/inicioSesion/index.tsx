@@ -7,8 +7,6 @@ import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {SigninUser} from '@/lib/hook';
 import {Loader} from '../loader';
-// import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
-// import jwt_decode from 'jwt-decode';
 
 export function Signin() {
   const [dataUser, setDataUser] = useState({

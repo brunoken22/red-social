@@ -19,13 +19,12 @@ export const InputDiv = sytled.div`
         }
     }
 `;
-export const Input = sytled.input`
-    height: 30px;
-    border-radius: 20px;
+export const DivInputSearch = sytled.div`
     border: 0;
-    width: 200px;
-    text-indent: 10px;
-   
+    position:relative;
+    @media(max-width:550px){
+            display:none
+    }
 `;
 export const Nav = sytled.nav`
     display: flex;

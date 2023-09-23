@@ -62,7 +62,7 @@ export function Header() {
   useEffect(() => {
     let count: any = [];
 
-    dataUser?.user?.rtdb.map((item: string) => {
+    dataUser?.user?.rtdb?.map((item: string) => {
       const chatrooms = ref(rtdb, '/rooms/' + item + '/messages');
       onValue(chatrooms, (snapshot: any) => {
         const valor = snapshot.val();

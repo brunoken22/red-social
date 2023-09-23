@@ -60,6 +60,8 @@ export function Header() {
     setMenu(data);
   };
   useEffect(() => {
+    let count: any = [];
+
     dataUser?.user?.rtdb.map((item: string) => {
       const chatrooms = ref(rtdb, '/rooms/' + item + '/messages');
       onValue(chatrooms, (snapshot: any) => {
@@ -68,31 +70,29 @@ export function Header() {
           const datas: any = Object?.values(valor);
           const utlimoMensaje: any = datas[datas.length - 1];
 
-          if (!utlimoMensaje.read && utlimoMensaje.id !== dataUser.user.id) {
-            const newNoti =
-              dataMessage.length > 0
-                ? dataMessage.filter((item: any) => item !== utlimoMensaje.id)
-                : [utlimoMensaje.id];
-            setDataMessage(newNoti);
-          } else if (
-            utlimoMensaje.read &&
-            utlimoMensaje.id !== dataUser.user.id
-          ) {
-            const errar =
-              dataMessage.length > 0
-                ? dataMessage.filter((item: any) => {
-                    return item != utlimoMensaje.id;
-                  })
-                : [];
+          if (utlimoMensaje.id !== dataUser.user.id) {
+            if (!utlimoMensaje.read) {
+              count.push(utlimoMensaje);
+              setDataMessage([...count]);
 
-            if (errar) {
-              setDataMessage(errar);
+              return;
+            }
+            if (utlimoMensaje.read) {
+              const filtoMensa = count?.filter(
+                (item: any) => item.id !== utlimoMensaje.id
+              );
+
+              if (filtoMensa) {
+                count = filtoMensa;
+                setDataMessage([...filtoMensa]);
+              }
             }
           }
         }
       });
     });
   }, [dataUser?.user?.rtdb]);
+
   return dataUser?.user?.id ? (
     <HeaderNav>
       <Nav>

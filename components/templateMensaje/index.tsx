@@ -105,6 +105,7 @@ export function TemMensaje() {
       e.target.message.value = '';
     }, 200);
   };
+  // console.log(dataMessage);
 
   return (
     <DivTemMensaje>
@@ -137,7 +138,9 @@ export function TemMensaje() {
                       <FotoPerfil img={e.img} />
                       <h4 style={{color: '#fff', margin: 0}}>{e.fullName}</h4>
                     </DivAllChat>
-                    {dataMessage?.includes(e.id) && <SpanNoti></SpanNoti>}
+                    {dataMessage?.find((item: any) => item.id == e.id) && (
+                      <SpanNoti></SpanNoti>
+                    )}
                   </ButtonSms>
                 );
               })

@@ -38,7 +38,16 @@ export const Sms = styled.div`
   padding: 1rem;
   flex-direction: column;
 `;
-export const DivSms = styled.div``;
+export const SpanNoti = styled.span`
+  height: 20px;
+  width: 20px;
+  background-color: #ff3a3a;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: 50%;
+`;
 export const Menssage = styled.p<any>`
   display: inline-block;
   background-color: ${({$isUser}: any) => ($isUser ? '#0662ab' : '#575757')};

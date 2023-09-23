@@ -8,6 +8,10 @@ type Publicacion = {
   comentarios: [];
   userId: number;
 };
+type Message = {
+  read: boolean;
+  rtdb: string;
+};
 export type User = {
   id: number;
   fullName: string;
@@ -56,4 +60,9 @@ export const getAllSolicitudesEnviadas = atom({
 export const publicacionAmigos = atom({
   key: 'publicacionAmigos',
   default: [] as Publicacion[],
+});
+
+export const isMenssage = atom({
+  key: 'isMenssage',
+  default: [] as Message[],
 });

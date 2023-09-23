@@ -1,10 +1,12 @@
 'use client';
+import {rtdb} from '@/lib/firebase';
+import {ref, onValue} from 'firebase/database';
 import './style.css';
 import 'instantsearch.css/themes/satellite.css';
 import {usePathname} from 'next/navigation';
 import {SearchBox, Hits, useHits, Pagination} from 'react-instantsearch';
 import {Hit} from '../searchUsers';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Logo from '@/public/logo.svg';
 import {
   HeaderNav,
@@ -25,8 +27,13 @@ import Search from '@/ui/icons/search.svg';
 import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
-import {useRecoilValue} from 'recoil';
-import {user, getAllSolicitudesRecibidas, publicacionUser} from '@/lib/atom';
+import {useRecoilValue, useRecoilState} from 'recoil';
+import {
+  user,
+  getAllSolicitudesRecibidas,
+  publicacionUser,
+  isMenssage,
+} from '@/lib/atom';
 const stylelinkIcon: {fill: string; position: any} = {
   fill: '#b3b3b3',
   position: 'relative',
@@ -35,6 +42,7 @@ const stylelinkIcon: {fill: string; position: any} = {
 export function Header() {
   const pathname = usePathname();
   const dataUser = useRecoilValue(user);
+  const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const datapublicacionUser = useRecoilValue(publicacionUser);
   const [search, setSearch] = useState('');
@@ -51,6 +59,40 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
+  useEffect(() => {
+    dataUser?.user?.rtdb.map((item: string) => {
+      const chatrooms = ref(rtdb, '/rooms/' + item + '/messages');
+      onValue(chatrooms, (snapshot: any) => {
+        const valor = snapshot.val();
+        if (valor) {
+          const datas: any = Object?.values(valor);
+          const utlimoMensaje: any = datas[datas.length - 1];
+
+          if (!utlimoMensaje.read && utlimoMensaje.id !== dataUser.user.id) {
+            const newNoti =
+              dataMessage.length > 0
+                ? dataMessage.filter((item: any) => item !== utlimoMensaje.id)
+                : [utlimoMensaje.id];
+            setDataMessage(newNoti);
+          } else if (
+            utlimoMensaje.read &&
+            utlimoMensaje.id !== dataUser.user.id
+          ) {
+            const errar =
+              dataMessage.length > 0
+                ? dataMessage.filter((item: any) => {
+                    return item != utlimoMensaje.id;
+                  })
+                : [];
+
+            if (errar) {
+              setDataMessage(errar);
+            }
+          }
+        }
+      });
+    });
+  }, [dataUser?.user?.rtdb]);
   return dataUser?.user?.id ? (
     <HeaderNav>
       <Nav>
@@ -111,9 +153,9 @@ export function Header() {
             </Enlaces>
           </Link>
           <Link href={'/mensaje'} style={stylelinkIcon}>
-            {/* {dataSoliReci?.length > 0 && (
-              <DivNotificacionActi>{dataSoliReci?.length}</DivNotificacionActi>
-            )} */}
+            {dataMessage.length > 0 && (
+              <DivNotificacionActi>{dataMessage.length}</DivNotificacionActi>
+            )}
             <Enlaces>
               <Chat />{' '}
             </Enlaces>

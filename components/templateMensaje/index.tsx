@@ -7,21 +7,24 @@ import {
   TemplSns,
   Sms,
   Menssage,
+  SpanNoti,
 } from './styled';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Input} from '@/ui/input';
 import {BotonSms, ButtonSms} from '@/ui/boton';
 import {useRecoilValue} from 'recoil';
-import {getAllAmigos, user} from '@/lib/atom';
+import {getAllAmigos, user, isMenssage} from '@/lib/atom';
 import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
-import {ref, onValue, onDisconnect} from 'firebase/database';
+import {ref, onValue, update, get} from 'firebase/database';
 import {EnviarMessage} from '@/lib/hook';
 
 export function TemMensaje() {
   const dataAllAmigos = useRecoilValue(getAllAmigos);
   const dataUser = useRecoilValue(user);
+  const dataMessage = useRecoilValue(isMenssage);
   const [messagesAll, setMessagesAll] = useState([]);
+  const [claveMessage, setclaveMessage] = useState('');
   const containerRef: any = useRef(null);
   const [dataMensajeUser, setDataMensajeUser] = useState({
     fullName: '',
@@ -31,6 +34,7 @@ export function TemMensaje() {
   });
   const [messageUser, setMessageUser] = useState({
     message: '',
+    read: false,
     rtdb: '' || undefined,
   });
   const token =
@@ -39,30 +43,61 @@ export function TemMensaje() {
       : '';
   const {dataMesssage} = EnviarMessage(messageUser, token);
 
-  const chatrooms = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/messages');
-
   useEffect(() => {
     if (dataMesssage) {
       setMessageUser((prev: any) => ({...prev, message: ''}));
     }
   }, [dataMesssage]);
+
   useEffect(() => {
-    onValue(chatrooms, (snapshot: any) => {
+    const chatrooms = ref(
+      rtdb,
+      '/rooms/' + dataMensajeUser?.rtdb + '/messages'
+    );
+
+    return onValue(chatrooms, (snapshot: any) => {
       const valor = snapshot.val();
       if (valor) {
         const datas: any = Object.values(valor);
-        setMessagesAll(datas); // Actualiza el estado aquí
-      } else {
-        setMessagesAll(valor); // Actualiza el estado aquí
+        const claves = Object.keys(valor);
+        const ultimoObjeto = claves[claves.length - 1];
+        setclaveMessage(ultimoObjeto);
+        setMessagesAll(datas);
       }
     });
-    onDisconnect(chatrooms).set('I disconnected!');
-  }, [dataMensajeUser]);
+  }, [dataMensajeUser.rtdb]);
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
+    if (messagesAll) {
+      const utlimoMensaje: any = messagesAll[messagesAll.length - 1];
+
+      if (
+        utlimoMensaje?.read == false &&
+        utlimoMensaje.id !== dataUser.user.id
+      ) {
+        const chatroomData = ref(
+          rtdb,
+          '/rooms/' + dataMensajeUser?.rtdb + '/messages/' + claveMessage
+        );
+        get(chatroomData).then((snap) => {
+          if (snap.exists()) {
+            update(chatroomData, {
+              read: true,
+            })
+              .then((snap: any) => {
+                return snap;
+              })
+              .catch((e: any) => {
+                return e;
+              });
+          }
+        });
+      }
+    }
   }, [messagesAll]);
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setMessageUser((prev: any) => ({...prev, message: e.target.message.value}));
@@ -89,6 +124,7 @@ export function TemMensaje() {
                       setMessageUser({
                         rtdb: rtdbId,
                         message: '',
+                        read: false,
                       });
                       setDataMensajeUser({
                         fullName: e.fullName,
@@ -101,6 +137,7 @@ export function TemMensaje() {
                       <FotoPerfil img={e.img} />
                       <h4 style={{color: '#fff', margin: 0}}>{e.fullName}</h4>
                     </DivAllChat>
+                    {dataMessage?.includes(e.id) && <SpanNoti></SpanNoti>}
                   </ButtonSms>
                 );
               })
@@ -145,6 +182,14 @@ export function TemMensaje() {
                     );
                   })
                 : null}
+              {messagesAll?.length > 0 &&
+                (messagesAll[messagesAll.length - 1] as any).id ===
+                  dataUser.user.id &&
+                (messagesAll[messagesAll.length - 1] as any).read && (
+                  <p style={{margin: '0', textAlign: 'end', color: '#ddd'}}>
+                    ✔ Visto
+                  </p>
+                )}
             </Sms>
             <div>
               <form

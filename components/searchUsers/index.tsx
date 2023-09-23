@@ -5,7 +5,6 @@ import type {Hit} from 'instantsearch.js';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import Link from 'next/link';
 import {useState} from 'react';
-import './style.css';
 
 export function SearchUser() {
   const {hits} = useHits();

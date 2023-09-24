@@ -24,6 +24,7 @@ export function Layout({children}: {children: React.ReactNode}) {
         <ThemeProvider theme={theme.default}>
           <div
             style={{
+              maxHeight: '100%',
               minHeight: '100vh',
               display: 'flex',
               flexDirection: 'column',

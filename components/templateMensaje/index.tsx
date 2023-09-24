@@ -18,7 +18,8 @@ import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, get} from 'firebase/database';
 import {EnviarMessage} from '@/lib/hook';
-
+import CloseSVG from '@/ui/icons/close.svg';
+import {Button} from '../publicar/styled';
 export function TemMensaje() {
   const dataAllAmigos = useRecoilValue(getAllAmigos);
   const dataUser = useRecoilValue(user);
@@ -26,6 +27,7 @@ export function TemMensaje() {
   const [messagesAll, setMessagesAll] = useState([]);
   const [claveMessage, setclaveMessage] = useState('');
   const containerRef: any = useRef(null);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [dataMensajeUser, setDataMensajeUser] = useState({
     fullName: '',
     img: '',
@@ -97,7 +99,19 @@ export function TemMensaje() {
       }
     }
   }, [messagesAll]);
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
 
+    // Agregar un event listener para el evento de cambio de tamaño de ventana
+    window.addEventListener('resize', handleResize);
+
+    // Limpia el event listener cuando el componente se desmonta
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setMessageUser((prev: any) => ({...prev, message: e.target.message.value}));
@@ -105,66 +119,87 @@ export function TemMensaje() {
       e.target.message.value = '';
     }, 200);
   };
-  // console.log(dataMessage);
+  const handleClose = (e: any) => {
+    e.preventDefault();
+    setDataMensajeUser({
+      fullName: '',
+      img: '',
+      id: '',
+      rtdb: undefined,
+    });
+  };
 
   return (
     <DivTemMensaje>
-      <TemplMensaje>
-        <h2>Chats</h2>
-        <TemplChat>
-          {dataAllAmigos
-            ? dataAllAmigos.map((e: any, p: any) => {
-                return (
-                  <ButtonSms
-                    key={p}
-                    onClick={() => {
-                      const rtdbId = existenElementosSimilares(
-                        e.rtdb,
-                        dataUser.user.rtdb as []
-                      );
-                      setMessageUser({
-                        rtdb: rtdbId,
-                        message: '',
-                        read: false,
-                      });
-                      setDataMensajeUser({
-                        fullName: e.fullName,
-                        img: e.img,
-                        id: e.id,
-                        rtdb: rtdbId,
-                      });
-                    }}>
-                    <DivAllChat>
-                      <FotoPerfil img={e.img} />
-                      <h4 style={{color: '#fff', margin: 0}}>{e.fullName}</h4>
-                    </DivAllChat>
-                    {dataMessage?.find((item: any) => item.id == e.id) && (
-                      <SpanNoti></SpanNoti>
-                    )}
-                  </ButtonSms>
-                );
-              })
-            : 'Sin Conversaciones'}
-        </TemplChat>
-      </TemplMensaje>
+      {!dataMensajeUser.rtdb ? (
+        <TemplMensaje>
+          <h2>Chats</h2>
+          <TemplChat>
+            {dataAllAmigos
+              ? dataAllAmigos.map((e: any, p: any) => {
+                  return (
+                    <ButtonSms
+                      key={p}
+                      onClick={() => {
+                        const rtdbId = existenElementosSimilares(
+                          e.rtdb,
+                          dataUser.user.rtdb as []
+                        );
+                        setMessageUser({
+                          rtdb: rtdbId,
+                          message: '',
+                          read: false,
+                        });
+                        setDataMensajeUser({
+                          fullName: e.fullName,
+                          img: e.img,
+                          id: e.id,
+                          rtdb: rtdbId,
+                        });
+                      }}>
+                      <DivAllChat>
+                        <FotoPerfil img={e.img} />
+                        <h4 style={{color: '#fff', margin: 0}}>{e.fullName}</h4>
+                      </DivAllChat>
+                      {dataMessage?.find((item: any) => item.id == e.id) && (
+                        <SpanNoti></SpanNoti>
+                      )}
+                    </ButtonSms>
+                  );
+                })
+              : 'Sin Conversaciones'}
+          </TemplChat>
+        </TemplMensaje>
+      ) : null}
+
       {dataMensajeUser.rtdb ? (
         <TemplSns>
           <div
             style={{
-              display: 'inherit',
-              alignItems: 'center',
-              gap: '1rem',
+              display: 'flex',
+              justifyContent: 'space-between',
               borderBottom: '1px solid #3b3b3b',
             }}>
-            <FotoPerfil img={dataMensajeUser.img} />
-            <h5 style={{margin: '0'}}>{dataMensajeUser.fullName}</h5>
+            <div
+              style={{
+                display: 'inherit',
+                alignItems: 'center',
+                gap: '1rem',
+              }}>
+              <FotoPerfil img={dataMensajeUser.img} />
+              <h5 style={{margin: '0'}}>{dataMensajeUser.fullName}</h5>
+            </div>
+            <Button onClick={handleClose}>
+              {' '}
+              <CloseSVG />
+            </Button>
           </div>
           <div
             style={{
-              minHeight: '650px',
               display: 'inherit',
               flexDirection: 'column',
               gap: '1rem',
+              maxHeight: '70vh',
             }}>
             <Sms ref={containerRef}>
               {messagesAll

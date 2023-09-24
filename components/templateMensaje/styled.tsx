@@ -29,6 +29,9 @@ export const TemplSns = styled.div`
   border: 1px solid #3b3b3b;
   padding: 1rem;
   border-radius: 10px;
+  @media (max-width: 1120px) {
+    padding: 10px;
+  }
 `;
 export const Sms = styled.div`
   display: inherit;
@@ -53,4 +56,6 @@ export const Menssage = styled.p<any>`
   background-color: ${({$isUser}: any) => ($isUser ? '#0662ab' : '#575757')};
   padding: 0.5rem;
   border-radius: 40px;
+  word-wrap: break-word;
+  max-width: 100%;
 `;

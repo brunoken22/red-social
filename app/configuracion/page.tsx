@@ -5,6 +5,7 @@ import {ConfigPerfil} from '@/components/configuracionPerfil';
 
 export const metadata: Metadata = {
   title: 'Configuracion | UniRed',
+  description: 'Configuracion',
 };
 
 export default function Configuracion() {

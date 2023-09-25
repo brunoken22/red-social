@@ -4,6 +4,7 @@ import {Span} from '@/components/span';
 import {Metadata} from 'next';
 export const metadata: Metadata = {
   title: 'Notificaciones | UniRed',
+  description: 'Notificaciones de usuri@',
 };
 export default function Notificaciones() {
   return (

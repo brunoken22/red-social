@@ -6,9 +6,9 @@ import {Metadata} from 'next';
 
 export const metadata: Metadata = {
   title: 'Home | UniRed',
+  description: 'Inicio',
 };
 export default function Home() {
-
   return (
     <Main>
       <ContainerMain>

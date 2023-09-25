@@ -4,6 +4,7 @@ import {Main} from '@/ui/container';
 
 export const metadata: Metadata = {
   title: 'Perfil | UniRed',
+  description: 'Perfil',
 };
 export default function Perfil() {
   return (

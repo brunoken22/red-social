@@ -14,11 +14,7 @@ import {Publicar} from '../publicar';
 import {PublicacionesUser, ThemplatePubli} from '../publicaciones';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
-import {
-  user,
-  getAllSolicitudesEnviadas,
-  getAllSolicitudesRecibidas,
-} from '@/lib/atom';
+import {user, isConnect, getAllSolicitudesRecibidas} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {
   ModificarUser,
@@ -109,6 +105,7 @@ export function PerfilUser() {
                 position: 'absolute',
                 bottom: '0',
                 right: '0',
+                zIndex: 10,
               }}>
               <div className='dropzoneClick' style={{height: '24px'}}>
                 <div
@@ -162,6 +159,7 @@ export function PerfilUser() {
 export function PerfilAmigo() {
   const {id} = useParams();
   const router = useRouter();
+  const dataIsConnect = useRecoilValue(isConnect);
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataUser = useRecoilValue(user);
   const token =
@@ -254,7 +252,16 @@ export function PerfilAmigo() {
       <DivHeadPerfil>
         <DivFotoNameLink>
           {data?.user?.id && (
-            <FotoPerfil wid='80' hei='80' img={data?.user?.img} />
+            <FotoPerfil
+              wid='80'
+              hei='80'
+              img={data?.user?.img}
+              conectHei='15px'
+              connect={
+                dataIsConnect?.find((e: any) => e.id == data?.user?.id)
+                  ?.connect && true
+              }
+            />
           )}
           <h2 style={{textAlign: 'center', marginTop: '0'}}>
             {data?.user?.fullName}
@@ -310,6 +317,7 @@ export function PerfilAmigo() {
                   imgUser={data?.user?.img || 'false'}
                   idPublicacion={item.id}
                   userId={dataUser?.user?.id}
+                  id={data?.user?.id}
                 />
               </DivAllPublicaciones>
             ))

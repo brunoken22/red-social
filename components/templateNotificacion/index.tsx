@@ -2,7 +2,7 @@
 import {ButtonNoti} from '@/ui/boton';
 import {DivAllPublicaciones, DivPublicar} from '@/ui/container';
 import {FotoPerfil} from '@/ui/FotoPerfil';
-import {publicacionUser, user} from '@/lib/atom';
+import {publicacionUser, user, isConnect} from '@/lib/atom';
 import {ComentarPublicacion, GetPublicacionId} from '@/lib/hook';
 import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
@@ -12,6 +12,8 @@ import {Loader} from '../loader';
 export function TemNoti() {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
+  const dataIsConnect = useRecoilValue(isConnect);
+
   const filtradoPubliUser =
     publicacionesUser.length > 0
       ? publicacionesUser.filter((publi: any) => publi.comentarios.length > 0)
@@ -36,11 +38,24 @@ export function TemNoti() {
                 }}>
                 <ButtonNoti $visto={e.open} id={e.id}>
                   <FotoPerfil
+                    wid='40'
+                    hei='40'
                     img={
                       e.comentarios
                         ?.slice()
                         .reverse()
                         .find((e: any) => e.userId !== dataUser.user.id)?.img
+                    }
+                    connect={
+                      dataIsConnect?.find((eConnect: any) => {
+                        const userComment = e.comentarios
+                          ?.slice()
+                          .reverse()
+                          .find((e: any) => e.userId !== dataUser.user.id);
+                        console.log(userComment);
+
+                        return userComment?.userId == eConnect.id;
+                      })?.connect && true
                     }
                   />
                   <p>

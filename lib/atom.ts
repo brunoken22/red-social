@@ -1,4 +1,5 @@
 import {atom} from 'recoil';
+
 type Publicacion = {
   id: string;
   description: string;
@@ -11,6 +12,10 @@ type Publicacion = {
 type Message = {
   read: boolean;
   rtdb: string;
+};
+type Connect = {
+  id: number;
+  connect: boolean;
 };
 export type User = {
   id: number;
@@ -61,8 +66,12 @@ export const publicacionAmigos = atom({
   key: 'publicacionAmigos',
   default: [] as Publicacion[],
 });
-
 export const isMenssage = atom({
   key: 'isMenssage',
   default: [] as Message[],
+});
+
+export const isConnect = atom({
+  key: 'isConnet',
+  default: [] as Connect[],
 });

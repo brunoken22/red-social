@@ -23,12 +23,12 @@ import {
   user,
   publicacionAmigos,
   getAllAmigos,
+  isConnect,
 } from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {LikeODisLike, ComentarPublicacion} from '@/lib/hook';
-import {Loader} from '../loader';
 import {SendComentPubli} from '@/ui/icons';
 
 const iconConLike = {
@@ -106,6 +106,8 @@ export function PublicacionesUser() {
 
 export function ThemplatePubli(props: any) {
   const getAllUserData = useRecoilValue(getAllAmigos);
+  const dataIsConnect = useRecoilValue(isConnect);
+
   const user: any = getAllUserData.find((user: any) => user.id == props.id);
   const isLike =
     props?.like?.length > 0 ? props.like?.includes(props.userId) : false;
@@ -154,10 +156,23 @@ export function ThemplatePubli(props: any) {
       <DivPerfil>
         {user ? (
           <Link href={'/amigos/' + props.id}>
-            <FotoPerfil img={user?.img}></FotoPerfil>
+            <FotoPerfil
+              img={user?.img}
+              width='40'
+              hei='40'
+              connect={
+                dataIsConnect?.find((e: any) => e.id == props.id)?.connect &&
+                true
+              }></FotoPerfil>
           </Link>
         ) : (
-          <FotoPerfil img={props.imgUser || props.imgUserPro}></FotoPerfil>
+          <FotoPerfil
+            connect={
+              dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
+            }
+            width='40'
+            hei='40'
+            img={props.imgUser || props.imgUserPro}></FotoPerfil>
         )}
         <div>
           <Body $margin='0'>
@@ -225,6 +240,9 @@ export function ThemplatePubli(props: any) {
           imgUserPro={props.imgUserPro}
           userId={props.userId}
           id={props.id}
+          connect={
+            dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
+          }
         />
       ) : null}
     </div>
@@ -282,7 +300,11 @@ function ComentarioPublic(props: any) {
           marginBottom: '0.5rem',
         }}>
         <DivPerfil>
-          <FotoPerfil hei='30' wid='30' img={props.imgUserPro}></FotoPerfil>
+          <FotoPerfil
+            hei='30'
+            wid='30'
+            img={props.imgUserPro}
+            connect={props.connect}></FotoPerfil>
           <DivAñadirComentar>
             <div style={{maxWidth: '100%', minWidth: '200px'}}>
               <ComentarioParrafo

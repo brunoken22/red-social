@@ -13,7 +13,7 @@ import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Input} from '@/ui/input';
 import {BotonSms, ButtonSms} from '@/ui/boton';
 import {useRecoilValue} from 'recoil';
-import {getAllAmigos, user, isMenssage} from '@/lib/atom';
+import {getAllAmigos, user, isMenssage, isConnect} from '@/lib/atom';
 import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, get} from 'firebase/database';
@@ -23,6 +23,7 @@ import {Button} from '../publicar/styled';
 export function TemMensaje() {
   const dataAllAmigos = useRecoilValue(getAllAmigos);
   const dataUser = useRecoilValue(user);
+  const dataIsConnect = useRecoilValue(isConnect);
   const dataMessage = useRecoilValue(isMenssage);
   const [messagesAll, setMessagesAll] = useState([]);
   const [claveMessage, setclaveMessage] = useState('');
@@ -158,7 +159,16 @@ export function TemMensaje() {
                         });
                       }}>
                       <DivAllChat>
-                        <FotoPerfil img={e.img} />
+                        <FotoPerfil
+                          img={e.img}
+                          wid='40'
+                          hei='40'
+                          connect={
+                            dataIsConnect?.find(
+                              (eConnect: any) => e.id == eConnect.id
+                            )?.connect && true
+                          }
+                        />
                         <h4 style={{color: '#fff', margin: 0}}>{e.fullName}</h4>
                       </DivAllChat>
                       {dataMessage?.find((item: any) => item.id == e.id) && (
@@ -186,7 +196,16 @@ export function TemMensaje() {
                 alignItems: 'center',
                 gap: '1rem',
               }}>
-              <FotoPerfil img={dataMensajeUser.img} />
+              <FotoPerfil
+                wid='40'
+                hei='40'
+                img={dataMensajeUser.img}
+                connect={
+                  dataIsConnect?.find(
+                    (eConnect: any) => dataMensajeUser.id == eConnect.id
+                  )?.connect && true
+                }
+              />
               <h5 style={{margin: '0'}}>{dataMensajeUser.fullName}</h5>
             </div>
             <Button onClick={handleClose}>

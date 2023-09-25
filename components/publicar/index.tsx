@@ -20,7 +20,7 @@ import {useEffect, useState} from 'react';
 import {ImageSVG} from '@/ui/icons';
 import ImageSubir from '@/ui/icons/image.svg';
 import CloseSvg from '@/ui/icons/close.svg';
-import {publicacionUser, user} from '@/lib/atom';
+import {publicacionUser, user, isConnect} from '@/lib/atom';
 import {useRecoilState} from 'recoil';
 import {CreatePublicacion} from '@/lib/hook';
 import {Loader} from '../loader';
@@ -28,6 +28,7 @@ import {Loader} from '../loader';
 export function Publicar() {
   const [formClick, setFormClick] = useState(false);
   const dataValor = useRecoilValue(user);
+  const dataIsConnect = useRecoilValue(isConnect);
 
   useEffect(() => {
     if (formClick) {
@@ -42,7 +43,13 @@ export function Publicar() {
       <DivText>
         <FotoPerfil
           img={dataValor?.user?.img}
+          width='40'
+          hei='40'
           fullName={dataValor?.user?.fullName}
+          connect={
+            dataIsConnect?.find((e: any) => e.id == dataValor?.user?.id)
+              ?.connect && true
+          }
         />
         <DivCrear onClick={() => setFormClick(true)}>
           <p style={{margin: '0'}}>Crear publicacion</p>

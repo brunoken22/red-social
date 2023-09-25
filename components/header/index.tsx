@@ -1,10 +1,10 @@
 'use client';
 import {rtdb} from '@/lib/firebase';
-import {ref, onValue} from 'firebase/database';
+import {ref, onValue, update, onDisconnect} from 'firebase/database';
 import './style.css';
 import 'instantsearch.css/themes/satellite.css';
 import {usePathname} from 'next/navigation';
-import {SearchBox, Hits, useHits, Pagination} from 'react-instantsearch';
+import {SearchBox, Hits, useHits} from 'react-instantsearch';
 import {Hit} from '../searchUsers';
 import React, {useEffect, useState} from 'react';
 import Logo from '@/public/logo.svg';
@@ -33,6 +33,7 @@ import {
   getAllSolicitudesRecibidas,
   publicacionUser,
   isMenssage,
+  isConnect,
 } from '@/lib/atom';
 const stylelinkIcon: {fill: string; position: any} = {
   fill: '#b3b3b3',
@@ -43,6 +44,7 @@ export function Header() {
   const pathname = usePathname();
   const dataUser = useRecoilValue(user);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
+  const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const datapublicacionUser = useRecoilValue(publicacionUser);
   const [search, setSearch] = useState('');
@@ -93,6 +95,33 @@ export function Header() {
     });
   }, [dataUser?.user?.rtdb]);
 
+  useEffect(() => {
+    const connectRef = ref(rtdb, '/connect');
+    onValue(connectRef, (snapshot: any) => {
+      const valor = snapshot.val();
+      if (valor) {
+        const dataConnect: any = Object.values(valor);
+        setIsConnect(dataConnect);
+      }
+    });
+  }, [dataUser?.user?.rtdb]);
+  useEffect(() => {
+    if (dataUser?.user?.id) {
+      const connectRef = ref(rtdb, '/connect/' + dataUser.user?.id);
+      update(connectRef, {
+        id: dataUser?.user?.id,
+        connect: true,
+      });
+      onDisconnect(connectRef).update({connect: false});
+    }
+  }, [dataUser]);
+
+  const handleClose = async () => {
+    const connectRef = ref(rtdb, '/connect/' + dataUser.user.id);
+    await update(connectRef, {
+      connect: false,
+    });
+  };
   return dataUser?.user?.id ? (
     <HeaderNav>
       <Nav>
@@ -183,9 +212,13 @@ export function Header() {
               hei='40'
               img={dataUser.user.img}
               fullName={dataUser.user.fullName}
+              connect={
+                dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) &&
+                true
+              }
             />
           </Button>
-          {menu ? <Menu click={handleClick} /> : null}
+          {menu ? <Menu click={handleClick} close={handleClose} /> : null}
         </div>
       </Nav>
     </HeaderNav>

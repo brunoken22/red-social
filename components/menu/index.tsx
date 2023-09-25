@@ -17,6 +17,7 @@ export function Menu(props: any) {
   };
   const handleCerrarSesion = (e: any) => {
     e.preventDefault();
+    props.close(true);
     localStorage.removeItem('token');
     router.push('/');
   };

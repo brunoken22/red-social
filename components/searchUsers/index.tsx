@@ -5,6 +5,8 @@ import type {Hit} from 'instantsearch.js';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import Link from 'next/link';
 import {useState} from 'react';
+import {isConnect} from '@/lib/atom';
+import {useRecoilValue} from 'recoil';
 
 export function SearchUser() {
   const {hits} = useHits();
@@ -46,6 +48,8 @@ type HitProps = {
   hit: Hit;
 };
 export function Hit({hit}: HitProps) {
+  const dataIsConnect = useRecoilValue(isConnect);
+
   return (
     <Link
       href={'/amigos/' + hit.objectID}
@@ -54,7 +58,14 @@ export function Hit({hit}: HitProps) {
         color: '#fff',
       }}>
       <DivLinkUser>
-        <FotoPerfil img={hit.img}></FotoPerfil>
+        <FotoPerfil
+          wid='40'
+          hei='40'
+          img={hit.img}
+          connect={
+            dataIsConnect?.find((eConnect: any) => hit.id == eConnect.id)
+              ?.connect && true
+          }></FotoPerfil>
         <p>
           <Highlight attribute='fullName' hit={hit} />
         </p>

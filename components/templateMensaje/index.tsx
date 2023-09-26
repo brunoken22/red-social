@@ -20,6 +20,7 @@ import {ref, onValue, update, get} from 'firebase/database';
 import {EnviarMessage} from '@/lib/hook';
 import CloseSVG from '@/ui/icons/close.svg';
 import {Button} from '../publicar/styled';
+import Link from 'next/link';
 export function TemMensaje() {
   const dataAllAmigos = useRecoilValue(getAllAmigos);
   const dataUser = useRecoilValue(user);
@@ -28,7 +29,6 @@ export function TemMensaje() {
   const [messagesAll, setMessagesAll] = useState([]);
   const [claveMessage, setclaveMessage] = useState('');
   const containerRef: any = useRef(null);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [dataMensajeUser, setDataMensajeUser] = useState({
     fullName: '',
     img: '',
@@ -66,6 +66,8 @@ export function TemMensaje() {
         const ultimoObjeto = claves[claves.length - 1];
         setclaveMessage(ultimoObjeto);
         setMessagesAll(datas);
+      } else {
+        setMessagesAll([]);
       }
     });
   }, [dataMensajeUser.rtdb]);
@@ -100,19 +102,7 @@ export function TemMensaje() {
       }
     }
   }, [messagesAll]);
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
 
-    // Agregar un event listener para el evento de cambio de tamaño de ventana
-    window.addEventListener('resize', handleResize);
-
-    // Limpia el event listener cuando el componente se desmonta
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setMessageUser((prev: any) => ({...prev, message: e.target.message.value}));
@@ -169,7 +159,15 @@ export function TemMensaje() {
                             )?.connect && true
                           }
                         />
-                        <h4 style={{color: '#fff', margin: 0}}>{e.fullName}</h4>
+
+                        <h4
+                          style={{
+                            color: '#fff',
+                            margin: 0,
+                            textAlign: 'start',
+                          }}>
+                          {e.fullName}
+                        </h4>
                       </DivAllChat>
                       {dataMessage?.find((item: any) => item.id == e.id) && (
                         <SpanNoti></SpanNoti>
@@ -196,16 +194,18 @@ export function TemMensaje() {
                 alignItems: 'center',
                 gap: '1rem',
               }}>
-              <FotoPerfil
-                wid='40'
-                hei='40'
-                img={dataMensajeUser.img}
-                connect={
-                  dataIsConnect?.find(
-                    (eConnect: any) => dataMensajeUser.id == eConnect.id
-                  )?.connect && true
-                }
-              />
+              <Link href={'/amigos/' + dataMensajeUser.id}>
+                <FotoPerfil
+                  wid='40'
+                  hei='40'
+                  img={dataMensajeUser.img}
+                  connect={
+                    dataIsConnect?.find(
+                      (eConnect: any) => dataMensajeUser.id == eConnect.id
+                    )?.connect && true
+                  }
+                />
+              </Link>
               <h5 style={{margin: '0'}}>{dataMensajeUser.fullName}</h5>
             </div>
             <Button onClick={handleClose}>

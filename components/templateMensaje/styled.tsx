@@ -12,6 +12,7 @@ export const TemplMensaje = styled.div`
   display: inherit;
   gap: 1rem;
   flex-direction: column;
+  margin-bottom: 1rem;
 `;
 
 export const TemplChat = styled.div`

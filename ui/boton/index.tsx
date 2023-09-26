@@ -10,6 +10,7 @@ export const Button = styled.button`
 `;
 export const ButtonSms = styled(Button)`
   position: relative;
+  max-width: 350px;
   height: 100% !important;
 `;
 export const ButtonNoti = styled.div<any>`

@@ -99,9 +99,16 @@ export function Header() {
     const connectRef = ref(rtdb, '/connect');
     onValue(connectRef, (snapshot: any) => {
       const valor = snapshot.val();
+
       if (valor) {
+        const connectRef = ref(rtdb, '/connect/' + dataUser.user?.id);
         const dataConnect: any = Object.values(valor);
         setIsConnect(dataConnect);
+        update(connectRef, {
+          id: dataUser?.user?.id,
+          connect: true,
+        });
+        onDisconnect(connectRef).update({connect: false});
       }
     });
   }, [dataUser?.user?.rtdb]);

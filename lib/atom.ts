@@ -13,7 +13,7 @@ type Message = {
   read: boolean;
   rtdb: string;
 };
-type Connect = {
+export type Connect = {
   id: number;
   connect: boolean;
 };
@@ -32,7 +32,7 @@ export const user = atom({
       email: '',
       fullName: '',
       img: '',
-      amigos: [],
+      amigos: [] as number[],
       rtdb: [],
     },
     token: '',

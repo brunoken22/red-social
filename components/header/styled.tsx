@@ -1,4 +1,4 @@
-import sytled from 'styled-components';
+import sytled, {keyframes} from 'styled-components';
 
 export const HeaderNav = sytled.header`
     padding: 0.4rem;

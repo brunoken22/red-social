@@ -1,6 +1,6 @@
 'use client';
 import {rtdb} from '@/lib/firebase';
-import {ref, onValue, update, onDisconnect} from 'firebase/database';
+import {ref, onValue, update, onDisconnect, off} from 'firebase/database';
 import './style.css';
 import 'instantsearch.css/themes/satellite.css';
 import {usePathname} from 'next/navigation';
@@ -34,6 +34,9 @@ import {
   publicacionUser,
   isMenssage,
   isConnect,
+  Connect,
+  getAllAmigos,
+  User,
 } from '@/lib/atom';
 const stylelinkIcon: {fill: string; position: any} = {
   fill: '#b3b3b3',
@@ -43,11 +46,13 @@ const stylelinkIcon: {fill: string; position: any} = {
 export function Header() {
   const pathname = usePathname();
   const dataUser = useRecoilValue(user);
+  const dataAmigos = useRecoilValue(getAllAmigos);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const datapublicacionUser = useRecoilValue(publicacionUser);
   const [search, setSearch] = useState('');
+
   const [menu, setMenu] = useState(false);
   const {hits} = useHits();
   const handleMenu = (e: any) => {
@@ -100,21 +105,25 @@ export function Header() {
     onValue(connectRef, (snapshot: any) => {
       const valor = snapshot.val();
 
-      if (valor) {
-        const connectRef = ref(rtdb, '/connect/' + dataUser.user?.id);
-        const dataConnect: any = Object.values(valor);
-        setIsConnect(dataConnect);
-        update(connectRef, {
-          id: dataUser?.user?.id,
-          connect: true,
-        });
-        onDisconnect(connectRef).update({connect: false});
+      if (dataUser?.user?.id) {
+        if (valor) {
+          const dataConnect: any = Object.values(valor);
+          setIsConnect(dataConnect);
+
+          const connectRef = ref(rtdb, '/connect/' + dataUser?.user?.id);
+
+          update(connectRef, {
+            id: dataUser?.user?.id,
+            connect: true,
+          });
+          onDisconnect(connectRef).update({connect: false});
+        }
       }
     });
   }, [dataUser?.user?.rtdb]);
   useEffect(() => {
     if (dataUser?.user?.id) {
-      const connectRef = ref(rtdb, '/connect/' + dataUser.user?.id);
+      const connectRef = ref(rtdb, '/connect/' + dataUser?.user?.id);
       update(connectRef, {
         id: dataUser?.user?.id,
         connect: true,
@@ -124,7 +133,9 @@ export function Header() {
   }, [dataUser]);
 
   const handleClose = async () => {
+    const connectRefAll = ref(rtdb, '/connect');
     const connectRef = ref(rtdb, '/connect/' + dataUser.user.id);
+    off(connectRefAll);
     await update(connectRef, {
       connect: false,
     });

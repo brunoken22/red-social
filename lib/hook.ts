@@ -289,7 +289,7 @@ export function EliminarAmigo(datas: any, token?: string) {
 
   return {dataElimAmigo: data, isLoadingElimAmigo: isLoading};
 }
-export function LikeODisLike(datas: any) {
+export function LikeODisLike(datas: any, token: string) {
   const api = '/user/publicacion/' + datas.id;
   const option = {
     method: 'POST',
@@ -304,6 +304,7 @@ export function LikeODisLike(datas: any) {
     token && datas.click ? [api, option] : null,
     fetchApiSwr,
     {
+      revalidateOnReconnect: true,
       revalidateOnMount: true,
     }
   );
@@ -385,7 +386,6 @@ export function OptimizarImage(dataUrl: string) {
 
       var sizeInMB = decodedData.length / (1024 * 1024);
 
-      console.log('Tamaño de la imagen: ' + sizeInMB.toFixed(2) + ' MB');
       return dataFinal;
     }
   );

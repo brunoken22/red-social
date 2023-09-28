@@ -107,7 +107,10 @@ export function PublicacionesUser() {
 export function ThemplatePubli(props: any) {
   const getAllUserData = useRecoilValue(getAllAmigos);
   const dataIsConnect = useRecoilValue(isConnect);
-
+  const token =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
   const user: any = getAllUserData.find((user: any) => user.id == props.id);
   const isLike =
     props?.like?.length > 0 ? props.like?.includes(props.userId) : false;
@@ -115,11 +118,14 @@ export function ThemplatePubli(props: any) {
   const [comentario, setComentario] = useState(false);
   const [click, setClick] = useState(false);
 
-  const {dataLike, isLoadingLike} = LikeODisLike({
-    tipo: like,
-    id: props.idPublicacion,
-    click: click,
-  });
+  const {dataLike, isLoadingLike} = LikeODisLike(
+    {
+      tipo: like,
+      id: props.idPublicacion,
+      click: click,
+    },
+    token
+  );
 
   useEffect(() => {
     if (dataLike) {

@@ -21,7 +21,11 @@ import {EnviarMessage} from '@/lib/hook';
 import CloseSVG from '@/ui/icons/close.svg';
 import {Button} from '../publicar/styled';
 import Link from 'next/link';
+import {useSearchParams, useRouter} from 'next/navigation';
+
 export function TemMensaje() {
+  const params = useSearchParams();
+  const router = useRouter();
   const dataAllAmigos = useRecoilValue(getAllAmigos);
   const dataUser = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);
@@ -102,7 +106,21 @@ export function TemMensaje() {
       }
     }
   }, [messagesAll]);
+  useEffect(() => {
+    const rtdbParams = params.get('rtdb') as any;
+    const imgParams = params.get('img') as string;
+    const fullNameParams = params.get('fullName') as string;
+    const idParams = params.get('id') as string;
 
+    if (rtdbParams && idParams && fullNameParams) {
+      setDataMensajeUser({
+        fullName: fullNameParams,
+        img: imgParams,
+        id: idParams,
+        rtdb: rtdbParams,
+      });
+    }
+  }, [params.get('fullName')]);
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setMessageUser((prev: any) => ({...prev, message: e.target.message.value}));
@@ -118,6 +136,7 @@ export function TemMensaje() {
       id: '',
       rtdb: undefined,
     });
+    router.replace('/mensaje');
   };
 
   return (
@@ -126,7 +145,7 @@ export function TemMensaje() {
         <TemplMensaje>
           <h2>Chats</h2>
           <TemplChat>
-            {dataAllAmigos
+            {dataAllAmigos?.length > 0
               ? dataAllAmigos.map((e: any, p: any) => {
                   return (
                     <ButtonSms

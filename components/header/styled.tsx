@@ -83,3 +83,38 @@ export const Button = sytled.button`
     border: none;
     cursor: pointer;
 `;
+export const DivConnectAll = sytled.div`
+background-color: #fff;
+display: flex;
+flex-direction:column;
+align-items: center;
+justify-content: space-around;
+`;
+export const DivContenedorConnect = sytled.div`
+    position: fixed;
+    bottom: 0;
+    right: 1%;
+    color:#000;
+    width: 250px;
+    @media(max-width:900px){
+        display:none
+    }
+`;
+export const DivConectados = sytled.div`
+display: flex;
+align-items: center;
+justify-content: space-around;
+height: 40px;
+background-color: #a8c0ff;
+border-top-right-radius: 10px;
+border-top-left-radius: 10px;
+cursor:pointer
+`;
+
+export const DivConnect = sytled.div`
+width: 15px;
+height: 15px;
+    background-color: green;
+    border-radius:50%
+ 
+`;

@@ -13,6 +13,15 @@ export const ButtonSms = styled(Button)`
   max-width: 350px;
   height: 100% !important;
 `;
+export const ButtonSmsConnect = styled(Button)`
+  width: 100%;
+  height: auto;
+  margin: 0.1rem;
+  &:hover {
+    background-color: #707070;
+    border-radius: 0;
+  }
+`;
 export const ButtonNoti = styled.div<any>`
   display: flex;
   align-items: center;

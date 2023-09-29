@@ -62,6 +62,14 @@ export const DivAllChat = styled(DivPublicar)`
     width: auto;
   }
 `;
+export const DivAllConnect = styled(DivPublicar)`
+  padding: 0.3rem;
+  flex-direction: row;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+  align-items: center;
+`;
 export const DivAllAmistades = styled(DivPublicar)`
   width: 185px;
   height: 300px;

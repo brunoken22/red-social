@@ -3,7 +3,7 @@ import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, onDisconnect, off} from 'firebase/database';
 import './style.css';
 import 'instantsearch.css/themes/satellite.css';
-import {usePathname} from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
 import {SearchBox, Hits, useHits} from 'react-instantsearch';
 import {Hit} from '../searchUsers';
 import React, {useEffect, useState} from 'react';
@@ -18,6 +18,10 @@ import {
   EnlaceSearch,
   Button,
   DivNotificacionActi,
+  DivConectados,
+  DivConnect,
+  DivConnectAll,
+  DivContenedorConnect,
 } from './styled';
 import Home from '@/ui/icons/home.svg';
 import Amigos from '@/ui/icons/amigos.svg';
@@ -38,6 +42,9 @@ import {
   getAllAmigos,
   User,
 } from '@/lib/atom';
+import {ButtonSmsConnect} from '@/ui/boton';
+import {SpanNoti} from '../templateMensaje/styled';
+import {DivAllConnect} from '@/ui/container';
 const stylelinkIcon: {fill: string; position: any} = {
   fill: '#b3b3b3',
   position: 'relative',
@@ -45,14 +52,15 @@ const stylelinkIcon: {fill: string; position: any} = {
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const dataUser = useRecoilValue(user);
-  const dataAmigos = useRecoilValue(getAllAmigos);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const datapublicacionUser = useRecoilValue(publicacionUser);
   const [search, setSearch] = useState('');
-
+  const [allConnectAmigos, setAllConnectAmigos] = useState([]);
+  const [connectAmigos, setConnectAmigos] = useState(false);
   const [menu, setMenu] = useState(false);
   const {hits} = useHits();
   const handleMenu = (e: any) => {
@@ -109,11 +117,18 @@ export function Header() {
         if (valor) {
           const dataConnect: any = Object.values(valor);
           setIsConnect(dataConnect);
-
+          const connecam = dataConnect.filter((e: Connect) => {
+            return (
+              e.id != Number(dataUser.user.id) &&
+              e.connect &&
+              dataUser.user.amigos.includes(e.id)
+            );
+          });
+          setAllConnectAmigos(connecam);
           const connectRef = ref(rtdb, '/connect/' + dataUser?.user?.id);
 
           update(connectRef, {
-            id: dataUser?.user?.id,
+            ...dataUser?.user,
             connect: true,
           });
           onDisconnect(connectRef).update({connect: false});
@@ -125,7 +140,7 @@ export function Header() {
     if (dataUser?.user?.id) {
       const connectRef = ref(rtdb, '/connect/' + dataUser?.user?.id);
       update(connectRef, {
-        id: dataUser?.user?.id,
+        ...dataUser?.user,
         connect: true,
       });
       onDisconnect(connectRef).update({connect: false});
@@ -140,105 +155,168 @@ export function Header() {
       connect: false,
     });
   };
-  return dataUser?.user?.id ? (
-    <HeaderNav>
-      <Nav>
-        <InputDiv>
-          <Link href={'/home'}>
-            <Logo style={{borderRadius: '10px', fill: '#fff'}} />
-          </Link>
-          <DivInputSearch>
-            {pathname !== '/search' && (
-              <SearchBox
-                placeholder='UniRed'
-                onChangeCapture={(e: any) => {
-                  e.target.form
-                    .querySelector('.ais-SearchBox-reset')
-                    .addEventListener('click', () => setSearch(''));
-                  setSearch(e.target.value);
-                }}
-              />
-            )}
 
-            {search && pathname !== '/search' ? (
-              hits.length > 0 ? (
-                <>
-                  <Hits hitComponent={Hit} />
-                  {/* <Pagination /> */}
-                </>
-              ) : (
-                <p
-                  style={{
-                    position: 'absolute',
-                    backgroundColor: '#ff1100',
-                    padding: '1rem',
-                  }}>
-                  {' '}
-                  No se encontraron resultado
-                </p>
-              )
-            ) : null}
-          </DivInputSearch>
-        </InputDiv>
-        <DivEnlaces>
-          <Link href={'/search'}>
-            <EnlaceSearch>
-              <Search />
-            </EnlaceSearch>
-          </Link>
-          <Link href={'/home'} style={stylelinkIcon}>
-            <Enlaces>
-              <Home />
-            </Enlaces>
-          </Link>
-          <Link href={'/amigos'} style={stylelinkIcon}>
-            {dataSoliReci?.length > 0 && (
-              <DivNotificacionActi>{dataSoliReci?.length}</DivNotificacionActi>
-            )}
-            <Enlaces>
-              <Amigos />
-            </Enlaces>
-          </Link>
-          <Link href={'/mensaje'} style={stylelinkIcon}>
-            {dataMessage.length > 0 && (
-              <DivNotificacionActi>{dataMessage.length}</DivNotificacionActi>
-            )}
-            <Enlaces>
-              <Chat />{' '}
-            </Enlaces>
-          </Link>
-          <Link href={'/notificaciones'} style={stylelinkIcon}>
-            {datapublicacionUser?.length > 0 &&
-              datapublicacionUser?.filter((e: any) => e.open == true).length !==
-                0 && (
+  return dataUser?.user?.id ? (
+    <>
+      <HeaderNav>
+        <Nav>
+          <InputDiv>
+            <Link href={'/home'}>
+              <Logo style={{borderRadius: '10px', fill: '#fff'}} />
+            </Link>
+            <DivInputSearch>
+              {pathname !== '/search' && (
+                <SearchBox
+                  placeholder='UniRed'
+                  onChangeCapture={(e: any) => {
+                    e.target.form
+                      .querySelector('.ais-SearchBox-reset')
+                      .addEventListener('click', () => setSearch(''));
+                    setSearch(e.target.value);
+                  }}
+                />
+              )}
+
+              {search && pathname !== '/search' ? (
+                hits.length > 0 ? (
+                  <>
+                    <Hits hitComponent={Hit} />
+                    {/* <Pagination /> */}
+                  </>
+                ) : (
+                  <p
+                    style={{
+                      position: 'absolute',
+                      backgroundColor: '#ff1100',
+                      padding: '1rem',
+                    }}>
+                    {' '}
+                    No se encontraron resultado
+                  </p>
+                )
+              ) : null}
+            </DivInputSearch>
+          </InputDiv>
+          <DivEnlaces>
+            <Link href={'/search'}>
+              <EnlaceSearch>
+                <Search />
+              </EnlaceSearch>
+            </Link>
+            <Link href={'/home'} style={stylelinkIcon}>
+              <Enlaces>
+                <Home />
+              </Enlaces>
+            </Link>
+            <Link href={'/amigos'} style={stylelinkIcon}>
+              {dataSoliReci?.length > 0 && (
                 <DivNotificacionActi>
-                  {
-                    datapublicacionUser?.filter((e: any) => e.open == true)
-                      .length
-                  }
+                  {dataSoliReci?.length}
                 </DivNotificacionActi>
               )}
-            <Enlaces>
-              <Notificaciones />{' '}
-            </Enlaces>
-          </Link>
-        </DivEnlaces>
-        <div style={{position: 'relative'}}>
-          <Button onClick={handleMenu}>
-            <FotoPerfil
-              wid='40'
-              hei='40'
-              img={dataUser.user.img}
-              fullName={dataUser.user.fullName}
-              connect={
-                dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) &&
-                true
-              }
-            />
-          </Button>
-          {menu ? <Menu click={handleClick} close={handleClose} /> : null}
-        </div>
-      </Nav>
-    </HeaderNav>
+              <Enlaces>
+                <Amigos />
+              </Enlaces>
+            </Link>
+            <Link href={'/mensaje'} style={stylelinkIcon}>
+              {dataMessage.length > 0 && (
+                <DivNotificacionActi>{dataMessage.length}</DivNotificacionActi>
+              )}
+              <Enlaces>
+                <Chat />{' '}
+              </Enlaces>
+            </Link>
+            <Link href={'/notificaciones'} style={stylelinkIcon}>
+              {datapublicacionUser?.length > 0 &&
+                datapublicacionUser?.filter((e: any) => e.open == true)
+                  .length !== 0 && (
+                  <DivNotificacionActi>
+                    {
+                      datapublicacionUser?.filter((e: any) => e.open == true)
+                        .length
+                    }
+                  </DivNotificacionActi>
+                )}
+              <Enlaces>
+                <Notificaciones />{' '}
+              </Enlaces>
+            </Link>
+          </DivEnlaces>
+          <div style={{position: 'relative'}}>
+            <Button onClick={handleMenu}>
+              <FotoPerfil
+                wid='40'
+                hei='40'
+                img={dataUser.user.img}
+                fullName={dataUser.user.fullName}
+                connect={
+                  dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) &&
+                  true
+                }
+              />
+            </Button>
+            {menu ? <Menu click={handleClick} close={handleClose} /> : null}
+          </div>
+        </Nav>
+      </HeaderNav>
+      <DivContenedorConnect>
+        <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
+          <span>Conectados</span> <DivConnect />
+        </DivConectados>
+
+        <DivConnectAll>
+          {connectAmigos ? (
+            allConnectAmigos?.length > 0 ? (
+              allConnectAmigos.map((e: User, p: any) => {
+                return (
+                  <ButtonSmsConnect
+                    key={p}
+                    onClick={() =>
+                      router.push(
+                        '/mensaje?fullName=' +
+                          e.fullName +
+                          '&rtdb=' +
+                          e.rtdb +
+                          '&id=' +
+                          e.id +
+                          '&img=' +
+                          e.img
+                      )
+                    }>
+                    <DivAllConnect>
+                      <FotoPerfil
+                        img={e.img}
+                        wid='30'
+                        hei='30'
+                        connect={
+                          dataIsConnect?.find(
+                            (eConnect: any) => e.id == eConnect.id
+                          )?.connect && true
+                        }
+                      />
+
+                      <span
+                        style={{
+                          color: '#000',
+                          margin: 0,
+                          textAlign: 'start',
+                          fontSize: '1rem',
+                        }}>
+                        {e.fullName}
+                      </span>
+                    </DivAllConnect>
+                    {dataMessage?.find((item: any) => item.id == e.id) && (
+                      <SpanNoti></SpanNoti>
+                    )}
+                  </ButtonSmsConnect>
+                );
+              })
+            ) : (
+              <div>No hay conectados</div>
+            )
+          ) : null}
+        </DivConnectAll>
+      </DivContenedorConnect>
+    </>
   ) : null;
 }

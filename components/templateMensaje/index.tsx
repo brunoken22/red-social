@@ -61,7 +61,6 @@ export function TemMensaje() {
       rtdb,
       '/rooms/' + dataMensajeUser?.rtdb + '/messages'
     );
-    console.log(dataMensajeUser);
 
     return onValue(chatrooms, (snapshot: any) => {
       const valor = snapshot.val();
@@ -127,6 +126,7 @@ export function TemMensaje() {
         id: idParams,
         rtdb: rtdbId,
       });
+      setMessageUser((prev: any) => ({...prev, rtdb: rtdbId}));
     }
   }, [params.get('fullName')]);
   const handleSubmit = (e: any) => {

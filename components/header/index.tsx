@@ -305,9 +305,6 @@ export function Header() {
                         {e.fullName}
                       </span>
                     </DivAllConnect>
-                    {dataMessage?.find((item: any) => item.id == e.id) && (
-                      <SpanNoti></SpanNoti>
-                    )}
                   </ButtonSmsConnect>
                 );
               })

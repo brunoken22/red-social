@@ -361,7 +361,7 @@ export function EnviarMessage(datas: any, token?: string) {
     body: JSON.stringify(datas),
   };
   const {data, isLoading, error} = useSWRImmutable(
-    token && datas.message ? [api, option] : null,
+    token && datas.message && datas.rtdb ? [api, option] : null,
     fetchApiSwr,
     {
       revalidateOnReconnect: true,

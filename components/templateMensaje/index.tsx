@@ -61,6 +61,7 @@ export function TemMensaje() {
       rtdb,
       '/rooms/' + dataMensajeUser?.rtdb + '/messages'
     );
+    console.log(dataMensajeUser);
 
     return onValue(chatrooms, (snapshot: any) => {
       const valor = snapshot.val();
@@ -113,11 +114,18 @@ export function TemMensaje() {
     const idParams = params.get('id') as string;
 
     if (rtdbParams && idParams && fullNameParams) {
+      const miArrayRTDB = rtdbParams.split(',');
+
+      const rtdbId = existenElementosSimilares(
+        miArrayRTDB,
+        dataUser.user?.rtdb as []
+      );
+
       setDataMensajeUser({
         fullName: fullNameParams,
         img: imgParams,
         id: idParams,
-        rtdb: rtdbParams,
+        rtdb: rtdbId,
       });
     }
   }, [params.get('fullName')]);

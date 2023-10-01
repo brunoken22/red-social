@@ -148,7 +148,7 @@ function TemplateFormPublicar(props: any) {
     ]);
     setNewId(Date.now() as number);
   };
-  if (true) {
+  if (isLoading) {
     return <Loader />;
   }
   return (

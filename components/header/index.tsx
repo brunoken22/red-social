@@ -43,7 +43,6 @@ import {
   User,
 } from '@/lib/atom';
 import {ButtonSmsConnect} from '@/ui/boton';
-import {SpanNoti} from '../templateMensaje/styled';
 import {DivAllConnect} from '@/ui/container';
 const stylelinkIcon: {fill: string; position: any} = {
   fill: '#b3b3b3',

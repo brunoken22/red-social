@@ -14,12 +14,11 @@ export const DivEnlaces = styled.div`
   border-radius: 10px;
 `;
 
-export const Enlaces = styled.div``;
 export const Button = styled.button`
   margin: 0;
   background-color: transparent;
   border: 0;
-  color: #ddd;
+  color: #ff7c7c;
   font-size: 1rem;
   cursor: pointer;
   span:hover {

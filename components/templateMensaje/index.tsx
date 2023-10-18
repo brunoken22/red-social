@@ -34,10 +34,6 @@ export function TemMensaje() {
   const [limit, setLimit] = useState('10');
   const [offset, setOffset] = useState('0');
   const [claveMessage, setclaveMessage] = useState('');
-  const [heigthwind, setheigthwind] = useState(
-    document.documentElement.scrollHeight
-  );
-
   const containerRef: any = useRef(null);
   const [dataMensajeUser, setDataMensajeUser] = useState({
     fullName: '',

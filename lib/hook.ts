@@ -123,11 +123,8 @@ export function ModificarUser(dataUser: DataUser, token: string) {
 }
 export function GetUser(token: string) {
   const [userData, setUserData] = useRecoilState(user);
-  const [publicaciones, setPublicaciones] = useRecoilState(publicacionUser);
   const [getAllUserData, setGetAllUserData] = useRecoilState(getAllUser);
   const [soliAllEnv, setSoliAllEnv] = useRecoilState(getAllSolicitudesEnviadas);
-  const [publicanionesAmigos, setPublicanionesAmigos] =
-    useRecoilState(publicacionAmigos);
   const [soliAllReci, setSoliAllReci] = useRecoilState(
     getAllSolicitudesRecibidas
   );
@@ -159,14 +156,10 @@ export function GetUser(token: string) {
           ...data.getUserRes,
         },
       });
-      const datapubliUser = data.getAllPulicacionRedAmigosRes.filter(
-        (dataPubli: any) => dataPubli.userId == data?.getUserRes?.id
-      );
-      setPublicaciones(datapubliUser);
+
       setGetAllUserData(data.getAllUserRes);
       setSoliAllEnv(data.getSolicitudAmistadRes?.usersEnv);
       setSoliAllReci(data.getSolicitudAmistadRes?.usersReci);
-      setPublicanionesAmigos(data.getAllPulicacionRedAmigosRes);
     }
   }, [data]);
 
@@ -194,6 +187,46 @@ export function GetAllAmigos(token: string, limit: string, offset: string) {
         return;
       }
       setAmigosAllData(data);
+    }
+  }, [data]);
+
+  return {dataAllAmigosSwr: data, isLoadingAllAmigos: isLoading};
+}
+export function GetAllPublicaciones(
+  token: string,
+  limit: string,
+  offset: string
+) {
+  const [userData, setUserData] = useRecoilState(user);
+  const [publicacionesUser, setPublicacionesUser] =
+    useRecoilState(publicacionUser);
+  const [publicacionesAllAmigos, setPublicacionesAllAmigos] =
+    useRecoilState(publicacionAmigos);
+  const api = `/user/publicacion?limit=${limit}&offset=${offset}`;
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data, isLoading, error} = useSWR(
+    token ? [api, option] : null,
+    fetchApiSwr
+  );
+
+  useEffect(() => {
+    if (data) {
+      const datapubliUser = data.filter(
+        (dataPubli: any) => dataPubli.userId == userData?.user?.id
+      );
+      setPublicacionesUser(datapubliUser);
+
+      if (publicacionesAllAmigos.length > 0) {
+        setPublicacionesAllAmigos((prev: any) => [...prev, ...data]);
+        return;
+      }
+      setPublicacionesAllAmigos([...data]);
     }
   }, [data]);
 

@@ -28,7 +28,11 @@ import {
 import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
-import {LikeODisLike, ComentarPublicacion} from '@/lib/hook';
+import {
+  LikeODisLike,
+  ComentarPublicacion,
+  GetAllPublicaciones,
+} from '@/lib/hook';
 import {SendComentPubli} from '@/ui/icons';
 
 const iconConLike = {
@@ -43,6 +47,15 @@ const iconConLike = {
 export function PublicacionesAll() {
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
   const dataUser = useRecoilValue(user);
+  const [limit, setLimit] = useState('10');
+  const [offset, setOffset] = useState('0');
+  const token =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
+  GetAllPublicaciones(token, limit, offset);
+  // console.log(publicacionesAmigos);
+
   return (
     <div>
       {publicacionesAmigos?.length > 0 ? (

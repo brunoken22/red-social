@@ -13,16 +13,16 @@ import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Input} from '@/ui/input';
 import {BotonSms, ButtonSms} from '@/ui/boton';
 import {useRecoilValue} from 'recoil';
-import {getAllAmigos, user, isMenssage, isConnect} from '@/lib/atom';
+import {getAllAmigos, user, isMenssage, isConnect, User} from '@/lib/atom';
 import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, get} from 'firebase/database';
-import {EnviarMessage} from '@/lib/hook';
+import {EnviarMessage, GetAllAmigos} from '@/lib/hook';
 import CloseSVG from '@/ui/icons/close.svg';
 import {Button} from '../publicar/styled';
 import Link from 'next/link';
 import {useSearchParams, useRouter} from 'next/navigation';
-
+import {Loader} from '../loader';
 export function TemMensaje() {
   const params = useSearchParams();
   const router = useRouter();
@@ -31,7 +31,13 @@ export function TemMensaje() {
   const dataIsConnect = useRecoilValue(isConnect);
   const dataMessage = useRecoilValue(isMenssage);
   const [messagesAll, setMessagesAll] = useState([]);
+  const [limit, setLimit] = useState('10');
+  const [offset, setOffset] = useState('0');
   const [claveMessage, setclaveMessage] = useState('');
+  const [heigthwind, setheigthwind] = useState(
+    document.documentElement.scrollHeight
+  );
+
   const containerRef: any = useRef(null);
   const [dataMensajeUser, setDataMensajeUser] = useState({
     fullName: '',
@@ -49,13 +55,17 @@ export function TemMensaje() {
       ? (localStorage.getItem('token') as string)
       : '';
   const {dataMesssage} = EnviarMessage(messageUser, token);
+  const {dataAllAmigosSwr, isLoadingAllAmigos} = GetAllAmigos(
+    token,
+    limit,
+    offset
+  );
 
   useEffect(() => {
     if (dataMesssage) {
       setMessageUser((prev: any) => ({...prev, message: ''}));
     }
   }, [dataMesssage]);
-
   useEffect(() => {
     const chatrooms = ref(
       rtdb,
@@ -147,6 +157,21 @@ export function TemMensaje() {
     router.replace('/mensaje');
   };
 
+  useEffect(() => {
+    function handleScroll() {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPosition = window.scrollY;
+
+      if (scrollPosition + windowHeight >= documentHeight) {
+        setOffset(offset + limit);
+      }
+    }
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <DivTemMensaje>
       {!dataMensajeUser.rtdb ? (
@@ -154,7 +179,7 @@ export function TemMensaje() {
           <h2>Chats</h2>
           <TemplChat>
             {dataAllAmigos?.length > 0
-              ? dataAllAmigos.map((e: any, p: any) => {
+              ? dataAllAmigos.map((e: any, p: number) => {
                   return (
                     <ButtonSms
                       key={p}
@@ -202,7 +227,12 @@ export function TemMensaje() {
                     </ButtonSms>
                   );
                 })
-              : 'Sin Conversaciones'}
+              : 'Sin Chat'}
+            {isLoadingAllAmigos && (
+              <div style={{position: 'relative', margin: '1rem'}}>
+                <Loader></Loader>
+              </div>
+            )}
           </TemplChat>
         </TemplMensaje>
       ) : null}

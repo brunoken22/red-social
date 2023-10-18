@@ -125,12 +125,9 @@ export function GetUser(token: string) {
   const [userData, setUserData] = useRecoilState(user);
   const [publicaciones, setPublicaciones] = useRecoilState(publicacionUser);
   const [getAllUserData, setGetAllUserData] = useRecoilState(getAllUser);
-  const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
   const [soliAllEnv, setSoliAllEnv] = useRecoilState(getAllSolicitudesEnviadas);
-
   const [publicanionesAmigos, setPublicanionesAmigos] =
     useRecoilState(publicacionAmigos);
-
   const [soliAllReci, setSoliAllReci] = useRecoilState(
     getAllSolicitudesRecibidas
   );
@@ -167,7 +164,6 @@ export function GetUser(token: string) {
       );
       setPublicaciones(datapubliUser);
       setGetAllUserData(data.getAllUserRes);
-      setAmigosAllData(data.getAllAmigosRes);
       setSoliAllEnv(data.getSolicitudAmistadRes?.usersEnv);
       setSoliAllReci(data.getSolicitudAmistadRes?.usersReci);
       setPublicanionesAmigos(data.getAllPulicacionRedAmigosRes);
@@ -175,6 +171,33 @@ export function GetUser(token: string) {
   }, [data]);
 
   return {data, isLoading};
+}
+export function GetAllAmigos(token: string, limit: string, offset: string) {
+  const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
+  const api = `/user/amigos?limit=${limit}&offset=${offset}`;
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data, isLoading, error} = useSWRImmutable(
+    token ? [api, option] : null,
+    fetchApiSwr
+  );
+
+  useEffect(() => {
+    if (data) {
+      if (amigoAllData.length > 0) {
+        setAmigosAllData((prev: any) => [...prev, ...data]);
+        return;
+      }
+      setAmigosAllData(data);
+    }
+  }, [data]);
+
+  return {dataAllAmigosSwr: data, isLoadingAllAmigos: isLoading};
 }
 export function GetAmigo(id: string, token: string) {
   const api = '/user/amigos/' + id;

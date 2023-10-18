@@ -165,9 +165,11 @@ export function GetUser(token: string) {
 
   return {data, isLoading};
 }
-export function GetAllAmigos(token: string, limit: string, offset: string) {
+export function GetAllAmigos(token: string, limit?: string, offset?: string) {
   const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
-  const api = `/user/amigos?limit=${limit}&offset=${offset}`;
+  // const api = `/user/amigos?limit=${limit}&offset=${offset}`;
+  const api = `/user/amigos`;
+
   const option = {
     method: 'GET',
     headers: {
@@ -202,7 +204,9 @@ export function GetAllPublicaciones(
     useRecoilState(publicacionUser);
   const [publicacionesAllAmigos, setPublicacionesAllAmigos] =
     useRecoilState(publicacionAmigos);
-  const api = `/user/publicacion?limit=${limit}&offset=${offset}`;
+  // const api = `/user/publicacion?limit=${limit}&offset=${offset}`;
+  const api = `/user/publicacion`;
+
   const option = {
     method: 'GET',
     headers: {
@@ -220,6 +224,11 @@ export function GetAllPublicaciones(
       const datapubliUser = data.filter(
         (dataPubli: any) => dataPubli.userId == userData?.user?.id
       );
+      const datapubliAmigos = data.filter(
+        (dataPubli: any) => dataPubli.userId !== userData?.user?.id
+      );
+      console.log(data);
+
       setPublicacionesUser(datapubliUser);
 
       if (publicacionesAllAmigos.length > 0) {

@@ -54,7 +54,6 @@ export function PublicacionesAll() {
       ? (localStorage.getItem('token') as string)
       : '';
   GetAllPublicaciones(token, limit, offset);
-  // console.log(publicacionesAmigos);
 
   return (
     <div>
@@ -125,6 +124,8 @@ export function ThemplatePubli(props: any) {
       ? (localStorage.getItem('token') as string)
       : '';
   const user: any = getAllUserData.find((user: any) => user.id == props.id);
+  console.log(getAllUserData);
+
   const isLike =
     props?.like?.length > 0 ? props.like?.includes(props.userId) : false;
   const [like, setLike] = useState(!isLike ? 'disLike' : 'like');

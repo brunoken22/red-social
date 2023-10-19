@@ -51,11 +51,7 @@ export function TemMensaje() {
       ? (localStorage.getItem('token') as string)
       : '';
   const {dataMesssage} = EnviarMessage(messageUser, token);
-  const {dataAllAmigosSwr, isLoadingAllAmigos} = GetAllAmigos(
-    token,
-    limit,
-    offset
-  );
+  const {dataAllAmigosSwr, isLoadingAllAmigos} = GetAllAmigos(token, offset);
 
   useEffect(() => {
     if (dataMesssage) {

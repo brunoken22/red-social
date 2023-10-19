@@ -1,6 +1,6 @@
 import {atom} from 'recoil';
 
-type Publicacion = {
+export type Publicacion = {
   id: string;
   description: string;
   img: string;

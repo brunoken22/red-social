@@ -24,6 +24,7 @@ import {
   publicacionAmigos,
   getAllAmigos,
   isConnect,
+  Publicacion,
 } from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
@@ -32,8 +33,10 @@ import {
   LikeODisLike,
   ComentarPublicacion,
   GetAllPublicaciones,
+  GetAllPublicacionesUser,
 } from '@/lib/hook';
 import {SendComentPubli} from '@/ui/icons';
+import {Loader} from '../loader';
 
 const iconConLike = {
   height: ' 10px',
@@ -47,21 +50,33 @@ const iconConLike = {
 export function PublicacionesAll() {
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
   const dataUser = useRecoilValue(user);
-  const [limit, setLimit] = useState('5');
-  const [offset, setOffset] = useState('0');
+  const [pagePubli, setPagePubli] = useState(0);
+
   const token =
     typeof window !== 'undefined'
       ? (localStorage.getItem('token') as string)
       : '';
-  GetAllPublicaciones(token, limit, offset);
+  const {isLoadingAllAmigos} = GetAllPublicaciones(token, pagePubli);
 
+  useEffect(() => {
+    function handleScroll() {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPosition = window.scrollY;
+      if (scrollPosition + windowHeight >= documentHeight) {
+        setPagePubli((prevPagePubli) => prevPagePubli + 10);
+      }
+    }
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <div>
       {publicacionesAmigos?.length > 0 ? (
-        publicacionesAmigos
-          .slice()
-          .reverse()
-          .map((item) => (
+        <>
+          {publicacionesAmigos.map((item: Publicacion) => (
             <DivAllPublicaciones key={item?.id}>
               <ThemplatePubli
                 name={dataUser?.user?.fullName}
@@ -76,7 +91,13 @@ export function PublicacionesAll() {
                 userId={dataUser?.user?.id}
               />
             </DivAllPublicaciones>
-          ))
+          ))}
+          {isLoadingAllAmigos && (
+            <div style={{position: 'relative', margin: '1rem'}}>
+              <Loader></Loader>
+            </div>
+          )}
+        </>
       ) : (
         <p style={{textAlign: 'center'}}>No hay publicaciones</p>
       )}
@@ -87,30 +108,52 @@ export function PublicacionesAll() {
 export function PublicacionesUser() {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
+  const [pagePubli, setPagePubli] = useState(0);
+  const token =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
+  const {isLoadingAllAmigos} = GetAllPublicacionesUser(token, pagePubli);
+  useEffect(() => {
+    function handleScroll() {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPosition = window.scrollY;
+      if (scrollPosition + windowHeight >= documentHeight) {
+        setPagePubli((prevPagePubli) => prevPagePubli + 10);
+      }
+    }
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <div>
       {publicacionesUser.length > 0 ? (
-        publicacionesUser
-          .slice()
-          .reverse()
-          .map((item) => (
-            <DivAllPublicaciones key={item.id}>
-              <ThemplatePubli
-                name={dataUser?.user.fullName}
-                description={item.description}
-                img={item.img}
-                fecha={item.fecha}
-                like={item.like}
-                comentarios={item.comentarios}
-                imgUserPro={dataUser.user.img}
-                id={item.userId}
-                idPublicacion={item.id}
-                userId={dataUser.user.id}
-              />
-            </DivAllPublicaciones>
-          ))
+        publicacionesUser.map((item) => (
+          <DivAllPublicaciones key={item.id}>
+            <ThemplatePubli
+              name={dataUser?.user.fullName}
+              description={item.description}
+              img={item.img}
+              fecha={item.fecha}
+              like={item.like}
+              comentarios={item.comentarios}
+              imgUserPro={dataUser.user.img}
+              id={item.userId}
+              idPublicacion={item.id}
+              userId={dataUser.user.id}
+            />
+          </DivAllPublicaciones>
+        ))
       ) : (
         <p style={{textAlign: 'center'}}>No hay publicaciones</p>
+      )}
+      {isLoadingAllAmigos && (
+        <div style={{position: 'relative', margin: '1rem'}}>
+          <Loader></Loader>
+        </div>
       )}
     </div>
   );

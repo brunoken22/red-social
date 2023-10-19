@@ -17,7 +17,7 @@ export function StyledComponentsRegistry({
       : '';
   const {data, isLoading} = GetUser(token);
   GetAllAmigos(token);
-  GetAllPublicaciones(token, '5', '0');
+  // GetAllPublicaciones(token, 0);
 
   const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet());
   useEffect(() => {

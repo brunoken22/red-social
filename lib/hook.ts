@@ -214,7 +214,7 @@ export function GetAllPublicaciones(token: string, offset: number) {
 
   useEffect(() => {
     if (data) {
-      if (publicacionesAllAmigos.length > 0) {
+      if (publicacionesAllAmigos.length > 0 && offset !== 0) {
         setPublicacionesAllAmigos((prev: any) => [...prev, ...data]);
         return;
       }
@@ -244,7 +244,7 @@ export function GetAllPublicacionesUser(token: string, offset: number) {
 
   useEffect(() => {
     if (data) {
-      if (publicacionesUser.length > 0) {
+      if (publicacionesUser.length > 0 && offset !== 0) {
         setPublicacionesUser((prev: any) => [...prev, ...data]);
         return;
       }

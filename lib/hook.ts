@@ -10,7 +10,7 @@ import {
   getAllAmigos,
   getAllSolicitudesEnviadas,
   publicacionAmigos,
-  Publicacion,
+  publicacionSearchUser,
 } from '@/lib/atom';
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
@@ -255,7 +255,7 @@ export function GetAllPublicacionesUser(token: string, offset: number) {
   return {dataPubliAllAmigosSwr: data, isLoadingAllAmigos: isLoading};
 }
 export function GetAmigo(id: string, token: string) {
-  const api = '/user/amigos/' + id;
+  const api = `/user/amigos/${id}`;
   const option = {
     method: 'GET',
     headers: {
@@ -263,6 +263,7 @@ export function GetAmigo(id: string, token: string) {
       Authorization: `Bearer ${token}`,
     },
   };
+
   const {data, isLoading, error} = useSWR(
     token && id ? [api, option] : null,
     fetchApiSwr,
@@ -273,6 +274,37 @@ export function GetAmigo(id: string, token: string) {
       refreshInterval: 2000,
     }
   );
+
+  return {data, isLoading};
+}
+export function GetPubliAmigo(id: string, token: string, offset: number) {
+  const [publicacionesAmigo, setPublicacionesAmigo] = useRecoilState(
+    publicacionSearchUser
+  );
+  const api = `/user/amigos/publicaciones/${id}?offset=${offset}`;
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const {data, isLoading, error} = useSWRImmutable(
+    token ? [api, option] : null,
+    fetchApiSwr
+  );
+  useEffect(() => {
+    if (data) {
+
+      if (publicacionesAmigo.length > 0 && offset !== 0) {
+        setPublicacionesAmigo((prev: any) => [...prev, ...data]);
+        return;
+      }
+      setPublicacionesAmigo([...data]);
+    }
+  }, [data]);
+
   return {data, isLoading};
 }
 export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {

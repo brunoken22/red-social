@@ -14,7 +14,12 @@ import {Publicar} from '../publicar';
 import {PublicacionesUser, ThemplatePubli} from '../publicaciones';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
-import {user, isConnect, getAllSolicitudesRecibidas} from '@/lib/atom';
+import {
+  user,
+  isConnect,
+  getAllSolicitudesRecibidas,
+  publicacionSearchUser,
+} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {
   ModificarUser,
@@ -23,6 +28,7 @@ import {
   CreateSolicitud,
   RechazarSolicitud,
   AceptarSolicitud,
+  GetPubliAmigo,
 } from '@/lib/hook';
 import {Loader} from '../loader';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
@@ -166,7 +172,11 @@ export function PerfilAmigo() {
     typeof window !== 'undefined'
       ? (localStorage.getItem('token') as string)
       : '';
+  const [pagePubli, setPagePubli] = useState(0);
+  const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
   const {data, isLoading} = GetAmigo(id as string, token);
+  GetPubliAmigo(id as string, token, pagePubli);
+
   const [isClient, setIsClient] = useState(false);
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
@@ -198,6 +208,20 @@ export function PerfilAmigo() {
     },
     token
   );
+  useEffect(() => {
+    function handleScroll() {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPosition = window.scrollY;
+      if (scrollPosition + windowHeight >= documentHeight) {
+        setPagePubli((prevPagePubli) => prevPagePubli + 10);
+      }
+    }
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   useEffect(() => {
     if (dataUser?.user?.id == data?.user?.id) {
       router.push('/perfil');
@@ -231,13 +255,10 @@ export function PerfilAmigo() {
   const handleSolicitudAcep = (e: any) => {
     const id = e.target.id;
     setAcepAmigoId(Number(id));
-    // setIsClient(true);
   };
   const handleEliminarAmigo = (e: any) => {
     const id = e.target.id;
-
     setEliminarAmigo(Number(id));
-    // setIsClient(true);
   };
   const handleSolicitudEnv = (e: any) => {
     const id = e.target.id;
@@ -247,7 +268,8 @@ export function PerfilAmigo() {
     const id = e.target.id;
     setRechazarAmigo(Number(id));
   };
-  return data && !isClient ? (
+
+  return true ? (
     <DivPerfilUser>
       <DivHeadPerfil>
         <DivFotoNameLink>
@@ -268,15 +290,15 @@ export function PerfilAmigo() {
           </h2>
         </DivFotoNameLink>
         <div>
-          {amigoId < 0 && data.amigo !== 'pendiente' ? (
+          {amigoId < 0 && data?.amigo !== 'pendiente' ? (
             <ButtonAgregar
               id={data?.user?.id}
               onClick={data?.amigo ? handleEliminarAmigo : handleSolicitudEnv}
               $bg={data?.amigo !== false ? 'red' : 'blue'}>
               {data?.amigo ? 'Eliminar Amigo' : 'Agregar'}
             </ButtonAgregar>
-          ) : data.amigo == 'pendiente' &&
-            soliReci?.find((user) => user.id == data.user.id) ? (
+          ) : data?.amigo == 'pendiente' &&
+            soliReci?.find((user) => user.id == data?.user.id) ? (
             <DivButtonEliAcep>
               <ButtonAgregar
                 id={data?.user?.id}
@@ -299,30 +321,32 @@ export function PerfilAmigo() {
         </div>
       </DivHeadPerfil>
       <DivPublicaciones>
-        {data?.publicaciones?.length > 0 ? (
-          data.publicaciones
-            .slice()
-            .reverse()
-            .map((item: any) => (
-              <DivAllPublicaciones key={item.id}>
-                <ThemplatePubli
-                  name={dataUser?.user?.fullName}
-                  nameUserPerfil={data?.user?.fullName}
-                  description={item.description}
-                  img={item.img}
-                  fecha={item.fecha}
-                  like={item.like}
-                  comentarios={item.comentarios}
-                  imgUserPro={dataUser?.user?.img}
-                  imgUser={data?.user?.img || 'false'}
-                  idPublicacion={item.id}
-                  userId={dataUser?.user?.id}
-                  id={data?.user?.id}
-                />
-              </DivAllPublicaciones>
-            ))
+        {publicacionesAmigo?.length > 0 ? (
+          publicacionesAmigo.map((item: any) => (
+            <DivAllPublicaciones key={item.id}>
+              <ThemplatePubli
+                name={dataUser?.user?.fullName}
+                nameUserPerfil={data?.user?.fullName}
+                description={item.description}
+                img={item.img}
+                fecha={item.fecha}
+                like={item.like}
+                comentarios={item.comentarios}
+                imgUserPro={dataUser?.user?.img}
+                imgUser={data?.user?.img || 'false'}
+                idPublicacion={item.id}
+                userId={dataUser?.user?.id}
+                id={data?.user?.id}
+              />
+            </DivAllPublicaciones>
+          ))
         ) : (
           <p style={{textAlign: 'center'}}>No hay publicaciones</p>
+        )}
+        {isLoading && (
+          <div style={{position: 'relative', margin: '1rem'}}>
+            <Loader></Loader>
+          </div>
         )}
       </DivPublicaciones>
     </DivPerfilUser>

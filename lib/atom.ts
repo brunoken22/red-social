@@ -66,6 +66,10 @@ export const publicacionAmigos = atom({
   key: 'publicacionAmigos',
   default: [] as Publicacion[],
 });
+export const publicacionSearchUser = atom({
+  key: 'publicacionSearchUser',
+  default: [] as Publicacion[],
+});
 export const isMenssage = atom({
   key: 'isMenssage',
   default: [] as Message[],

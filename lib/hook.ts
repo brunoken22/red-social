@@ -233,10 +233,10 @@ export function GetAllPublicaciones(
 
       setPublicacionesUser(datapubliUser);
 
-      if (publicacionesAllAmigos.length > 0) {
-        setPublicacionesAllAmigos((prev: any) => [...prev, ...data]);
-        return;
-      }
+      // if (publicacionesAllAmigos.length > 0) {
+      //   setPublicacionesAllAmigos((prev: any) => [...prev, ...data]);
+      //   return;
+      // }
       setPublicacionesAllAmigos([...data]);
     }
   }, [data]);

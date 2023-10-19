@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from 'react';
 import {usePathname, useRouter, useServerInsertedHTML} from 'next/navigation';
 import {ServerStyleSheet, StyleSheetManager} from 'styled-components';
-import {GetUser, GetAllAmigos} from '@/lib/hook';
+import {GetUser, GetAllAmigos, GetAllPublicaciones} from '@/lib/hook';
 export function StyledComponentsRegistry({
   children,
 }: {
@@ -17,6 +17,8 @@ export function StyledComponentsRegistry({
       : '';
   const {data, isLoading} = GetUser(token);
   GetAllAmigos(token);
+  GetAllPublicaciones(token, '5', '0');
+
   const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet());
   useEffect(() => {
     if (!isLoading) {

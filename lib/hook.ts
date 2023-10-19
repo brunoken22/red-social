@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import {fetchApiSwr} from './api';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {
   user,
   publicacionUser,
@@ -184,10 +184,10 @@ export function GetAllAmigos(token: string, limit?: string, offset?: string) {
 
   useEffect(() => {
     if (data) {
-      if (amigoAllData.length > 0) {
-        setAmigosAllData((prev: any) => [...prev, ...data]);
-        return;
-      }
+      // if (amigoAllData.length > 0) {
+      //   setAmigosAllData((prev: any) => [...prev, ...data]);
+      //   return;
+      // }
       setAmigosAllData(data);
     }
   }, [data]);
@@ -199,13 +199,14 @@ export function GetAllPublicaciones(
   limit: string,
   offset: string
 ) {
-  const [userData, setUserData] = useRecoilState(user);
+  const userData = useRecoilValue(user);
   const [publicacionesUser, setPublicacionesUser] =
     useRecoilState(publicacionUser);
   const [publicacionesAllAmigos, setPublicacionesAllAmigos] =
     useRecoilState(publicacionAmigos);
   // const api = `/user/publicacion?limit=${limit}&offset=${offset}`;
   const api = `/user/publicacion`;
+  // console.log(token);
 
   const option = {
     method: 'GET',
@@ -224,10 +225,11 @@ export function GetAllPublicaciones(
       const datapubliUser = data.filter(
         (dataPubli: any) => dataPubli.userId == userData?.user?.id
       );
-      const datapubliAmigos = data.filter(
-        (dataPubli: any) => dataPubli.userId !== userData?.user?.id
-      );
-      console.log(data);
+      // const datapubliAmigos = data.filter(
+      //   (dataPubli: any) => dataPubli.userId !== userData?.user?.id
+      // );
+      // console.log(userData);
+      // console.log(datapubliUser);
 
       setPublicacionesUser(datapubliUser);
 

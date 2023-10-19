@@ -47,7 +47,7 @@ const iconConLike = {
 export function PublicacionesAll() {
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
   const dataUser = useRecoilValue(user);
-  const [limit, setLimit] = useState('10');
+  const [limit, setLimit] = useState('5');
   const [offset, setOffset] = useState('0');
   const token =
     typeof window !== 'undefined'
@@ -124,7 +124,6 @@ export function ThemplatePubli(props: any) {
       ? (localStorage.getItem('token') as string)
       : '';
   const user: any = getAllUserData.find((user: any) => user.id == props.id);
-  console.log(getAllUserData);
 
   const isLike =
     props?.like?.length > 0 ? props.like?.includes(props.userId) : false;

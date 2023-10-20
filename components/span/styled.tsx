@@ -6,6 +6,7 @@ export const DivSpan = styled.div`
   margin-left: 5rem;
   text-align: center;
   position: relative;
+  height: 5%;
   @media (max-width: 800px) {
     display: none;
   }

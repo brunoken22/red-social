@@ -96,6 +96,8 @@ export const DivContenedorConnect = sytled.div`
     right: 1%;
     color:#000;
     width: 250px;
+    z-index: 10;
+
     @media(max-width:900px){
         display:none
     }
@@ -105,6 +107,7 @@ display: flex;
 align-items: center;
 justify-content: space-around;
 height: 40px;
+
 background-color: #a8c0ff;
 border-top-right-radius: 10px;
 border-top-left-radius: 10px;

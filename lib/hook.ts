@@ -207,7 +207,7 @@ export function GetAllPublicaciones(token: string, offset: number) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading, error} = useSWR(
     token ? [api, option] : null,
     fetchApiSwr
   );

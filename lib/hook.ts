@@ -140,7 +140,7 @@ export function GetUser(token: string) {
     revalidateOnMount: true,
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
-    refreshInterval: 100000,
+    refreshInterval: 50000,
   });
 
   useEffect(() => {

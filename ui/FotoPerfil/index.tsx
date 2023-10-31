@@ -1,7 +1,7 @@
 import {Figure} from './styled';
 export function FotoPerfil(props: any) {
   return (
-    <Figure wid={props.wid + 'px'} hei={props.hei + 'px'}>
+    <Figure $wid={props.wid + 'px'} $hei={props.hei + 'px'}>
       <img
         src={
           (props.img == 'false' && '/user.webp') || props.img || '/user.webp'

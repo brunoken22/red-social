@@ -2,88 +2,128 @@
 import {ButtonNoti} from '@/ui/boton';
 import {DivAllPublicaciones, DivPublicar} from '@/ui/container';
 import {FotoPerfil} from '@/ui/FotoPerfil';
-import {publicacionUser, user, isConnect} from '@/lib/atom';
-import {ComentarPublicacion, GetPublicacionId} from '@/lib/hook';
-import {useRecoilValue} from 'recoil';
+import {user, isConnect, notificacionesUser, Publicacion} from '@/lib/atom';
+import {
+  ComentarPublicacion,
+  GetPublicacionId,
+  NotificacionesUser,
+} from '@/lib/hook';
+import {useRecoilValue, useRecoilState} from 'recoil';
 import Link from 'next/link';
 import {useParams} from 'next/navigation';
 import {ThemplatePubli} from '../publicaciones';
 import {Loader} from '../loader';
+import {useState, useEffect} from 'react';
+
 export function TemNoti() {
-  const publicacionesUser = useRecoilValue(publicacionUser);
+  const [notificacionesUserAtom, setNotificacionesUserAtom] =
+    useRecoilState(notificacionesUser);
   const dataUser = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);
-
-  const filtradoPubliUser =
-    publicacionesUser.length > 0
-      ? publicacionesUser.filter((publi: any) => publi.comentarios.length > 0)
-      : [];
-
-  return (
-    <DivPublicar>
-      {filtradoPubliUser?.length > 0
-        ? filtradoPubliUser
-            ?.slice()
-            .reverse()
-            .map((e: any, p: any) => (
-              <Link
-                href={'/notificaciones/' + e.id}
-                key={p}
-                id={e.id}
-                style={{
-                  textDecoration: 'none',
-                  color: '#fff',
-                  fontSize: '1rem',
-                  borderBottom: '1px solid #2f2f2f',
-                }}>
-                <ButtonNoti $visto={e.open} id={e.id}>
-                  <FotoPerfil
-                    wid='40'
-                    hei='40'
-                    img={
-                      e.comentarios
-                        ?.slice()
-                        .reverse()
-                        .find((e: any) => e.userId !== dataUser.user.id)?.img
-                    }
-                    connect={
-                      dataIsConnect?.find((eConnect: any) => {
-                        const userComment = e.comentarios
-                          ?.slice()
-                          .reverse()
-                          .find((e: any) => e.userId !== dataUser.user.id);
-                        console.log(userComment);
-
-                        return userComment?.userId == eConnect.id;
-                      })?.connect && true
-                    }
-                  />
-                  <p>
-                    Nueva comentario en tu publicacion de{' '}
-                    {
-                      e.comentarios
-                        ?.slice()
-                        .reverse()
-                        .find((e: any) => e.userId !== dataUser.user.id)
-                        ?.fullName
-                    }
-                  </p>
-                </ButtonNoti>
-              </Link>
-            ))
-        : 'Sin notificaciones'}
-    </DivPublicar>
-  );
-}
-export function TemplateNotifiId() {
-  const {id} = useParams();
-  const {dataPubliId, isLoadGetPubliId} = GetPublicacionId(id as string);
-  const dataUser = useRecoilValue(user);
   const token =
     typeof window !== 'undefined'
       ? (localStorage.getItem('token') as string)
       : '';
-  const {dataComentar, isLoadingComentar} = ComentarPublicacion(
+  const [offset, setOffset] = useState(0);
+  const {dataNotiSwr, isLoadingNotiSwr} = NotificacionesUser(token, offset);
+  useEffect(() => {
+    function handleScroll() {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPosition = window.scrollY;
+      if (scrollPosition + windowHeight >= documentHeight) {
+        if (dataNotiSwr?.publicacion.length < 1) {
+          return;
+        }
+        setOffset((prevPagePubli: number) => prevPagePubli + 10);
+      }
+    }
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  useEffect(() => {
+    if (dataNotiSwr?.offset) {
+      setOffset(dataNotiSwr.offset);
+    }
+  }, [dataNotiSwr]);
+  return (
+    <DivPublicar>
+      {notificacionesUserAtom.length > 0
+        ? notificacionesUserAtom.map((e: any, p: any) => (
+            <Link
+              href={'/notificaciones/' + e.id}
+              key={p}
+              id={e.id}
+              style={{
+                textDecoration: 'none',
+                color: '#fff',
+                fontSize: '1rem',
+                borderBottom: '1px solid #2f2f2f',
+              }}
+              onClick={() =>
+                setNotificacionesUserAtom((prev: any) => {
+                  const newData = prev.map((item: Publicacion) => {
+                    if (item.id == e.id) {
+                      return {...item, open: false};
+                    }
+                    return item;
+                  });
+                  return newData;
+                })
+              }>
+              <ButtonNoti $visto={e.open} id={e.id}>
+                <FotoPerfil
+                  wid='40'
+                  hei='40'
+                  img={
+                    e.comentarios
+                      ?.slice()
+                      .reverse()
+                      .find((e: any) => e.userId !== dataUser.user.id)?.img
+                  }
+                  connect={
+                    dataIsConnect?.find((eConnect: any) => {
+                      const userComment = e.comentarios
+                        ?.slice()
+                        .reverse()
+                        .find((e: any) => e.userId !== dataUser.user.id);
+                      return userComment?.userId == eConnect.id;
+                    })?.connect && true
+                  }
+                />
+                <p>
+                  Nueva comentario en tu publicacion de{' '}
+                  {
+                    e.comentarios
+                      ?.slice()
+                      .reverse()
+                      .find((e: any) => e.userId !== dataUser.user.id)?.fullName
+                  }
+                </p>
+              </ButtonNoti>
+            </Link>
+          ))
+        : 'Sin notificaciones'}
+      {isLoadingNotiSwr && (
+        <div style={{position: 'relative', margin: '1rem'}}>
+          <Loader></Loader>
+        </div>
+      )}
+    </DivPublicar>
+  );
+}
+
+export function TemplateNotifiId() {
+  const {id} = useParams();
+  const token =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('token') as string)
+      : '';
+  const {dataPubliId} = GetPublicacionId(token, id as string);
+  const dataUser = useRecoilValue(user);
+  const {isLoadingComentar} = ComentarPublicacion(
     {
       id,
       open: false,

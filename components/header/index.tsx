@@ -2,7 +2,6 @@
 import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, onDisconnect, off} from 'firebase/database';
 import './style.css';
-import 'instantsearch.css/themes/satellite.css';
 import {usePathname, useRouter} from 'next/navigation';
 import {SearchBox, Hits, useHits} from 'react-instantsearch';
 import {Hit} from '../searchUsers';
@@ -39,7 +38,7 @@ import {
   isMenssage,
   isConnect,
   Connect,
-  getAllAmigos,
+  notificacionesUser,
   User,
 } from '@/lib/atom';
 import {ButtonSmsConnect} from '@/ui/boton';
@@ -55,6 +54,7 @@ export function Header() {
   const dataUser = useRecoilValue(user);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
+  const notificacionesUserAtom = useRecoilValue(notificacionesUser);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const datapublicacionUser = useRecoilValue(publicacionUser);
   const [search, setSearch] = useState('');
@@ -159,7 +159,7 @@ export function Header() {
       <HeaderNav>
         <Nav>
           <InputDiv>
-            <Link href={'/home'}>
+            <Link href={'/home'} aria-label='home'>
               <Logo style={{borderRadius: '10px', fill: '#fff'}} />
             </Link>
             <DivInputSearch>
@@ -179,7 +179,6 @@ export function Header() {
                 hits.length > 0 ? (
                   <>
                     <Hits hitComponent={Hit} />
-                    {/* <Pagination /> */}
                   </>
                 ) : (
                   <p
@@ -196,17 +195,17 @@ export function Header() {
             </DivInputSearch>
           </InputDiv>
           <DivEnlaces>
-            <Link href={'/search'}>
+            <Link href={'/search'} aria-label='search'>
               <EnlaceSearch>
                 <Search />
               </EnlaceSearch>
             </Link>
-            <Link href={'/home'} style={stylelinkIcon}>
+            <Link href={'/home'} style={stylelinkIcon} aria-label='home'>
               <Enlaces>
                 <Home />
               </Enlaces>
             </Link>
-            <Link href={'/amigos'} style={stylelinkIcon}>
+            <Link href={'/amigos'} style={stylelinkIcon} aria-label='amigos'>
               {dataSoliReci?.length > 0 && (
                 <DivNotificacionActi>
                   {dataSoliReci?.length}
@@ -216,7 +215,7 @@ export function Header() {
                 <Amigos />
               </Enlaces>
             </Link>
-            <Link href={'/mensaje'} style={stylelinkIcon}>
+            <Link href={'/mensaje'} style={stylelinkIcon} aria-label='mensaje'>
               {dataMessage.length > 0 && (
                 <DivNotificacionActi>{dataMessage.length}</DivNotificacionActi>
               )}
@@ -224,13 +223,16 @@ export function Header() {
                 <Chat />{' '}
               </Enlaces>
             </Link>
-            <Link href={'/notificaciones'} style={stylelinkIcon}>
-              {datapublicacionUser?.length > 0 &&
-                datapublicacionUser?.filter((e: any) => e.open == true)
+            <Link
+              href={'/notificaciones'}
+              style={stylelinkIcon}
+              aria-label='notificaciones'>
+              {notificacionesUserAtom?.length > 0 &&
+                notificacionesUserAtom?.filter((e: any) => e.open == true)
                   .length !== 0 && (
                   <DivNotificacionActi>
                     {
-                      datapublicacionUser?.filter((e: any) => e.open == true)
+                      notificacionesUserAtom?.filter((e: any) => e.open == true)
                         .length
                     }
                   </DivNotificacionActi>

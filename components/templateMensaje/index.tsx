@@ -13,7 +13,7 @@ import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Input} from '@/ui/input';
 import {BotonSms, ButtonSms} from '@/ui/boton';
 import {useRecoilValue} from 'recoil';
-import {getAllAmigos, user, isMenssage, isConnect, User} from '@/lib/atom';
+import {getAllAmigos, user, isMenssage, isConnect} from '@/lib/atom';
 import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, get} from 'firebase/database';
@@ -51,7 +51,7 @@ export function TemMensaje() {
       ? (localStorage.getItem('token') as string)
       : '';
   const {dataMesssage} = EnviarMessage(messageUser, token);
-  const {dataAllAmigosSwr, isLoadingAllAmigos} = GetAllAmigos(token, offset);
+  const {dataAllAmigosSwr, isLoadingAllAmigos} = GetAllAmigos(token);
 
   useEffect(() => {
     if (dataMesssage) {

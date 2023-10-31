@@ -52,6 +52,9 @@ export const DivPublicar = styled.div`
     width: auto;
     margin-bottom: 1rem;
   }
+  a:last-child {
+    border-bottom: none !important;
+  }
 `;
 export const DivAllChat = styled(DivPublicar)`
   flex-direction: row;

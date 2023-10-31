@@ -56,14 +56,20 @@ export function PublicacionesAll() {
     typeof window !== 'undefined'
       ? (localStorage.getItem('token') as string)
       : '';
-  const {isLoadingAllAmigos} = GetAllPublicaciones(token, pagePubli);
+  const {dataPubliAllAmigosSwr, isLoadingAllAmigos} = GetAllPublicaciones(
+    token,
+    pagePubli
+  );
 
   useEffect(() => {
     function handleScroll() {
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const scrollPosition = window.scrollY;
-      if (scrollPosition + windowHeight >= documentHeight) {
+      if (
+        scrollPosition + windowHeight >= documentHeight &&
+        dataPubliAllAmigosSwr?.length !== 0
+      ) {
         setPagePubli((prevPagePubli) => prevPagePubli + 10);
       }
     }
@@ -71,7 +77,7 @@ export function PublicacionesAll() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [dataPubliAllAmigosSwr]);
   return (
     <div>
       {publicacionesAmigos?.length > 0 ? (
@@ -89,6 +95,7 @@ export function PublicacionesAll() {
                 imgUserPro={dataUser?.user?.img}
                 idPublicacion={item.id}
                 userId={dataUser?.user?.id}
+                token={token}
               />
             </DivAllPublicaciones>
           ))}
@@ -113,13 +120,19 @@ export function PublicacionesUser() {
     typeof window !== 'undefined'
       ? (localStorage.getItem('token') as string)
       : '';
-  const {isLoadingAllAmigos} = GetAllPublicacionesUser(token, pagePubli);
+  const {dataPubliAllAmigosSwr, isLoadingAllAmigos} = GetAllPublicacionesUser(
+    token,
+    pagePubli
+  );
   useEffect(() => {
     function handleScroll() {
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const scrollPosition = window.scrollY;
-      if (scrollPosition + windowHeight >= documentHeight) {
+      if (
+        scrollPosition + windowHeight >= documentHeight &&
+        dataPubliAllAmigosSwr?.length !== 0
+      ) {
         setPagePubli((prevPagePubli) => prevPagePubli + 10);
       }
     }
@@ -127,7 +140,7 @@ export function PublicacionesUser() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [dataPubliAllAmigosSwr]);
   return (
     <div>
       {publicacionesUser.length > 0 ? (
@@ -144,6 +157,7 @@ export function PublicacionesUser() {
               id={item.userId}
               idPublicacion={item.id}
               userId={dataUser.user.id}
+              token={token}
             />
           </DivAllPublicaciones>
         ))
@@ -162,27 +176,28 @@ export function PublicacionesUser() {
 export function ThemplatePubli(props: any) {
   const getAllUserData = useRecoilValue(getAllAmigos);
   const dataIsConnect = useRecoilValue(isConnect);
-  const token =
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : '';
   const user: any = getAllUserData.find((user: any) => user.id == props.id);
-
-  const isLike =
-    props?.like?.length > 0 ? props.like?.includes(props.userId) : false;
-  const [like, setLike] = useState(!isLike ? 'disLike' : 'like');
+  const [like, setLike] = useState<string>();
   const [comentario, setComentario] = useState(false);
   const [click, setClick] = useState(false);
+  const [totalLike, setTotalLike] = useState(props.like.length);
+  const [comentariosPubli, setComentariosPubli] = useState(
+    props.comentarios.length
+  );
 
-  const {dataLike, isLoadingLike} = LikeODisLike(
+  const {dataLike} = LikeODisLike(
     {
       tipo: like,
       id: props.idPublicacion,
       click: click,
     },
-    token
+    props.token
   );
-
+  useEffect(() => {
+    const isLike =
+      props?.like?.length > 0 ? props.like?.includes(props.userId) : false;
+    setLike(!isLike ? 'disLike' : 'like');
+  }, [props.like, props.userId]);
   useEffect(() => {
     if (dataLike) {
       setClick(false);
@@ -193,12 +208,13 @@ export function ThemplatePubli(props: any) {
 
     if (like == 'like') {
       setLike('disLike');
+      setTotalLike((prev: number) => prev - 1);
       setClick(true);
-
       return;
     }
     if (like == 'disLike') {
       setLike('like');
+      setTotalLike((prev: number) => prev + 1);
       setClick(true);
     }
   };
@@ -258,36 +274,43 @@ export function ThemplatePubli(props: any) {
             src={props?.img}
             alt='portafolio'
             fill
-            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             loading='lazy'
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             style={{objectFit: 'cover', borderRadius: '10px'}}
           />
         </DivImage>
       ) : null}
       <DivCantidad>
-        {props.like?.length > 0 && (
+        {totalLike > 0 ? (
           <SpanIco>
             {' '}
             <Like style={iconConLike} />
-            {props.like?.length}
+            {totalLike}
           </SpanIco>
+        ) : (
+          <div></div>
         )}
-        {props.comentarios?.length > 0 && (
+        {comentariosPubli > 0 ? (
           <SpanIco>
-            <DivSpan>Comentarios {props.comentarios?.length} </DivSpan>
+            <DivSpan>Comentarios {comentariosPubli} </DivSpan>
           </SpanIco>
+        ) : (
+          <div></div>
         )}
       </DivCantidad>
       <DivInteractuar>
         <BottonLike
           type='button'
-          like={like}
-          id={like}
-          onClick={handleClickLike}>
+          onClick={handleClickLike}
+          id={props.idPublicacion}
+          $like={like}>
           <Like />
           Me gusta
         </BottonLike>
-        <BottonComentar onClick={handleClickOpenComen} type='button'>
+        <BottonComentar
+          onClick={handleClickOpenComen}
+          type='button'
+          id={'comentario' + props.idPublicacion}>
           <Comentar />
           Comentar
         </BottonComentar>
@@ -302,8 +325,12 @@ export function ThemplatePubli(props: any) {
           imgUserPro={props.imgUserPro}
           userId={props.userId}
           id={props.id}
+          token={props.token}
           connect={
             dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
+          }
+          publicComentario={(isComentario: boolean) =>
+            isComentario && setComentariosPubli((prev: number) => prev + 1)
           }
         />
       ) : null}
@@ -315,12 +342,12 @@ function ComentarioPublic(props: any) {
   const [placeInput, setPlaceinput] = useState(true);
   const [content, setContent] = useState('');
   const [click, setClick] = useState(false);
+  const [dataComentariosAll, setDaataComentariosAll] = useState<any>(
+    props.comentarios
+  );
   const [open, setOpen] = useState(props.userId !== props.id ? true : false);
-  const token =
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : '';
-  const {dataComentar, isLoadingComentar} = ComentarPublicacion(
+
+  const {dataComentar} = ComentarPublicacion(
     {
       id: props.idPublicacion,
       fullName: props.name,
@@ -330,7 +357,7 @@ function ComentarioPublic(props: any) {
       open,
       click,
     },
-    token
+    props.token
   );
   useEffect(() => {
     if (dataComentar) {
@@ -378,27 +405,45 @@ function ComentarioPublic(props: any) {
                 {dataComentar && ''}
               </ComentarioParrafo>
             </div>
-            <BottonSendComentario onClick={() => setClick(true)}>
+
+            <BottonSendComentario
+              onClick={() => {
+                if (content) {
+                  setClick(true);
+                  setDaataComentariosAll((prev: any) => [
+                    ...prev,
+                    {
+                      id: props.idPublicacion,
+                      fullName: props.name,
+                      description: content,
+                      img: props.imgUserPro,
+                      userId: props.userId,
+                      open,
+                    },
+                  ]);
+                  props.publicComentario(true);
+                  return;
+                }
+                alert('Escribe Algo');
+              }}>
               <SendComentPubli />
             </BottonSendComentario>
           </DivAñadirComentar>
         </DivPerfil>
       </div>
       <div>
-        {props.comentarios?.length > 0
-          ? props.comentarios
-              .slice()
-              .reverse()
-              .map((e: any, p: any) => {
-                return (
-                  <TemplateComentario
-                    key={p}
-                    userId={e.userId}
-                    imgUser={e.img}
-                    userName={e.userId == props.userId ? 'Tú' : e.fullName}
-                    description={e.description}></TemplateComentario>
-                );
-              })
+        {dataComentariosAll?.length > 0
+          ? dataComentariosAll.map((e: any, p: any) => {
+              return (
+                <TemplateComentario
+                  key={e.id}
+                  userId={e.userId}
+                  imgUserPro={props.imgUserPro}
+                  imgUser={e.img}
+                  userName={e.userId == props.userId ? 'Tú' : e.fullName}
+                  description={e.description}></TemplateComentario>
+              );
+            })
           : null}
       </div>
     </div>
@@ -414,7 +459,7 @@ function TemplateComentario(props: any) {
             <FotoPerfil hei='30' wid='30' img={props.imgUser}></FotoPerfil>
           </Link>
         ) : (
-          <FotoPerfil hei='30' wid='30' img={props.imgUser}></FotoPerfil>
+          <FotoPerfil hei='30' wid='30' img={props.imgUserPro}></FotoPerfil>
         )}
 
         <div

@@ -56,6 +56,7 @@ export function Hit({hit}: HitProps) {
       style={{
         textDecoration: 'none',
         color: '#fff',
+        width: '100%',
       }}>
       <DivLinkUser>
         <FotoPerfil

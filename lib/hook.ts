@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import {fetchApiSwr} from './api';
-import {useRecoilState, useRecoilValue} from 'recoil';
+import {useRecoilState} from 'recoil';
 import {
   user,
   publicacionUser,
@@ -11,13 +11,11 @@ import {
   getAllSolicitudesEnviadas,
   publicacionAmigos,
   publicacionSearchUser,
+  notificacionesUser,
 } from '@/lib/atom';
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
-const token =
-  typeof window !== 'undefined'
-    ? (localStorage.getItem('token') as string)
-    : '';
+
 type DataUser = {
   fullName?: string;
   email?: string;
@@ -50,7 +48,7 @@ export function CreateUser(dataUser: DataUser) {
     },
     body: JSON.stringify(dataUser),
   };
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading} = useSWRImmutable(
     dataUser.email ? [api, option] : null,
     fetchApiSwr
   );
@@ -89,7 +87,7 @@ export function ModificarUser(dataUser: DataUser, token: string) {
     },
     body: JSON.stringify(dataUser),
   };
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading} = useSWR(
     dataUser?.email || dataUser?.password || dataUser?.img
       ? [api, option]
       : null,
@@ -138,16 +136,12 @@ export function GetUser(token: string) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const {data, isLoading, error} = useSWR(
-    token ? [api, option] : null,
-    fetchApiSwr,
-    {
-      revalidateOnMount: true,
-      revalidateOnFocus: true,
-      revalidateOnReconnect: true,
-      refreshInterval: 1000,
-    }
-  );
+  const {data, isLoading} = useSWR(token ? [api, option] : null, fetchApiSwr, {
+    revalidateOnMount: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+    refreshInterval: 100000,
+  });
 
   useEffect(() => {
     if (data?.getUserRes?.id) {
@@ -166,9 +160,47 @@ export function GetUser(token: string) {
 
   return {data, isLoading};
 }
-export function GetAllAmigos(token: string, offset?: string) {
+
+export function NotificacionesUser(token: string, offset: number) {
+  const [notificacionesUserAtom, setNotificacionesUserAtom] =
+    useRecoilState(notificacionesUser);
+  const api = `/user/notificaciones?offset=${offset}`;
+
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const {data, isLoading} = useSWR(token ? [api, option] : null, fetchApiSwr, {
+    revalidateOnReconnect: true,
+    revalidateOnMount: true,
+    revalidateOnFocus: true,
+    refreshInterval: 100000,
+  });
+
+  useEffect(() => {
+    if (data) {
+      if (notificacionesUserAtom.length > 0 && offset !== 0) {
+        setNotificacionesUserAtom((prev: any) => [
+          ...prev,
+          ...data.publicacion,
+        ]);
+        return;
+      }
+      setNotificacionesUserAtom([...data?.publicacion]);
+    }
+  }, [data]);
+
+  return {
+    dataNotiSwr: data,
+    isLoadingNotiSwr: isLoading,
+  };
+}
+export function GetAllAmigos(token: string) {
   const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
-  // const api = `/user/amigos?limit=${limit}&offset=${offset}`;
   const api = `/user/amigos`;
 
   const option = {
@@ -178,17 +210,13 @@ export function GetAllAmigos(token: string, offset?: string) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading} = useSWRImmutable(
     token ? [api, option] : null,
     fetchApiSwr
   );
 
   useEffect(() => {
     if (data) {
-      // if (amigoAllData.length > 0) {
-      //   setAmigosAllData((prev: any) => [...prev, ...data]);
-      //   return;
-      // }
       setAmigosAllData(data);
     }
   }, [data]);
@@ -207,10 +235,13 @@ export function GetAllPublicaciones(token: string, offset: number) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const {data, isLoading, error} = useSWR(
-    token ? [api, option] : null,
-    fetchApiSwr
-  );
+
+  const {data, isLoading} = useSWR(token ? [api, option] : null, fetchApiSwr, {
+    revalidateOnReconnect: true,
+    revalidateOnMount: true,
+    revalidateOnFocus: true,
+    refreshInterval: 100000,
+  });
 
   useEffect(() => {
     if (data) {
@@ -222,10 +253,12 @@ export function GetAllPublicaciones(token: string, offset: number) {
     }
   }, [data]);
 
-  return {dataPubliAllAmigosSwr: data, isLoadingAllAmigos: isLoading};
+  return {
+    dataPubliAllAmigosSwr: data,
+    isLoadingAllAmigos: isLoading,
+  };
 }
 export function GetAllPublicacionesUser(token: string, offset: number) {
-  const userData = useRecoilValue(user);
   const [publicacionesUser, setPublicacionesUser] =
     useRecoilState(publicacionUser);
   const api = `/user/publicacion?offset=${offset}`;
@@ -237,9 +270,15 @@ export function GetAllPublicacionesUser(token: string, offset: number) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading, error} = useSWR(
     token ? [api, option] : null,
-    fetchApiSwr
+    fetchApiSwr,
+    {
+      revalidateOnReconnect: true,
+      revalidateOnMount: true,
+      revalidateOnFocus: true,
+      refreshInterval: 100000,
+    }
   );
 
   useEffect(() => {
@@ -254,29 +293,6 @@ export function GetAllPublicacionesUser(token: string, offset: number) {
 
   return {dataPubliAllAmigosSwr: data, isLoadingAllAmigos: isLoading};
 }
-export function GetAmigo(id: string, token: string) {
-  const api = `/user/amigos/${id}`;
-  const option = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const {data, isLoading, error} = useSWR(
-    token && id ? [api, option] : null,
-    fetchApiSwr,
-    {
-      revalidateOnFocus: true,
-      revalidateOnReconnect: true,
-      revalidateOnMount: true,
-      refreshInterval: 2000,
-    }
-  );
-
-  return {data, isLoading};
-}
 export function GetPubliAmigo(id: string, token: string, offset: number) {
   const [publicacionesAmigo, setPublicacionesAmigo] = useRecoilState(
     publicacionSearchUser
@@ -290,13 +306,14 @@ export function GetPubliAmigo(id: string, token: string, offset: number) {
     },
   };
 
-  const {data, isLoading, error} = useSWRImmutable(
-    token ? [api, option] : null,
-    fetchApiSwr
-  );
+  const {data, isLoading} = useSWR(token ? [api, option] : null, fetchApiSwr, {
+    revalidateOnReconnect: true,
+    revalidateOnMount: true,
+    revalidateOnFocus: true,
+    refreshInterval: 100000,
+  });
   useEffect(() => {
     if (data) {
-
       if (publicacionesAmigo.length > 0 && offset !== 0) {
         setPublicacionesAmigo((prev: any) => [...prev, ...data]);
         return;
@@ -304,6 +321,28 @@ export function GetPubliAmigo(id: string, token: string, offset: number) {
       setPublicacionesAmigo([...data]);
     }
   }, [data]);
+
+  return {dataPubliAmigo: data, isLoading};
+}
+export function GetAmigo(id: string, token: string) {
+  const api = `/user/amigos/${id}`;
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const {data, isLoading} = useSWR(
+    token && id ? [api, option] : null,
+    fetchApiSwr,
+    {
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+      revalidateOnMount: true,
+    }
+  );
 
   return {data, isLoading};
 }
@@ -317,7 +356,7 @@ export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
     },
     body: JSON.stringify(dataPubli),
   };
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading} = useSWRImmutable(
     dataPubli.id !== 0 ? [api, option] : null,
     fetchApiSwr
   );
@@ -336,7 +375,7 @@ export function CreateSolicitud(dataSoli: Solicitud, token?: string) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading} = useSWR(
     dataSoli.amigoId > -1 ? [api, option] : null,
     fetchApiSwr
   );
@@ -358,7 +397,7 @@ export function AceptarSolicitud(dataSoli: Solicitud, token?: string) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading} = useSWR(
     dataSoli.amigoId > -1 ? [api, option] : null,
     fetchApiSwr
   );
@@ -375,7 +414,7 @@ export function RechazarSolicitud(dataSoli: any, token?: string) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading} = useSWR(
     dataSoli.userId > -1 ? [api, option] : null,
     fetchApiSwr
   );
@@ -392,7 +431,7 @@ export function EliminarAmigo(datas: any, token?: string) {
     },
     body: JSON.stringify(datas),
   };
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading} = useSWR(
     token && datas.userId > -1 ? [api, option] : null,
     fetchApiSwr
   );
@@ -410,7 +449,7 @@ export function LikeODisLike(datas: any, token: string) {
     body: JSON.stringify({tipo: datas.tipo}),
   };
 
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading} = useSWR(
     token && datas.click ? [api, option] : null,
     fetchApiSwr,
     {
@@ -431,15 +470,14 @@ export function ComentarPublicacion(datas: any, token: string) {
     },
     body: JSON.stringify({...datas}),
   };
-
-  const {data, isLoading, error} = useSWRImmutable(
+  const {data, isLoading} = useSWRImmutable(
     token && datas.click ? [api, option] : null,
     fetchApiSwr
   );
 
   return {dataComentar: data, isLoadingComentar: isLoading};
 }
-export function GetPublicacionId(id: string) {
+export function GetPublicacionId(token: string, id: string) {
   const api = '/user/publicacion/' + id;
   const option = {
     method: 'GET',
@@ -448,14 +486,14 @@ export function GetPublicacionId(id: string) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading} = useSWR(
     token && id ? [api, option] : null,
     fetchApiSwr,
     {
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
       revalidateOnMount: true,
-      refreshInterval: 5000,
+      refreshInterval: 100000,
     }
   );
   return {dataPubliId: data, isLoadGetPubliId: isLoading};
@@ -481,23 +519,17 @@ export function EnviarMessage(datas: any, token?: string) {
   return {dataMesssage: data, isLoadMessage: isLoading};
 }
 export function OptimizarImage(dataUrl: string) {
-  const {data, isLoading, error} = useSWR(
+  const {data, isLoading} = useSWR(
     dataUrl ? dataUrl : null,
     async (dataUrl) => {
       const optimizedBase64 = await urltoBlob(dataUrl);
       const optimizedBase = await compressAccurately(optimizedBase64, {
-        size: 520,
-        quality: 0.8,
+        size: 320,
+        quality: 0.6,
       });
-
       const dataFinal = await filetoDataURL(optimizedBase);
-      var data = dataFinal.split(',')[1];
-      var decodedData = atob(data);
-
-      var sizeInMB = decodedData.length / (1024 * 1024);
-
       return dataFinal;
     }
   );
-  return {data, isLoading};
+  return {dataObtimizado: data, isLoading};
 }

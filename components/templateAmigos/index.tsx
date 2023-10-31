@@ -4,7 +4,7 @@ import MyAmigos from '@/ui/icons/myAmigos.svg';
 import {ButtonNoti, ButtonAgregar} from '@/ui/boton';
 import {DivAllAmistades} from '@/ui/container';
 import {useEffect, useState} from 'react';
-import {DivImageSug} from '../publicaciones/styled';
+import {DivImageSug} from './styled';
 import {useRecoilValue} from 'recoil';
 import {
   User,

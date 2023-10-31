@@ -8,7 +8,9 @@ export type Publicacion = {
   like: [];
   comentarios: [];
   userId: number;
+  open?: boolean;
 };
+
 type Message = {
   read: boolean;
   rtdb: string;
@@ -74,7 +76,10 @@ export const isMenssage = atom({
   key: 'isMenssage',
   default: [] as Message[],
 });
-
+export const notificacionesUser = atom({
+  key: 'notificacionesUser',
+  default: [] as Publicacion[],
+});
 export const isConnect = atom({
   key: 'isConnet',
   default: [] as Connect[],

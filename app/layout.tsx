@@ -13,7 +13,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang='en'>
+    <html lang='es'>
+      <head>
+        <link rel='preload' href='/logo.webp' as='image' />
+        <link rel='preload' href='/portafolio.webp' as='image' />
+        <link rel='preload' href='/user.webp' as='image' />
+        <link rel='preconnect' href='https://8w3zg1ohsp-2.algolianet.com' />
+        <link
+          rel='preconnect'
+          href='https://5kd3mkwn-3000.brs.devtunnels.ms'></link>
+      </head>
       <body className={poppins.className}>
         <Layout>{children}</Layout>
       </body>

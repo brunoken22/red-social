@@ -23,14 +23,7 @@ export const DivImage = styled.div`
   margin: 0.1rem;
   height: 300px;
 `;
-export const DivImageSug = styled(DivImage)<any>`
-  background-image: ${({$img}) => ($img ? `url(${$img})` : 'url(/user.webp)')};
-  background-position: center;
-  background-size: cover;
-  padding: 0;
-  border-radius: 10px;
-  height: 60%;
-`;
+
 export const DivCantidad = styled(DivPerfil)`
   display: grid;
   gap: 0;
@@ -64,7 +57,7 @@ export const BottonLike = styled.button<any>`
     }
   }
   path {
-    fill: ${(prop: any) => (prop.like == 'like' ? '#5a81ff' : '#ddd')};
+    fill: ${(prop: any) => (prop.$like == 'like' ? '#5a81ff' : '#ddd')};
   }
 `;
 export const BottonComentar = styled(BottonLike)`
@@ -78,6 +71,9 @@ export const BottonSendComentario = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
+  svg:hover {
+    fill: #2684ff;
+  }
 `;
 export const DivAñadirComentar = styled.div`
   border-radius: 10px;

@@ -5,45 +5,30 @@ import {
   DivPerfilUser,
   DivHeadPerfil,
   DivFotoName,
-  DivFotoNameLink,
   DivButton,
   DivPublicaciones,
-  DivButtonEliAcep,
 } from './styled';
 import {Publicar} from '../publicar';
-import {PublicacionesUser, ThemplatePubli} from '../publicaciones';
+import {PublicacionesUser} from '../publicaciones';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
-import {
-  user,
-  isConnect,
-  getAllSolicitudesRecibidas,
-  publicacionSearchUser,
-} from '@/lib/atom';
+import {user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
-import {
-  ModificarUser,
-  GetAmigo,
-  EliminarAmigo,
-  CreateSolicitud,
-  RechazarSolicitud,
-  AceptarSolicitud,
-  GetPubliAmigo,
-} from '@/lib/hook';
+import {ModificarUser, OptimizarImage} from '@/lib/hook';
 import {Loader} from '../loader';
-import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
-import {useParams} from 'next/navigation';
-import {DivAllPublicaciones} from '@/ui/container';
-import {ButtonAgregar} from '@/ui/boton';
-import {useRouter} from 'next/navigation';
+import css from './css.module.css';
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
-  const [dataImg, setDataImg] = useState('');
+  const [dataImg, setDataImg] = useState<string | undefined>('');
   const [subirImg, setSubirImg] = useState(false);
   const token =
     typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const {dataObtimizado} = OptimizarImage(dataImg as string);
 
-  const {data, isLoading} = ModificarUser({img: dataImg}, token as string);
+  const {data, isLoading} = ModificarUser(
+    {img: dataObtimizado},
+    token as string
+  );
   useEffect(() => {
     const dropzoneElement = document.querySelector('.dropzoneClick');
 
@@ -52,7 +37,7 @@ export function PerfilUser() {
         dropzoneElement as HTMLElement
       );
       if (existingDropzoneInstance) {
-        existingDropzoneInstance.destroy(); // Elimina la instancia anterior
+        existingDropzoneInstance.destroy();
       }
     }
     if (dropzoneElement) {
@@ -61,14 +46,15 @@ export function PerfilUser() {
         autoProcessQueue: false,
         uploadMultiple: false,
         maxFiles: 1,
-        maxFilesize: 100,
+        maxFilesize: 50,
         maxThumbnailFilesize: 100,
+        resizeWidth: 100,
+        resizeHeight: 100,
         resizeQuality: 0.5,
         acceptedFiles: 'image/png, image/jpeg, image/jpg',
       });
       myDropzone.on('addedfile', (file: any) => {
         setSubirImg(true);
-
         file.previewElement.innerHTML = '';
       });
       myDropzone.on('thumbnail', async function (file) {
@@ -84,9 +70,8 @@ export function PerfilUser() {
           myDropzone.removeFile(file);
           return;
         }
-
-        const dataFinal = await optimizar(file.dataURL as string);
-        setDataImg(dataFinal);
+        setDataImg(file.dataURL);
+        myDropzone.removeFile(file);
       });
     }
   }, [data]);
@@ -101,6 +86,7 @@ export function PerfilUser() {
   if (isLoading || subirImg) {
     return <Loader />;
   }
+
   return (
     <DivPerfilUser>
       <DivHeadPerfil>
@@ -111,7 +97,7 @@ export function PerfilUser() {
                 position: 'absolute',
                 bottom: '0',
                 right: '0',
-                zIndex: 10,
+                zIndex: 9,
               }}>
               <div className='dropzoneClick' style={{height: '24px'}}>
                 <div
@@ -119,6 +105,7 @@ export function PerfilUser() {
                   style={{margin: '0', height: '24px'}}>
                   <button
                     className='dz-button'
+                    aria-label='dropzonePerfil'
                     type='button'
                     style={{
                       padding: '0',
@@ -146,9 +133,7 @@ export function PerfilUser() {
           <h2 style={{textAlign: 'center'}}>{dataValor?.user?.fullName}</h2>
         </DivFotoName>
         <DivButton>
-          <Link
-            href='/configuracion'
-            style={{textDecoration: 'none', color: '#00bdff'}}>
+          <Link className={css.editPerfil} href='/configuracion'>
             Editar perfil
           </Link>
         </DivButton>
@@ -160,211 +145,4 @@ export function PerfilUser() {
       </DivPublicaciones>
     </DivPerfilUser>
   );
-}
-
-export function PerfilAmigo() {
-  const {id} = useParams();
-  const router = useRouter();
-  const dataIsConnect = useRecoilValue(isConnect);
-  const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
-  const dataUser = useRecoilValue(user);
-  const token =
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : '';
-  const [pagePubli, setPagePubli] = useState(0);
-  const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
-  const {data, isLoading} = GetAmigo(id as string, token);
-  GetPubliAmigo(id as string, token, pagePubli);
-
-  const [isClient, setIsClient] = useState(false);
-  const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
-  const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
-  const [amigoId, setAmigoId] = useState(Number(-1));
-  const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
-  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo(
-    {
-      userId: eliminarAmigo,
-    },
-    token
-  );
-  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud(
-    {
-      amigoId,
-      estado: false,
-    },
-    token
-  );
-  const {dataAcep, isLoadingAcep} = AceptarSolicitud(
-    {
-      amigoId: acepAmigoId,
-      estado: true,
-    },
-    token
-  );
-  const {dataRech, isLoadingRech} = RechazarSolicitud(
-    {
-      userId: rechazarAmigo,
-    },
-    token
-  );
-  useEffect(() => {
-    function handleScroll() {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollPosition = window.scrollY;
-      if (scrollPosition + windowHeight >= documentHeight) {
-        setPagePubli((prevPagePubli) => prevPagePubli + 10);
-      }
-    }
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-  useEffect(() => {
-    if (dataUser?.user?.id == data?.user?.id) {
-      router.push('/perfil');
-      return;
-    }
-    if (
-      isLoading ||
-      isLoadingElimAmigo ||
-      isLoadCreateSoli ||
-      isLoadingRech ||
-      isLoadingAcep
-    ) {
-      setIsClient(true);
-    }
-    if (dataElimAmigo || dataCreateSoli || dataAcep || dataRech || data) {
-      setEliminarAmigo(Number(-1));
-      setAmigoId(Number(-1));
-      setAcepAmigoId(Number(-1));
-      setRechazarAmigo(Number(-1));
-      setIsClient(false);
-    }
-  }, [
-    isLoading,
-    isLoadingElimAmigo,
-    isLoadCreateSoli,
-    isLoadingRech,
-    isLoadingAcep,
-    dataUser,
-    data,
-  ]);
-  const handleSolicitudAcep = (e: any) => {
-    const id = e.target.id;
-    setAcepAmigoId(Number(id));
-  };
-  const handleEliminarAmigo = (e: any) => {
-    const id = e.target.id;
-    setEliminarAmigo(Number(id));
-  };
-  const handleSolicitudEnv = (e: any) => {
-    const id = e.target.id;
-    setAmigoId(Number(id));
-  };
-  const handleSolicitudRecha = (e: any) => {
-    const id = e.target.id;
-    setRechazarAmigo(Number(id));
-  };
-
-  return true ? (
-    <DivPerfilUser>
-      <DivHeadPerfil>
-        <DivFotoNameLink>
-          {data?.user?.id && (
-            <FotoPerfil
-              wid='80'
-              hei='80'
-              img={data?.user?.img}
-              conectHei='15px'
-              connect={
-                dataIsConnect?.find((e: any) => e.id == data?.user?.id)
-                  ?.connect && true
-              }
-            />
-          )}
-          <h2 style={{textAlign: 'center', marginTop: '0'}}>
-            {data?.user?.fullName}
-          </h2>
-        </DivFotoNameLink>
-        <div>
-          {amigoId < 0 && data?.amigo !== 'pendiente' ? (
-            <ButtonAgregar
-              id={data?.user?.id}
-              onClick={data?.amigo ? handleEliminarAmigo : handleSolicitudEnv}
-              $bg={data?.amigo !== false ? 'red' : 'blue'}>
-              {data?.amigo ? 'Eliminar Amigo' : 'Agregar'}
-            </ButtonAgregar>
-          ) : data?.amigo == 'pendiente' &&
-            soliReci?.find((user) => user.id == data?.user.id) ? (
-            <DivButtonEliAcep>
-              <ButtonAgregar
-                id={data?.user?.id}
-                onClick={handleSolicitudRecha}
-                $bg='red'>
-                Eliminar solicitud
-              </ButtonAgregar>
-              <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudAcep}>
-                Aceptar
-              </ButtonAgregar>
-            </DivButtonEliAcep>
-          ) : (
-            <ButtonAgregar
-              id={data?.user?.id}
-              onClick={handleSolicitudRecha}
-              $bg='red'>
-              Eliminar solicitud
-            </ButtonAgregar>
-          )}
-        </div>
-      </DivHeadPerfil>
-      <DivPublicaciones>
-        {publicacionesAmigo?.length > 0 ? (
-          publicacionesAmigo.map((item: any) => (
-            <DivAllPublicaciones key={item.id}>
-              <ThemplatePubli
-                name={dataUser?.user?.fullName}
-                nameUserPerfil={data?.user?.fullName}
-                description={item.description}
-                img={item.img}
-                fecha={item.fecha}
-                like={item.like}
-                comentarios={item.comentarios}
-                imgUserPro={dataUser?.user?.img}
-                imgUser={data?.user?.img || 'false'}
-                idPublicacion={item.id}
-                userId={dataUser?.user?.id}
-                id={data?.user?.id}
-              />
-            </DivAllPublicaciones>
-          ))
-        ) : (
-          <p style={{textAlign: 'center'}}>No hay publicaciones</p>
-        )}
-        {isLoading && (
-          <div style={{position: 'relative', margin: '1rem'}}>
-            <Loader></Loader>
-          </div>
-        )}
-      </DivPublicaciones>
-    </DivPerfilUser>
-  ) : (
-    <Loader />
-  );
-}
-
-export async function optimizar(dataUrl: string): Promise<string> {
-  const optimizedBase64 = await urltoBlob(dataUrl);
-  const optimizedBase = await compressAccurately(optimizedBase64, {
-    size: 520,
-    quality: 0.6,
-  });
-
-  const dataFinal = await filetoDataURL(optimizedBase);
-  var data = dataFinal.split(',')[1];
-  var decodedData = atob(data);
-
-  return dataFinal;
 }

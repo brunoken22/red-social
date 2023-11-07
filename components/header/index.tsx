@@ -56,7 +56,6 @@ export function Header() {
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
-  const datapublicacionUser = useRecoilValue(publicacionUser);
   const [search, setSearch] = useState('');
   const [allConnectAmigos, setAllConnectAmigos] = useState([]);
   const [connectAmigos, setConnectAmigos] = useState(false);
@@ -105,7 +104,6 @@ export function Header() {
       });
     });
   }, [dataUser?.user?.rtdb]);
-
   useEffect(() => {
     const connectRef = ref(rtdb, '/connect');
     onValue(connectRef, (snapshot: any) => {
@@ -134,6 +132,7 @@ export function Header() {
       }
     });
   }, [dataUser?.user?.rtdb]);
+
   useEffect(() => {
     if (dataUser?.user?.id) {
       const connectRef = ref(rtdb, '/connect/' + dataUser?.user?.id);

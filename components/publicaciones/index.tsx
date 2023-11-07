@@ -124,6 +124,7 @@ export function PublicacionesUser() {
     token,
     pagePubli
   );
+
   useEffect(() => {
     function handleScroll() {
       const windowHeight = window.innerHeight;
@@ -141,6 +142,7 @@ export function PublicacionesUser() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [dataPubliAllAmigosSwr]);
+
   return (
     <div>
       {publicacionesUser.length > 0 ? (
@@ -175,11 +177,11 @@ export function PublicacionesUser() {
 
 export function ThemplatePubli(props: any) {
   const getAllUserData = useRecoilValue(getAllAmigos);
-  const dataIsConnect = useRecoilValue(isConnect);
   const user: any = getAllUserData.find((user: any) => user.id == props.id);
   const [like, setLike] = useState<string>();
   const [comentario, setComentario] = useState(false);
   const [click, setClick] = useState(false);
+  const dataIsConnect = useRecoilValue(isConnect);
   const [totalLike, setTotalLike] = useState(props.like.length);
   const [comentariosPubli, setComentariosPubli] = useState(
     props.comentarios.length
@@ -197,12 +199,15 @@ export function ThemplatePubli(props: any) {
     const isLike =
       props?.like?.length > 0 ? props.like?.includes(props.userId) : false;
     setLike(!isLike ? 'disLike' : 'like');
+
+    setTotalLike(props.like.length);
   }, [props.like, props.userId]);
   useEffect(() => {
     if (dataLike) {
       setClick(false);
     }
   }, [dataLike]);
+
   const handleClickLike = (e: any) => {
     e.preventDefault();
 
@@ -281,7 +286,7 @@ export function ThemplatePubli(props: any) {
         </DivImage>
       ) : null}
       <DivCantidad>
-        {totalLike > 0 ? (
+        {totalLike ? (
           <SpanIco>
             {' '}
             <Like style={iconConLike} />

@@ -160,7 +160,6 @@ export function GetUser(token: string) {
 
   return {data, isLoading};
 }
-
 export function NotificacionesUser(token: string, offset: number) {
   const [notificacionesUserAtom, setNotificacionesUserAtom] =
     useRecoilState(notificacionesUser);
@@ -362,7 +361,7 @@ export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
   );
   return {data, isLoading};
 }
-export function CreateSolicitud(dataSoli: Solicitud, token?: string) {
+export function CreateSolicitud(dataSoli: Solicitud, token: string) {
   const [userAllData, setUserAllData] = useRecoilState(
     getAllSolicitudesEnviadas
   );
@@ -375,7 +374,7 @@ export function CreateSolicitud(dataSoli: Solicitud, token?: string) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading} = useSWR(
+  const {data, isLoading} = useSWRImmutable(
     dataSoli.amigoId > -1 ? [api, option] : null,
     fetchApiSwr
   );
@@ -387,7 +386,7 @@ export function CreateSolicitud(dataSoli: Solicitud, token?: string) {
   }, [data]);
   return {dataCreateSoli: data, isLoadCreateSoli: isLoading};
 }
-export function AceptarSolicitud(dataSoli: Solicitud, token?: string) {
+export function AceptarSolicitud(dataSoli: Solicitud, token: string) {
   const api = '/user/amigos';
   const option = {
     method: 'POST',
@@ -395,6 +394,7 @@ export function AceptarSolicitud(dataSoli: Solicitud, token?: string) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+
     body: JSON.stringify(dataSoli),
   };
   const {data, isLoading} = useSWR(
@@ -404,7 +404,7 @@ export function AceptarSolicitud(dataSoli: Solicitud, token?: string) {
 
   return {dataAcep: data, isLoadingAcep: isLoading};
 }
-export function RechazarSolicitud(dataSoli: any, token?: string) {
+export function RechazarSolicitud(dataSoli: any, token: string) {
   const api = '/user/solicitudAmistad';
   const option = {
     method: 'DELETE',
@@ -414,13 +414,14 @@ export function RechazarSolicitud(dataSoli: any, token?: string) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading} = useSWR(
+  const {data, isLoading} = useSWRImmutable(
     dataSoli.userId > -1 ? [api, option] : null,
     fetchApiSwr
   );
 
   return {dataRech: data, isLoadingRech: isLoading};
 }
+
 export function EliminarAmigo(datas: any, token?: string) {
   const api = '/user/amigos';
   const option = {
@@ -435,7 +436,6 @@ export function EliminarAmigo(datas: any, token?: string) {
     token && datas.userId > -1 ? [api, option] : null,
     fetchApiSwr
   );
-
   return {dataElimAmigo: data, isLoadingElimAmigo: isLoading};
 }
 export function LikeODisLike(datas: any, token: string) {

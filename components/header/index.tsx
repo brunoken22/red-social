@@ -34,7 +34,6 @@ import {useRecoilValue, useRecoilState} from 'recoil';
 import {
   user,
   getAllSolicitudesRecibidas,
-  publicacionUser,
   isMenssage,
   isConnect,
   Connect,
@@ -72,11 +71,13 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
+
   useEffect(() => {
+    if (!dataUser?.user?.id) return;
     let count: any = [];
-    dataUser?.user?.rtdb?.map((item: string) => {
+    dataUser.user.rtdb?.map((item: string) => {
       const chatrooms = ref(rtdb, '/rooms/' + item + '/messages');
-      onValue(chatrooms, (snapshot: any) => {
+      return onValue(chatrooms, (snapshot: any) => {
         const valor = snapshot.val();
         if (valor) {
           const datas: any = Object?.values(valor);
@@ -103,47 +104,38 @@ export function Header() {
         }
       });
     });
-  }, [dataUser?.user?.rtdb]);
+  }, [!dataUser?.user?.rtdb]);
   useEffect(() => {
+    if (!dataUser?.user?.id) return;
     const connectRef = ref(rtdb, '/connect');
-    onValue(connectRef, (snapshot: any) => {
+    return onValue(connectRef, (snapshot: any) => {
       const valor = snapshot.val();
 
-      if (dataUser?.user?.id) {
-        if (valor) {
-          const dataConnect: any = Object.values(valor);
-          setIsConnect(dataConnect);
-          const connecam = dataConnect.filter((e: Connect) => {
-            return (
-              e.id != Number(dataUser.user.id) &&
-              e.connect &&
-              dataUser.user.amigos.includes(e.id)
-            );
-          });
-          setAllConnectAmigos(connecam);
-          const connectRef = ref(rtdb, '/connect/' + dataUser?.user?.id);
-
-          update(connectRef, {
-            ...dataUser?.user,
-            connect: true,
-          });
-          onDisconnect(connectRef).update({connect: false});
-        }
+      if (valor) {
+        const dataConnect: any = Object.values(valor);
+        setIsConnect(dataConnect);
+        const connecam = dataConnect.filter((e: Connect) => {
+          return (
+            e.id != Number(dataUser.user.id) &&
+            e.connect &&
+            dataUser.user.amigos.includes(e.id)
+          );
+        });
+        setAllConnectAmigos(connecam);
       }
     });
-  }, [dataUser?.user?.rtdb]);
-
+  }, [dataUser?.user?.id]);
   useEffect(() => {
-    if (dataUser?.user?.id) {
-      const connectRef = ref(rtdb, '/connect/' + dataUser?.user?.id);
-      update(connectRef, {
-        ...dataUser?.user,
-        connect: true,
-      });
-      onDisconnect(connectRef).update({connect: false});
-    }
-  }, [dataUser]);
-
+    if (!dataUser?.user?.id) return;
+    const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
+    update(connectRefData, {
+      ...dataUser?.user,
+      connect: true,
+    });
+    return () => {
+      onDisconnect(connectRefData).update({connect: false});
+    };
+  }, [dataUser?.user?.id]);
   const handleClose = async () => {
     const connectRefAll = ref(rtdb, '/connect');
     const connectRef = ref(rtdb, '/connect/' + dataUser.user.id);

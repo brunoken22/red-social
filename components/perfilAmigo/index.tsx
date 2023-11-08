@@ -97,7 +97,6 @@ export function PerfilAmigo() {
       window.removeEventListener('touchmove', handleTouchMove);
     };
   }, []);
-
   useEffect(() => {
     if (data) {
       setIsAmigo(data.amigo);
@@ -106,22 +105,18 @@ export function PerfilAmigo() {
   }, [data]);
   useEffect(() => {
     if (dataElimAmigo) {
-      console.log('dataElimAmigo', dataElimAmigo);
       setEliminarAmigo(-1);
       return;
     }
     if (dataCreateSoli) {
-      console.log('dataCreateSoli', dataCreateSoli);
       setAmigoId(-1);
       return;
     }
     if (dataAcep) {
-      console.log('dataAcep', dataAcep);
       setAcepAmigoId(-1);
       return;
     }
     if (dataRech) {
-      console.log('dataRech', dataRech);
       setRechazarAmigo(-1);
       return;
     }

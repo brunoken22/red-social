@@ -77,7 +77,7 @@ export function PublicacionesAll() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [dataPubliAllAmigosSwr]);
+  }, []);
   return (
     <div>
       {publicacionesAmigos?.length > 0 ? (
@@ -125,23 +125,23 @@ export function PublicacionesUser() {
     pagePubli
   );
 
-  useEffect(() => {
-    function handleScroll() {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollPosition = window.scrollY;
-      if (
-        scrollPosition + windowHeight >= documentHeight &&
-        dataPubliAllAmigosSwr?.length !== 0
-      ) {
-        setPagePubli((prevPagePubli) => prevPagePubli + 10);
-      }
-    }
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [dataPubliAllAmigosSwr]);
+  // useEffect(() => {
+  //   function handleScroll() {
+  //     const windowHeight = window.innerHeight;
+  //     const documentHeight = document.documentElement.scrollHeight;
+  //     const scrollPosition = window.scrollY;
+  //     if (
+  //       scrollPosition + windowHeight >= documentHeight &&
+  //       dataPubliAllAmigosSwr?.length !== 0
+  //     ) {
+  //       setPagePubli((prevPagePubli) => prevPagePubli + 10);
+  //     }
+  //   }
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
 
   return (
     <div>

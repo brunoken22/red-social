@@ -1,6 +1,6 @@
 'use client';
-import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, onDisconnect, off} from 'firebase/database';
+import {rtdb} from '@/lib/firebase';
 import './style.css';
 import {usePathname, useRouter} from 'next/navigation';
 import {SearchBox, Hits, useHits} from 'react-instantsearch';

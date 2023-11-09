@@ -1,8 +1,14 @@
 import {initializeApp} from 'firebase/app';
-import {getDatabase, ref, set} from 'firebase/database';
+import {Database, getDatabase} from 'firebase/database';
+let rtdb; // Variable para rastrear la conexión a Firebase RTDB
 
 const app = initializeApp({
   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_RTDB,
 });
-const rtdb = getDatabase(app);
-export {rtdb};
+
+if (!rtdb) {
+  rtdb = getDatabase(app); // Conéctate a Firebase RTDB si no lo has hecho antes
+  console.log('Conectado a Firebase RTDB');
+}
+
+export {rtdb as Database};

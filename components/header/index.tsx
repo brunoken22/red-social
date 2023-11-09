@@ -114,6 +114,7 @@ export function Header() {
       if (valor) {
         const dataConnect: any = Object.values(valor);
         setIsConnect(dataConnect);
+        if (!dataUser.user.amigos?.length) return;
         const connecam = dataConnect.filter((e: Connect) => {
           return (
             e.id != Number(dataUser.user.id) &&
@@ -167,7 +168,7 @@ export function Header() {
               )}
 
               {search && pathname !== '/search' ? (
-                hits.length > 0 ? (
+                hits.length ? (
                   <>
                     <Hits hitComponent={Hit} />
                   </>

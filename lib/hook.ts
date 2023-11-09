@@ -243,7 +243,7 @@ export function GetAllPublicaciones(token: string, offset: number) {
   });
 
   useEffect(() => {
-    if (data) {
+    if (data?.length) {
       if (publicacionesAllAmigos.length > 0 && offset !== 0) {
         setPublicacionesAllAmigos((prev: any) => [...prev, ...data]);
         return;
@@ -322,6 +322,21 @@ export function GetPubliAmigo(id: string, token: string, offset: number) {
   }, [data]);
 
   return {dataPubliAmigo: data, isLoading};
+}
+export function DeletePublic(token: string, id: number) {
+  const api = '/user/publicacion';
+  const option = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+
+    body: JSON.stringify({id}),
+  };
+  const {data, isLoading} = useSWR(id > -1 ? [api, option] : null, fetchApiSwr);
+
+  return {dataDelete: data, isLoadingDeletePubli: isLoading};
 }
 export function GetAmigo(id: string, token: string) {
   const api = `/user/amigos/${id}`;

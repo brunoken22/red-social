@@ -93,3 +93,40 @@ export const ComentarioParrafo = styled(InputP)`
   color: #ddd;
   margin: 0;
 `;
+
+export const DivPefilDelete = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+export const ButtonOpenDelete = styled.button`
+  display: flex;
+  gap: 0.2rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  &:hover span {
+    background-color: #fff;
+  }
+`;
+export const ContentDelete = styled.span`
+  height: 7px;
+  width: 7px;
+  background-color: #b4b4b4;
+  border-radius: 50%;
+`;
+
+export const ButtonDelete = styled.button`
+  position: absolute;
+  background-color: #cac9c9;
+  color: #313131;
+  border: none;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  right: 0;
+  cursor: pointer;
+  &:hover {
+    background-color: #fff;
+    color: #000;
+  }
+`;

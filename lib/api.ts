@@ -7,4 +7,4 @@ export async function fetchApiSwr(prop: [string, object]) {
 }
 // 'http://localhost:3000'
 // 'https://5kd3mkwn-3000.brs.devtunnels.ms'
-//
+//https://backend-red-social-theta.vercel.app/

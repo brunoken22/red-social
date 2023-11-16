@@ -12,6 +12,7 @@ import {
   publicacionAmigos,
   publicacionSearchUser,
   notificacionesUser,
+  Publicacion,
 } from '@/lib/atom';
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
@@ -198,6 +199,36 @@ export function NotificacionesUser(token: string, offset: number) {
     isLoadingNotiSwr: isLoading,
   };
 }
+export function NotificacionesUserImmutable(token: string, offset: number) {
+  const [notificacionesUserAtom, setNotificacionesUserAtom] =
+    useRecoilState(notificacionesUser);
+  const api = `/user/notificaciones?offset=${offset}`;
+
+  const option = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const {data, isLoading} = useSWRImmutable(
+    token ? [api, option] : null,
+    fetchApiSwr
+  );
+
+  useEffect(() => {
+    if (data) {
+      setNotificacionesUserAtom([...data?.publicacion]);
+      return;
+    }
+  }, [data]);
+
+  return {
+    dataNotiSwr: data,
+    isLoadingNotiSwr: isLoading,
+  };
+}
 export function GetAllAmigos(token: string) {
   const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
   const api = `/user/amigos`;
@@ -324,6 +355,8 @@ export function GetPubliAmigo(id: string, token: string, offset: number) {
   return {dataPubliAmigo: data, isLoading};
 }
 export function DeletePublic(token: string, id: number) {
+  const [publicacionesUser, setPublicacionesUser] =
+    useRecoilState(publicacionUser);
   const api = '/user/publicacion';
   const option = {
     method: 'DELETE',
@@ -335,6 +368,14 @@ export function DeletePublic(token: string, id: number) {
     body: JSON.stringify({id}),
   };
   const {data, isLoading} = useSWR(id > -1 ? [api, option] : null, fetchApiSwr);
+  useEffect(() => {
+    if (data) {
+      const newPublic = publicacionesUser.filter(
+        (publi: Publicacion) => publi.id != id.toString()
+      );
+      setPublicacionesUser(newPublic);
+    }
+  }, [data]);
 
   return {dataDelete: data, isLoadingDeletePubli: isLoading};
 }
@@ -389,7 +430,7 @@ export function CreateSolicitud(dataSoli: Solicitud, token: string) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading} = useSWRImmutable(
+  const {data, isLoading} = useSWR(
     dataSoli.amigoId > -1 ? [api, option] : null,
     fetchApiSwr
   );
@@ -429,14 +470,13 @@ export function RechazarSolicitud(dataSoli: any, token: string) {
     },
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading} = useSWRImmutable(
+  const {data, isLoading} = useSWR(
     dataSoli.userId > -1 ? [api, option] : null,
     fetchApiSwr
   );
 
   return {dataRech: data, isLoadingRech: isLoading};
 }
-
 export function EliminarAmigo(datas: any, token?: string) {
   const api = '/user/amigos';
   const option = {

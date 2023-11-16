@@ -19,6 +19,7 @@ import {
   ContentDelete,
   ButtonDelete,
   ButtonOpenDelete,
+  ButtonMasPubli,
 } from './styled';
 import Like from '@/ui/icons/like.svg';
 import Comentar from '@/ui/icons/comentar.svg';
@@ -66,20 +67,14 @@ export function PublicacionesAll() {
     pagePubli
   );
 
-  useEffect(() => {
-    function handleScroll() {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollPosition = window.scrollY;
-      if (scrollPosition + windowHeight >= documentHeight) {
-        setPagePubli((prevPagePubli) => prevPagePubli + 10);
-      }
+  const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!dataPubliAllAmigosSwr?.length) {
+      return;
     }
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    setPagePubli((prevPagePubli) => prevPagePubli + 10);
+  };
+
   return (
     <div>
       {publicacionesAmigos?.length > 0 ? (
@@ -102,6 +97,12 @@ export function PublicacionesAll() {
               />
             </DivAllPublicaciones>
           ))}
+          {dataPubliAllAmigosSwr?.length ? (
+            <div style={{textAlign: 'center'}}>
+              <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+            </div>
+          ) : null}
+
           {isLoadingAllAmigos && (
             <div style={{position: 'relative', margin: '1rem'}}>
               <Loader></Loader>
@@ -128,20 +129,13 @@ export function PublicacionesUser() {
     pagePubli
   );
 
-  useEffect(() => {
-    function handleScroll() {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollPosition = window.scrollY;
-      if (scrollPosition + windowHeight >= documentHeight) {
-        setPagePubli((prevPagePubli) => prevPagePubli + 10);
-      }
+  const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!dataPubliAllAmigosSwr?.length) {
+      return;
     }
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    setPagePubli((prevPagePubli) => prevPagePubli + 10);
+  };
 
   return (
     <div>
@@ -167,6 +161,11 @@ export function PublicacionesUser() {
       ) : (
         <p style={{textAlign: 'center'}}>No hay publicaciones</p>
       )}
+      {dataPubliAllAmigosSwr?.length ? (
+        <div style={{textAlign: 'center'}}>
+          <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+        </div>
+      ) : null}
       {isLoadingAllAmigos && (
         <div style={{position: 'relative', margin: '1rem'}}>
           <Loader></Loader>
@@ -185,9 +184,9 @@ export function ThemplatePubli(props: any) {
   const [openDelete, setOpenDelete] = useState(false);
   const dataIsConnect = useRecoilValue(isConnect);
   const [publiId, setPubliId] = useState<number>(-1);
-  const [totalLike, setTotalLike] = useState(props.like.length);
+  const [totalLike, setTotalLike] = useState(props.like?.length || 0);
   const [comentariosPubli, setComentariosPubli] = useState(
-    props.comentarios.length
+    props.comentarios?.length || 0
   );
 
   const {dataLike} = LikeODisLike(
@@ -204,7 +203,7 @@ export function ThemplatePubli(props: any) {
       props?.like?.length > 0 ? props.like?.includes(props.userId) : false;
     setLike(!isLike ? 'disLike' : 'like');
 
-    setTotalLike(props.like.length);
+    setTotalLike(props.like?.length);
   }, [props.like, props.userId]);
   useEffect(() => {
     if (dataLike) {
@@ -245,7 +244,7 @@ export function ThemplatePubli(props: any) {
 
   return (
     <div style={{height: '100%'}}>
-      <DivPefilDelete>
+      <DivPefilDelete aria-label='DivPefilDelete'>
         <DivPerfil>
           {user ? (
             <Link href={'/amigos/' + props.id}>
@@ -276,14 +275,17 @@ export function ThemplatePubli(props: any) {
           </div>
         </DivPerfil>
         {props.userIdPublic == props.userId ? (
-          <div style={{position: 'relative'}}>
-            <ButtonOpenDelete onClick={() => setOpenDelete(!openDelete)}>
+          <div style={{position: 'relative'}} aria-label='Eliminar'>
+            <ButtonOpenDelete
+              onClick={() => setOpenDelete(!openDelete)}
+              aria-label='EliminarContet'>
               <ContentDelete></ContentDelete>
               <ContentDelete></ContentDelete>
               <ContentDelete></ContentDelete>
             </ButtonOpenDelete>
             {openDelete && (
               <ButtonDelete
+                aria-label='Eliminar'
                 onClick={() => {
                   setPubliId(props.idPublicacion);
                   setOpenDelete(false);

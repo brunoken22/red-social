@@ -28,6 +28,7 @@ import {Loader} from '../loader';
 import {useParams} from 'next/navigation';
 import {DivAllPublicaciones} from '@/ui/container';
 import {ButtonAgregar} from '@/ui/boton';
+import {ButtonMasPubli} from '../publicaciones/styled';
 
 export function PerfilAmigo() {
   const {id} = useParams();
@@ -73,30 +74,7 @@ export function PerfilAmigo() {
     },
     token
   );
-  useEffect(() => {
-    function handleScroll() {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollPosition = window.scrollY;
-      if (scrollPosition + windowHeight >= documentHeight) {
-        console.log(pagePubli);
 
-        setPagePubli((prevPagePubli) => prevPagePubli + 10);
-      }
-    }
-
-    function handleTouchMove() {
-      handleScroll();
-    }
-
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('touchmove', handleTouchMove);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('touchmove', handleTouchMove);
-    };
-  }, []);
   useEffect(() => {
     if (data) {
       setIsAmigo(data.amigo);
@@ -140,6 +118,13 @@ export function PerfilAmigo() {
     const id = e.target.id;
     setEliminarAmigo(Number(id));
     setIsAmigo(false);
+  };
+  const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!dataPubliAmigo?.length) {
+      return;
+    }
+    setPagePubli((prevPagePubli) => prevPagePubli + 10);
   };
   return data ? (
     <DivPerfilUser>
@@ -216,6 +201,11 @@ export function PerfilAmigo() {
         ) : (
           <p style={{textAlign: 'center'}}>No hay publicaciones</p>
         )}
+        {dataPubliAmigo?.length ? (
+          <div style={{textAlign: 'center'}}>
+            <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+          </div>
+        ) : null}
         {isLoading && (
           <div style={{position: 'relative', margin: '1rem'}}>
             <Loader></Loader>

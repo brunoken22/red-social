@@ -31,8 +31,6 @@ export function TemMensaje() {
   const dataIsConnect = useRecoilValue(isConnect);
   const dataMessage = useRecoilValue(isMenssage);
   const [messagesAll, setMessagesAll] = useState([]);
-  // const [limit, setLimit] = useState('10');
-  // const [offset, setOffset] = useState('0');
   const [claveMessage, setclaveMessage] = useState('');
   const containerRef: any = useRef(null);
   const [dataMensajeUser, setDataMensajeUser] = useState({
@@ -76,7 +74,7 @@ export function TemMensaje() {
         setMessagesAll([]);
       }
     });
-  }, [dataMensajeUser.rtdb]);
+  }, [dataMensajeUser?.rtdb]);
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
@@ -149,21 +147,6 @@ export function TemMensaje() {
     router.replace('/mensaje');
   };
 
-  // useEffect(() => {
-  //   function handleScroll() {
-  //     const windowHeight = window.innerHeight;
-  //     const documentHeight = document.documentElement.scrollHeight;
-  //     const scrollPosition = window.scrollY;
-
-  //     if (scrollPosition + windowHeight >= documentHeight) {
-  //       setOffset(offset + limit);
-  //     }
-  //   }
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll);
-  //   };
-  // }, []);
   return (
     <DivTemMensaje>
       {!dataMensajeUser.rtdb ? (

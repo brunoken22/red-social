@@ -5,6 +5,7 @@ export async function fetchApiSwr(prop: [string, object]) {
   const data = await response.json();
   return data;
 }
+//
 // 'http://localhost:3000'
 // 'https://5kd3mkwn-3000.brs.devtunnels.ms'
 //https://backend-red-social-theta.vercel.app/

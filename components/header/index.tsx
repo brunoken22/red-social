@@ -1,5 +1,13 @@
 'use client';
-import {ref, onValue, update, onDisconnect, off} from 'firebase/database';
+import {
+  ref,
+  onValue,
+  update,
+  onDisconnect,
+  goOffline,
+  goOnline,
+  off,
+} from 'firebase/database';
 import {rtdb} from '@/lib/firebase';
 import './style.css';
 import {usePathname, useRouter} from 'next/navigation';
@@ -30,7 +38,7 @@ import Search from '@/ui/icons/search.svg';
 import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
-import {useRecoilValue, useRecoilState} from 'recoil';
+import {useRecoilValue, useRecoilState, useResetRecoilState} from 'recoil';
 import {
   user,
   getAllSolicitudesRecibidas,
@@ -51,6 +59,7 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const dataUser = useRecoilValue(user);
+  const userReset = useResetRecoilState(user);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
@@ -104,17 +113,19 @@ export function Header() {
         }
       });
     });
-  }, [!dataUser?.user?.rtdb]);
+  }, [dataUser?.user?.rtdb]);
   useEffect(() => {
     if (!dataUser?.user?.id) return;
+    goOnline(rtdb);
     const connectRef = ref(rtdb, '/connect');
-    return onValue(connectRef, (snapshot: any) => {
+    const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
+    onValue(connectRef, (snapshot: any) => {
       const valor = snapshot.val();
 
       if (valor) {
         const dataConnect: any = Object.values(valor);
         setIsConnect(dataConnect);
-        if (!dataUser.user.amigos?.length) return;
+        if (!dataUser?.user?.amigos?.length) return;
         const connecam = dataConnect.filter((e: Connect) => {
           return (
             e.id != Number(dataUser.user.id) &&
@@ -123,28 +134,22 @@ export function Header() {
           );
         });
         setAllConnectAmigos(connecam);
+        update(connectRefData, {
+          ...dataUser?.user,
+          connect: true,
+        });
       }
     });
-  }, [dataUser?.user?.id]);
-  useEffect(() => {
-    if (!dataUser?.user?.id) return;
-    const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
-    update(connectRefData, {
-      ...dataUser?.user,
-      connect: true,
-    });
+
     return () => {
+      if (!dataUser?.user?.id) return;
       onDisconnect(connectRefData).update({connect: false});
+      goOffline(rtdb);
+      off(connectRef);
+      off(connectRefData);
+      userReset();
     };
   }, [dataUser?.user?.id]);
-  const handleClose = async () => {
-    const connectRefAll = ref(rtdb, '/connect');
-    const connectRef = ref(rtdb, '/connect/' + dataUser.user.id);
-    off(connectRefAll);
-    await update(connectRef, {
-      connect: false,
-    });
-  };
 
   return dataUser?.user?.id ? (
     <>
@@ -247,7 +252,7 @@ export function Header() {
                 }
               />
             </Button>
-            {menu ? <Menu click={handleClick} close={handleClose} /> : null}
+            {menu ? <Menu click={handleClick} /> : null}
           </div>
         </Nav>
       </HeaderNav>

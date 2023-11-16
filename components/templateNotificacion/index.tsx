@@ -13,7 +13,8 @@ import Link from 'next/link';
 import {useParams} from 'next/navigation';
 import {ThemplatePubli} from '../publicaciones';
 import {Loader} from '../loader';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
+import {ButtonMasPubli} from '../publicaciones/styled';
 
 export function TemNoti() {
   const [notificacionesUserAtom, setNotificacionesUserAtom] =
@@ -26,28 +27,15 @@ export function TemNoti() {
       : '';
   const [offset, setOffset] = useState(0);
   const {dataNotiSwr, isLoadingNotiSwr} = NotificacionesUser(token, offset);
-  useEffect(() => {
-    function handleScroll() {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollPosition = window.scrollY;
-      if (scrollPosition + windowHeight >= documentHeight) {
-        if (dataNotiSwr?.publicacion.length < 1) {
-          return;
-        }
-        setOffset((prevPagePubli: number) => prevPagePubli + 10);
-      }
+
+  const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!dataNotiSwr?.publicacion?.length) {
+      return;
     }
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-  useEffect(() => {
-    if (dataNotiSwr?.offset) {
-      setOffset(dataNotiSwr.offset);
-    }
-  }, [dataNotiSwr]);
+    setOffset((prevPagePubli) => prevPagePubli + 15);
+  };
+
   return (
     <DivPublicar>
       {notificacionesUserAtom.length > 0
@@ -106,6 +94,11 @@ export function TemNoti() {
             </Link>
           ))
         : 'Sin notificaciones'}
+      {dataNotiSwr?.publicacion?.length ? (
+        <div style={{textAlign: 'center'}}>
+          <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+        </div>
+      ) : null}
       {isLoadingNotiSwr && (
         <div style={{position: 'relative', margin: '1rem'}}>
           <Loader></Loader>

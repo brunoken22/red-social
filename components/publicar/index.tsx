@@ -72,7 +72,8 @@ export function Publicar() {
 }
 
 function TemplateFormPublicar(props: any) {
-  const [, setNewPublicacion] = useRecoilState(publicacionUser);
+  const [datapublicacionUser, setNewPublicacion] =
+    useRecoilState(publicacionUser);
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
   const [dataUrl, setDataUrl] = useState('');
@@ -93,16 +94,16 @@ function TemplateFormPublicar(props: any) {
     },
     token as string
   );
-
   useEffect(() => {
     if (content.length <= 0) {
       setPlaceinput(true);
+      return;
     }
   }, [content]);
 
   useEffect(() => {
     if (data) {
-      props.close(false);
+      return props.close(false);
     }
   }, [data]);
 
@@ -130,7 +131,6 @@ function TemplateFormPublicar(props: any) {
   const handleClickForm = (e: any) => {
     e.preventDefault();
     let fechaActual = new Date();
-
     let año = fechaActual.getFullYear();
     let mes = fechaActual.getMonth() + 1; // Los meses en JavaScript son indexados desde 0
     let dia = fechaActual.getDate();
@@ -143,8 +143,8 @@ function TemplateFormPublicar(props: any) {
     };
     setFecha(`${dia}/${mes}/${año}`);
     setNewPublicacion((prevPublicaciones: any) => [
-      ...prevPublicaciones,
       nuevaPublicacion,
+      ...prevPublicaciones,
     ]);
     setNewId(Date.now() as number);
   };

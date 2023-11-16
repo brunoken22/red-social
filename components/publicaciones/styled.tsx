@@ -130,3 +130,12 @@ export const ButtonDelete = styled.button`
     color: #000;
   }
 `;
+export const ButtonMasPubli = styled.button`
+  border: none;
+  background-color: transparent;
+  color: #9d9d9d;
+  cursor: pointer;
+  &:hover {
+    color: #fff;
+  }
+`;

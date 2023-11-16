@@ -64,6 +64,9 @@ export const DivAllChat = styled(DivPublicar)`
   @media (max-width: 550px) {
     width: auto;
   }
+  &:hover {
+    background-color: #858585;
+  }
 `;
 export const DivAllConnect = styled(DivPublicar)`
   padding: 0.3rem;

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {usePathname, useRouter, useServerInsertedHTML} from 'next/navigation';
 import {ServerStyleSheet, StyleSheetManager} from 'styled-components';
-import {GetUser, GetAllAmigos, NotificacionesUser} from '@/lib/hook';
+import {GetUser, GetAllAmigos, NotificacionesUserImmutable} from '@/lib/hook';
 
 export function StyledComponentsRegistry({
   children,
@@ -16,7 +16,7 @@ export function StyledComponentsRegistry({
       : '';
   const {data, isLoading} = GetUser(token);
   GetAllAmigos(token);
-  NotificacionesUser(token, 0);
+  NotificacionesUserImmutable(token, 0);
 
   const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet());
   useEffect(() => {

@@ -38,8 +38,6 @@ export const DivButtonEliAcep = styled(DivButton)`
   gap: 1rem;
 `;
 export const DivPublicaciones = styled.div`
-  margin: 1rem 30%;
-  @media (max-width: 550px) {
-    margin: 0;
-  }
+  margin: 1rem auto;
+  max-width: 500px;
 `;

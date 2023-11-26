@@ -138,7 +138,6 @@ export function PerfilUser() {
           </Link>
         </DivButton>
       </DivHeadPerfil>
-
       <DivPublicaciones>
         <Publicar />
         <PublicacionesUser />

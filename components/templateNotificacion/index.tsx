@@ -15,6 +15,7 @@ import {ThemplatePubli} from '../publicaciones';
 import {Loader} from '../loader';
 import {useState} from 'react';
 import {ButtonMasPubli} from '../publicaciones/styled';
+import {SkeletonNoti} from '@/ui/skeleton';
 
 export function TemNoti() {
   const [notificacionesUserAtom, setNotificacionesUserAtom] =
@@ -35,10 +36,9 @@ export function TemNoti() {
     }
     setOffset((prevPagePubli) => prevPagePubli + 15);
   };
-
   return (
     <DivPublicar>
-      {notificacionesUserAtom.length > 0
+      {notificacionesUserAtom.length
         ? notificacionesUserAtom.map((e: any, p: any) => (
             <Link
               href={'/notificaciones/' + e.id}
@@ -94,6 +94,7 @@ export function TemNoti() {
             </Link>
           ))
         : 'Sin notificaciones'}
+      {isLoadingNotiSwr ? <SkeletonNoti /> : null}
       {dataNotiSwr?.publicacion?.length ? (
         <div style={{textAlign: 'center'}}>
           <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>

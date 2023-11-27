@@ -43,6 +43,7 @@ import {
 } from '@/lib/hook';
 import {SendComentPubli} from '@/ui/icons';
 import {Loader} from '../loader';
+import {SkeletonPublicacionAll} from '@/ui/skeleton';
 
 const iconConLike = {
   height: ' 10px',
@@ -77,7 +78,7 @@ export function PublicacionesAll() {
 
   return (
     <div>
-      {publicacionesAmigos?.length > 0 ? (
+      {publicacionesAmigos?.length ? (
         <>
           {publicacionesAmigos.map((item: Publicacion) => (
             <DivAllPublicaciones key={item?.id}>
@@ -112,6 +113,7 @@ export function PublicacionesAll() {
       ) : (
         <p style={{textAlign: 'center'}}>No hay publicaciones</p>
       )}
+      {isLoadingAllAmigos ? <SkeletonPublicacionAll /> : null}
     </div>
   );
 }

@@ -17,6 +17,8 @@ import {useRecoilValue} from 'recoil';
 import {ModificarUser, OptimizarImage} from '@/lib/hook';
 import {Loader} from '../loader';
 import css from './css.module.css';
+import {SkeletonPerfil} from '@/ui/skeleton';
+
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
   const [dataImg, setDataImg] = useState<string | undefined>('');
@@ -87,7 +89,7 @@ export function PerfilUser() {
     return <Loader />;
   }
 
-  return (
+  return dataValor?.user?.id ? (
     <DivPerfilUser>
       <DivHeadPerfil>
         <DivFotoName>
@@ -143,5 +145,7 @@ export function PerfilUser() {
         <PublicacionesUser />
       </DivPublicaciones>
     </DivPerfilUser>
+  ) : (
+    <SkeletonPerfil />
   );
 }

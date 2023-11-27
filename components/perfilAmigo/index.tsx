@@ -29,6 +29,7 @@ import {useParams} from 'next/navigation';
 import {DivAllPublicaciones} from '@/ui/container';
 import {ButtonAgregar} from '@/ui/boton';
 import {ButtonMasPubli} from '../publicaciones/styled';
+import {SkeletonPerfilAmigo} from '@/ui/skeleton';
 
 export function PerfilAmigo() {
   const {id} = useParams();
@@ -214,6 +215,8 @@ export function PerfilAmigo() {
       </DivPublicaciones>
     </DivPerfilUser>
   ) : (
-    <Loader />
+    <>
+      <SkeletonPerfilAmigo />
+    </>
   );
 }

@@ -6,7 +6,7 @@ export const DivText = styled.div`
 `;
 export const DivSubir = styled.div`
   border-top: 1px solid #474747;
-  display: inherit;
+  display: flex;
   justify-content: space-around;
 `;
 export const DivASubir = styled.div`

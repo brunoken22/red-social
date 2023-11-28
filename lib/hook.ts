@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWR, {mutate} from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import {fetchApiSwr} from './api';
 import {useRecoilState} from 'recoil';
@@ -141,7 +141,7 @@ export function GetUser(token: string) {
     revalidateOnMount: true,
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
-    refreshInterval: 50000,
+    refreshInterval: 1000,
   });
 
   useEffect(() => {
@@ -421,6 +421,7 @@ export function CreateSolicitud(dataSoli: Solicitud, token: string) {
   const [userAllData, setUserAllData] = useRecoilState(
     getAllSolicitudesEnviadas
   );
+
   const api = '/user/solicitudAmistad';
   const option = {
     method: 'POST',

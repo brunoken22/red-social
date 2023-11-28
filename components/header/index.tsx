@@ -140,7 +140,9 @@ export function Header() {
         });
       }
     });
-
+    window.addEventListener('beforeunload', () => {
+      onDisconnect(connectRefData).update({connect: false});
+    });
     return () => {
       if (!dataUser?.user?.id) return;
       onDisconnect(connectRefData).update({connect: false});

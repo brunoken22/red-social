@@ -31,6 +31,7 @@ import {
   getAllAmigos,
   isConnect,
   Publicacion,
+  getAllUser,
 } from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
@@ -177,9 +178,10 @@ export function PublicacionesUser() {
     </div>
   );
 }
-
+getAllUser;
 export function ThemplatePubli(props: any) {
   const getAllUserData = useRecoilValue(getAllAmigos);
+  const getAllUserUniRedData = useRecoilValue(getAllUser);
   const user: any = getAllUserData.find((user: any) => user.id == props.id);
   const [like, setLike] = useState<string>();
   const [comentario, setComentario] = useState(false);
@@ -191,7 +193,7 @@ export function ThemplatePubli(props: any) {
   const [userLikes, setUserLikes] = useState<any>();
   const userLike = props.like?.map((item: number) => {
     if (item == props.userId && like == 'like') return 'Tú';
-    const newData = getAllUserData.find((e) => item == e.id);
+    const newData = getAllUserUniRedData.find((e) => item == e.id);
     return newData?.fullName;
   });
   const [comentariosPubli, setComentariosPubli] = useState(

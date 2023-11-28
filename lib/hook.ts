@@ -152,7 +152,6 @@ export function GetUser(token: string) {
           ...data.getUserRes,
         },
       });
-
       setGetAllUserData(data.getAllUserRes);
       setSoliAllEnv(data.getSolicitudAmistadRes?.usersEnv);
       setSoliAllReci(data.getSolicitudAmistadRes?.usersReci);
@@ -240,12 +239,10 @@ export function GetAllAmigos(token: string) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const {data, isLoading} = useSWRImmutable(
-    token ? [api, option] : null,
-    fetchApiSwr
-  );
+  const {data, isLoading} = useSWR(token ? [api, option] : null, fetchApiSwr);
 
   useEffect(() => {
+    console.log(data);
     if (data) {
       setAmigosAllData(data);
     }

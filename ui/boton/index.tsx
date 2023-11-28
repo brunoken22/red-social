@@ -31,6 +31,8 @@ export const ButtonNoti = styled.div<any>`
   height: 4rem;
   border-radius: 5px;
   background-color: ${(e: any) => (e.$visto ? '#707070' : '')};
+  background-color: ${(e: any) => (e.$open ? '#707070' : '')};
+
   &:hover {
     background-color: #707070;
   }

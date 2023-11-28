@@ -63,15 +63,16 @@ export const DivNotificacionActi = sytled.div`
     font-weight: bold;
 }
 `;
-export const Enlaces = sytled.span`
+export const Enlaces = sytled.span<any>`
+    fill:${(props: any) => props.$isPathname && '#fff'};
     &:hover{
         fill:#fff
     }
 `;
-export const EnlaceSearch = sytled(Enlaces)`
+export const EnlaceSearch = sytled(Enlaces)<any>`
     display: none;
     fill: #b3b3b3;
-
+    fill:${(props: any) => props.$isPathname && '#fff'};
     @media(max-width:550px){
     display: block;
     }

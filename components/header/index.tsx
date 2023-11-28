@@ -195,12 +195,12 @@ export function Header() {
           </InputDiv>
           <DivEnlaces>
             <Link href={'/search'} aria-label='search'>
-              <EnlaceSearch>
+              <EnlaceSearch $isPathname={pathname == '/search' ? true : false}>
                 <Search />
               </EnlaceSearch>
             </Link>
             <Link href={'/home'} style={stylelinkIcon} aria-label='home'>
-              <Enlaces>
+              <Enlaces $isPathname={pathname == '/home' ? true : false}>
                 <Home />
               </Enlaces>
             </Link>
@@ -210,7 +210,7 @@ export function Header() {
                   {dataSoliReci?.length}
                 </DivNotificacionActi>
               )}
-              <Enlaces>
+              <Enlaces $isPathname={pathname == '/amigos' ? true : false}>
                 <Amigos />
               </Enlaces>
             </Link>
@@ -218,7 +218,7 @@ export function Header() {
               {dataMessage.length > 0 && (
                 <DivNotificacionActi>{dataMessage.length}</DivNotificacionActi>
               )}
-              <Enlaces>
+              <Enlaces $isPathname={pathname == '/mensaje' ? true : false}>
                 <Chat />{' '}
               </Enlaces>
             </Link>
@@ -236,7 +236,8 @@ export function Header() {
                     }
                   </DivNotificacionActi>
                 )}
-              <Enlaces>
+              <Enlaces
+                $isPathname={pathname == '/notificaciones' ? true : false}>
                 <Notificaciones />{' '}
               </Enlaces>
             </Link>

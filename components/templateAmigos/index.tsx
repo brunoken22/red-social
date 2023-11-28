@@ -137,26 +137,26 @@ export function TemAmigos() {
       <DivSection>
         <h2 style={{marginTop: '0'}}>Amigos</h2>
         <div>
-          <ButtonNoti onClick={handleClick} id='suge'>
+          <ButtonNoti onClick={handleClick} id='suge' $open={sugerencia}>
             <DivIcons>
               <MyAmigos /> {'>'}
             </DivIcons>
             Sugerencia de amistad
           </ButtonNoti>
-          <ButtonNoti onClick={handleClick} id='soli'>
+          <ButtonNoti onClick={handleClick} id='soli' $open={soliAmis}>
             <DivIcons>
               <MyAmigos />
               {'+'}
             </DivIcons>
             Solicitud de amistad
           </ButtonNoti>
-          <ButtonNoti onClick={handleClick} id='all'>
+          <ButtonNoti onClick={handleClick} id='all' $open={allAmig}>
             <DivIcons>
               <MyAmigos />
             </DivIcons>
             Todos tus amigos
           </ButtonNoti>
-          <ButtonNoti onClick={handleClick} id='SoliEnv'>
+          <ButtonNoti onClick={handleClick} id='SoliEnv' $open={soliEnv}>
             <DivIcons>
               <MyAmigos />
             </DivIcons>

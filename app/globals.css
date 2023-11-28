@@ -2,6 +2,7 @@
   --bg: #32373b;
   --bgSecundario: #1c1c1c;
   --color: #fff;
+  --colorSecundario: #000;
 }
 body {
   box-sizing: border-box;

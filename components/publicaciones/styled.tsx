@@ -30,6 +30,7 @@ export const DivCantidad = styled(DivPerfil)`
   margin-top: 1rem;
   justify-items: center;
   grid-template-columns: repeat(2, 1fr);
+  position: relative;
 `;
 export const DivInteractuar = styled(DivPerfil)`
   justify-content: space-around;
@@ -138,4 +139,14 @@ export const ButtonMasPubli = styled.button`
   &:hover {
     color: #fff;
   }
+`;
+export const DivUserLikes = styled.div`
+  position: absolute;
+  bottom: 2rem;
+  background-color: #fff;
+  padding: 1rem;
+  left: 10%;
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: var(--colorSecundario);
 `;

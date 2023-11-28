@@ -20,6 +20,7 @@ import {
   ButtonDelete,
   ButtonOpenDelete,
   ButtonMasPubli,
+  DivUserLikes,
 } from './styled';
 import Like from '@/ui/icons/like.svg';
 import Comentar from '@/ui/icons/comentar.svg';
@@ -187,6 +188,12 @@ export function ThemplatePubli(props: any) {
   const dataIsConnect = useRecoilValue(isConnect);
   const [publiId, setPubliId] = useState<number>(-1);
   const [totalLike, setTotalLike] = useState(props.like?.length || 0);
+  const [userLikes, setUserLikes] = useState<any>();
+  const userLike = props.like?.map((item: number) => {
+    if (item == props.userId && like == 'like') return 'Tú';
+    const newData = getAllUserData.find((e) => item == e.id);
+    return newData?.fullName;
+  });
   const [comentariosPubli, setComentariosPubli] = useState(
     props.comentarios?.length || 0
   );
@@ -243,7 +250,10 @@ export function ThemplatePubli(props: any) {
     setComentario(false);
     e.target.style.fill = '#ddd';
   };
-
+  const handleChangeLike = () => {
+    setUserLikes(userLike);
+    return userLike;
+  };
   return (
     <div style={{height: '100%'}}>
       <DivPefilDelete aria-label='DivPefilDelete'>
@@ -322,8 +332,19 @@ export function ThemplatePubli(props: any) {
       ) : null}
       <DivCantidad>
         {totalLike ? (
-          <SpanIco>
-            {' '}
+          <SpanIco
+            onMouseEnter={handleChangeLike}
+            onMouseLeave={() => {
+              setUserLikes(false);
+            }}>
+            {userLikes ? (
+              <DivUserLikes>
+                {userLikes.map((e: string) => (
+                  <div key={e}>{e}</div>
+                ))}
+              </DivUserLikes>
+            ) : null}
+
             <Like style={iconConLike} />
             {totalLike}
           </SpanIco>

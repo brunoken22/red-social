@@ -20,8 +20,7 @@ import {useEffect, useState} from 'react';
 import {ImageSVG} from '@/ui/icons';
 import ImageSubir from '@/ui/icons/image.svg';
 import CloseSvg from '@/ui/icons/close.svg';
-import {publicacionUser, user, isConnect} from '@/lib/atom';
-import {useRecoilState} from 'recoil';
+import {user, isConnect} from '@/lib/atom';
 import {CreatePublicacion} from '@/lib/hook';
 import {Loader} from '../loader';
 
@@ -72,8 +71,6 @@ export function Publicar() {
 }
 
 function TemplateFormPublicar(props: any) {
-  const [datapublicacionUser, setNewPublicacion] =
-    useRecoilState(publicacionUser);
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
   const [dataUrl, setDataUrl] = useState('');
@@ -142,10 +139,6 @@ function TemplateFormPublicar(props: any) {
       fecha: `${dia}/${mes}/${año}`,
     };
     setFecha(`${dia}/${mes}/${año}`);
-    setNewPublicacion((prevPublicaciones: any) => [
-      nuevaPublicacion,
-      ...prevPublicaciones,
-    ]);
     setNewId(Date.now() as number);
   };
   if (isLoading) {

@@ -1,4 +1,4 @@
-import useSWR, {mutate} from 'swr';
+import useSWR from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import {fetchApiSwr} from './api';
 import {useRecoilState} from 'recoil';
@@ -125,7 +125,7 @@ export function ModificarUser(dataUser: DataUser, token: string) {
 export function GetUser(token: string) {
   const [userData, setUserData] = useRecoilState(user);
   const [getAllUserData, setGetAllUserData] = useRecoilState(getAllUser);
-
+  const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
   const [getSugerenciaAmigosData, setGetSugerenciaAmigosData] =
     useRecoilState(getSugerenciaAmigos);
 
@@ -157,25 +157,8 @@ export function GetUser(token: string) {
           ...data.getUserRes,
         },
       });
-
-      const userRestantes = data.getAllUserRes?.filter((user: any) => {
-        if (user.id == data.getUserRes.id) return;
-        if (data.getUserRes.amigos.includes(user.id)) return;
-        if (
-          data.getSolicitudAmistadRes?.usersEnv?.find(
-            (e: any) => e.id == user.id
-          )
-        )
-          return;
-        if (
-          data.getSolicitudAmistadRes?.usersReci?.find(
-            (e: any) => e.id == user.id
-          )
-        )
-          return;
-        return user;
-      });
-      setGetSugerenciaAmigosData(userRestantes);
+      setAmigosAllData(data.getAllAmigosRes);
+      setGetSugerenciaAmigosData(data.getAllUserSugeridos);
       setGetAllUserData(data.getAllUserRes);
       setSoliAllEnv(data.getSolicitudAmistadRes?.usersEnv);
       setSoliAllReci(data.getSolicitudAmistadRes?.usersReci);
@@ -252,27 +235,7 @@ export function NotificacionesUserImmutable(token: string, offset: number) {
     isLoadingNotiSwr: isLoading,
   };
 }
-export function GetAllAmigos(token: string) {
-  const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
-  const api = `/user/amigos`;
 
-  const option = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const {data, isLoading} = useSWR(token ? [api, option] : null, fetchApiSwr);
-
-  useEffect(() => {
-    if (data) {
-      setAmigosAllData(data);
-    }
-  }, [data]);
-
-  return {dataAllAmigosSwr: data, isLoadingAllAmigos: isLoading};
-}
 export function GetAllPublicaciones(token: string, offset: number) {
   const [publicacionesAllAmigos, setPublicacionesAllAmigos] =
     useRecoilState(publicacionAmigos);

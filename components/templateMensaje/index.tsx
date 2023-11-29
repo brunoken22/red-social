@@ -17,7 +17,7 @@ import {getAllAmigos, user, isMenssage, isConnect} from '@/lib/atom';
 import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, get} from 'firebase/database';
-import {EnviarMessage, GetAllAmigos} from '@/lib/hook';
+import {EnviarMessage} from '@/lib/hook';
 import CloseSVG from '@/ui/icons/close.svg';
 import {Button} from '../publicar/styled';
 import Link from 'next/link';
@@ -49,7 +49,6 @@ export function TemMensaje() {
       ? (localStorage.getItem('token') as string)
       : '';
   const {dataMesssage} = EnviarMessage(messageUser, token);
-  const {dataAllAmigosSwr, isLoadingAllAmigos} = GetAllAmigos(token);
 
   useEffect(() => {
     if (dataMesssage) {
@@ -203,11 +202,6 @@ export function TemMensaje() {
                   );
                 })
               : 'Sin Chat'}
-            {isLoadingAllAmigos && (
-              <div style={{position: 'relative', margin: '1rem'}}>
-                <Loader></Loader>
-              </div>
-            )}
           </TemplChat>
         </TemplMensaje>
       ) : null}

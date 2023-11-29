@@ -13,6 +13,7 @@ import {
   publicacionSearchUser,
   notificacionesUser,
   Publicacion,
+  getSugerenciaAmigos,
 } from '@/lib/atom';
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
@@ -124,6 +125,10 @@ export function ModificarUser(dataUser: DataUser, token: string) {
 export function GetUser(token: string) {
   const [userData, setUserData] = useRecoilState(user);
   const [getAllUserData, setGetAllUserData] = useRecoilState(getAllUser);
+
+  const [getSugerenciaAmigosData, setGetSugerenciaAmigosData] =
+    useRecoilState(getSugerenciaAmigos);
+
   const [soliAllEnv, setSoliAllEnv] = useRecoilState(getAllSolicitudesEnviadas);
   const [soliAllReci, setSoliAllReci] = useRecoilState(
     getAllSolicitudesRecibidas
@@ -152,6 +157,25 @@ export function GetUser(token: string) {
           ...data.getUserRes,
         },
       });
+
+      const userRestantes = data.getAllUserRes?.filter((user: any) => {
+        if (user.id == data.getUserRes.id) return;
+        if (data.getUserRes.amigos.includes(user.id)) return;
+        if (
+          data.getSolicitudAmistadRes?.usersEnv?.find(
+            (e: any) => e.id == user.id
+          )
+        )
+          return;
+        if (
+          data.getSolicitudAmistadRes?.usersReci?.find(
+            (e: any) => e.id == user.id
+          )
+        )
+          return;
+        return user;
+      });
+      setGetSugerenciaAmigosData(userRestantes);
       setGetAllUserData(data.getAllUserRes);
       setSoliAllEnv(data.getSolicitudAmistadRes?.usersEnv);
       setSoliAllReci(data.getSolicitudAmistadRes?.usersReci);
@@ -242,7 +266,6 @@ export function GetAllAmigos(token: string) {
   const {data, isLoading} = useSWR(token ? [api, option] : null, fetchApiSwr);
 
   useEffect(() => {
-    console.log(data);
     if (data) {
       setAmigosAllData(data);
     }

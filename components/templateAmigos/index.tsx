@@ -8,10 +8,10 @@ import {DivImageSug} from './styled';
 import {useRecoilValue} from 'recoil';
 import {
   User,
-  getAllUser,
   getAllAmigos,
   getAllSolicitudesRecibidas,
   getAllSolicitudesEnviadas,
+  getSugerenciaAmigos,
 } from '@/lib/atom';
 import {
   CreateSolicitud,
@@ -23,11 +23,10 @@ import {Loader} from '../loader';
 import Link from 'next/link';
 
 export function TemAmigos() {
-  const dataAllUser = useRecoilValue(getAllUser);
+  const dataAllUser = useRecoilValue(getSugerenciaAmigos);
   const dataAllAmigos = useRecoilValue(getAllAmigos);
   const dataAllSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataAllSoliEnv = useRecoilValue(getAllSolicitudesEnviadas);
-
   const [sugerencia, setSugerencia] = useState(false);
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);

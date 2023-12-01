@@ -7,6 +7,9 @@ import {
   goOffline,
   goOnline,
   off,
+  get,
+  child,
+  getDatabase,
 } from 'firebase/database';
 import {rtdb} from '@/lib/firebase';
 import './style.css';
@@ -47,6 +50,8 @@ import {
   Connect,
   notificacionesUser,
   User,
+  getAllUser,
+  getAllUsersChat,
 } from '@/lib/atom';
 import {ButtonSmsConnect} from '@/ui/boton';
 import {DivAllConnect} from '@/ui/container';
@@ -59,8 +64,11 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const dataUser = useRecoilValue(user);
+  const getAllUserData = useRecoilValue(getAllUser);
   const userReset = useResetRecoilState(user);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
+  const [datagetAllUsersChat, setDatagetAllUsersChat] =
+    useRecoilState(getAllUsersChat);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
@@ -84,6 +92,7 @@ export function Header() {
   useEffect(() => {
     if (!dataUser?.user?.id) return;
     let count: any = [];
+    goOnline(rtdb);
     dataUser.user.rtdb?.map((item: string) => {
       const chatrooms = ref(rtdb, '/rooms/' + item + '/messages');
       return onValue(chatrooms, (snapshot: any) => {
@@ -92,7 +101,7 @@ export function Header() {
           const datas: any = Object?.values(valor);
           const utlimoMensaje: any = datas[datas.length - 1];
 
-          if (utlimoMensaje.id !== dataUser.user.id) {
+          if (utlimoMensaje.id != dataUser.user.id) {
             if (!utlimoMensaje.read) {
               count.push(utlimoMensaje);
               setDataMessage([...count]);
@@ -113,7 +122,44 @@ export function Header() {
         }
       });
     });
+    return () => {
+      if (!dataUser?.user?.id) return;
+      goOffline(rtdb);
+      // userReset();
+    };
   }, [dataUser?.user?.rtdb]);
+
+  useEffect(() => {
+    if (!dataUser?.user?.id) return;
+
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, 'rooms')).then((snapshot) => {
+      if (snapshot.exists()) {
+        const value = Object.values(snapshot.val());
+
+        const userDataMenssage = value.filter(
+          (dataUserChat: any) =>
+            dataUserChat.userId == dataUser.user.id ||
+            dataUserChat.amigoId == dataUser.user.id
+        );
+        if (userDataMenssage) {
+          const userChatUser = userDataMenssage.map((snap: any) => {
+            if (snap.userId == dataUser.user.id) {
+              return snap.amigoId;
+            }
+            if (snap.amigoId == dataUser.user.id) return snap.userId;
+          });
+          const newUserConnectChat = getAllUserData.filter((item: User) =>
+            userChatUser.includes(item.id)
+          );
+          setDatagetAllUsersChat(newUserConnectChat);
+        }
+      } else {
+        console.log('No data available');
+      }
+    });
+  }, [dataUser?.user?.id, getAllUserData]);
+
   useEffect(() => {
     if (!dataUser?.user?.id) return;
     goOnline(rtdb);
@@ -149,10 +195,9 @@ export function Header() {
       goOffline(rtdb);
       off(connectRef);
       off(connectRefData);
-      userReset();
+      // userReset();
     };
   }, [dataUser?.user?.id]);
-
   return dataUser?.user?.id ? (
     <>
       <HeaderNav>

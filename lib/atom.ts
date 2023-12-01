@@ -24,7 +24,7 @@ export type User = {
   fullName: string;
   email: string;
   img: string;
-  rtdb: any[];
+  rtdb: string[];
 };
 export const user = atom({
   key: 'user',
@@ -35,7 +35,7 @@ export const user = atom({
       fullName: '',
       img: '',
       amigos: [] as number[],
-      rtdb: [],
+      rtdb: ([] as string[]) || null,
     },
     token: '',
   },
@@ -52,6 +52,10 @@ export const getAllUser = atom({
 });
 export const getAllAmigos = atom({
   key: 'getAllAmigos',
+  default: [] as User[],
+});
+export const getAllUsersChat = atom({
+  key: 'getAllUsersChat',
   default: [] as User[],
 });
 export const getSugerenciaAmigos = atom({

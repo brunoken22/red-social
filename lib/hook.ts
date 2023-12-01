@@ -235,7 +235,6 @@ export function NotificacionesUserImmutable(token: string, offset: number) {
     isLoadingNotiSwr: isLoading,
   };
 }
-
 export function GetAllPublicaciones(token: string, offset: number) {
   const [publicacionesAllAmigos, setPublicacionesAllAmigos] =
     useRecoilState(publicacionAmigos);

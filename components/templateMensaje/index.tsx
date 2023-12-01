@@ -13,7 +13,14 @@ import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Input} from '@/ui/input';
 import {BotonSms, ButtonSms} from '@/ui/boton';
 import {useRecoilValue} from 'recoil';
-import {getAllAmigos, user, isMenssage, isConnect} from '@/lib/atom';
+import {
+  getAllAmigos,
+  user,
+  isMenssage,
+  isConnect,
+  User,
+  getAllUsersChat,
+} from '@/lib/atom';
 import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, get} from 'firebase/database';
@@ -22,27 +29,34 @@ import CloseSVG from '@/ui/icons/close.svg';
 import {Button} from '../publicar/styled';
 import Link from 'next/link';
 import {useSearchParams, useRouter} from 'next/navigation';
-import {Loader} from '../loader';
+type MessageUser = {
+  rtdb?: string | undefined;
+  message?: string;
+  read?: boolean;
+  fullName?: string;
+  img?: string;
+  id?: string;
+};
 export function TemMensaje() {
   const params = useSearchParams();
   const router = useRouter();
-  const dataAllAmigos = useRecoilValue(getAllAmigos);
   const dataUser = useRecoilValue(user);
+  const dataGetAllUsersChat = useRecoilValue(getAllUsersChat);
   const dataIsConnect = useRecoilValue(isConnect);
   const dataMessage = useRecoilValue(isMenssage);
   const [messagesAll, setMessagesAll] = useState([]);
   const [claveMessage, setclaveMessage] = useState('');
   const containerRef: any = useRef(null);
-  const [dataMensajeUser, setDataMensajeUser] = useState({
+  const [dataMensajeUser, setDataMensajeUser] = useState<MessageUser>({
     fullName: '',
     img: '',
     id: '',
-    rtdb: '' || undefined,
+    rtdb: '',
   });
-  const [messageUser, setMessageUser] = useState({
+  const [messageUser, setMessageUser] = useState<MessageUser>({
     message: '',
     read: false,
-    rtdb: '' || undefined,
+    rtdb: '',
   });
   const token =
     typeof window !== 'undefined'
@@ -152,8 +166,8 @@ export function TemMensaje() {
         <TemplMensaje>
           <h2>Chats</h2>
           <TemplChat>
-            {dataAllAmigos?.length > 0
-              ? dataAllAmigos.map((e: any, p: number) => {
+            {dataGetAllUsersChat?.length
+              ? dataGetAllUsersChat.map((e: User, p: number) => {
                   return (
                     <ButtonSms
                       key={p}
@@ -163,15 +177,15 @@ export function TemMensaje() {
                           dataUser.user.rtdb as []
                         );
                         setMessageUser({
-                          rtdb: rtdbId,
+                          rtdb: rtdbId as string,
                           message: '',
                           read: false,
                         });
                         setDataMensajeUser({
                           fullName: e.fullName,
                           img: e.img,
-                          id: e.id,
-                          rtdb: rtdbId,
+                          id: e.id.toString(),
+                          rtdb: rtdbId as string,
                         });
                       }}>
                       <DivAllChat>
@@ -295,7 +309,7 @@ export function TemMensaje() {
     </DivTemMensaje>
   );
 }
-function existenElementosSimilares(array1: [], array2: []) {
+function existenElementosSimilares(array1: string[], array2: string[]) {
   return array1.find((elemento1) => {
     return array2.find((elemento2) => {
       return elemento1 === elemento2;

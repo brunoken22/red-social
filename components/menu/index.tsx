@@ -9,6 +9,7 @@ const enla: any = {
 };
 export function Menu(props: any) {
   const router = useRouter();
+
   const handleClick = (e: any) => {
     e.preventDefault();
     props.click(false);
@@ -18,7 +19,7 @@ export function Menu(props: any) {
   const handleCerrarSesion = (e: any) => {
     e.preventDefault();
     localStorage.removeItem('token');
-    router.push('/');
+    location.href = process.env.NEXT_PUBLIC_PORT as string;
   };
   return (
     <DivMenu>

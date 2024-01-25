@@ -100,6 +100,20 @@ export function Header() {
         if (valor) {
           const datas: any = Object?.values(valor);
           const utlimoMensaje: any = datas[datas.length - 1];
+          datas.reverse().findIndex((object: any, indice: number) => {
+            if (object.id != dataUser.user.id && object.read) {
+              return object;
+            }
+            const reversedDatas = datas.reverse();
+            const lastIndex = reversedDatas.length - indice;
+
+            if (
+              reversedDatas[lastIndex] &&
+              reversedDatas[lastIndex].read === false
+            ) {
+              return object;
+            }
+          });
 
           if (utlimoMensaje.id != dataUser.user.id) {
             if (!utlimoMensaje.read) {
@@ -155,10 +169,9 @@ export function Header() {
           setDatagetAllUsersChat(newUserConnectChat);
         }
       } else {
-        console.log('No data available');
       }
     });
-  }, [dataUser?.user?.id, getAllUserData]);
+  }, [dataUser?.user?.id, getAllUserData, dataMessage]);
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
@@ -198,6 +211,7 @@ export function Header() {
       // userReset();
     };
   }, [dataUser?.user?.id]);
+
   return dataUser?.user?.id ? (
     <>
       <HeaderNav>
@@ -261,7 +275,9 @@ export function Header() {
             </Link>
             <Link href={'/mensaje'} style={stylelinkIcon} aria-label='mensaje'>
               {dataMessage.length > 0 && (
-                <DivNotificacionActi>{dataMessage.length}</DivNotificacionActi>
+                <DivNotificacionActi>
+                  {obtenerObjetosUnicos(dataMessage).length}
+                </DivNotificacionActi>
               )}
               <Enlaces $isPathname={pathname == '/mensaje' ? true : false}>
                 <Chat />{' '}
@@ -362,3 +378,12 @@ export function Header() {
     </>
   ) : null;
 }
+const obtenerObjetosUnicos = (array: any[]) => {
+  return array.reduce((resultado, objeto) => {
+    const existe = resultado.some((item: any) => item['id'] === objeto['id']);
+    if (!existe) {
+      resultado.push(objeto);
+    }
+    return resultado;
+  }, []);
+};

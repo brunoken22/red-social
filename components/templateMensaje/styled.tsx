@@ -51,6 +51,10 @@ export const SpanNoti = styled.span`
   right: 0;
   top: 0;
   border-radius: 50%;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 export const Menssage = styled.p<any>`
   display: inline-block;

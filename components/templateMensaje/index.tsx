@@ -142,6 +142,7 @@ export function TemMensaje() {
       setMessageUser((prev: any) => ({...prev, rtdb: rtdbId}));
     }
   }, [params.get('fullName')]);
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setMessageUser((prev: any) => ({...prev, message: e.target.message.value}));
@@ -210,7 +211,12 @@ export function TemMensaje() {
                         </h4>
                       </DivAllChat>
                       {dataMessage?.find((item: any) => item.id == e.id) && (
-                        <SpanNoti></SpanNoti>
+                        <SpanNoti>
+                          {
+                            dataMessage?.filter((user: any) => user.id == e.id)
+                              .length
+                          }
+                        </SpanNoti>
                       )}
                     </ButtonSms>
                   );
@@ -309,6 +315,7 @@ export function TemMensaje() {
     </DivTemMensaje>
   );
 }
+
 function existenElementosSimilares(array1: string[], array2: string[]) {
   return array1.find((elemento1) => {
     return array2.find((elemento2) => {

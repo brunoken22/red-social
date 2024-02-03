@@ -1,7 +1,6 @@
 'use client';
 import {DivAllPublicaciones} from '@/ui/container';
 import {FotoPerfil} from '@/ui/FotoPerfil';
-import Image from 'next/image';
 import {Body} from '@/ui/typography';
 import {
   DivPerfil,
@@ -178,7 +177,7 @@ export function PublicacionesUser() {
     </div>
   );
 }
-getAllUser;
+
 export function ThemplatePubli(props: any) {
   const getAllUserData = useRecoilValue(getAllAmigos);
   const getAllUserUniRedData = useRecoilValue(getAllUser);
@@ -322,10 +321,9 @@ export function ThemplatePubli(props: any) {
       </div>
       {props.img ? (
         <DivImage>
-          <Image
+          <img
             src={props?.img}
-            alt='portafolio'
-            fill
+            alt='iamgen user'
             loading='lazy'
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             style={{objectFit: 'cover', borderRadius: '10px'}}

@@ -326,7 +326,7 @@ export function ThemplatePubli(props: any) {
             alt='iamgen user'
             loading='lazy'
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-            style={{objectFit: 'cover', borderRadius: '10px'}}
+            style={{objectFit: 'cover', borderRadius: '10px', width: '100%'}}
           />
         </DivImage>
       ) : null}

@@ -135,7 +135,7 @@ export function TemAmigos() {
     <Section>
       <DivSection>
         <h2 style={{marginTop: '0'}}>Amigos</h2>
-        <div>
+        <div style={{display:"flex",flexDirection:'column',gap:"0.5rem"}}>
           <ButtonNoti onClick={handleClick} id='suge' $open={sugerencia}>
             <DivIcons>
               <MyAmigos /> {'>'}

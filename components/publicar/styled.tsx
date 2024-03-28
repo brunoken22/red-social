@@ -55,6 +55,7 @@ export const InputP = styled.p<any>`
   color: #000;
   outline: none;
   width: 100%;
+  cursor: pointer;
   margin: 10px auto;
   &::before {
     content: ${({$content}) => ($content ? 'attr(placeholder)' : '')};

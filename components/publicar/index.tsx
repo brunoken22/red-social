@@ -129,7 +129,7 @@ function TemplateFormPublicar(props: any) {
     e.preventDefault();
     let fechaActual = new Date();
     let año = fechaActual.getFullYear();
-    let mes = fechaActual.getMonth() + 1; // Los meses en JavaScript son indexados desde 0
+    let mes = fechaActual.getMonth() + 1;
     let dia = fechaActual.getDate();
 
     const nuevaPublicacion = {

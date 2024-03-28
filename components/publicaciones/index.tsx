@@ -185,7 +185,13 @@ export function ThemplatePubli(props: any) {
   const getAllUserUniRedData = useRecoilValue(getAllUser);
   const user: any = getAllUserData.find((user: any) => user.id == props.id);
   const [like, setLike] = useState<string>();
-  const [comentario, setComentario] = useState(false);
+  const [comentario, setComentario] = useState(
+    props.comentarios.length &&
+      props.comentarios.length > 0 &&
+      props.comentarios.length < 3
+      ? true
+      : false
+  );
   const [click, setClick] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);

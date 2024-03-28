@@ -5,6 +5,7 @@ import {Body} from '@/ui/typography';
 import {
   DivPerfil,
   DivSpan,
+  ButtonOpenImage,
   DivImage,
   DivInteractuar,
   BottonLike,
@@ -22,6 +23,7 @@ import {
   DivUserLikes,
 } from './styled';
 import Like from '@/ui/icons/like.svg';
+import CloseWhite from '@/ui/icons/closeWhite.svg';
 import Comentar from '@/ui/icons/comentar.svg';
 import {
   publicacionUser,
@@ -185,6 +187,7 @@ export function ThemplatePubli(props: any) {
   const [like, setLike] = useState<string>();
   const [comentario, setComentario] = useState(false);
   const [click, setClick] = useState(false);
+  const [openImage, setOpenImage] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const dataIsConnect = useRecoilValue(isConnect);
   const [publiId, setPubliId] = useState<number>(-1);
@@ -309,7 +312,6 @@ export function ThemplatePubli(props: any) {
           </div>
         ) : null}
       </DivPefilDelete>
-
       <div
         style={{
           padding: '1rem',
@@ -320,15 +322,29 @@ export function ThemplatePubli(props: any) {
         <p>{props.description}</p>
       </div>
       {props.img ? (
-        <DivImage>
-          <img
-            src={props?.img}
-            alt='iamgen user'
-            loading='lazy'
-            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-            style={{objectFit: 'cover', borderRadius: '10px', width: '100%'}}
-          />
-        </DivImage>
+        <ButtonOpenImage
+          onClick={() => setOpenImage(true)}
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+          }}>
+          <DivImage>
+            <img
+              src={props?.img}
+              alt='iamgen user'
+              loading='lazy'
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+              style={{
+                objectFit: 'cover',
+                borderRadius: '10px',
+                width: '100%',
+              }}
+            />
+          </DivImage>
+        </ButtonOpenImage>
       ) : null}
       <DivCantidad>
         {totalLike ? (
@@ -394,6 +410,32 @@ export function ThemplatePubli(props: any) {
             isComentario && setComentariosPubli((prev: number) => prev + 1)
           }
         />
+      ) : null}
+      {openImage ? (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 10,
+            backdropFilter: 'brightness(0.3)',
+          }}>
+          <div style={{display: 'flex', justifyContent: 'end'}}>
+            <button
+              onClick={() => setOpenImage(false)}
+              style={{
+                backgroundColor: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+              }}>
+              <CloseWhite />
+            </button>
+          </div>
+          <img
+            src={props?.img}
+            alt='imagen'
+            style={{width: '100%', height: '100%', objectFit: 'contain'}}
+          />
+        </div>
       ) : null}
     </div>
   );

@@ -16,6 +16,16 @@ export const SpanIco = styled(DivSpan)`
   gap: 0.2rem;
   margin-bottom: 0.2rem;
 `;
+export const ButtonOpenImage = styled.button`
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
+`;
 export const DivImage = styled.div`
   display: flex;
   justify-content: center;

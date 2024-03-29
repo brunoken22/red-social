@@ -455,7 +455,7 @@ function ComentarioPublic(props: any) {
     props.comentarios
   );
   const [open, setOpen] = useState(props.userId !== props.id ? true : false);
-
+  console.log(props.id);
   const {dataComentar} = ComentarPublicacion(
     {
       id: props.idPublicacion,

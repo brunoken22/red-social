@@ -33,6 +33,7 @@ import {
   DivConnectAll,
   DivContenedorConnect,
 } from './styled';
+import useSound from 'use-sound';
 import Home from '@/ui/icons/home.svg';
 import Amigos from '@/ui/icons/amigos.svg';
 import Chat from '@/ui/icons/chat.svg';
@@ -41,7 +42,7 @@ import Search from '@/ui/icons/search.svg';
 import Link from 'next/link';
 import {FotoPerfil} from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
-import {useRecoilValue, useRecoilState, useResetRecoilState} from 'recoil';
+import {useRecoilValue, useRecoilState} from 'recoil';
 import {
   user,
   getAllSolicitudesRecibidas,
@@ -55,20 +56,21 @@ import {
 } from '@/lib/atom';
 import {ButtonSmsConnect} from '@/ui/boton';
 import {DivAllConnect} from '@/ui/container';
+
 const stylelinkIcon: {fill: string; position: any} = {
   fill: '#b3b3b3',
   position: 'relative',
 };
 
 export function Header() {
+  const [play] = useSound('/messages.mp3');
+  const [playNoti] = useSound('/notification.mp3');
   const pathname = usePathname();
   const router = useRouter();
   const dataUser = useRecoilValue(user);
   const getAllUserData = useRecoilValue(getAllUser);
-  const userReset = useResetRecoilState(user);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
-  const [datagetAllUsersChat, setDatagetAllUsersChat] =
-    useRecoilState(getAllUsersChat);
+  const [, setDatagetAllUsersChat] = useRecoilState(getAllUsersChat);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
@@ -88,7 +90,9 @@ export function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
-
+  useEffect(() => {
+    playNoti();
+  }, [notificacionesUserAtom]);
   useEffect(() => {
     if (!dataUser?.user?.id) return;
     let count: any = [];
@@ -119,7 +123,8 @@ export function Header() {
             if (!utlimoMensaje.read) {
               count.push(utlimoMensaje);
               setDataMessage([...count]);
-
+              play();
+              console.log('play in action');
               return;
             }
             if (utlimoMensaje.read) {
@@ -129,6 +134,7 @@ export function Header() {
 
               if (filtoMensa) {
                 count = filtoMensa;
+
                 setDataMessage([...filtoMensa]);
               }
             }

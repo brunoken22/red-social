@@ -184,7 +184,7 @@ export function NotificacionesUser(token: string, offset: number) {
     revalidateOnReconnect: true,
     revalidateOnMount: true,
     revalidateOnFocus: true,
-    refreshInterval: 100000,
+    refreshInterval: 10000,
   });
 
   useEffect(() => {

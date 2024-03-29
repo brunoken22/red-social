@@ -1,4 +1,5 @@
 'use client';
+const useSound = require('use-sound');
 import {
   ref,
   onValue,
@@ -33,7 +34,6 @@ import {
   DivConnectAll,
   DivContenedorConnect,
 } from './styled';
-import useSound from 'use-sound';
 import Home from '@/ui/icons/home.svg';
 import Amigos from '@/ui/icons/amigos.svg';
 import Chat from '@/ui/icons/chat.svg';

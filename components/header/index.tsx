@@ -33,7 +33,7 @@ import {
   DivConnectAll,
   DivContenedorConnect,
 } from './styled';
-import useSound from 'use-sound';
+import {useGlobalAudioPlayer} from 'react-use-audio-player';
 import Home from '@/ui/icons/home.svg';
 import Amigos from '@/ui/icons/amigos.svg';
 import Chat from '@/ui/icons/chat.svg';
@@ -63,8 +63,7 @@ const stylelinkIcon: {fill: string; position: any} = {
 };
 
 export function Header() {
-  const [play] = useSound('/messages.mp3');
-  const [playNoti] = useSound('/notification.mp3');
+  const {load} = useGlobalAudioPlayer();
   const pathname = usePathname();
   const router = useRouter();
   const dataUser = useRecoilValue(user);
@@ -91,7 +90,7 @@ export function Header() {
     setMenu(data);
   };
   useEffect(() => {
-    playNoti();
+    load('/notification.mp3', {autoplay: true});
   }, [notificacionesUserAtom]);
   useEffect(() => {
     if (!dataUser?.user?.id) return;
@@ -123,8 +122,8 @@ export function Header() {
             if (!utlimoMensaje.read) {
               count.push(utlimoMensaje);
               setDataMessage([...count]);
-              play();
-              console.log('play in action');
+              // play();
+              load('/messages.mp3', {autoplay: true});
               return;
             }
             if (utlimoMensaje.read) {

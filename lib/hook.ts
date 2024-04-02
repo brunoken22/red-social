@@ -386,6 +386,8 @@ export function GetAmigo(id: string, token: string) {
 export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
   const [publicacionesUser, setPublicacionesUser] =
     useRecoilState(publicacionUser);
+  const [publicacionesAllAmigos, setPublicacionesAllAmigos] =
+    useRecoilState(publicacionAmigos);
   const api = '/user/publicacion';
   const option = {
     method: 'POST',
@@ -401,6 +403,7 @@ export function CreatePublicacion(dataPubli: DataPublicacion, token: string) {
   );
   useEffect(() => {
     if (data) {
+      setPublicacionesAllAmigos((prev: any) => [data, ...prev]);
       setPublicacionesUser((prev) => [data, ...prev]);
     }
   }, [data]);
@@ -519,7 +522,6 @@ export function ComentarPublicacion(datas: any, token: string) {
     token && datas.click ? [api, option] : null,
     fetchApiSwr
   );
-
   return {dataComentar: data, isLoadingComentar: isLoading};
 }
 export function GetPublicacionId(token: string, id: string) {

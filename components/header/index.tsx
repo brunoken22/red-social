@@ -72,6 +72,7 @@ export function Header() {
   const [, setDatagetAllUsersChat] = useRecoilState(getAllUsersChat);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
+  const [notificationSound, setNotificationSound] = useState<any[]>([]);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const [search, setSearch] = useState('');
   const [allConnectAmigos, setAllConnectAmigos] = useState([]);
@@ -90,8 +91,29 @@ export function Header() {
     setMenu(data);
   };
   useEffect(() => {
-    load('/notification.mp3', {autoplay: true});
+    if (notificacionesUserAtom.length) {
+      const newNotificationSound = notificacionesUserAtom.filter((item) => {
+        load('/notification.mp3', {autoplay: true});
+        return {
+          ...item,
+          notification: false,
+        };
+      });
+      setNotificationSound(newNotificationSound);
+    }
   }, [notificacionesUserAtom]);
+  // useEffect(() => {
+  //   if (notificationSound.length) {
+  //     const newNoti = notificationSound.map((item) => {
+  //       load('/notification.mp3', {autoplay: true});
+  //       return {
+  //         ...item,
+  //         notification: true,
+  //       };
+  //     });
+  //     setNotificationSound(newNoti);
+  //   }
+  // }, [notificationSound]);
   useEffect(() => {
     if (!dataUser?.user?.id) return;
     let count: any = [];

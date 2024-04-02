@@ -266,6 +266,7 @@ export function ThemplatePubli(props: any) {
   };
   return (
     <div style={{height: '100%'}}>
+      <span>{props.idPublicacion}</span>
       <DivPefilDelete aria-label='DivPefilDelete'>
         <DivPerfil>
           {user ? (
@@ -455,7 +456,6 @@ function ComentarioPublic(props: any) {
     props.comentarios
   );
   const [open, setOpen] = useState(props.userId !== props.id ? true : false);
-  console.log(props.id);
   const {dataComentar} = ComentarPublicacion(
     {
       id: props.idPublicacion,

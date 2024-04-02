@@ -266,7 +266,6 @@ export function ThemplatePubli(props: any) {
   };
   return (
     <div style={{height: '100%'}}>
-      <span>{props.idPublicacion}</span>
       <DivPefilDelete aria-label='DivPefilDelete'>
         <DivPerfil>
           {user ? (

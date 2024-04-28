@@ -1,34 +1,28 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# UniRed - Red Social 
 
-## Getting Started
+## Tecnologías Utilizadas
 
-First, run the development server:
+### Frontend
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+- **Next.js**: Utilizamos Next.js como nuestro framework de React para crear una aplicación web rápida y eficiente.
+- **React y React-DOM**: Utilizamos React para desarrollar una interfaz de usuario dinámica e interactiva.
+- **Styled Components**: Utilizamos Styled Components para el estilo de nuestros componentes y aplicar estilos CSS de manera efectiva.
+- **Recoil**: Recoil es una biblioteca experimental de gestión del estado de React que utilizamos para gestionar el estado de la aplicación.
+- **Algolia Search y React InstantSearch**: Utilizamos Algolia Search y React InstantSearch para proporcionar una búsqueda rápida y eficiente de usuarios, grupos y publicaciones.
+- **Firebase**: Utilizamos Firebase para la autenticación de usuarios y el almacenamiento de datos en tiempo real.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Backend
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Express**: Utilizamos Express como nuestro framework de servidor para manejar las solicitudes HTTP y la lógica del backend.
+- **Firebase Admin y Cloudinary**: Utilizamos Firebase Admin para interactuar con Firebase desde el backend y Cloudinary para el almacenamiento de imágenes.
+- **JSON Web Token (JWT)**: Utilizamos JWT para autenticar y autorizar a los usuarios en la aplicación.
+- **Sequelize y PostgreSQL (PG)**: Utilizamos Sequelize como ORM para interactuar con la base de datos PostgreSQL y gestionar los datos de usuarios, grupos y publicaciones.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Visitar la Página
 
-## Learn More
+Puedes visitar UniRed en línea [aquí](https://red-social-omega.vercel.app/).
 
-To learn more about Next.js, take a look at the following resources:
+## Visitar el Backend
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
+Puedes acceder al backend de UniRed [aquí](https://red-social-node.onrender.com).
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

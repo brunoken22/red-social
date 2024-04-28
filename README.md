@@ -25,4 +25,4 @@ Puedes visitar UniRed en línea [aquí](https://red-social-omega.vercel.app/).
 ## Visitar el Backend
 
 Puedes acceder al backend de UniRed [aquí](https://red-social-node.onrender.com).
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+

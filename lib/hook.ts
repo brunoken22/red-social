@@ -97,8 +97,7 @@ export async function modificarUser(dataUser: DataUser) {
       : null;
 
   if (dataMod) {
-    console.log(dataMod);
-    // mutate('/user/token');
+    mutate('/user/token');
   }
   return dataMod;
 }

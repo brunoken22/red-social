@@ -27,11 +27,11 @@ export const Button = ({
   children: React.ReactNode;
   onClick: () => any;
 }) => (
-  <span
+  <button
     onClick={onClick}
     className='m-0 bg-transparent text-[#ff7c7c] hover:text-red-500 flex items-center gap-2'>
     {children}
-  </span>
+  </button>
 );
 
 export const Span = ({children}: {children: React.ReactNode}) => (

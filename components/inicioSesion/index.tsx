@@ -20,6 +20,7 @@ export function Signin() {
   } = useForm();
 
   useEffect(() => {
+    console.log(data);
     if (data && data.user == false) {
       alert('Contraseña o usuario incorrecto');
       return;

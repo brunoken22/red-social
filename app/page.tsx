@@ -1,4 +1,5 @@
 import {cookies} from 'next/headers';
+import Link from 'next/link';
 export default function Signin() {
   const cookieStore = cookies();
   const token = cookieStore.get('token');
@@ -33,7 +34,14 @@ export default function Signin() {
   // if (isLoading) {
   //   return <Loader />;
   // }
-  return <div>hola</div>;
+  return (
+    <div>
+      <Link href={'/singnin'}>Inicio sesion </Link>
+      <Link href={'/singnin'}>Inicio sesion </Link>
+      <Link href={'/singnup'}>Crear cuenta </Link>
+      <Link href={'/home'}>home</Link>
+    </div>
+  );
   // return (
   //   <form onSubmit={onSubmit} className='flex flex-col gap-4 w-full '>
   //     {/* {data && !data?.user && (

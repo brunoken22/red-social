@@ -26,7 +26,7 @@ export function Signin() {
       return;
     }
     if (data && data.id) {
-      return router.push('/home');
+       router.push('/home');
     }
   }, [data]);
 

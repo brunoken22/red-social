@@ -190,7 +190,7 @@ export function ThemplatePubli(props: {
               <DivUserLikes>
                 {props.like.map((e: any) => (
                   <div key={e.id}>
-                    {e.user.id !== props.user.id ? e.user.fullName : 'Tú'}
+                    {e.user.id !== props.userId ? e.user.fullName : 'Tú'}
                   </div>
                 ))}
               </DivUserLikes>
@@ -324,7 +324,6 @@ function ComentarioPublic(props: any) {
     }
     alert('Escribe Algo');
   };
-  console.log(dataComment);
   return (
     <div>
       <div

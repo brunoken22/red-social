@@ -40,7 +40,7 @@ export function PerfilAmigo() {
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
   const {data, isLoading} = GetAmigo(id as string);
   const {dataPubliAmigo} = GetPubliAmigo(id as string, pagePubli);
-  const [isAmigo, setIsAmigo] = useState<boolean | 'pendiente'>();
+  const [isAmigo, setIsAmigo] = useState<'ACCEPTED' | 'PENDING' | 'REJECTED'>();
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
   const [amigoId, setAmigoId] = useState(Number(-1));
@@ -87,22 +87,22 @@ export function PerfilAmigo() {
   const handleSolicitudAcep = (e: any) => {
     const id = e.target.id;
     setAcepAmigoId(Number(id));
-    setIsAmigo(true);
+    setIsAmigo('ACCEPTED');
   };
   const handleSolicitudEnv = (e: any) => {
     const id = e.target.id;
     setAmigoId(Number(id));
-    setIsAmigo('pendiente');
+    setIsAmigo('PENDING');
   };
   const handleSolicitudRecha = (e: any) => {
     const id = e.target.id;
     setRechazarAmigo(Number(id));
-    setIsAmigo(false);
+    setIsAmigo('REJECTED');
   };
   const handleEliminarAmigo = (e: any) => {
     const id = e.target.id;
     setEliminarAmigo(Number(id));
-    setIsAmigo(false);
+    setIsAmigo('REJECTED');
   };
   const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -130,14 +130,14 @@ export function PerfilAmigo() {
           </h2>
         </DivFotoNameLink>
         <div>
-          {amigoId < 0 && isAmigo !== 'pendiente' ? (
+          {amigoId < 0 && isAmigo !== 'PENDING' ? (
             <ButtonAgregar
               id={data?.user?.id}
               onClick={isAmigo ? handleEliminarAmigo : handleSolicitudEnv}
-              bg={isAmigo !== false ? 'red' : 'blue'}>
+              bg={isAmigo !== 'REJECTED' ? 'red' : 'blue'}>
               {isAmigo ? 'Eliminar Amigo' : 'Agregar'}
             </ButtonAgregar>
-          ) : isAmigo == 'pendiente' &&
+          ) : isAmigo == 'PENDING' &&
             soliReci?.find((user) => user.id == data?.user.id) ? (
             <DivButtonEliAcep>
               <ButtonAgregar
@@ -171,9 +171,9 @@ export function PerfilAmigo() {
                 like={item.likePublics}
                 comentarios={item.commentPublis}
                 imgUserPro={dataUser?.user?.img}
+                id={item.userId}
                 idPublicacion={item.id}
                 userId={dataUser?.user?.id}
-                id={data?.user?.id}
                 user={item.user}
               />
             </DivAllPublicaciones>

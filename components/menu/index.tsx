@@ -43,7 +43,7 @@ export function Menu(props: any) {
     // console.log('salistes del focus');
     // if (focus) {
     setTimeout(() => {
-      console.log('settimeout');
+      // console.log('settimeout');
       props.click(false);
     }, 10000);
     // }

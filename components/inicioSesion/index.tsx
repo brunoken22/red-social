@@ -20,13 +20,13 @@ export function Signin() {
   } = useForm();
 
   useEffect(() => {
-    console.log(data);
     if (data && data.user == false) {
       alert('Contraseña o usuario incorrecto');
       return;
     }
     if (data && data.id) {
-       router.push('/home');
+      console.log(data);
+      router.push('/home');
     }
   }, [data]);
 

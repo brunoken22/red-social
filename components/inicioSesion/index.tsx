@@ -6,12 +6,12 @@ import {Loader} from '../loader';
 import {useForm} from 'react-hook-form';
 
 export function Signin() {
+  const router = useRouter();
   const [dataUser, setDataUser] = useState({
     email: '',
     password: '',
   });
   const {data, isLoading} = SigninUser(dataUser);
-  const router = useRouter();
 
   const {
     register,

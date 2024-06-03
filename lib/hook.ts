@@ -50,8 +50,9 @@ export function CreateUser(dataUser: DataUser) {
 
     body: JSON.stringify(dataUser),
   };
-  const {data, isLoading} = useSWRImmutable(dataUser ? api : null, (url) =>
-    fetchApiSwr(url, option)
+  const {data, isLoading} = useSWRImmutable(
+    dataUser.email && dataUser.password && dataUser.fullName ? api : null,
+    (url) => fetchApiSwr(url, option)
   );
   return {data, isLoading};
 }

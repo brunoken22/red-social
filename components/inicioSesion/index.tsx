@@ -19,16 +19,16 @@ export function Signin() {
     formState: {errors: error1},
   } = useForm();
 
-  useEffect(() => {
-    if (data && data.user == false) {
-      alert('Contraseña o usuario incorrecto');
-      return;
-    }
-    if (data && data.id) {
-      router.replace('/home');
-      console.log(data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data && data.user == false) {
+  //     alert('Contraseña o usuario incorrecto');
+  //     return;
+  //   }
+  //   if (data && data.id) {
+  //     router.replace('/home');
+  //     console.log(data);
+  //   }
+  // }, [data]);
 
   const onSubmit = (data: any) => {
     if (data) {

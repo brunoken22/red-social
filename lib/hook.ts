@@ -18,6 +18,7 @@ import {
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
 import {getCookie} from 'cookies-next';
+import {useRouter} from 'next/navigation';
 
 type DataUser = {
   fullName?: string;
@@ -57,6 +58,7 @@ export function CreateUser(dataUser: DataUser) {
   return {data, isLoading};
 }
 export function SigninUser(dataUser: DataSingin) {
+  const router = useRouter();
   const [userData, setUserData] = useRecoilState(user);
   const api = '/signin';
   const option = {
@@ -75,7 +77,15 @@ export function SigninUser(dataUser: DataSingin) {
     }
   );
   useEffect(() => {
-    setUserData(data ? data : null);
+    if (data && data.user == false) {
+      alert('Contraseña o usuario incorrecto');
+      return;
+    }
+    if (data && data.id) {
+      setUserData(data);
+      router.replace('/home');
+      console.log(data);
+    }
   }, [data]);
   return {data, isLoading};
 }

@@ -1,8 +1,5 @@
+'use client';
 import {useForm} from 'react-hook-form';
-import {Form} from '@/ui/container';
-import {Label, Input} from '@/ui/input';
-import {BotonForm} from '@/ui/boton';
-import {Span} from '../inicioSesion/styled';
 import {useRouter} from 'next/navigation';
 import {CreateUser} from '@/lib/hook';
 import {useEffect, useState} from 'react';
@@ -46,14 +43,13 @@ export function Signup() {
     if (data == 'Usuario Registrado') {
       alert('Usuario registrado');
     }
-    if (data?.user?.id) {
+    if (data?.id) {
       setDataUser({
         fullName: '',
         email: '',
         password: '',
       });
       alert('Usuario registrado con exito');
-      localStorage.setItem('token', data.token);
       router.push('/home');
     }
   }, [data]);
@@ -61,12 +57,15 @@ export function Signup() {
     return <Loader />;
   }
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className='flex flex-col gap-4 w-full '>
       <div>
-        <Label htmlFor='fullName'>
-          Nombre <Span>*</Span>
-        </Label>
-        <Input
+        <label className='block' htmlFor='fullName'>
+          Nombre <span className='text-[#f57888]'>*</span>
+        </label>
+        <input
+          className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary'
           type='text'
           {...register('fullName', {required: true})}
           id='fullName'
@@ -74,10 +73,11 @@ export function Signup() {
         />
       </div>
       <div>
-        <Label htmlFor='email'>
-          Email <Span>*</Span>
-        </Label>
-        <Input
+        <label className='block' htmlFor='email'>
+          Email <span className='text-[#f57888]'>*</span>
+        </label>
+        <input
+          className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary'
           type='email'
           {...register('email', {required: true})}
           id='email'
@@ -85,10 +85,11 @@ export function Signup() {
         />
       </div>
       <div>
-        <Label htmlFor='password'>
-          Contraseña <Span>*</Span>
-        </Label>
-        <Input
+        <label className='block' htmlFor='password'>
+          Contraseña <span className='text-[#f57888]'>*</span>
+        </label>
+        <input
+          className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2  dark:text-secundary'
           type='password'
           {...register('password', {required: true})}
           id='password'
@@ -97,10 +98,11 @@ export function Signup() {
       </div>
       <div>
         {' '}
-        <Label htmlFor='repassword'>
-          Repetir Contraseña <Span>*</Span>
-        </Label>
-        <Input
+        <label className='block' htmlFor='repassword'>
+          Repetir Contraseña <span className='text-[#f57888]'>*</span>
+        </label>
+        <input
+          className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2  dark:text-secundary'
           type='password'
           {...register('repassword', {required: true})}
           id='repassword'
@@ -109,10 +111,13 @@ export function Signup() {
       </div>
       {error1.exampleRequired && <span>This field is required</span>}
 
-      <div style={{textAlign: 'center'}}>
-        {' '}
-        <BotonForm type='submit'>Continuar</BotonForm>
+      <div className='mt-6'>
+        <button
+          type='submit'
+          className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70'>
+          Continuar
+        </button>
       </div>
-    </Form>
+    </form>
   );
 }

@@ -2,11 +2,10 @@ import Dropzone from 'dropzone';
 import {useEffect, useState} from 'react';
 import {Body} from '../typography';
 import 'dropzone/dist/dropzone.css';
-import {OptimizarImage} from '@/lib/hook';
+import {optimizarImage} from '@/lib/hook';
 import {LoaderComponent} from '@/components/loader';
 export function ImageSVG(props: any) {
-  const [dataUrlOp, setDataUrlOp] = useState('');
-  const {dataObtimizado, isLoading} = OptimizarImage(dataUrlOp);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const myDropzone = new Dropzone('.dropzone', {
@@ -21,15 +20,19 @@ export function ImageSVG(props: any) {
       addRemoveLinks: true,
       dictRemoveFile: 'Eliminar',
       init: function () {
-        this.on('maxfilesexceeded', function (file) {
+        this.on('maxfilesexceeded', function () {
           alert('Solo un archivo porfavor!');
         });
       },
       maxfilesexceeded: async function (files) {
         (this as any).removeAllFiles();
         (this as any).addFile(files);
-        setDataUrlOp(files.dataURL as string);
+        setIsLoading(true);
+        const dataObtimizado = await optimizarImage(files.dataURL as string);
+        setIsLoading(false);
+        props.dataUrl(dataObtimizado);
         props.archivo(true);
+        return;
       },
     });
     myDropzone.on('thumbnail', async function (file) {
@@ -45,16 +48,12 @@ export function ImageSVG(props: any) {
         myDropzone.removeFile(file);
         return;
       }
-      setDataUrlOp(file.dataURL as string);
+      const dataObtimizado = await optimizarImage(file.dataURL as string);
+      props.dataUrl(dataObtimizado);
       props.archivo(true);
     });
   }, []);
 
-  useEffect(() => {
-    if (dataObtimizado) {
-      props.dataUrl(dataObtimizado);
-    }
-  }, [dataObtimizado]);
   return (
     <>
       <div className='dropzone' style={{position: 'relative'}}>
@@ -90,6 +89,7 @@ export function ImageSVG(props: any) {
 export function SendComentPubli() {
   return (
     <svg
+      className='hover:fill-[#2684ff]'
       xmlns='http://www.w3.org/2000/svg'
       viewBox='0 0 32 32'
       id='send'

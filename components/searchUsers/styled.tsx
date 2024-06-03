@@ -1,7 +1,3 @@
-import styled from 'styled-components';
-
-export const DivLinkUser = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-`;
+export const DivLinkUser = ({children}: {children: React.ReactNode}) => (
+  <div className='flex gap-2 items-center'>{children}</div>
+);

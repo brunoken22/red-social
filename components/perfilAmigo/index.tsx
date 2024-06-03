@@ -1,5 +1,5 @@
 'use client';
-import {FotoPerfil} from '@/ui/FotoPerfil';
+import FotoPerfil from '@/ui/FotoPerfil';
 import {
   DivPerfilUser,
   DivHeadPerfil,
@@ -7,7 +7,6 @@ import {
   DivPublicaciones,
   DivButtonEliAcep,
 } from '../perfilUser/styled';
-import {ThemplatePubli} from '../publicaciones';
 import {useEffect, useState} from 'react';
 import {
   user,
@@ -30,20 +29,17 @@ import {DivAllPublicaciones} from '@/ui/container';
 import {ButtonAgregar} from '@/ui/boton';
 import {ButtonMasPubli} from '../publicaciones/styled';
 import {SkeletonPerfilAmigo} from '@/ui/skeleton';
+import {ThemplatePubli} from '../templatePublicate';
 
 export function PerfilAmigo() {
   const {id} = useParams();
   const dataIsConnect = useRecoilValue(isConnect);
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataUser = useRecoilValue(user);
-  const token =
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : '';
   const [pagePubli, setPagePubli] = useState(0);
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
-  const {data, isLoading} = GetAmigo(id as string, token);
-  const {dataPubliAmigo} = GetPubliAmigo(id as string, token, pagePubli);
+  const {data, isLoading} = GetAmigo(id as string);
+  const {dataPubliAmigo} = GetPubliAmigo(id as string,  pagePubli);
   const [isAmigo, setIsAmigo] = useState<boolean | 'pendiente'>();
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
@@ -53,27 +49,23 @@ export function PerfilAmigo() {
     {
       userId: eliminarAmigo,
     },
-    token
   );
   const {dataCreateSoli} = CreateSolicitud(
     {
       amigoId,
       estado: false,
     },
-    token
   );
   const {dataAcep} = AceptarSolicitud(
     {
       amigoId: acepAmigoId,
       estado: true,
     },
-    token
   );
   const {dataRech} = RechazarSolicitud(
     {
       userId: rechazarAmigo,
     },
-    token
   );
 
   useEffect(() => {
@@ -133,10 +125,8 @@ export function PerfilAmigo() {
         <DivFotoNameLink>
           {data?.user?.id && (
             <FotoPerfil
-              wid='80'
-              hei='80'
+              className='w-[80px] h-[80px]'
               img={data?.user?.img}
-              conectHei='15px'
               connect={
                 dataIsConnect?.find((e: any) => e.id == data?.user?.id)
                   ?.connect && true
@@ -152,7 +142,7 @@ export function PerfilAmigo() {
             <ButtonAgregar
               id={data?.user?.id}
               onClick={isAmigo ? handleEliminarAmigo : handleSolicitudEnv}
-              $bg={isAmigo !== false ? 'red' : 'blue'}>
+              bg={isAmigo !== false ? 'red' : 'blue'}>
               {isAmigo ? 'Eliminar Amigo' : 'Agregar'}
             </ButtonAgregar>
           ) : isAmigo == 'pendiente' &&
@@ -161,7 +151,7 @@ export function PerfilAmigo() {
               <ButtonAgregar
                 id={data?.user?.id}
                 onClick={handleSolicitudRecha}
-                $bg='red'>
+                bg='red'>
                 Eliminar solicitud
               </ButtonAgregar>
               <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudAcep}>
@@ -172,7 +162,7 @@ export function PerfilAmigo() {
             <ButtonAgregar
               id={data?.user?.id}
               onClick={handleSolicitudRecha}
-              $bg='red'>
+              bg='red'>
               Eliminar solicitud
             </ButtonAgregar>
           )}
@@ -180,22 +170,20 @@ export function PerfilAmigo() {
       </DivHeadPerfil>
       <DivPublicaciones>
         {publicacionesAmigo?.length > 0 ? (
-          publicacionesAmigo.map((item: any) => (
+          publicacionesAmigo.map((item) => (
             <DivAllPublicaciones key={item.id}>
               <ThemplatePubli
                 name={dataUser?.user?.fullName}
-                nameUserPerfil={data?.user?.fullName}
                 description={item.description}
                 img={item.img}
-                fecha={item.fecha}
-                like={item.like}
-                comentarios={item.comentarios}
+                fecha={item.updatedAt}
+                like={item.likePublics}
+                comentarios={item.commentPublis}
                 imgUserPro={dataUser?.user?.img}
-                imgUser={data?.user?.img || 'false'}
                 idPublicacion={item.id}
                 userId={dataUser?.user?.id}
                 id={data?.user?.id}
-                token={token}
+                user={item.user}
               />
             </DivAllPublicaciones>
           ))

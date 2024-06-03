@@ -1,12 +1,36 @@
-import styled from 'styled-components';
-export const Label = styled.label`
-  display: block;
-`;
-export const Input = styled.input`
-  width: 100%;
-  height: 2.5rem;
-  border-radius: 10px;
-  border: 1px solid #fff;
-  text-indent: 10px;
-  padding: 0;
-`;
+export const Label = ({
+  htmlFor,
+  children,
+}: {
+  htmlFor: string;
+  children: React.ReactNode;
+}) => (
+  <label htmlFor={htmlFor} className='block'>
+    {children}
+  </label>
+);
+export const Input = ({
+  id,
+  type,
+  placeholder,
+  autoComplete,
+  value,
+  onChange,
+}: {
+  id?: string;
+  type?: string;
+  placeholder?: string;
+  autoComplete?: string;
+  value?: string;
+  onChange?: (e: any) => any;
+}) => (
+  <input
+    onChange={onChange}
+    defaultValue={value}
+    autoComplete={autoComplete}
+    id={id}
+    type={type}
+    placeholder={placeholder}
+    className='w-full h-[2.5rem] rounded-md border-[1px] text-black border-gray-700 indent-3 p-0'
+  />
+);

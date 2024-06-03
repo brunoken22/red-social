@@ -1,100 +1,101 @@
-import styled from 'styled-components';
-export const Button = styled.button`
-  background-color: transparent;
-  border: 0;
-  cursor: pointer;
-  font-size: 1.2rem;
-  height: 4rem;
-  color: #fff;
-  border-radius: 5px;
-`;
-export const ButtonSms = styled(Button)`
-  position: relative;
-  max-width: 350px;
-  height: 100% !important;
-`;
-export const ButtonSmsConnect = styled(Button)`
-  width: 100%;
-  height: auto;
-  margin: 0.1rem;
-  &:hover {
-    background-color: #707070;
-    border-radius: 0;
-  }
-`;
-export const ButtonNoti = styled.div<any>`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  border: 0;
-  height: 4rem;
-  border-radius: 5px;
-  background-color: ${(e: any) => (e.$visto ? '#707070' : '')};
-  background-color: ${(e: any) => (e.$open ? '#707070' : '')};
+export const Button = ({
+  children,
+  onClick,
+  active,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+  active: boolean;
+}) => (
+  <button
+    onClick={onClick}
+    className={`${
+      active ? 'bg-black' : 'bg-inherit'
+    } border-none text-xl h-16 text-primary rounded-md`}>
+    {children}
+  </button>
+);
 
-  &:hover {
-    background-color: #707070;
-  }
-`;
-export const ButtonAgregar = styled.button<any>`
-  background-color: ${(props: any) =>
-    props.$bg == 'red' ? '#ff5252' : '#4298ed'};
-  border: 0;
-  font-size: 0.8rem;
-  padding: 0.7rem;
-  border-radius: 10px;
-  color: #fff;
-  cursor: pointer;
-  &:hover {
-    background-color: ${(props: any) =>
-      props.$bg == 'red' ? '#f86868' : '#71b3f5'};
-  }
-  @media (max-width: 550px) {
-    padding: 0.5rem;
-  }
-`;
-export const BotonForm = styled.button`
-  margin-top: 1.5rem;
-  width: 150px;
-  background: #fff; /* color de fondo */
-  color: #5896c9; /* color de fuente */
-  border: 2px solid #6aabd6; /* tamaño y color de borde */
-  padding: 9px 20px;
-  border-radius: 5px; /* redondear bordes */
-  position: relative;
-  z-index: 1;
-  font-size: 1.1rem;
-  overflow: hidden;
-  display: inline-block;
-  cursor: pointer;
-  &:hover {
-    color: #fff; /* color de fuente hover */
-  }
-  &::after {
-    content: '';
-    background: #88c4e7; /* color de fondo hover */
-    position: absolute;
-    z-index: -1;
-    padding: 16px 20px;
-    display: block;
-    left: 0;
-    right: 0;
-    top: -100%;
-    bottom: 100%;
-    -webkit-transition: all 0.35s;
-    transition: all 0.35s;
-  }
-  &:hover::after {
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    -webkit-transition: all 0.35s;
-    transition: all 0.35s;
-  }
-`;
-export const BotonSms = styled(BotonForm)`
-  margin-top: 0;
-  width: auto;
-`;
+export const ButtonSms = ({
+  children,
+  onClick,
+  active,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+  active: boolean;
+}) => (
+  <button
+    onClick={onClick}
+    className={`${
+      active ? 'bg-black' : 'bg-inherit'
+    } border-none text-xl  text-primary rounded-md relative max-w-[350px] h-full`}>
+    {children}
+  </button>
+);
+
+export const ButtonSmsConnect = ({
+  children,
+  onClick,
+  active,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+  active?: boolean;
+}) => (
+  <button
+    onClick={onClick}
+    className={`${
+      active ? 'bg-black' : 'bg-inherit'
+    } border-none text-xl  text-primary rounded-md w-full h-auto m-[0.1rem] hover:bg-secundary hover:text-primary hover:rounded-none`}>
+    {children}
+  </button>
+);
+
+export const ButtonNoti = ({
+  children,
+  onClick,
+  visto,
+  open,
+  id,
+}: {
+  children: React.ReactNode;
+  onClick?: (e: any) => any;
+  visto?: boolean;
+  open?: boolean;
+  id?: string;
+}) => (
+  <button
+    id={id}
+    onClick={onClick}
+    className={`flex items-center gap-4 w-full border-none h-16 rounded-md p-2${
+      visto ? 'bg-hoverPrimary' : ''
+    } ${
+      open ? 'opacity-70 fill-white' : 'fill-[#e5e7eb] '
+    } hover:opacity-70   hover:fill-[#e5e7eb]`}>
+    {children}
+  </button>
+);
+
+export const ButtonAgregar = ({
+  children,
+  onClick,
+  bg,
+  id,
+}: {
+  children: React.ReactNode;
+  onClick: (e: any) => any;
+  bg?: string;
+  id: any;
+}) => (
+  <button
+    id={id}
+    onClick={onClick}
+    className={`${
+      bg == 'red'
+        ? 'bg-[#ff5252] hover:bg-[#ff5252]'
+        : 'bg-[#4298ed] hover:bg-[#4298ed]'
+    } border-none text-[0.8rem] p-[0.7rem] rounded-xl text-primary max-md:p-2`}>
+    {children}
+  </button>
+);

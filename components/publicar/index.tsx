@@ -1,5 +1,5 @@
 'use client';
-import {FotoPerfil} from '@/ui/FotoPerfil';
+import FotoPerfil from '@/ui/FotoPerfil';
 import {Body} from '@/ui/typography';
 import {DivPublicar} from '@/ui/container';
 import {useRecoilValue} from 'recoil';
@@ -16,7 +16,7 @@ import {
   DivCrear,
 } from './styled';
 import VideoSubir from '@/ui/icons/video.svg';
-import {useEffect, useState} from 'react';
+import {FormEvent, useEffect, useState} from 'react';
 import {ImageSVG} from '@/ui/icons';
 import ImageSubir from '@/ui/icons/image.svg';
 import CloseSvg from '@/ui/icons/close.svg';
@@ -42,9 +42,8 @@ export function Publicar() {
       <DivText>
         <FotoPerfil
           img={dataValor?.user?.img}
-          width='40'
-          hei='40'
-          fullName={dataValor?.user?.fullName}
+          className='w-[40px] h-[40px]'
+          // fullName={dataValor?.user?.fullName}
           connect={
             dataIsConnect?.find((e: any) => e.id == dataValor?.user?.id)
               ?.connect && true
@@ -56,7 +55,7 @@ export function Publicar() {
       </DivText>
       <DivSubir>
         <DivASubir onClick={() => setFormClick(true)}>
-          <ImageSubir /> <Body $margin='0px'>Foto</Body>
+          <ImageSubir /> <Body>Foto</Body>
         </DivASubir>
         {formClick ? (
           <TemplateFormPublicar close={(data: boolean) => setFormClick(data)} />
@@ -74,23 +73,14 @@ function TemplateFormPublicar(props: any) {
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
   const [dataUrl, setDataUrl] = useState('');
-  const [fecha, setFecha] = useState('');
   const [content, setContent] = useState('');
-  const [newid, setNewId] = useState(0);
+  const [openSwr, setOpenSwr] = useState(false);
 
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const {data, isLoading} = CreatePublicacion(
-    {
-      description: content,
-      id: newid,
-      like: 0,
-      img: dataUrl,
-      comentarios: [],
-      fecha: fecha,
-    },
-    token as string
-  );
+  const {data, isLoading} = CreatePublicacion({
+    description: content,
+    img: dataUrl,
+    openSwr,
+  });
   useEffect(() => {
     if (content.length <= 0) {
       setPlaceinput(true);
@@ -100,6 +90,7 @@ function TemplateFormPublicar(props: any) {
 
   useEffect(() => {
     if (data) {
+      setOpenSwr(false);
       return props.close(false);
     }
   }, [data]);
@@ -125,21 +116,9 @@ function TemplateFormPublicar(props: any) {
     }
   };
 
-  const handleClickForm = (e: any) => {
+  const handleClickForm = (e: FormEvent) => {
     e.preventDefault();
-    let fechaActual = new Date();
-    let año = fechaActual.getFullYear();
-    let mes = fechaActual.getMonth() + 1;
-    let dia = fechaActual.getDate();
-
-    const nuevaPublicacion = {
-      id: Date.now(),
-      description: content,
-      img: dataUrl,
-      fecha: `${dia}/${mes}/${año}`,
-    };
-    setFecha(`${dia}/${mes}/${año}`);
-    setNewId(Date.now() as number);
+    setOpenSwr(true);
   };
   if (isLoading) {
     return <Loader />;
@@ -152,7 +131,7 @@ function TemplateFormPublicar(props: any) {
             style={{
               display: 'flex',
               gap: '1rem',
-              color: '#000',
+
               alignItems: 'flex-start',
               fontWeight: 'bolder',
               justifyContent: 'space-between',
@@ -162,16 +141,15 @@ function TemplateFormPublicar(props: any) {
               style={{
                 display: 'flex',
                 gap: '1rem',
-                color: '#000',
-                alignItems: 'flex-start',
+
+                alignItems: 'center',
               }}>
               <FotoPerfil
-                wid='80'
-                hei='80'
+                className='w-[80px] h-[80px]'
                 img={dataUser?.user?.img}
-                fullName={dataUser?.user?.fullName}
+                // fullName={dataUser?.user?.fullName}
               />
-              <h3>{dataUser?.user?.fullName}</h3>
+              <h3 className='text-2xl'>{dataUser?.user?.fullName}</h3>
             </div>
             <Button onClick={handleclose}>
               <CloseSvg />
@@ -181,14 +159,15 @@ function TemplateFormPublicar(props: any) {
             onInput={handleInput}
             suppressContentEditableWarning={true}
             contentEditable={true}
-            $content={placeInput}
+            text={placeInput}
             placeholder={
               content == ''
                 ? `Qué estás pensado, ${
                     dataUser?.user?.fullName.split(' ')[0]
                   }?`
-                : null
-            }></InputP>
+                : ''
+            }
+          />
           <div>
             <div>
               <Body>Agregar a tu publicación</Body>
@@ -198,7 +177,7 @@ function TemplateFormPublicar(props: any) {
               archivo={(data: boolean) => setPlaceinput(data)}></ImageSVG>
           </div>
           <DivButton>
-            <ButtonPublicar $color={!placeInput} disabled={placeInput}>
+            <ButtonPublicar color={!placeInput} disabled={placeInput}>
               Publicar
             </ButtonPublicar>
           </DivButton>

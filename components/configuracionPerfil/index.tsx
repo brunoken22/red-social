@@ -7,16 +7,13 @@ import {Password} from '../conPassword';
 
 export function ConfigPerfil() {
   const [conEmailName, setConEmailName] = useState(true);
-  const [conPassword, setConPassword] = useState(false);
   const handleClick = (e: any) => {
     e.preventDefault();
     if (e.target.id == 'ue') {
       setConEmailName(true);
-      setConPassword(false);
       return;
     }
     setConEmailName(false);
-    setConPassword(true);
   };
   return (
     <DivConfiguracionPerfil>
@@ -29,8 +26,7 @@ export function ConfigPerfil() {
         </ButtonNoti>
       </div>
       <DIvCongifurar>
-        {conEmailName ? <EmailYName /> : null}
-        {conPassword ? <Password /> : null}
+        {conEmailName ? <EmailYName /> : <Password />}
       </DIvCongifurar>
     </DivConfiguracionPerfil>
   );

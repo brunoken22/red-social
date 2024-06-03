@@ -14,17 +14,17 @@ export function SkeletonNoti(props: React.ComponentProps<any>) {
       <DivPublicaciones>
         <DivPublicar>
           <DivText>
-            <PhotoSkeleton $width='40px' $height='40px'>
+            <PhotoSkeleton className='w-[40px] h-[40px]'>
               <SpanLuz></SpanLuz>
             </PhotoSkeleton>
-            <TextSkeleton $width='50%' $height='30px'>
+            <TextSkeleton className="w-[50%] h-[30px]">
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivText>
-          <TextSkeleton $width='100%' $height='300px'>
+          <TextSkeleton className="w-full h-[300px]" >
             <SpanLuz></SpanLuz>
           </TextSkeleton>
-          <TextSkeleton $width='100%' $height='30px' $margin='0 0 1rem 0'>
+          <TextSkeleton className="w-full h-[30px] m-[0_0_1rem_0]">
             <SpanLuz></SpanLuz>
           </TextSkeleton>
         </DivPublicar>
@@ -32,17 +32,17 @@ export function SkeletonNoti(props: React.ComponentProps<any>) {
       <DivPublicaciones>
         <DivPublicar>
           <DivText>
-            <PhotoSkeleton $width='40px' $height='40px'>
+            <PhotoSkeleton className='w-[40px] h-[40px]'>
               <SpanLuz></SpanLuz>
             </PhotoSkeleton>
-            <TextSkeleton $width='50%' $height='30px'>
+            <TextSkeleton className="w-[50%] h-[30px] " >
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivText>
-          <TextSkeleton $width='100%' $height='300px'>
+          <TextSkeleton className="w-full h-[300px] ">
             <SpanLuz></SpanLuz>
           </TextSkeleton>
-          <TextSkeleton $width='100%' $height='30px' $margin='0 0 1rem 0'>
+          <TextSkeleton className="w-full h-[30px] m-[0_0_1rem_0]" >
             <SpanLuz></SpanLuz>
           </TextSkeleton>
         </DivPublicar>
@@ -58,46 +58,46 @@ export function SkeletonPerfil(props: React.ComponentProps<any>) {
           <PhotoSkeleton>
             <SpanLuz></SpanLuz>
           </PhotoSkeleton>
-          <TextSkeleton $width='200px' $margin='1rem'>
+          <TextSkeleton className='w-[200px] m-4'>
             <SpanLuz></SpanLuz>
           </TextSkeleton>
         </DivFotoName>
-        <TextSkeleton $margin='1rem'>
+        <TextSkeleton className=' m-4'>
           <SpanLuz></SpanLuz>
         </TextSkeleton>
       </DivHeadPerfil>
       <DivPublicaciones>
         <DivPublicar>
           <DivText>
-            <PhotoSkeleton $width='40px' $height='40px'>
+            <PhotoSkeleton className='w-[40px] h-[40px]'>
               <SpanLuz></SpanLuz>
             </PhotoSkeleton>
-            <TextSkeleton $width='90%' $height='40px'>
+            <TextSkeleton className='w-[90%] h-[40px]'>
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivText>
           <DivSubir>
-            <TextSkeleton $width='100px' $height='30px' $margin='1rem'>
+            <TextSkeleton className='w-[100px] h-[30px] m-4'>
               <SpanLuz></SpanLuz>
             </TextSkeleton>
-            <TextSkeleton $width='100px' $height='30px' $margin='1rem'>
+            <TextSkeleton className='w-[100px] h-[30px] m-4'>
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivSubir>
         </DivPublicar>
         <DivPublicar>
           <DivText>
-            <PhotoSkeleton $width='40px' $height='40px'>
+            <PhotoSkeleton className='w-[40px] h-[40px]'>
               <SpanLuz></SpanLuz>
             </PhotoSkeleton>
-            <TextSkeleton $width='50%' $height='30px'>
+            <TextSkeleton className='w-[50%] h-[30px]'>
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivText>
-          <TextSkeleton $width='100%' $height='300px'>
+          <TextSkeleton className='w-full h-[300px]'>
             <SpanLuz></SpanLuz>
           </TextSkeleton>
-          <TextSkeleton $width='100%' $height='30px' $margin='0 0 1rem 0'>
+          <TextSkeleton className='w-full h-[30px] m-[0_0_1rem_0]'>
             <SpanLuz></SpanLuz>
           </TextSkeleton>
         </DivPublicar>
@@ -113,28 +113,28 @@ export function SkeletonPerfilAmigo(props: React.ComponentProps<any>) {
           <PhotoSkeleton>
             <SpanLuz></SpanLuz>
           </PhotoSkeleton>
-          <TextSkeleton $width='200px' $margin='1rem'>
+          <TextSkeleton className='w-[200px] m-4' >
             <SpanLuz></SpanLuz>
           </TextSkeleton>
         </DivFotoName>
-        <TextSkeleton $margin='1rem'>
+        <TextSkeleton className='m-4' >
           <SpanLuz></SpanLuz>
         </TextSkeleton>
       </DivHeadPerfil>
       <DivPublicaciones>
         <DivPublicar>
           <DivText>
-            <PhotoSkeleton $width='40px' $height='40px'>
+            <PhotoSkeleton className='w-[40px] h-[]'>
               <SpanLuz></SpanLuz>
             </PhotoSkeleton>
-            <TextSkeleton $width='50%' $height='30px'>
+            <TextSkeleton className='w-[50%] h-[30px]'>
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivText>
-          <TextSkeleton $width='100%' $height='300px'>
+          <TextSkeleton className='w-full h-[300px]'>
             <SpanLuz></SpanLuz>
           </TextSkeleton>
-          <TextSkeleton $width='100%' $height='30px' $margin='0 0 1rem 0'>
+          <TextSkeleton className='w-full h-[30px] m-[0_0_1rem_0]' >
             <SpanLuz></SpanLuz>
           </TextSkeleton>
         </DivPublicar>
@@ -148,17 +148,17 @@ export function SkeletonPublicacionAll(props: React.ComponentProps<any>) {
       <DivPublicaciones>
         <DivPublicar>
           <DivText>
-            <PhotoSkeleton $width='40px' $height='40px'>
+            <PhotoSkeleton className='w-[40px] h-[]'>
               <SpanLuz></SpanLuz>
             </PhotoSkeleton>
-            <TextSkeleton $width='50%' $height='30px'>
+            <TextSkeleton className='w-[50%] h-[30px]'>
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivText>
-          <TextSkeleton $width='100%' $height='300px'>
+          <TextSkeleton className='w-full h-[300px]' >
             <SpanLuz></SpanLuz>
           </TextSkeleton>
-          <TextSkeleton $width='100%' $height='30px' $margin='0 0 1rem 0'>
+          <TextSkeleton className='w-full h-[30px] m-[0_0_1rem_0]'>
             <SpanLuz></SpanLuz>
           </TextSkeleton>
         </DivPublicar>
@@ -166,17 +166,17 @@ export function SkeletonPublicacionAll(props: React.ComponentProps<any>) {
       <DivPublicaciones>
         <DivPublicar>
           <DivText>
-            <PhotoSkeleton $width='40px' $height='40px'>
+            <PhotoSkeleton className='w-[40px] h-[40px]'>
               <SpanLuz></SpanLuz>
             </PhotoSkeleton>
-            <TextSkeleton $width='50%' $height='30px'>
+            <TextSkeleton className='w-[50%] h-[30px] '>
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivText>
-          <TextSkeleton $width='100%' $height='300px'>
+          <TextSkeleton className='w-full h-[300px] ' >
             <SpanLuz></SpanLuz>
           </TextSkeleton>
-          <TextSkeleton $width='100%' $height='30px' $margin='0 0 1rem 0'>
+          <TextSkeleton className='w-full h-[30px] m-[0_0_1rem_0]' >
             <SpanLuz></SpanLuz>
           </TextSkeleton>
         </DivPublicar>

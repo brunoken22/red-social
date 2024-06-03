@@ -17,30 +17,10 @@ import {usePathname, useRouter} from 'next/navigation';
 import {SearchBox, Hits, useHits} from 'react-instantsearch';
 import {Hit} from '../searchUsers';
 import React, {useEffect, useState} from 'react';
-import Logo from '@/public/logo.svg';
-import {
-  HeaderNav,
-  Nav,
-  DivEnlaces,
-  InputDiv,
-  DivInputSearch,
-  Enlaces,
-  EnlaceSearch,
-  Button,
-  DivNotificacionActi,
-  DivConectados,
-  DivConnect,
-  DivConnectAll,
-  DivContenedorConnect,
-} from './styled';
 import {useGlobalAudioPlayer} from 'react-use-audio-player';
-import Home from '@/ui/icons/home.svg';
-import Amigos from '@/ui/icons/amigos.svg';
-import Chat from '@/ui/icons/chat.svg';
-import Notificaciones from '@/ui/icons/notificaciones.svg';
-import Search from '@/ui/icons/search.svg';
+import Logo from '@/public/logo.svg';
 import Link from 'next/link';
-import {FotoPerfil} from '@/ui/FotoPerfil';
+import FotoPerfil from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
 import {useRecoilValue, useRecoilState} from 'recoil';
 import {
@@ -54,15 +34,18 @@ import {
   getAllUser,
   getAllUsersChat,
 } from '@/lib/atom';
+import NavegationUrl from './algoliaSearch';
+import {
+  DivConectados,
+  DivConnect,
+  DivConnectAll,
+  DivContenedorConnect,
+} from './styled';
 import {ButtonSmsConnect} from '@/ui/boton';
 import {DivAllConnect} from '@/ui/container';
+import {getTheme} from '@/lib/cookie';
 
-const stylelinkIcon: {fill: string; position: any} = {
-  fill: '#b3b3b3',
-  position: 'relative',
-};
-
-export function Header() {
+export default function Header() {
   const {load} = useGlobalAudioPlayer();
   const pathname = usePathname();
   const router = useRouter();
@@ -241,13 +224,13 @@ export function Header() {
 
   return dataUser?.user?.id ? (
     <>
-      <HeaderNav>
-        <Nav>
-          <InputDiv>
+      <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
+        <nav className='flex justify-evenly items-center max-md:justify-between'>
+          <div className='flex gap-4 items-center '>
             <Link href={'/home'} aria-label='home'>
-              <Logo style={{borderRadius: '10px', fill: '#fff'}} />
+              <Logo className='rounded-md dark:fill-white transition-dark' />
             </Link>
-            <DivInputSearch>
+            <div className='border-none relative max-md:hidden'>
               {pathname !== '/search' && (
                 <SearchBox
                   placeholder='UniRed'
@@ -277,76 +260,39 @@ export function Header() {
                   </p>
                 )
               ) : null}
-            </DivInputSearch>
-          </InputDiv>
-          <DivEnlaces>
-            <Link href={'/search'} aria-label='search'>
-              <EnlaceSearch $isPathname={pathname == '/search' ? true : false}>
-                <Search />
-              </EnlaceSearch>
-            </Link>
-            <Link href={'/home'} style={stylelinkIcon} aria-label='home'>
-              <Enlaces $isPathname={pathname == '/home' ? true : false}>
-                <Home />
-              </Enlaces>
-            </Link>
-            <Link href={'/amigos'} style={stylelinkIcon} aria-label='amigos'>
-              {dataSoliReci?.length > 0 && (
-                <DivNotificacionActi>
-                  {dataSoliReci?.length}
-                </DivNotificacionActi>
-              )}
-              <Enlaces $isPathname={pathname == '/amigos' ? true : false}>
-                <Amigos />
-              </Enlaces>
-            </Link>
-            <Link href={'/mensaje'} style={stylelinkIcon} aria-label='mensaje'>
-              {dataMessage.length > 0 && (
-                <DivNotificacionActi>
-                  {obtenerObjetosUnicos(dataMessage).length}
-                </DivNotificacionActi>
-              )}
-              <Enlaces $isPathname={pathname == '/mensaje' ? true : false}>
-                <Chat />{' '}
-              </Enlaces>
-            </Link>
-            <Link
-              href={'/notificaciones'}
-              style={stylelinkIcon}
-              aria-label='notificaciones'>
-              {notificacionesUserAtom?.length > 0 &&
-                notificacionesUserAtom?.filter((e: any) => e.open == true)
-                  .length !== 0 && (
-                  <DivNotificacionActi>
-                    {
-                      notificacionesUserAtom?.filter((e: any) => e.open == true)
-                        .length
-                    }
-                  </DivNotificacionActi>
-                )}
-              <Enlaces
-                $isPathname={pathname == '/notificaciones' ? true : false}>
-                <Notificaciones />{' '}
-              </Enlaces>
-            </Link>
-          </DivEnlaces>
-          <div style={{position: 'relative'}}>
-            <Button onClick={handleMenu}>
+            </div>
+          </div>
+          <NavegationUrl
+            amigos={dataSoliReci?.length}
+            message={dataMessage.length}
+            notification={
+              notificacionesUserAtom?.length > 0 &&
+              notificacionesUserAtom?.filter((e: any) => e.open == true).length
+            }
+          />
+          <div className='relative'>
+            <button
+              onClick={handleMenu}
+              className='m-0 bg-transparent border-none '>
               <FotoPerfil
-                wid='40'
-                hei='40'
+                className='w-[40px] h-[40px]'
                 img={dataUser.user.img}
-                fullName={dataUser.user.fullName}
                 connect={
                   dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) &&
                   true
                 }
               />
-            </Button>
-            {menu ? <Menu click={handleClick} /> : null}
+            </button>
+            {menu ? (
+              <Menu
+                click={handleClick}
+                userImg={dataUser.user.img}
+                userName={dataUser.user.fullName.split(' ')[0]}
+              />
+            ) : null}
           </div>
-        </Nav>
-      </HeaderNav>
+        </nav>
+      </header>
       <DivContenedorConnect>
         <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
           <span>Conectados</span> <DivConnect />
@@ -374,8 +320,7 @@ export function Header() {
                     <DivAllConnect>
                       <FotoPerfil
                         img={e.img}
-                        wid='30'
-                        hei='30'
+                        className='h-[30px] w-[30px]'
                         connect={
                           dataIsConnect?.find(
                             (eConnect: any) => e.id == eConnect.id
@@ -405,12 +350,3 @@ export function Header() {
     </>
   ) : null;
 }
-const obtenerObjetosUnicos = (array: any[]) => {
-  return array.reduce((resultado, objeto) => {
-    const existe = resultado.some((item: any) => item['id'] === objeto['id']);
-    if (!existe) {
-      resultado.push(objeto);
-    }
-    return resultado;
-  }, []);
-};

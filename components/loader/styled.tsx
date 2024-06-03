@@ -1,24 +1,15 @@
-import styled, {keyframes} from 'styled-components';
-const rotate = keyframes`
-  from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(359deg);
-    }
-`;
-export const ImageLogo = styled.img`
-  border-radius: 50%;
-  position: absolute;
-  height: 25px;
-  animation: ${rotate} 1s infinite cubic-bezier(0.4, 0, 1, 1);
-`;
-export const DivLoader = styled.div`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  inset: 0 0 0 0;
-  backdrop-filter: blur(10px);
-  z-index: 10;
-`;
+import React from 'react';
+
+export const ImageLogo = ({src, alt}: {src: string; alt: string}) => (
+  <img
+    src={src}
+    alt={alt}
+    className='rounded-full  h-[25px] animate-spin absolute'
+  />
+);
+
+export const DivLoader = ({children}: {children: React.ReactNode}) => (
+  <div className='absolute flex items-center justify-center inset-0 backdrop-blur-md z-10'>
+    {children}
+  </div>
+);

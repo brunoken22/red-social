@@ -1,66 +1,52 @@
-import styled from 'styled-components';
+import React from 'react';
 
-export const DivTemMensaje = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: space-around;
-  gap: 1rem;
-  flex-wrap: wrap;
-`;
-export const TemplMensaje = styled.div`
-  display: inherit;
-  gap: 1rem;
-  flex-direction: column;
-  margin-bottom: 1rem;
-`;
+export const DivTemMensaje = ({children}: {children: React.ReactNode}) => (
+  <div className='flex w-full h-full justify-around gap-4 flex-wrap'>
+    {children}
+  </div>
+);
 
-export const TemplChat = styled.div`
-  display: inherit;
-  gap: 1rem;
-  flex-direction: column;
-`;
+export const TemplMensaje = ({children}: {children: React.ReactNode}) => (
+  <div className='flex flex-col gap-4 mb-4'>{children}</div>
+);
 
-export const TemplSns = styled.div`
-  display: inherit;
-  gap: 1rem;
-  flex-direction: column;
-  max-width: 800px;
-  width: 90%;
-  border: 1px solid #3b3b3b;
-  padding: 1rem;
-  border-radius: 10px;
-  @media (max-width: 1120px) {
-    padding: 10px;
-  }
-`;
-export const Sms = styled.div`
-  display: inherit;
-  height: 600px;
-  background-color: #232323;
-  overflow-y: auto;
-  padding: 1rem;
-  flex-direction: column;
-`;
-export const SpanNoti = styled.span`
-  height: 20px;
-  width: 20px;
-  background-color: #ff3a3a;
-  display: block;
-  position: absolute;
-  right: 0;
-  top: 0;
-  border-radius: 50%;
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-export const Menssage = styled.p<any>`
-  display: inline-block;
-  background-color: ${({$isUser}: any) => ($isUser ? '#0662ab' : '#575757')};
-  padding: 0.5rem;
-  border-radius: 40px;
-  word-wrap: break-word;
-  max-width: 100%;
-`;
+export const TemplChat = ({children}: {children: React.ReactNode}) => (
+  <div className='flex flex-col gap-4 '>{children}</div>
+);
+
+export const TemplSns = ({children}: {children: React.ReactNode}) => (
+  <div className='flex flex-col gap-4 max-w-[800px] w-[90%] border-[1px] border-[#3b3b3b] rounded-md max-lg:p-3'>
+    {children}
+  </div>
+);
+
+export const Sms = ({children, ref}: {children: React.ReactNode; ref: any}) => (
+  <div
+    ref={ref}
+    className='flex flex-col w-full text-primary gap-2 p-4  overflow-y-auto min-h-[50vh]'>
+    {children}
+  </div>
+);
+
+export const SpanNoti = ({children}: {children: React.ReactNode}) => (
+  <span className='h-[20px] w-[20px] bg-[#ff3a3a]  absolute right-0 top-0 rounded-full text-[0.8rem] flex items-center justify-center'>
+    {children}
+  </span>
+);
+
+export const Menssage = ({
+  children,
+  isUser,
+}: {
+  children: React.ReactNode;
+  isUser: boolean;
+}) => (
+  <p
+    className={`inline-block p-2 rounded-[40px] max-w-full ${
+      isUser ? 'bg-[#0662ab]' : 'bg-[#575757]'
+    }`}>
+    {children}
+  </p>
+);
+
+// word-wrap: break-word;

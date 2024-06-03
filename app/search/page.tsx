@@ -6,13 +6,7 @@ export const metadata: Metadata = {
 };
 export default function Search() {
   return (
-    <div
-      style={{
-        color: 'white',
-        marginTop: '5rem',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-      }}>
+    <div className='w-[90%] m-auto max-w-[500px]'>
       <SearchUser></SearchUser>
     </div>
   );

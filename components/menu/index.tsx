@@ -1,39 +1,85 @@
-import {DivMenu, DivEnlaces, Button, Span} from './styled';
+import {DivEnlaces, Button, Span} from './styled';
 import Link from 'next/link';
-import {useRouter} from 'next/navigation';
+import {useEffect, useRef, useState} from 'react';
+import {setCookie, getCookie, deleteCookie} from 'cookies-next';
+import ConfigurateSvg from '@/ui/icons/configuration.svg';
+import NightSvg from '@/ui/icons/night.svg';
+import CloseDoorSvg from '@/ui/icons/closeDoor.svg';
+import FotoPerfil from '@/ui/FotoPerfil';
 
-const enla: any = {
-  color: '#ddd',
-  textDecoration: 'none',
-  textAlign: 'center',
-};
+const className = 'text-center flex items-center gap-2';
+
 export function Menu(props: any) {
-  const router = useRouter();
+  const themeValue = getCookie('theme');
+  const enlaces: any = useRef(null);
+  const [theme, setThemes] = useState<boolean>(
+    (themeValue && JSON.parse(themeValue)) || false
+  );
 
-  const handleClick = (e: any) => {
-    e.preventDefault();
+  useEffect(() => {
+    setCookie('theme', JSON.stringify(theme));
+    if (theme) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    // console.log(enlaces);
+    if (enlaces?.current) {
+      enlaces.current.focus();
+      // console.log(enlaces.current);
+    }
+  }, [enlaces]);
+
+  const handleClick = () => {
+    deleteCookie('token');
     props.click(false);
-    const url = e.currentTarget.getAttribute('href');
-    router.push(url);
+    window.location.assign(window.location.origin + '/signin');
   };
-  const handleCerrarSesion = (e: any) => {
-    e.preventDefault();
-    localStorage.removeItem('token');
-    location.href = process.env.NEXT_PUBLIC_PORT as string;
+
+  const handleBlur = () => {
+    // console.log('salistes del focus');
+    // if (focus) {
+    setTimeout(() => {
+      console.log('settimeout');
+      props.click(false);
+    }, 10000);
+    // }
   };
+
   return (
-    <DivMenu>
+    <div
+      className='focus:border-[1px_solid_red] absolute right-0 '
+      ref={enlaces}
+      tabIndex={0}
+      onBlur={handleBlur}>
       <DivEnlaces>
-        <Link href={'/perfil'} onClick={handleClick} style={enla}>
-          <Span> Perfil</Span>
+        <Link
+          href={'/perfil'}
+          onClick={() => props.click(false)}
+          className={className}>
+          <FotoPerfil className='w-[20px] h-[20px]' img={props.userImg} />
+          <Span> {props.userName}</Span>
         </Link>
-        <Link href={'/configuracion'} onClick={handleClick} style={enla}>
+        <button onClick={() => setThemes(!theme)} className={className}>
+          <NightSvg className='fill-black dark:fill-white' />
+          modo dark
+        </button>
+        <Link
+          href={'/configuracion'}
+          onClick={() => props.click(false)}
+          className={className}>
+          <ConfigurateSvg className='fill-black dark:fill-white' />
           <Span> Configuracion</Span>
         </Link>
-        <Button onClick={handleCerrarSesion}>
+
+        <Button onClick={handleClick}>
+          <CloseDoorSvg className='fill-black dark:fill-white stroke-black dark:stroke-white' />
           <Span>Cerrar Sesion </Span>
         </Button>
       </DivEnlaces>
-    </DivMenu>
+    </div>
   );
 }

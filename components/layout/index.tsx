@@ -1,43 +1,44 @@
 'use client';
-import {StyledComponentsRegistry} from './registry';
-import {Header} from '@/components/header';
-import {ThemeProvider} from 'styled-components';
-import React from 'react';
-import {RecoilRoot} from 'recoil';
+import Header from '@/components/header';
+import React, {useEffect} from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {InstantSearch} from 'react-instantsearch';
-export function Layout({children}: {children: React.ReactNode}) {
-  const theme = {
-    default: {
-      bg: '#242526;',
-      color: '#fff',
-      contenedor: '#1c1c1c',
-    },
-  };
+import RecoidContextProvider from './recoilContextProvider';
+import {RecoilRoot} from 'recoil';
+import {usePathname} from 'next/navigation';
+import {getCookie} from 'cookies-next';
+
+export default function Layout({children}: {children: React.ReactNode}) {
+  const pathname = usePathname();
   const searchClient = algoliasearch(
     '8W3ZG1OHSP',
     process.env.NEXT_PUBLIC_ALGOLIA as string
   );
+  const themeValue = getCookie('theme');
+  useEffect(() => {
+    const theme =
+      typeof themeValue === 'string' ? JSON.parse(themeValue) : false;
+    if (theme) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
   return (
     <RecoilRoot>
-      <StyledComponentsRegistry>
-        <ThemeProvider theme={theme.default}>
+      <InstantSearch searchClient={searchClient} indexName='users'>
+        <RecoidContextProvider>
+          {pathname !== '/signin' && pathname !== '/signup' ? <Header /> : null}
           <div
-            style={{
-              maxHeight: '100%',
-              minHeight: '100vh',
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: '#1c1c1c',
-              justifyContent: 'space-between',
-            }}>
-            <InstantSearch searchClient={searchClient} indexName='users'>
-              <Header />
-              {children}
-            </InstantSearch>
+            className={`${
+              pathname !== '/signin' && pathname !== '/signup'
+                ? 'mt-8  ml-2 mr-2 '
+                : ''
+            } `}>
+            {children}
           </div>
-        </ThemeProvider>
-      </StyledComponentsRegistry>
+        </RecoidContextProvider>
+      </InstantSearch>
     </RecoilRoot>
   );
 }

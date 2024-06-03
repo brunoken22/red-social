@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Perfil() {
   return (
     <Main>
-      <PerfilUser />
+      <PerfilUser />{' '}
     </Main>
   );
 }

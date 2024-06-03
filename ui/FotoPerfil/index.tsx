@@ -1,29 +1,28 @@
-import {Figure} from './styled';
-export function FotoPerfil(props: any) {
+export default function FotoPerfil({
+  className,
+  img,
+  connect,
+}: {
+  className: string;
+  img: string;
+  connect?: boolean | undefined;
+}) {
   return (
-    <Figure $wid={props.wid + 'px'} $hei={props.hei + 'px'}>
+    <div className={`${className}`}>
       <img
-        src={
-          (props.img == 'false' && '/user.webp') || props.img || '/user.webp'
-        }
-        width={props.wid || 40}
-        height={props.hei || 40}
+        src={(img == 'false' && '/user.webp') || img || '/user.webp'}
+        className={`${
+          className ? className : 'w-[40px] h-[40px]'
+        } rounded-full object-cover border-2 border-gray-700`}
         alt='perfil'
         loading='lazy'
-        style={{borderRadius: '50%', objectFit: 'cover'}}
       />
-      {props.connect && (props.hei != 30 || props.hei != 80) ? (
+      {connect && className ? (
         <div
-          style={{
-            backgroundColor: 'green',
-            height: props.conectHei || '11px',
-            width: props.conectHei || '11px',
-            position: 'absolute',
-            borderRadius: '50%',
-            bottom: '0',
-            right: '0',
-          }}></div>
+          className={`${
+            className ? className : 'w-[11px] h-[11px]'
+          } rounded-full absolute bottom-0 right-0`}></div>
       ) : null}
-    </Figure>
+    </div>
   );
 }

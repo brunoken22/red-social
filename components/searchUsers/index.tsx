@@ -2,7 +2,7 @@
 import {DivLinkUser} from './styled';
 import {SearchBox, Hits, Highlight, useHits} from 'react-instantsearch';
 import type {Hit} from 'instantsearch.js';
-import {FotoPerfil} from '@/ui/FotoPerfil';
+import FotoPerfil from '@/ui/FotoPerfil';
 import Link from 'next/link';
 import {useState} from 'react';
 import {isConnect} from '@/lib/atom';
@@ -60,8 +60,7 @@ export function Hit({hit}: HitProps) {
       }}>
       <DivLinkUser>
         <FotoPerfil
-          wid='40'
-          hei='40'
+          className='w-[40px] h-[40px]'
           img={hit.img}
           connect={
             dataIsConnect?.find((eConnect: any) => hit.id == eConnect.id)

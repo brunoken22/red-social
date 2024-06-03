@@ -1,33 +1,25 @@
 'use client';
 import {ButtonNoti} from '@/ui/boton';
 import {DivAllPublicaciones, DivPublicar} from '@/ui/container';
-import {FotoPerfil} from '@/ui/FotoPerfil';
+import FotoPerfil from '@/ui/FotoPerfil';
 import {user, isConnect, notificacionesUser, Publicacion} from '@/lib/atom';
-import {
-  ComentarPublicacion,
-  GetPublicacionId,
-  NotificacionesUser,
-} from '@/lib/hook';
+import {GetPublicacionId, NotificacionesUser} from '@/lib/hook';
 import {useRecoilValue, useRecoilState} from 'recoil';
 import Link from 'next/link';
 import {useParams} from 'next/navigation';
-import {ThemplatePubli} from '../publicaciones';
 import {Loader} from '../loader';
 import {useState} from 'react';
 import {ButtonMasPubli} from '../publicaciones/styled';
 import {SkeletonNoti} from '@/ui/skeleton';
+import {ThemplatePubli} from '../templatePublicate';
 
 export function TemNoti() {
   const [notificacionesUserAtom, setNotificacionesUserAtom] =
     useRecoilState(notificacionesUser);
   const dataUser = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);
-  const token =
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : '';
   const [offset, setOffset] = useState(0);
-  const {dataNotiSwr, isLoadingNotiSwr} = NotificacionesUser(token, offset);
+  const {dataNotiSwr, isLoadingNotiSwr} = NotificacionesUser(offset);
 
   const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -61,10 +53,9 @@ export function TemNoti() {
                   return newData;
                 })
               }>
-              <ButtonNoti $visto={e.open} id={e.id}>
+              <ButtonNoti visto={e.open} id={e.id}>
                 <FotoPerfil
-                  wid='40'
-                  hei='40'
+                  className='w-[40px] h-[40px]'
                   img={
                     e.comentarios
                       ?.slice()
@@ -111,37 +102,22 @@ export function TemNoti() {
 
 export function TemplateNotifiId() {
   const {id} = useParams();
-  const token =
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : '';
-  const {dataPubliId} = GetPublicacionId(token, id as string);
+  const {dataPubliId} = GetPublicacionId(id as string);
   const dataUser = useRecoilValue(user);
-  const {isLoadingComentar} = ComentarPublicacion(
-    {
-      id,
-      open: false,
-      click: true,
-    },
-    token
-  );
-  if (isLoadingComentar) {
-    return <Loader></Loader>;
-  }
   return dataPubliId ? (
     <div style={{maxWidth: '600px', width: '100%'}}>
       <DivAllPublicaciones>
         <ThemplatePubli
-          name={dataUser?.user.fullName}
           description={dataPubliId.description}
           img={dataPubliId.img}
-          fecha={dataPubliId.fecha}
-          like={dataPubliId.like}
-          comentarios={dataPubliId.comentarios}
+          fecha={dataPubliId.createdAt}
+          like={dataPubliId.likePublics}
+          comentarios={dataPubliId.commentPublis}
           imgUserPro={dataUser.user.img}
           id={dataPubliId.userId}
           idPublicacion={dataPubliId.id}
-          userId={dataUser.user.id}></ThemplatePubli>
+          userId={dataUser.user.id}
+          user={dataPubliId.user}></ThemplatePubli>
       </DivAllPublicaciones>
     </div>
   ) : (

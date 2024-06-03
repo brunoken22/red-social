@@ -1,32 +1,39 @@
-import styled from 'styled-components';
+import React from 'react';
 
-export const DivMenu = styled.div`
-  position: absolute;
-  right: 0;
-  transition: all 5s ease 5s;
-`;
-export const DivEnlaces = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background-color: #535353;
-  padding: 1rem;
-  border-radius: 10px;
-`;
+// export const DivMenu = ({
+//   children,
+//   onBlur,
+// }: {
+//   children: React.ReactNode;
+//   onBlur: () => any;
+// }) => (
+//   <div tabIndex={0} className='absolute right-0' onBlur={onBlur}>
+//     {children}
+//   </div>
+// );
 
-export const Button = styled.button`
-  margin: 0;
-  background-color: transparent;
-  border: 0;
-  color: #ff7c7c;
-  font-size: 1rem;
-  cursor: pointer;
-  span:hover {
-    color: #db4646;
-  }
-`;
-export const Span = styled.span`
-  &:hover {
-    color: #fff;
-  }
-`;
+export const DivEnlaces = ({children}: {children: React.ReactNode}) => (
+  <div
+    tabIndex={0}
+    className='flex flex-col gap-4 bg-primary p-4 rounded-xl  dark:bg-darkComponet dark:transition-dark w-[180px]'>
+    {children}
+  </div>
+);
+
+export const Button = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+}) => (
+  <span
+    onClick={onClick}
+    className='m-0 bg-transparent text-[#ff7c7c] hover:text-red-500 flex items-center gap-2'>
+    {children}
+  </span>
+);
+
+export const Span = ({children}: {children: React.ReactNode}) => (
+  <span className=' hover:opacity-70'>{children}</span>
+);

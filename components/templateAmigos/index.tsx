@@ -4,7 +4,6 @@ import MyAmigos from '@/ui/icons/myAmigos.svg';
 import {ButtonNoti, ButtonAgregar} from '@/ui/boton';
 import {DivAllAmistades} from '@/ui/container';
 import {useEffect, useState} from 'react';
-import {DivImageSug} from './styled';
 import {useRecoilValue} from 'recoil';
 import {
   User,
@@ -35,36 +34,21 @@ export function TemAmigos() {
   const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
-  const token =
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : '';
-  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud(
-    {
-      amigoId,
-      estado: false,
-    },
-    token
-  );
-  const {dataAcep, isLoadingAcep} = AceptarSolicitud(
-    {
-      amigoId: acepAmigoId,
-      estado: true,
-    },
-    token
-  );
-  const {dataRech, isLoadingRech} = RechazarSolicitud(
-    {
-      userId: rechazarAmigo,
-    },
-    token
-  );
-  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo(
-    {
-      userId: eliminarAmigo,
-    },
-    token
-  );
+
+  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud({
+    amigoId,
+    estado: false,
+  });
+  const {dataAcep, isLoadingAcep} = AceptarSolicitud({
+    amigoId: acepAmigoId,
+    estado: true,
+  });
+  const {dataRech, isLoadingRech} = RechazarSolicitud({
+    userId: rechazarAmigo,
+  });
+  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
+    userId: eliminarAmigo,
+  });
   const handleClick = (e: any) => {
     e.preventDefault();
     if (e.target.id == 'suge') {
@@ -134,33 +118,36 @@ export function TemAmigos() {
   return (
     <Section>
       <DivSection>
-        <h2 style={{marginTop: '0'}}>Amigos</h2>
-        <div style={{display:"flex",flexDirection:'column',gap:"0.5rem"}}>
-          <ButtonNoti onClick={handleClick} id='suge' $open={sugerencia}>
-            <DivIcons>
-              <MyAmigos /> {'>'}
-            </DivIcons>
-            Sugerencia de amistad
-          </ButtonNoti>
-          <ButtonNoti onClick={handleClick} id='soli' $open={soliAmis}>
-            <DivIcons>
-              <MyAmigos />
-              {'+'}
-            </DivIcons>
-            Solicitud de amistad
-          </ButtonNoti>
-          <ButtonNoti onClick={handleClick} id='all' $open={allAmig}>
-            <DivIcons>
-              <MyAmigos />
-            </DivIcons>
-            Todos tus amigos
-          </ButtonNoti>
-          <ButtonNoti onClick={handleClick} id='SoliEnv' $open={soliEnv}>
-            <DivIcons>
-              <MyAmigos />
-            </DivIcons>
-            Solicitud Enviado
-          </ButtonNoti>
+        <div className='sticky top-16 z-[9]'>
+          <h2 style={{marginTop: '0'}}>Amigos</h2>
+          <div
+            style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+            <ButtonNoti onClick={handleClick} id='suge' open={sugerencia}>
+              <DivIcons>
+                <MyAmigos /> {'>'}
+              </DivIcons>
+              Sugerencia de amistad
+            </ButtonNoti>
+            <ButtonNoti onClick={handleClick} id='soli' open={soliAmis}>
+              <DivIcons>
+                <MyAmigos />
+                {'+'}
+              </DivIcons>
+              Solicitud de amistad
+            </ButtonNoti>
+            <ButtonNoti onClick={handleClick} id='all' open={allAmig}>
+              <DivIcons>
+                <MyAmigos />
+              </DivIcons>
+              Todos tus amigos
+            </ButtonNoti>
+            <ButtonNoti onClick={handleClick} id='SoliEnv' open={soliEnv}>
+              <DivIcons>
+                <MyAmigos />
+              </DivIcons>
+              Solicitud Enviado
+            </ButtonNoti>
+          </div>
         </div>
       </DivSection>
       <DivResult>
@@ -174,16 +161,20 @@ export function TemAmigos() {
                       {' '}
                       <Link href={'/amigos/' + e.id}>
                         {' '}
-                        <DivImageSug $img={e.img}></DivImageSug>
+                        <img
+                          src={e.img ? e.img : '/user.webp'}
+                          alt={e.fullName}
+                          className='object-cover w-full h-3/5'
+                        />
                       </Link>
-                      <div>
+                      <div className='mt-6'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>
                         <ButtonAgregar
                           id={e.id}
                           onClick={handleSolicitudEnv}
-                          $bg={dataCreateSoli ? 'red' : 'blue'}>
+                          bg={dataCreateSoli ? 'red' : 'blue'}>
                           {dataCreateSoli
                             ? 'Cancelar Solicitud'
                             : 'Añadir amigo'}
@@ -205,9 +196,13 @@ export function TemAmigos() {
                       {' '}
                       <Link href={'/amigos/' + e.id}>
                         {' '}
-                        <DivImageSug $img={e.img}></DivImageSug>
+                        <img
+                          src={e.img ? e.img : '/user.webp'}
+                          alt={e.fullName}
+                          className='object-cover w-full h-3/5'
+                        />
                       </Link>{' '}
-                      <div>
+                      <div className='mt-6'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>
@@ -225,7 +220,7 @@ export function TemAmigos() {
                           <ButtonAgregar
                             id={e.id}
                             onClick={handleSolicitudRecha}
-                            $bg='red'>
+                            bg='red'>
                             Rechazar
                           </ButtonAgregar>
                         </div>
@@ -245,9 +240,13 @@ export function TemAmigos() {
                     <DivAllAmistades key={e.id}>
                       <Link href={'/amigos/' + e.id}>
                         {' '}
-                        <DivImageSug $img={e.img}></DivImageSug>
+                        <img
+                          src={e.img ? e.img : '/user.webp'}
+                          alt={e.fullName}
+                          className='object-cover w-full h-3/5'
+                        />
                       </Link>
-                      <div>
+                      <div className='mt-6'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>
@@ -260,7 +259,7 @@ export function TemAmigos() {
                           <ButtonAgregar
                             id={e.id}
                             onClick={handleEliminarAmigo}
-                            $bg='red'>
+                            bg='red'>
                             Eliminar
                           </ButtonAgregar>
                         </div>
@@ -280,9 +279,13 @@ export function TemAmigos() {
                     <DivAllAmistades key={e.id}>
                       <Link href={'/amigos/' + e.id}>
                         {' '}
-                        <DivImageSug $img={e.img}></DivImageSug>
+                        <img
+                          src={e.img ? e.img : '/user.webp'}
+                          alt={e.fullName}
+                          className='object-cover w-full h-3/5'
+                        />
                       </Link>
-                      <div>
+                      <div className='mt-6'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>
@@ -295,7 +298,7 @@ export function TemAmigos() {
                           <ButtonAgregar
                             id={e.id}
                             onClick={handleSolicitudRecha}
-                            $bg='red'>
+                            bg='red'>
                             Eliminar Solicitud
                           </ButtonAgregar>
                         </div>

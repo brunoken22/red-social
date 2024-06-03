@@ -1,12 +1,9 @@
-import {useForm} from 'react-hook-form';
-import {Form} from '@/ui/container';
-import {Label, Input} from '@/ui/input';
-import {BotonForm} from '@/ui/boton';
-import {Span} from './styled';
+'use client';
 import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {SigninUser} from '@/lib/hook';
 import {Loader} from '../loader';
+import {useForm} from 'react-hook-form';
 
 export function Signin() {
   const [dataUser, setDataUser] = useState({
@@ -23,15 +20,12 @@ export function Signin() {
   } = useForm();
 
   useEffect(() => {
-    if (data && !data?.user) {
+    if (data && data.user == false) {
       alert('Contraseña o usuario incorrecto');
       return;
     }
-    if (data?.token) {
-      if (data?.token) {
-        localStorage.setItem('token', data?.token);
-      }
-      router.push('/home');
+    if (data && data.id) {
+      return router.push('/home');
     }
   }, [data]);
 
@@ -47,52 +41,49 @@ export function Signin() {
     return <Loader />;
   }
   return (
-    // <GoogleOAuthProvider
-    // clientId={process.env.NEXT_PUBLIC_CLIENT_GOOGLE as string}>
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      {data && !data?.user && (
-        <div style={{color: '#d36161', textAlign: 'center'}}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className='flex flex-col gap-4 w-full '>
+      {data && !data?.id && (
+        <div style={{color: '#ff4444', textAlign: 'center'}}>
           Datos incorrectos
         </div>
       )}
       <div>
-        <Label htmlFor='email'>
-          Email <Span>*</Span>
-        </Label>
-        <Input
+        <label className='block' htmlFor='email'>
+          Email <span className='text-[#f57888]'>*</span>
+        </label>
+        <input
+          className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary'
           type='email'
           id='email'
           {...register('email', {required: true})}
+          placeholder='UniRed@gmail.com'
           autoComplete='email'
         />
       </div>
       <div>
-        <Label htmlFor='password'>
-          Contraseña <Span>*</Span>
-        </Label>
-        <Input
+        <label className='block' htmlFor='password'>
+          Contraseña <span className='text-[#f57888]'>*</span>
+        </label>
+        <input
+          className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary'
           type='password'
           id='password'
           {...register('password', {required: true})}
+          placeholder='**********'
           autoComplete='password'
         />
 
         {error1.email && <span>This field is required</span>}
       </div>
-      <div style={{textAlign: 'center'}}>
-        {' '}
-        <BotonForm type='submit'>Continuar</BotonForm>
+      <div className='mt-6'>
+        <button
+          type='submit'
+          className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70'>
+          Continuar
+        </button>
       </div>{' '}
-      {/* <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            const dataRes = jwt_decode(credentialResponse.credential as string);
-            console.log(dataRes);
-          }}
-          onError={() => {
-            console.log('Login Failed');
-          }}
-        /> */}
-      {/* </GoogleOAuthProvider> */}
-    </Form>
+    </form>
   );
 }

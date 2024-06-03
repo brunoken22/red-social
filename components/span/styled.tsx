@@ -1,18 +1,9 @@
-import styled from 'styled-components';
+export const DivSpan = ({children}: {children: React.ReactNode}) => (
+  <div className='min-w-[250px] max-w-[20%] ml-[5rem] text-center  max-md:hidden'>
+    {children}
+  </div>
+);
 
-export const DivSpan = styled.div`
-  min-width: 250px;
-  max-width: 20%;
-  margin-left: 5rem;
-  text-align: center;
-  position: relative;
-  height: 5%;
-  @media (max-width: 800px) {
-    display: none;
-  }
-`;
-export const DivSvg = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
+export const DivSvg = ({children}: {children: React.ReactNode}) => (
+  <div className='flex justify-around items-center'>{children}</div>
+);

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --bg: #32373b;
   --bgSecundario: #1c1c1c;
@@ -7,6 +11,8 @@
 body {
   box-sizing: border-box;
   margin: 0;
+  background-color: #d9d9d952;
+  transition: all 200ms ease 200ms;
 }
 
 .dz-error-message,
@@ -27,22 +33,51 @@ body {
     text-decoration: underline;
   }
 }
-
+.dropzone,
+.dz-message {
+  display: flex;
+  justify-content: center;
+}
+.dz-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 .dropzone {
   border: 1px solid #ababab !important;
 }
 
-.dz-message {
-  margin: 1rem;
+.dz-details {
+  display: none !important;
 }
-.dropzone.dz-clickable {
+.dropzone .dz-clickable {
   text-align: center;
 }
 
+.dz-image {
+  border-radius: 0 !important;
+}
+.dz-image img:hover {
+  width: 250px !important;
+}
+.dz-preview {
+  background-color: transparent !important;
+}
+.dz-message .dz-image-preview :hover {
+  z-index: 0 !important;
+}
+.dropzone .dz-preview:hover .dz-image img {
+  transform: scale(1.05, 1.05) !important;
+  filter: blur(0) !important;
+}
 .ais-Hits-item,
 .ais-InfiniteHits-item {
   padding: 0.5rem;
 }
 li {
   list-style: none;
+}
+.ais-SearchBox-input {
+  border: 1px solid black;
 }

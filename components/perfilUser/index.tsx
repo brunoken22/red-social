@@ -1,6 +1,6 @@
 'use client';
 import Dropzone from 'dropzone';
-import {FotoPerfil} from '@/ui/FotoPerfil';
+import FotoPerfil from '@/ui/FotoPerfil';
 import {
   DivPerfilUser,
   DivHeadPerfil,
@@ -9,32 +9,24 @@ import {
   DivPublicaciones,
 } from './styled';
 import {Publicar} from '../publicar';
-import {PublicacionesUser} from '../publicaciones';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
-import {ModificarUser, OptimizarImage} from '@/lib/hook';
+import {modificarUser, optimizarImage} from '@/lib/hook';
 import {Loader} from '../loader';
 import css from './css.module.css';
 import {SkeletonPerfil} from '@/ui/skeleton';
+import {PublicacionesUser} from '../publicaciones/publicationsUser';
 
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
-  const [dataImg, setDataImg] = useState<string | undefined>('');
+  const [isLoading, setIsLoading] = useState(false);
   const [subirImg, setSubirImg] = useState(false);
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const {dataObtimizado} = OptimizarImage(dataImg as string);
-
-  const {data, isLoading} = ModificarUser(
-    {img: dataObtimizado},
-    token as string
-  );
   useEffect(() => {
     const dropzoneElement = document.querySelector('.dropzoneClick');
 
-    if (dropzoneElement && data) {
+    if (dropzoneElement && isLoading) {
       const existingDropzoneInstance = Dropzone.forElement(
         dropzoneElement as HTMLElement
       );
@@ -72,18 +64,16 @@ export function PerfilUser() {
           myDropzone.removeFile(file);
           return;
         }
-        setDataImg(file.dataURL);
+        setIsLoading(true);
+        const dataObtimizado = await optimizarImage(file.dataURL!);
+        const data = await modificarUser({img: dataObtimizado});
+        setIsLoading(false);
+
+        // setDataImg(file.dataURL);
         myDropzone.removeFile(file);
       });
     }
-  }, [data]);
-
-  useEffect(() => {
-    if (data) {
-      setDataImg('');
-      setSubirImg(false);
-    }
-  }, [data]);
+  }, [isLoading]);
 
   if (isLoading || subirImg) {
     return <Loader />;
@@ -130,9 +120,14 @@ export function PerfilUser() {
                 </div>
               </div>
             </div>
-            <FotoPerfil wid='80' hei='80' img={dataValor.user.img} />
+            <FotoPerfil
+              className='w-[80px] h-[80px]'
+              img={dataValor.user.img}
+            />
           </div>
-          <h2 style={{textAlign: 'center'}}>{dataValor?.user?.fullName}</h2>
+          <h2 className='font-semibold text-2xl'>
+            {dataValor?.user?.fullName}
+          </h2>
         </DivFotoName>
         <DivButton>
           <Link className={css.editPerfil} href='/configuracion'>

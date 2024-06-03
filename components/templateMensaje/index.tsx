@@ -9,18 +9,11 @@ import {
   Menssage,
   SpanNoti,
 } from './styled';
-import {FotoPerfil} from '@/ui/FotoPerfil';
+import FotoPerfil from '@/ui/FotoPerfil';
 import {Input} from '@/ui/input';
-import {BotonSms, ButtonSms} from '@/ui/boton';
+import {ButtonSms} from '@/ui/boton';
 import {useRecoilValue} from 'recoil';
-import {
-  getAllAmigos,
-  user,
-  isMenssage,
-  isConnect,
-  User,
-  getAllUsersChat,
-} from '@/lib/atom';
+import {user, isMenssage, isConnect, User, getAllUsersChat} from '@/lib/atom';
 import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, get} from 'firebase/database';
@@ -58,11 +51,8 @@ export function TemMensaje() {
     read: false,
     rtdb: '',
   });
-  const token =
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('token') as string)
-      : '';
-  const {dataMesssage} = EnviarMessage(messageUser, token);
+
+  const {dataMesssage} = EnviarMessage(messageUser);
 
   useEffect(() => {
     if (dataMesssage) {
@@ -170,7 +160,9 @@ export function TemMensaje() {
             {dataGetAllUsersChat?.length
               ? dataGetAllUsersChat.map((e: User, p: number) => {
                   return (
-                    <ButtonSms
+                    <button
+                      type='submit'
+                      className='w-full p-2 rounded-md hover:opacity-70 '
                       key={p}
                       onClick={() => {
                         const rtdbId = existenElementosSimilares(
@@ -192,8 +184,7 @@ export function TemMensaje() {
                       <DivAllChat>
                         <FotoPerfil
                           img={e.img}
-                          wid='40'
-                          hei='40'
+                          className='w-[40px] h-[40px]'
                           connect={
                             dataIsConnect?.find(
                               (eConnect: any) => e.id == eConnect.id
@@ -201,14 +192,7 @@ export function TemMensaje() {
                           }
                         />
 
-                        <h4
-                          style={{
-                            color: '#fff',
-                            margin: 0,
-                            textAlign: 'start',
-                          }}>
-                          {e.fullName}
-                        </h4>
+                        <h4 className='m-0 text-start'>{e.fullName}</h4>
                       </DivAllChat>
                       {dataMessage?.find((item: any) => item.id == e.id) && (
                         <SpanNoti>
@@ -218,7 +202,7 @@ export function TemMensaje() {
                           }
                         </SpanNoti>
                       )}
-                    </ButtonSms>
+                    </button>
                   );
                 })
               : 'Sin Chat'}
@@ -228,23 +212,12 @@ export function TemMensaje() {
 
       {dataMensajeUser.rtdb ? (
         <TemplSns>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              borderBottom: '1px solid #3b3b3b',
-            }}>
-            <div
-              style={{
-                display: 'inherit',
-                alignItems: 'center',
-                gap: '1rem',
-              }}>
+          <div className='flex justify-between border-[1px] border-[#3b3b3b] p-4'>
+            <div className='flex items-center gap-4'>
               <Link href={'/amigos/' + dataMensajeUser.id}>
                 <FotoPerfil
-                  wid='40'
-                  hei='40'
-                  img={dataMensajeUser.img}
+                  className='w-[40px] h-[40px]'
+                  img={dataMensajeUser.img || ''}
                   connect={
                     dataIsConnect?.find(
                       (eConnect: any) => dataMensajeUser.id == eConnect.id
@@ -255,7 +228,6 @@ export function TemMensaje() {
               <h5 style={{margin: '0'}}>{dataMensajeUser.fullName}</h5>
             </div>
             <Button onClick={handleClose}>
-              {' '}
               <CloseSVG />
             </Button>
           </div>
@@ -278,7 +250,7 @@ export function TemMensaje() {
                           textAlign: e.id == dataUser.user.id ? 'end' : 'start',
                         }}>
                         <Menssage
-                          $isUser={e.id == dataUser.user.id ? true : false}>
+                          isUser={e.id == dataUser.user.id ? true : false}>
                           {e.message}
                         </Menssage>
                       </div>
@@ -298,15 +270,19 @@ export function TemMensaje() {
               <form
                 action=''
                 onSubmit={handleSubmit}
-                style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
+                className='flex items-center gap-4 p-4 text-secundary'>
                 <Input
                   id='message'
                   type='text'
                   placeholder='Escribe un mensaje'
                 />
-                <BotonSms type='submit' id={dataMensajeUser.rtdb}>
+
+                <button
+                  type='submit'
+                  id={dataMensajeUser.rtdb}
+                  className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70 shrink-[5]'>
                   Enviar
-                </BotonSms>
+                </button>
               </form>
             </div>
           </div>

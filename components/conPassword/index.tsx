@@ -1,11 +1,13 @@
-import {BotonForm} from '@/ui/boton';
-import {DivEmailName} from './styled';
-import {useForm} from 'react-hook-form';
+import {SubmitHandler, useForm} from 'react-hook-form';
 import {Form} from '@/ui/container';
 import {Input, Label} from '@/ui/input';
 import {useState} from 'react';
-import {ModificarUser} from '@/lib/hook';
+import {modificarUser} from '@/lib/hook';
 import {Loader} from '../loader';
+type Inputs = {
+  password: string;
+  repassword: string;
+};
 
 function validarPassword(con1: string, con2: string) {
   if (con1 === con2) return true;
@@ -13,50 +15,42 @@ function validarPassword(con1: string, con2: string) {
 }
 
 export function Password() {
-  const [newData, setNewData] = useState({
-    token: '',
-    data: {
-      password: '',
-    },
-  });
-  const {data, isLoading} = ModificarUser(newData.data, newData.token);
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: {errors: error1},
-  } = useForm();
+  } = useForm<Inputs>();
 
-  const onSubmit = (data: any) => {
-    const validar = validarPassword(data.password, data.repassword);
-    const token =
-      typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const onSubmit: SubmitHandler<Inputs> = async (dataInputs) => {
+    setIsLoading(true);
+    const validar = validarPassword(dataInputs.password, dataInputs.repassword);
     if (validar) {
-      setNewData({
-        data: {
-          password: data?.password,
-        },
-        token: token as string,
+      const dataMod = await modificarUser({
+        password: dataInputs.password || '',
       });
-      reset();
+      setIsLoading(false);
+      if (dataMod) {
+        reset();
+
+        alert('Se modifico correctamente');
+        return;
+      }
+      alert('Hubo algun problema, intentalo de nuevo');
       return;
     }
+    setIsLoading(false);
     alert('La contraseña no coinciden');
   };
+
   if (isLoading) {
     return <Loader />;
   }
-  if (data) {
-    alert('Cambiado');
-    setNewData({
-      token: '',
-      data: {
-        password: '',
-      },
-    });
-  }
+
   return (
-    <DivEmailName>
+    <div>
       <div>
         <h3>Password</h3>
       </div>
@@ -69,6 +63,11 @@ export function Password() {
             {...register('password', {required: true})}
             autoComplete='password'
           />
+          {error1.password && (
+            <span className='text-red-500 text-[0.8rem]'>
+              Se requiere constraseña
+            </span>
+          )}
         </div>
         <div>
           <Label htmlFor='repassword'>Repetir contraseña</Label>
@@ -78,14 +77,22 @@ export function Password() {
             id='repassword'
             autoComplete='password'
           />
+          {error1.password && (
+            <span className='text-red-500 text-[0.8rem]'>
+              Se requiere repetir contraseña
+            </span>
+          )}
         </div>
-        {error1.exampleRequired && <span>This field is required</span>}
 
         <div style={{textAlign: 'center'}}>
           {' '}
-          <BotonForm type='submit'>Modificar</BotonForm>
+          <button
+            type='submit'
+            className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70'>
+            Modificar
+          </button>
         </div>
       </Form>
-    </DivEmailName>
+    </div>
   );
 }

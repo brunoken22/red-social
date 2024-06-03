@@ -1,162 +1,174 @@
-import styled from 'styled-components';
-import {InputP} from '../publicar/styled';
-export const DivPerfil = styled.div`
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-`;
-export const DivSpan = styled.span`
-  font-size: 0.7rem;
-  display: block;
-  color: #b5b5b5;
-`;
-export const SpanIco = styled(DivSpan)`
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-  margin-bottom: 0.2rem;
-`;
-export const ButtonOpenImage = styled.button`
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.7;
-  }
-`;
-export const DivImage = styled.div`
-  display: flex;
-  justify-content: center;
-  position: relative;
-  margin: 0.1rem;
-  height: 300px;
-`;
+export const DivPerfil = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => <div className={`flex gap-4  ${className}`}>{children}</div>;
 
-export const DivCantidad = styled(DivPerfil)`
-  display: grid;
-  gap: 0;
-  margin-top: 1rem;
-  justify-items: center;
-  grid-template-columns: repeat(2, 1fr);
-  position: relative;
-`;
-export const DivInteractuar = styled(DivPerfil)`
-  justify-content: space-around;
-  gap: 0;
-  border-top: 1px solid #353434;
-  padding-top: 0.1rem;
-`;
+export const DivSpan = ({children}: {children: React.ReactNode}) => (
+  <span className='block text-[0.7rem] '>{children}</span>
+);
 
-export const BottonLike = styled.button<any>`
-  background-color: transparent;
-  border: 0;
-  cursor: pointer;
-  padding: 0px;
-  color: #ddd;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  padding: 0.5rem;
-  &:hover {
-    background-color: #2d2c2c;
-    border-radius: 10px;
-    path {
-      fill: #5a81ff;
-    }
-  }
-  path {
-    fill: ${(prop: any) => (prop.$like == 'like' ? '#5a81ff' : '#ddd')};
-  }
-`;
-export const BottonComentar = styled(BottonLike)`
-  &:hover {
-    path {
-      fill: #84e981;
-    }
-  }
-`;
-export const BottonSendComentario = styled.button`
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  svg:hover {
-    fill: #2684ff;
-  }
-`;
-export const DivAñadirComentar = styled.div`
-  border-radius: 10px;
-  width: 100%;
-  border: 1px solid #fff;
-  padding: 0.3rem;
-  display: grid;
-  align-items: center;
-  font-size: 0.9rem;
-  grid-template-columns: repeat(1, 90% 10%);
-  &:focus {
-    border: 2px solid red;
-  }
-`;
-export const ComentarioParrafo = styled(InputP)`
-  text-indent: 10px;
-  color: #ddd;
-  margin: 0;
-`;
+export const SpanIco = ({
+  children,
+  onMouseEnter,
+  onMouseLeave,
+}: {
+  children: React.ReactNode;
+  onMouseEnter?: () => any;
+  onMouseLeave?: () => any;
+}) => (
+  <span
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+    className=' text-[0.7rem]  flex items-center justify-center gap-[0.2rem] mb-[0.2rem]'>
+    {children}
+  </span>
+);
 
-export const DivPefilDelete = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-export const ButtonOpenDelete = styled.button`
-  display: flex;
-  gap: 0.2rem;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  &:hover span {
-    background-color: #fff;
-  }
-`;
-export const ContentDelete = styled.span`
-  height: 7px;
-  width: 7px;
-  background-color: #b4b4b4;
-  border-radius: 50%;
-`;
+export const ButtonOpenImage = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+}) => (
+  <button
+    onClick={onClick}
+    className='w-full  text-transparent border-none hover:opacity-70 overflow-hidden'>
+    {children}
+  </button>
+);
 
-export const ButtonDelete = styled.button`
-  position: absolute;
-  background-color: #cac9c9;
-  color: #313131;
-  border: none;
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  right: 0;
-  cursor: pointer;
-  &:hover {
-    background-color: #fff;
-    color: #000;
-  }
-`;
-export const ButtonMasPubli = styled.button`
-  border: none;
-  background-color: transparent;
-  color: #9d9d9d;
-  cursor: pointer;
-  &:hover {
-    color: #fff;
-  }
-`;
-export const DivUserLikes = styled.div`
-  position: absolute;
-  bottom: 2rem;
-  background-color: #fff;
-  padding: 1rem;
-  left: 10%;
-  font-size: 0.8rem;
-  font-weight: 900;
-  color: var(--colorSecundario);
-`;
+export const DivImage = ({children}: {children: React.ReactNode}) => (
+  <div className='flex items-center relative m-[0.1rem] h-[300px]'>
+    {children}
+  </div>
+);
+
+export const DivCantidad = ({children}: {children: React.ReactNode}) => (
+  <div className='items-center grid gap-0 mt-4 justify-center grid-cols-[repeat(2,1fr)] relative'>
+    {children}
+  </div>
+);
+
+export const DivInteractuar = ({children}: {children: React.ReactNode}) => (
+  <div className='flex  items-center pt-4 justify-around gap-0 border-t-[1px] border-dark '>
+    {children}
+  </div>
+);
+
+export const BottonLike = ({
+  children,
+  type,
+  id,
+  onClick,
+}: {
+  children: React.ReactNode;
+  type: string | any;
+  onClick: (e: any) => any;
+  id: string;
+}) => (
+  <button
+    id={id}
+    type={type}
+    onClick={onClick}
+    className='bg-transparent border-none  flex items-center gap-2 text-[0.8rem] p-2 hover:opacity-70 hover:bg-[rgb(77_77_77)] hover:rounded-md hover:text-primary'>
+    {children}
+  </button>
+);
+
+export const BottonComentar = ({
+  children,
+  type,
+  id,
+  onClick,
+}: {
+  children: React.ReactNode;
+  type: string | any;
+  onClick: (e: any) => any;
+  id: string;
+}) => (
+  <button
+    id={id}
+    type={type}
+    onClick={onClick}
+    className='bg-transparent border-none text-secundary flex items-center gap-2 text-[0.8rem] p-2 hover:bg-primary hover:rounded-md '>
+    {children}
+  </button>
+);
+
+export const BottonSendComentario = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+}) => (
+  <button onClick={onClick} className='bg-transparent border-none '>
+    {children}
+  </button>
+);
+
+export const DivAñadirComentar = ({children}: {children: React.ReactNode}) => (
+  <div className='rounded-md w-full  p-2 grid items-center text-[0.9rem] grid-cols-[repeat(1,90%_10%)] focus:border-2 focus:border-red-500'>
+    {children}
+  </div>
+);
+
+export const DivPefilDelete = ({children}: {children: React.ReactNode}) => (
+  <div className='flex items-center justify-between'>{children}</div>
+);
+
+export const ButtonOpenDelete = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+}) => (
+  <button
+    onClick={onClick}
+    className='flex gap-[0.2rem] bg-transparent border-none hover:opacity-70'>
+    {children}
+  </button>
+);
+
+export const ContentDelete = () => (
+  <span className='h-[7px] w-[7px] bg-secundary dark:bg-primary rounded-full '></span>
+);
+
+export const ButtonDelete = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+}) => (
+  <button
+    onClick={onClick}
+    className='absolute bg-secundary text-primary dark:bg-primary dark:text-secundary  border-none mt-2 p-2 pl-4 pr-4 right-0 hover:opacity-70 '>
+    {children}
+  </button>
+);
+
+export const ButtonMasPubli = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: (e: any) => any;
+}) => (
+  <button
+    onClick={onClick}
+    className='mt-4 border-none bg-transparent  hover:opacity-70 dark:text-primary'>
+    {children}
+  </button>
+);
+
+export const DivUserLikes = ({children}: {children: React.ReactNode}) => (
+  <div className='absolute bottom-[2rem] bg-black text-primary p-4 m-auto text-[0.8rem] font-black rounded-sm '>
+    {children}
+  </div>
+);

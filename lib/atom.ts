@@ -1,14 +1,15 @@
 import {atom} from 'recoil';
 
 export type Publicacion = {
-  id: string;
+  id: number;
   description: string;
   img: string;
-  fecha: string;
-  like: [];
-  comentarios: [];
+  updatedAt: string;
+  likePublics: [];
+  commentPublis: [];
   userId: number;
   open?: boolean;
+  user: User;
 };
 
 type Message = {
@@ -24,20 +25,20 @@ export type User = {
   fullName: string;
   email: string;
   img: string;
+  amigos: number[];
   rtdb: string[];
 };
 export const user = atom({
   key: 'user',
   default: {
     user: {
-      id: '',
+      id: 0,
       email: '',
       fullName: '',
       img: '',
       amigos: [] as number[],
       rtdb: ([] as string[]) || null,
     },
-    token: '',
   },
 });
 

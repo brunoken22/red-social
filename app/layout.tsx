@@ -1,7 +1,7 @@
 import './globals.css';
 import type {Metadata} from 'next';
 import {Poppins} from 'next/font/google';
-import {Layout} from '@/components/layout';
+import Layout from '@/components/layout';
 const poppins = Poppins({weight: '400', subsets: ['latin']});
 
 export const metadata: Metadata = {
@@ -23,7 +23,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           rel='preconnect'
           href='https://5kd3mkwn-3000.brs.devtunnels.ms'></link>
       </head>
-      <body className={poppins.className}>
+      <body
+        className={`${poppins.className} dark:bg-dark dark:text-white dark:transition-dark`}>
         <Layout>{children}</Layout>
       </body>
     </html>

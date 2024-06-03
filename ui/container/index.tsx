@@ -1,103 +1,78 @@
-'use client';
-import styled from 'styled-components';
-export const Main = styled.main`
-  background-color: ${({theme}) => theme.contenedor};
-  color: ${({theme}: any) => theme.color};
-  padding: 5rem 1rem;
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  flex-wrap: wrap;
-  height: 100%;
-`;
+import React from 'react';
+export const Main = ({children}: {children: React.ReactNode}) => (
+  <main className='p-4 flex gap-12 flex-wrap h-full '>{children}</main>
+);
 
-export const DivMain = styled(Main)`
-  flex-direction: column;
-  align-items: center;
-  padding: 0;
-  padding: 5rem 1rem 0rem;
-`;
-export const DivButton = styled.div`
-  background-color: #242936;
-  border-radius: 5px;
-`;
-export const ContainerMain = styled.div`
-  display: inherit;
-  justify-content: center;
-  width: 100%;
-  gap: 1.5rem;
-  @media (max-width: 800px) {
-    width: 100%;
-  }
-`;
-export const DivPublicaciones = styled.div`
-  max-width: 500px;
-  width: 100%;
-  @media (max-width: 800px) {
-    width: 100%;
-  }
-`;
+export const DivMain = ({children}: {children: React.ReactNode}) => (
+  <main className=' pl-4 pr-4 flex gap-12 flex-wrap  items-center p-0 '>
+    {children}
+  </main>
+);
 
-export const DivPublicar = styled.div`
-  background-color: ${({theme}) => theme.bg};
-  padding: 1rem;
-  padding-bottom: 0.1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  border-radius: 10px;
-  border: 1px solid #3b3b3b;
-  margin-bottom: 2rem;
-  @media (max-width: 550px) {
-    width: auto;
-    margin-bottom: 1rem;
-  }
-  a:last-child {
-    border-bottom: none !important;
-  }
-`;
-export const DivAllChat = styled(DivPublicar)`
-  flex-direction: row;
-  margin: 0;
-  align-items: center;
-  padding: 1rem;
-  @media (max-width: 550px) {
-    width: auto;
-  }
-  &:hover {
-    background-color: #858585;
-  }
-`;
-export const DivAllConnect = styled(DivPublicar)`
-  padding: 0.3rem;
-  flex-direction: row;
-  margin: 0;
-  border: none;
-  background-color: transparent;
-  align-items: center;
-`;
-export const DivAllAmistades = styled(DivPublicar)`
-  width: 185px;
-  height: 300px;
-  padding: 0;
-  text-align: center;
-  display: block;
-  @media (max-width: 550px) {
-    width: 160px;
-  }
-`;
-export const DivAllPublicaciones = styled(DivPublicar)`
-  @media (max-width: 550px) {
-    width: auto;
-    padding: 10px;
-  }
-`;
+export const DivSvgSingin = ({children}: {children: React.ReactNode}) => (
+  <div className='w-[50%] h-[100vh] flex items-center justify-center bg-black'>
+    {children}
+  </div>
+);
 
-export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 500px;
-  width: 90%;
-  padding: 1rem;
-`;
+export const DivButton = ({children}: {children: React.ReactNode}) => (
+  <div className='rounded-md'>{children}</div>
+);
+
+export const ContainerMain = ({children}: {children: React.ReactNode}) => (
+  <div className='flex justify-center w-full gap-6 '>{children}</div>
+);
+
+export const DivPublicaciones = ({children}: {children: React.ReactNode}) => (
+  <div className='max-w-[500px] w-full max-md:w-full flex flex-col gap-8'>
+    {children}
+  </div>
+);
+
+export const DivPublicar = ({children}: {children: React.ReactNode}) => (
+  <div className='bg-primary  p-4 flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto max-md:mt-4 dark:bg-darkComponet dark:text-primary dark:shadow-none'>
+    {children}
+  </div>
+);
+
+export const DivAllChat = ({children}: {children: React.ReactNode}) => (
+  <div className='bg-primary  flex gap-4 rounded-md shadow-container   max-md:mt-4 flex-row items-center p-4 max-md:w-auto hover:opacity-70 dark:bg-darkComponet dark:text-primary dark:transition-dark'>
+    {children}
+  </div>
+);
+
+export const DivAllConnect = ({children}: {children: React.ReactNode}) => (
+  <main className='text-black pl-4 pr-4 flex gap-12 flex-wrap min-h-[100vh] items-center p-[0.3rem] flex-row m-0 border-none bg-transparent  '>
+    {children}
+  </main>
+);
+
+export const DivAllAmistades = ({children}: {children: React.ReactNode}) => (
+  <div className='bg-primary flex-col gap-4 rounded-md shadow-container  max-md:mt-4 w-[185px] h-[300px] p-0  block max-md:w-[160px] dark:bg-darkComponet'>
+    {children}
+  </div>
+);
+
+export const DivAllPublicaciones = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => (
+  <div className='bg-primary p-4 flex flex-col gap-4 rounded-md shadow-container  max-md:mt-4 max-md:w-auto max-md:p-3 dark:bg-darkComponet dark:text-primary dark:shadow-none'>
+    {children}
+  </div>
+);
+
+export const Form = ({
+  children,
+  onSubmit,
+}: {
+  children: React.ReactNode;
+  onSubmit: (e: any) => any;
+}) => (
+  <form
+    onSubmit={onSubmit}
+    className='flex flex-col gap-4 max-w-[500px] w-[90%] p-4'>
+    {children}
+  </form>
+);

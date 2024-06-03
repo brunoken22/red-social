@@ -1,13 +1,7 @@
-const Api_url = 'https://red-social-node.onrender.com';
-export async function fetchApiSwr(prop: [string, object]) {
-  const api = prop[1] || {};
-  const response = await fetch(`${Api_url}/api` + prop[0], api);
+const Api_url =
+  process.env.NEXT_PUBLIC_PORT || 'https://red-social-node.onrender.com';
+export async function fetchApiSwr(api: string, option: any) {
+  const response = await fetch(`${Api_url}/api${api}`, option);
   const data = await response.json();
   return data;
 }
-//
-// 'http://localhost:3000'
-// 'https://5kd3mkwn-3000.brs.devtunnels.ms'
-//https://backend-red-social-theta.vercel.app/
-//"https://red-social-node.onrender.com"
-//"https://red-social-node.vercel.app/"

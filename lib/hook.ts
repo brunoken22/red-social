@@ -83,7 +83,7 @@ export function SigninUser(dataUser: DataSingin) {
     }
     if (data && data.id) {
       setUserData(data);
-      router.replace('/home');
+      router.push('/home');
       console.log(data);
     }
   }, [data]);

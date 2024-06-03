@@ -6,6 +6,7 @@ export async function middleware(request: NextRequest) {
   if (!isToken) {
     return NextResponse.redirect(new URL('/signin', request.url));
   }
+  console.log(request.url);
   const {payload} = await jwtVerify(
     isToken,
     new TextEncoder().encode(process.env.SECRECT)

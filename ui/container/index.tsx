@@ -36,7 +36,7 @@ export const DivPublicar = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivAllChat = ({children}: {children: React.ReactNode}) => (
-  <div className='bg-primary  flex gap-4 rounded-md shadow-container   max-md:mt-4 flex-row items-center p-4 max-md:w-auto hover:opacity-70 dark:bg-darkComponet dark:text-primary dark:transition-dark'>
+  <div className='relative bg-primary  flex gap-4 rounded-md shadow-container   max-md:mt-4 flex-row items-center p-4 max-md:w-auto hover:opacity-70 dark:bg-darkComponet dark:text-primary dark:transition-dark'>
     {children}
   </div>
 );

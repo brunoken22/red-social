@@ -193,15 +193,16 @@ export function TemMensaje() {
                         />
 
                         <h4 className='m-0 text-start'>{e.fullName}</h4>
+                        {dataMessage?.find((item: any) => item.id == e.id) && (
+                          <SpanNoti>
+                            {
+                              dataMessage?.filter(
+                                (user: any) => user.id == e.id
+                              ).length
+                            }
+                          </SpanNoti>
+                        )}
                       </DivAllChat>
-                      {dataMessage?.find((item: any) => item.id == e.id) && (
-                        <SpanNoti>
-                          {
-                            dataMessage?.filter((user: any) => user.id == e.id)
-                              .length
-                          }
-                        </SpanNoti>
-                      )}
                     </button>
                   );
                 })

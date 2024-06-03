@@ -39,34 +39,26 @@ export function PerfilAmigo() {
   const [pagePubli, setPagePubli] = useState(0);
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
   const {data, isLoading} = GetAmigo(id as string);
-  const {dataPubliAmigo} = GetPubliAmigo(id as string,  pagePubli);
+  const {dataPubliAmigo} = GetPubliAmigo(id as string, pagePubli);
   const [isAmigo, setIsAmigo] = useState<boolean | 'pendiente'>();
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
   const [amigoId, setAmigoId] = useState(Number(-1));
   const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
-  const {dataElimAmigo} = EliminarAmigo(
-    {
-      userId: eliminarAmigo,
-    },
-  );
-  const {dataCreateSoli} = CreateSolicitud(
-    {
-      amigoId,
-      estado: false,
-    },
-  );
-  const {dataAcep} = AceptarSolicitud(
-    {
-      amigoId: acepAmigoId,
-      estado: true,
-    },
-  );
-  const {dataRech} = RechazarSolicitud(
-    {
-      userId: rechazarAmigo,
-    },
-  );
+  const {dataElimAmigo} = EliminarAmigo({
+    userId: eliminarAmigo,
+  });
+  const {dataCreateSoli} = CreateSolicitud({
+    amigoId,
+    estado: false,
+  });
+  const {dataAcep} = AceptarSolicitud({
+    amigoId: acepAmigoId,
+    estado: true,
+  });
+  const {dataRech} = RechazarSolicitud({
+    userId: rechazarAmigo,
+  });
 
   useEffect(() => {
     if (data) {
@@ -173,7 +165,6 @@ export function PerfilAmigo() {
           publicacionesAmigo.map((item) => (
             <DivAllPublicaciones key={item.id}>
               <ThemplatePubli
-                name={dataUser?.user?.fullName}
                 description={item.description}
                 img={item.img}
                 fecha={item.updatedAt}

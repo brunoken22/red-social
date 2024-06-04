@@ -1,4 +1,3 @@
-import {DivEmailName} from './styled';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {Form} from '@/ui/container';
 import {Input, Label} from '@/ui/input';
@@ -43,7 +42,7 @@ export function EmailYName() {
     return <Loader />;
   }
   return (
-    <DivEmailName>
+    <div>
       <div>
         <h3>Email y Nombre</h3>
       </div>
@@ -85,6 +84,6 @@ export function EmailYName() {
           </button>
         </Form>
       </div>
-    </DivEmailName>
+    </div>
   );
 }

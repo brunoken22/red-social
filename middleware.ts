@@ -1,7 +1,7 @@
 import {NextResponse} from 'next/server';
 import type {NextRequest} from 'next/server';
 import {jwtVerify} from 'jose';
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const isToken = request.cookies.get('token')?.value;
   // if (!isToken) {
   //   return NextResponse.redirect(new URL('/signin', request.url));

@@ -107,6 +107,9 @@ export function GetUser() {
   const option = {
     method: 'GET',
     credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   };
 
   const {data, isLoading} = useSWRImmutable(

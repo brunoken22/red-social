@@ -43,7 +43,6 @@ import {
 } from './styled';
 import {ButtonSmsConnect} from '@/ui/boton';
 import {DivAllConnect} from '@/ui/container';
-import {getTheme} from '@/lib/cookie';
 
 export default function Header() {
   const {load} = useGlobalAudioPlayer();
@@ -193,6 +192,7 @@ export default function Header() {
 
       if (valor) {
         const dataConnect: any = Object.values(valor);
+        console.log(dataConnect);
         setIsConnect(dataConnect);
         if (!dataUser?.user?.amigos?.length) return;
         const connecam = dataConnect.filter((e: Connect) => {

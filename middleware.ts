@@ -6,7 +6,6 @@ export async function middleware(request: NextRequest) {
   if (!isToken) {
     return NextResponse.redirect(new URL('/signin', request.url));
   }
-  console.log(request.url);
   const {payload} = await jwtVerify(
     isToken,
     new TextEncoder().encode(process.env.SECRECT)
@@ -26,14 +25,14 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = {
-  matcher: [
-    '/home',
-    '/amigos/:path*',
-    '/configuracion',
-    '/mensaje',
-    '/notificaciones/:path*',
-    '/perfil',
-    '/search',
-  ],
-};
+// export const config = {
+//   matcher: [
+//     '/home',
+//     '/amigos/:path*',
+//     '/configuracion',
+//     '/mensaje',
+//     '/notificaciones/:path*',
+//     '/perfil',
+//     '/search',
+//   ],
+// };

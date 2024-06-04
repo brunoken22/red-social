@@ -565,21 +565,6 @@ export function EnviarMessage(datas: any) {
   );
   return {dataMesssage: data, isLoadMessage: isLoading};
 }
-// export function OptimizarImage(dataUrl: string) {
-//   const {data, isLoading} = useSWR(
-//     dataUrl ? dataUrl : null,
-//     async (dataUrl) => {
-//       const optimizedBase64 = await urltoBlob(dataUrl);
-//       const optimizedBase = await compressAccurately(optimizedBase64, {
-//         size: 320,
-//         quality: 0.6,
-//       });
-//       const dataFinal = await filetoDataURL(optimizedBase);
-//       return dataFinal;
-//     }
-//   );
-//   return {dataObtimizado: data, isLoading};
-// }
 export async function optimizarImage(dataUrl: string) {
   const optimizedBase64 = await urltoBlob(dataUrl);
   const optimizedBase = await compressAccurately(optimizedBase64, {

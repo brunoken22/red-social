@@ -181,8 +181,9 @@ export function ThemplatePubli(props: {
               src={props?.img}
               alt='iamgen user'
               loading='lazy'
-              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-              className='cover rounded-xl w-full  hover:scale-[1.1] transition-[scale_200ms_ease_200ms]'
+              height={300}
+              width={500}
+              className='object-cover rounded-xl w-full h-full hover:scale-[1.1] transition-all'
             />
           </DivImage>
         </ButtonOpenImage>

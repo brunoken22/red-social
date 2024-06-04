@@ -1,6 +1,6 @@
 import React from 'react';
 export const Main = ({children}: {children: React.ReactNode}) => (
-  <main className='p-4 flex gap-12 flex-wrap h-full '>{children}</main>
+  <main className=' flex gap-12 flex-wrap h-full '>{children}</main>
 );
 
 export const DivMain = ({children}: {children: React.ReactNode}) => (

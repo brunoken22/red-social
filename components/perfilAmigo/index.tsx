@@ -132,7 +132,7 @@ export function PerfilAmigo() {
               }
             />
           )}
-          <h2 style={{textAlign: 'center', marginTop: '0'}}>
+          <h2 className='text-center  font-bold text-2xl max-md:mb-4'>
             {data?.user?.fullName}
           </h2>
         </DivFotoNameLink>

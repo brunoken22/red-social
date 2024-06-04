@@ -61,7 +61,9 @@ export async function signinUser(dataUser: DataSingin) {
   const option = {
     method: 'POST',
     credentials: 'include',
-
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(dataUser),
   };
   const data = dataUser.email ? await fetchApiSwr(api, option) : null;

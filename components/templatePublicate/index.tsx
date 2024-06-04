@@ -50,8 +50,6 @@ export function ThemplatePubli(props: {
   userId: number;
   user: any;
 }) {
-  const getAllUserUniRedData = useRecoilValue(getAllUser);
-
   const [like, setLike] = useState<string>();
   const [comentario, setComentario] = useState(
     props.comentarios?.length &&
@@ -119,7 +117,17 @@ export function ThemplatePubli(props: {
     <div className='w-full '>
       <DivPefilDelete aria-label='DivPefilDelete'>
         <DivPerfil>
-          <Link href={'/amigos/' + props.id}>
+          {props.user?.id !== props.userId ? (
+            <Link href={'/amigos/' + props.id}>
+              <FotoPerfil
+                img={props?.user?.img}
+                className='h-[40px] w-[40px]'
+                connect={
+                  dataIsConnect?.find((e: any) => e.id == props.id)?.connect &&
+                  true
+                }></FotoPerfil>
+            </Link>
+          ) : (
             <FotoPerfil
               img={props?.user?.img}
               className='h-[40px] w-[40px]'
@@ -127,7 +135,7 @@ export function ThemplatePubli(props: {
                 dataIsConnect?.find((e: any) => e.id == props.id)?.connect &&
                 true
               }></FotoPerfil>
-          </Link>
+          )}
           <div>
             <Body classType='m-0 font-bold text-base'>
               {props.user?.id == props.userId ? 'Tú' : props.user.fullName}

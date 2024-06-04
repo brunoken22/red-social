@@ -30,9 +30,11 @@ import {ButtonAgregar} from '@/ui/boton';
 import {ButtonMasPubli} from '../publicaciones/styled';
 import {SkeletonPerfilAmigo} from '@/ui/skeleton';
 import {ThemplatePubli} from '../templatePublicate';
+import {useRouter} from 'next/navigation';
 
 export function PerfilAmigo() {
   const {id} = useParams();
+  const {push} = useRouter();
   const dataIsConnect = useRecoilValue(isConnect);
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataUser = useRecoilValue(user);
@@ -59,7 +61,12 @@ export function PerfilAmigo() {
   const {dataRech} = RechazarSolicitud({
     userId: rechazarAmigo,
   });
-
+  useEffect(() => {
+    if (Number(id) === dataUser.user.id) {
+      push('/perfil');
+      return;
+    }
+  }, [dataUser]);
   useEffect(() => {
     if (data) {
       setIsAmigo(data.amigo);

@@ -217,7 +217,7 @@ export function GetAllPublicaciones(offset: number) {
   const [publicacionesAllAmigos, setPublicacionesAllAmigos] =
     useRecoilState(publicacionAmigos);
   const token = getCookie('token');
-
+  console.log(token);
   const api = `/user/amigos/publicaciones?offset=${offset}`;
   const option = {
     method: 'GET',

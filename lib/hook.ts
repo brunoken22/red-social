@@ -60,10 +60,8 @@ export async function signinUser(dataUser: DataSingin) {
   const api = '/signin';
   const option = {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     credentials: 'include',
+
     body: JSON.stringify(dataUser),
   };
   const data = dataUser.email ? await fetchApiSwr(api, option) : null;
@@ -109,10 +107,6 @@ export function GetUser() {
   const option = {
     method: 'GET',
     credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      // Authorization: `Bearer ${token}`,
-    },
   };
 
   const {data, isLoading} = useSWRImmutable(

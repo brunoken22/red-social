@@ -26,7 +26,10 @@ export default function Layout({children}: {children: React.ReactNode}) {
   }, []);
   return (
     <RecoilRoot>
-      <InstantSearch searchClient={searchClient} indexName='users'>
+      <InstantSearch
+        searchClient={searchClient}
+        indexName='users'
+        future={{preserveSharedStateOnUnmount: true}}>
         <RecoidContextProvider>
           {pathname !== '/signin' && pathname !== '/signup' ? <Header /> : null}
           <div

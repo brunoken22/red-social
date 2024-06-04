@@ -192,7 +192,7 @@ export default function Header() {
 
       if (valor) {
         const dataConnect: any = Object.values(valor);
-        console.log(dataConnect);
+        // console.log(dataConnect);
         setIsConnect(dataConnect);
         if (!dataUser?.user?.amigos?.length) return;
         const connecam = dataConnect.filter((e: Connect) => {

@@ -459,11 +459,11 @@ function diferenteDate(date: string) {
     (differenceInMilliseconds % (1000 * 60)) / 1000
   );
 
-  if (yearsDifference) return 'Hace' + yearsDifference + ' años';
-  if (monthsDifference) return 'Hace' + monthsDifference + ' meses';
-  if (weeksDifference) return 'Hace' + weeksDifference + ' sem';
-  if (daysDifference) return 'Hace' + daysDifference + ' d';
-  if (hoursDifference) return 'Hace' + hoursDifference + ' h';
-  if (minutesDifference) return 'Hace' + minutesDifference + ' min';
-  return secondsDifference + ' s';
+  if (yearsDifference) return 'Hace ' + yearsDifference + ' años';
+  if (monthsDifference) return 'Hace ' + monthsDifference + ' meses';
+  if (weeksDifference) return 'Hace ' + weeksDifference + ' sem';
+  if (daysDifference) return 'Hace ' + daysDifference + ' d';
+  if (hoursDifference) return 'Hace ' + hoursDifference + ' h';
+  if (minutesDifference) return 'Hace ' + minutesDifference + ' min';
+  return 'Hace ' + secondsDifference + ' s';
 }

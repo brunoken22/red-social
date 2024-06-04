@@ -108,11 +108,11 @@ export function GetUser() {
   const api = '/user/token';
   const option = {
     method: 'GET',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       // Authorization: `Bearer ${token}`,
     },
-    credentials: 'include',
   };
 
   const {data, isLoading} = useSWRImmutable(

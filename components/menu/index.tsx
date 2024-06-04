@@ -1,23 +1,26 @@
 import {DivEnlaces, Button, Span} from './styled';
 import Link from 'next/link';
 import {useEffect, useRef, useState} from 'react';
-import {setCookie, getCookie, deleteCookie} from 'cookies-next';
 import ConfigurateSvg from '@/ui/icons/configuration.svg';
 import NightSvg from '@/ui/icons/night.svg';
 import CloseDoorSvg from '@/ui/icons/closeDoor.svg';
 import FotoPerfil from '@/ui/FotoPerfil';
+import {deleteCookie} from 'cookies-next';
 
 const className = 'text-center flex items-center gap-2';
 
 export function Menu(props: any) {
-  const themeValue = getCookie('theme');
+  const themeValue =
+    typeof window !== undefined ? localStorage.getItem('theme') : false;
   const enlaces: any = useRef(null);
   const [theme, setThemes] = useState<boolean>(
     (themeValue && JSON.parse(themeValue)) || false
   );
 
   useEffect(() => {
-    setCookie('theme', JSON.stringify(theme));
+    if (typeof window !== undefined) {
+      localStorage.setItem('theme', JSON.stringify(theme));
+    }
     if (theme) {
       document.documentElement.classList.add('dark');
     } else {

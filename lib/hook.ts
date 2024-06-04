@@ -18,7 +18,6 @@ import {
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
 import {getCookie} from 'cookies-next';
-import {useRouter} from 'next/navigation';
 
 type DataUser = {
   fullName?: string;
@@ -57,9 +56,7 @@ export function CreateUser(dataUser: DataUser) {
   );
   return {data, isLoading};
 }
-export function SigninUser(dataUser: DataSingin) {
-  const router = useRouter();
-  const [userData, setUserData] = useRecoilState(user);
+export async function signinUser(dataUser: DataSingin) {
   const api = '/signin';
   const option = {
     method: 'POST',
@@ -69,25 +66,8 @@ export function SigninUser(dataUser: DataSingin) {
     credentials: 'include',
     body: JSON.stringify(dataUser),
   };
-  const {data, isLoading} = useSWRImmutable(
-    dataUser.email ? api : null,
-    (url) => fetchApiSwr(url, option),
-    {
-      revalidateOnReconnect: true,
-    }
-  );
-  useEffect(() => {
-    if (data && data.user == false) {
-      alert('Contraseña o usuario incorrecto');
-      return;
-    }
-    if (data && data.id) {
-      setUserData(data);
-      router.push('/home', {scroll: true});
-      console.log(data);
-    }
-  }, [data]);
-  return {data, isLoading};
+  const data = dataUser.email ? await fetchApiSwr(api, option) : null;
+  return data;
 }
 export async function modificarUser(dataUser: DataUser) {
   const token = getCookie('token');

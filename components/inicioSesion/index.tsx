@@ -1,23 +1,26 @@
 'use client';
 import {useRouter} from 'next/navigation';
-import {useEffect, useState} from 'react';
-import {SigninUser} from '@/lib/hook';
+import {signinUser} from '@/lib/hook';
 import {Loader} from '../loader';
-import {useForm} from 'react-hook-form';
+import {SubmitHandler, useForm} from 'react-hook-form';
+import {useRecoilState} from 'recoil';
+import {user} from '@/lib/atom';
+import {useState} from 'react';
 
+type typeForm = {
+  email: string;
+  password: string;
+};
 export function Signin() {
   const router = useRouter();
-  const [dataUser, setDataUser] = useState({
-    email: '',
-    password: '',
-  });
-  const {data, isLoading} = SigninUser(dataUser);
+  const [dataUser, setDataUser] = useRecoilState(user);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: {errors: error1},
-  } = useForm();
+  } = useForm<typeForm>();
 
   // useEffect(() => {
   //   if (data && data.user == false) {
@@ -30,12 +33,21 @@ export function Signin() {
   //   }
   // }, [data]);
 
-  const onSubmit = (data: any) => {
-    if (data) {
-      setDataUser({
-        email: data.email,
-        password: data.password,
+  const onSubmit: SubmitHandler<typeForm> = async (dataForm) => {
+    setIsLoading(true);
+    if (dataForm) {
+      const data = await signinUser({
+        email: dataForm.email,
+        password: dataForm.password,
       });
+      setIsLoading(false);
+
+      if (data) {
+        setDataUser(data);
+        router.push('/home', {scroll: true});
+        return;
+      }
+      alert('Intentalo de nuevo');
     }
   };
   if (isLoading) {
@@ -45,11 +57,6 @@ export function Signin() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className='flex flex-col gap-4 w-full '>
-      {data && !data?.id && (
-        <div style={{color: '#ff4444', textAlign: 'center'}}>
-          Datos incorrectos
-        </div>
-      )}
       <div>
         <label className='block' htmlFor='email'>
           Email <span className='text-[#f57888]'>*</span>
@@ -62,6 +69,9 @@ export function Signin() {
           placeholder='UniRed@gmail.com'
           autoComplete='email'
         />
+        {error1.email && (
+          <span className='text-red-500 text-[0.8rem]'>Se requiere Email</span>
+        )}
       </div>
       <div>
         <label className='block' htmlFor='password'>
@@ -75,8 +85,11 @@ export function Signin() {
           placeholder='**********'
           autoComplete='password'
         />
-
-        {error1.email && <span>This field is required</span>}
+        {error1.password && (
+          <span className='text-red-500 text-[0.8rem]'>
+            Se requiere constraseña
+          </span>
+        )}
       </div>
       <div className='mt-6'>
         <button

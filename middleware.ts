@@ -4,12 +4,12 @@ import {jwtVerify} from 'jose';
 export async function middleware(request: NextRequest) {
   const isToken = request.cookies.get('token')?.value;
   if (!isToken) {
-    if (
-      request.nextUrl.pathname !== '/signin' &&
-      request.nextUrl.pathname !== '/signup'
-    ) {
-      return NextResponse.redirect(new URL('/signin', request.url));
-    }
+    // if (
+    //   request.nextUrl.pathname !== '/signin' &&
+    //   request.nextUrl.pathname !== '/signup'
+    // ) {
+    //   return NextResponse.redirect(new URL('/signin', request.url));
+    // }
     return NextResponse.next();
   } else {
     const {payload} = await jwtVerify(
@@ -30,16 +30,16 @@ export async function middleware(request: NextRequest) {
   }
 }
 
-export const config = {
-  matcher: [
-    '/home',
-    '/amigos/:path*',
-    '/configuracion',
-    '/mensaje',
-    '/notificaciones/:path*',
-    '/perfil',
-    '/search',
-    '/signin',
-    '/signup',
-  ],
-};
+// export const config = {
+//   matcher: [
+//     '/home',
+//     '/amigos/:path*',
+//     '/configuracion',
+//     '/mensaje',
+//     '/notificaciones/:path*',
+//     '/perfil',
+//     '/search',
+//     '/signin',
+//     '/signup',
+//   ],
+// };

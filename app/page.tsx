@@ -36,9 +36,9 @@ export default function Signin() {
   // }
   return (
     <div>
-      <Link href={'/singnin'}>Inicio sesion </Link>
-      <Link href={'/singnin'}>Inicio sesion </Link>
-      <Link href={'/singnup'}>Crear cuenta </Link>
+      <Link href={'/signin'}>Inicio sesion </Link>
+      <Link href={'/signin'}>Inicio sesion </Link>
+      <Link href={'/signup'}>Crear cuenta </Link>
       <Link href={'/home'}>home</Link>
     </div>
   );

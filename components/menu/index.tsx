@@ -38,7 +38,6 @@ export function Menu(props: any) {
 
   const handleClick = async () => {
     const logoutData = await logOut();
-    console.log(window.location.origin);
     if (logoutData) {
       return window.location.assign(window.location.origin + '/signin');
     }

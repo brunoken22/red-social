@@ -225,7 +225,7 @@ export default function Header() {
   return dataUser?.user?.id ? (
     <>
       <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
-        <nav className='flex justify-evenly items-center max-md:justify-between'>
+        <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
           <div className='flex gap-4 items-center '>
             <Link href={'/home'} aria-label='home'>
               <Logo className='rounded-md dark:fill-white transition-dark' />

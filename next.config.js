@@ -11,9 +11,9 @@ const nextConfig = withSvgr({
       },
     ];
   },
-  // experimental: {
-  //   middleware: true,
-  // },
+  experimental: {
+    middleware: true,
+  },
   images: {
     domains: ['res.cloudinary.com'], 
   },

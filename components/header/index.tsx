@@ -221,7 +221,6 @@ export default function Header() {
       // userReset();
     };
   }, [dataUser?.user?.id]);
-  console.log(dataUser.user);
   return dataUser?.user?.id ? (
     <>
       <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>

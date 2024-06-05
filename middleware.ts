@@ -1,7 +1,7 @@
 import {NextResponse} from 'next/server';
 import {NextRequest} from 'next/server';
 import {jwtVerify} from 'jose';
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const isToken = request.cookies.get('token')?.value;
   console.log(isToken, request.nextUrl.pathname);
   if (!isToken) {
@@ -13,20 +13,20 @@ export function middleware(request: NextRequest) {
     }
     return NextResponse.next();
   } else {
-    // const {payload} = await jwtVerify(
-    //   isToken,
-    //   new TextEncoder().encode(process.env.SECRECT)
-    // );
+    const {payload} = await jwtVerify(
+      isToken,
+      new TextEncoder().encode(process.env.SECRECT)
+    );
 
-    // if (!payload) {
-    //   return NextResponse.redirect(new URL('/signin', request.url));
-    // }
-    // if (
-    //   request.nextUrl.pathname == '/signin' ||
-    //   request.nextUrl.pathname == '/signup'
-    // ) {
-    //   return NextResponse.redirect(new URL('/home', request.url));
-    // }
+    if (!payload) {
+      return NextResponse.redirect(new URL('/signin', request.url));
+    }
+    if (
+      request.nextUrl.pathname == '/signin' ||
+      request.nextUrl.pathname == '/signup'
+    ) {
+      return NextResponse.redirect(new URL('/home', request.url));
+    }
     return NextResponse.next();
   }
 }

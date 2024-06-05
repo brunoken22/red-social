@@ -7,12 +7,15 @@ const nextConfig = withSvgr({
     return [
       {
         source: '/:path*',
-        destination: 'https://red-social-node.onrender.com/:path*', // Proxy para la API durante el desarrollo
+        destination: 'https://red-social-node.onrender.com/:path*', 
       },
     ];
   },
+  // experimental: {
+  //   middleware: true,
+  // },
   images: {
-    domains: ['res.cloudinary.com'], // Agrega los dominios permitidos aquí
+    domains: ['res.cloudinary.com'], 
   },
 
 });

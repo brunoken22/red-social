@@ -5,7 +5,7 @@ import ConfigurateSvg from '@/ui/icons/configuration.svg';
 import NightSvg from '@/ui/icons/night.svg';
 import CloseDoorSvg from '@/ui/icons/closeDoor.svg';
 import FotoPerfil from '@/ui/FotoPerfil';
-import {deleteCookie} from 'cookies-next';
+import {deleteCookie, getCookie} from 'cookies-next';
 
 const className = 'text-center flex items-center gap-2';
 
@@ -41,7 +41,7 @@ export function Menu(props: any) {
     props.click(false);
     window.location.assign(window.location.origin + '/signin');
   };
-
+  console.log(getCookie('token'));
   const handleBlur = () => {
     // console.log('salistes del focus');
     // if (focus) {

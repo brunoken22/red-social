@@ -39,6 +39,18 @@ type Solicitud = {
   estado: boolean;
   userId?: number;
 };
+export async function logOut() {
+  const api = '/log-out';
+  const option = {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const data = await fetchApiSwr(api, option);
+  return data;
+}
 export function CreateUser(dataUser: DataUser) {
   const api = '/auth';
   const option = {

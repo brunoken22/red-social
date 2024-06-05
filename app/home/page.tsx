@@ -1,14 +1,13 @@
-'use client';
 import {DivPublicaciones} from '@/ui/container';
 import {Publicar} from '@/components/publicar';
 import {Span} from '@/components/span';
-// import {Metadata} from 'next';
+import {Metadata} from 'next';
 import {PublicacionesAll} from '@/components/publicaciones/publicationsAll';
 
-// export const metadata: Metadata = {
-//   title: 'Home | UniRed',
-//   description: 'Inicio',
-// };
+export const metadata: Metadata = {
+  title: 'Home | UniRed',
+  description: 'Inicio',
+};
 export default function Home() {
   return (
     <main>

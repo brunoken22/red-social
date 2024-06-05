@@ -115,7 +115,7 @@ export function GetUser() {
   };
 
   const {data, isLoading} = useSWRImmutable(
-    token ? api : null,
+    api,
     (url) => fetchApiSwr(url, option),
     {
       // revalidateOnMount: true,

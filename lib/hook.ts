@@ -110,13 +110,10 @@ export function GetUser() {
   const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
   const [getSugerenciaAmigosData, setGetSugerenciaAmigosData] =
     useRecoilState(getSugerenciaAmigos);
-  // const [publicacionesUser, setPublicacionesUser] =
-  //   useRecoilState(publicacionUser);
   const [soliAllEnv, setSoliAllEnv] = useRecoilState(getAllSolicitudesEnviadas);
   const [soliAllReci, setSoliAllReci] = useRecoilState(
     getAllSolicitudesRecibidas
   );
-  const token = getCookie('token');
   const api = '/user/token';
   const option = {
     method: 'GET',

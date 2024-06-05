@@ -7,6 +7,7 @@ import Link from 'next/link';
 const robotoSlab = Roboto_Slab({weight: '800', subsets: ['latin']});
 
 export default function Page() {
+  console.log('page');
   return (
     <div className='min-h-screen flex items-center justify-between'>
       <div className='w-3/5 bg-secundary  min-h-screen flex justify-center items-center max-md:hidden'>

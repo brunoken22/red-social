@@ -2,7 +2,7 @@
 const withSvgr = require("next-svgr");
  
 const nextConfig = withSvgr({
-  reactStrictMode: true,
+  // reactStrictMode: true,
   // async rewrites() {
   //   return [
   //     {

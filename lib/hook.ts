@@ -114,6 +114,8 @@ export function GetUser() {
   const [soliAllReci, setSoliAllReci] = useRecoilState(
     getAllSolicitudesRecibidas
   );
+  const token = getCookie('token');
+
   const api = '/user/token';
   const option = {
     method: 'GET',
@@ -123,8 +125,8 @@ export function GetUser() {
     },
   };
 
-  const {data, isLoading} = useSWRImmutable(
-    api,
+  const {data, isLoading} = useSWR(
+    token ? api : null,
     (url) => fetchApiSwr(url, option),
     {
       // revalidateOnMount: true,

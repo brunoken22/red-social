@@ -23,6 +23,7 @@ export default function Page() {
               Registrate
             </Link>
           </p>
+          <Link href={'/home'}>Home</Link>
         </div>
       </div>
     </div>

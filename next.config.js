@@ -3,7 +3,7 @@ const withSvgr = require("next-svgr");
  
 const nextConfig = withSvgr({
   reactStrictMode: true,
-  crossOrigin: 'anonymous',
+  crossOrigin:"use-credentials",
   async rewrites() {
     return [ 
       {

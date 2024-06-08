@@ -31,16 +31,16 @@ export async function middleware(request: NextRequest) {
 }
 // }
 
-export const config = {
-  matcher: [
-    '/home',
-    '/amigos/:path*',
-    '/configuracion',
-    '/mensaje',
-    '/notificaciones/:path*',
-    '/perfil',
-    '/search',
-    '/signin',
-    '/signup',
-  ],
-};
+// export const config = {
+//   matcher: [
+//     '/home',
+//     '/amigos/:path*',
+//     '/configuracion',
+//     '/mensaje',
+//     '/notificaciones/:path*',
+//     '/perfil',
+//     '/search',
+//     '/signin',
+//     '/signup',
+//   ],
+// };

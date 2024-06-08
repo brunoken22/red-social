@@ -3,16 +3,11 @@ const withSvgr = require("next-svgr");
  
 const nextConfig = withSvgr({
   reactStrictMode: true,
-  crossOrigin:"use-credentials",
   async rewrites() {
     return [ 
       {
         source: '/:path*',
         destination: 'https://red-social-node.onrender.com/:path*', 
-      },
-      {
-        source: '/:path*',
-        destination: 'http://localhost:3000/:path*', 
       },
     ];
   },

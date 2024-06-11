@@ -7,7 +7,7 @@ const nextConfig = withSvgr({
     return [ 
       {
         source: '/:path*',
-        destination: 'https://red-social-node.onrender.com/:path*', 
+        destination: 'https://red-social-node.omega.com/:path*', 
       },
     ];
   },

@@ -82,7 +82,7 @@ export async function signinUser(dataUser: DataSingin) {
   console.log(document.cookie);
   const tokenRes = document.cookie.match(/token=([^;]+)/);
   if (tokenRes) {
-    setCookie('token', tokenRes[1]);
+    setCookie('tokenFront', tokenRes[1]);
   }
   return data;
 }
@@ -119,7 +119,7 @@ export function GetUser() {
   const [soliAllReci, setSoliAllReci] = useRecoilState(
     getAllSolicitudesRecibidas
   );
-  const token = getCookie('token');
+  const token = getCookie('tokenFront');
 
   const api = '/user/token';
   const option = {

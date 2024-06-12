@@ -17,7 +17,7 @@ import {
 } from '@/lib/atom';
 import {useEffect} from 'react';
 import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
-import {getCookie} from 'cookies-next';
+import {getCookie, setCookie} from 'cookies-next';
 
 type DataUser = {
   fullName?: string;
@@ -79,6 +79,11 @@ export async function signinUser(dataUser: DataSingin) {
     body: JSON.stringify(dataUser),
   };
   const data = dataUser.email ? await fetchApiSwr(api, option) : null;
+
+  const tokenRes = document.cookie.match(/token=([^;]+)/);
+  if (tokenRes) {
+    setCookie('token', tokenRes[1]);
+  }
   return data;
 }
 export async function modificarUser(dataUser: DataUser) {

@@ -79,11 +79,6 @@ export async function signinUser(dataUser: DataSingin) {
     body: JSON.stringify(dataUser),
   };
   const data = dataUser.email ? await fetchApiSwr(api, option) : null;
-  console.log(document.cookie);
-  const tokenRes = document.cookie.match(/token=([^;]+)/);
-  if (tokenRes) {
-    setCookie('tokenFront', tokenRes[1]);
-  }
   return data;
 }
 export async function modificarUser(dataUser: DataUser) {
@@ -119,7 +114,6 @@ export function GetUser() {
   const [soliAllReci, setSoliAllReci] = useRecoilState(
     getAllSolicitudesRecibidas
   );
-  const token = getCookie('tokenFront');
 
   const api = '/user/token';
   const option = {
@@ -130,16 +124,12 @@ export function GetUser() {
     },
   };
 
-  const {data, isLoading} = useSWR(
-    token ? api : null,
-    (url) => fetchApiSwr(url, option),
-    {
-      // revalidateOnMount: true,
-      // revalidateOnFocus: true,
-      // revalidateOnReconnect: true,
-      refreshInterval: 10000,
-    }
-  );
+  const {data, isLoading} = useSWR(api, (url) => fetchApiSwr(url, option), {
+    // revalidateOnMount: true,
+    // revalidateOnFocus: true,
+    // revalidateOnReconnect: true,
+    refreshInterval: 10000,
+  });
   useEffect(() => {
     if (data?.getUserRes?.id) {
       setUserData({

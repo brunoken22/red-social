@@ -1,33 +1,39 @@
 import {NextResponse} from 'next/server';
 import {NextRequest} from 'next/server';
-import {jwtVerify} from 'jose';
+import {fetchApiSwr} from './lib/api';
 export async function middleware(request: NextRequest) {
-  // const isToken = request.cookies.get('token')?.value;
-  // if (!isToken) {
-  //   if (
-  //     request.nextUrl.pathname !== '/signin' &&
-  //     request.nextUrl.pathname !== '/signup'
-  //   ) {
-  //     return NextResponse.redirect(new URL('/signin', request.url));
-  //   }
-  //   return NextResponse.next();
-  // } else {
-  //   const {payload} = await jwtVerify(
-  //     isToken,
-  //     new TextEncoder().encode(process.env.SECRECT)
-  //   );
+  const isToken = request.cookies.get('login')?.value;
+  if (!isToken) {
+    // if (
+    //   request.nextUrl.pathname !== '/signin' &&
+    //   request.nextUrl.pathname !== '/signup'
+    // ) {
+    //   return NextResponse.redirect(new URL('/signin', request.url));
+    // }
+    //   console.log(isToken);
+    return NextResponse.next();
+  } else {
+    console.log(isToken);
 
-  //   if (!payload) {
-  //     return NextResponse.redirect(new URL('/signin', request.url));
-  //   }
-  //   if (
-  //     request.nextUrl.pathname == '/signin' ||
-  //     request.nextUrl.pathname == '/signup'
-  //   ) {
-  //     return NextResponse.redirect(new URL('/home', request.url));
-  //   }
-  return NextResponse.next();
-  // }
+    const data = await fetchApiSwr('/api/verify', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(data);
+    if (!data.message) {
+      return NextResponse.redirect(new URL('/signin', request.url));
+    }
+    if (
+      request.nextUrl.pathname == '/signin' ||
+      request.nextUrl.pathname == '/signup'
+    ) {
+      return NextResponse.redirect(new URL('/home', request.url));
+    }
+    return NextResponse.next();
+  }
 }
 
 // export const config = {

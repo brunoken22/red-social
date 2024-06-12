@@ -49,6 +49,8 @@ export async function logOut() {
     },
   };
   const data = await fetchApiSwr(api, option);
+  setCookie('login', false);
+
   return data;
 }
 export function CreateUser(dataUser: DataUser) {
@@ -79,16 +81,15 @@ export async function signinUser(dataUser: DataSingin) {
     body: JSON.stringify(dataUser),
   };
   const data = dataUser.email ? await fetchApiSwr(api, option) : null;
+  setCookie('login', true);
   return data;
 }
 export async function modificarUser(dataUser: DataUser) {
-  const token = getCookie('token');
   const api = '/user/token';
   const option = {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
     body: JSON.stringify(dataUser),
@@ -114,6 +115,7 @@ export function GetUser() {
   const [soliAllReci, setSoliAllReci] = useRecoilState(
     getAllSolicitudesRecibidas
   );
+  const token = getCookie('login');
 
   const api = '/user/token';
   const option = {
@@ -124,12 +126,16 @@ export function GetUser() {
     },
   };
 
-  const {data, isLoading} = useSWR(api, (url) => fetchApiSwr(url, option), {
-    // revalidateOnMount: true,
-    // revalidateOnFocus: true,
-    // revalidateOnReconnect: true,
-    refreshInterval: 10000,
-  });
+  const {data, isLoading} = useSWR(
+    token ? api : null,
+    (url) => fetchApiSwr(url, option),
+    {
+      // revalidateOnMount: true,
+      // revalidateOnFocus: true,
+      // revalidateOnReconnect: true,
+      refreshInterval: 10000,
+    }
+  );
   useEffect(() => {
     if (data?.getUserRes?.id) {
       setUserData({
@@ -151,14 +157,12 @@ export function GetUser() {
 export function NotificacionesUser(offset: number) {
   const [notificacionesUserAtom, setNotificacionesUserAtom] =
     useRecoilState(notificacionesUser);
-  const token = getCookie('token');
   const api = `/user/notificaciones?offset=${offset}`;
 
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -191,14 +195,13 @@ export function NotificacionesUser(offset: number) {
 export function NotificacionesUserImmutable(offset: number) {
   const [notificacionesUserAtom, setNotificacionesUserAtom] =
     useRecoilState(notificacionesUser);
-  const token = getCookie('token');
+  const token = getCookie('login');
   const api = `/user/notificaciones?offset=${offset}`;
 
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -222,13 +225,11 @@ export function NotificacionesUserImmutable(offset: number) {
 export function GetAllPublicaciones(offset: number) {
   const [publicacionesAllAmigos, setPublicacionesAllAmigos] =
     useRecoilState(publicacionAmigos);
-  const token = getCookie('token');
   const api = `/user/amigos/publicaciones?offset=${offset}`;
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -262,14 +263,12 @@ export function GetAllPublicaciones(offset: number) {
 export function GetAllPublicacionesUser(offset: number) {
   const [publicacionesUser, setPublicacionesUser] =
     useRecoilState(publicacionUser);
-  const token = getCookie('token');
 
   const api = `/user/publicacion?offset=${offset}`;
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -329,13 +328,11 @@ export function GetPubliAmigo(id: string, offset: number) {
 export function DeletePublic(id: number) {
   const [publicacionesUser, setPublicacionesUser] =
     useRecoilState(publicacionUser);
-  const token = getCookie('token');
   const api = '/user/publicacion/' + id;
   const option = {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -378,14 +375,11 @@ export function GetAmigo(id: string) {
   return {data, isLoading};
 }
 export function CreatePublicacion(dataPubli: DataPublicacion) {
-  const token = getCookie('token');
-
   const api = '/user/publicacion';
   const option = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
 
@@ -407,14 +401,11 @@ export function CreateSolicitud(dataSoli: Solicitud) {
   const [userAllData, setUserAllData] = useRecoilState(
     getAllSolicitudesEnviadas
   );
-  const token = getCookie('token');
-
   const api = '/user/solicitudAmistad';
   const option = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
 
@@ -432,14 +423,11 @@ export function CreateSolicitud(dataSoli: Solicitud) {
   return {dataCreateSoli: data, isLoadCreateSoli: isLoading};
 }
 export function AceptarSolicitud(dataSoli: Solicitud) {
-  const token = getCookie('token');
-
   const api = '/user/amigos';
   const option = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
     body: JSON.stringify(dataSoli),
@@ -451,13 +439,11 @@ export function AceptarSolicitud(dataSoli: Solicitud) {
   return {dataAcep: data, isLoadingAcep: isLoading};
 }
 export function RechazarSolicitud(dataSoli: any) {
-  const token = getCookie('token');
   const api = '/user/solicitudAmistad';
   const option = {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
     body: JSON.stringify(dataSoli),
@@ -469,13 +455,12 @@ export function RechazarSolicitud(dataSoli: any) {
   return {dataRech: data, isLoadingRech: isLoading};
 }
 export function EliminarAmigo(datas: any) {
-  const token = getCookie('token');
+  const token = getCookie('login');
   const api = '/user/amigos';
   const option = {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
     body: JSON.stringify(datas),
@@ -487,13 +472,11 @@ export function EliminarAmigo(datas: any) {
   return {dataElimAmigo: data, isLoadingElimAmigo: isLoading};
 }
 export async function LikeODisLike(datas: any) {
-  const token = getCookie('token');
   const api = '/user/publicacion/' + datas.id;
   const option = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -504,13 +487,11 @@ export async function LikeODisLike(datas: any) {
   return {dataLike: data};
 }
 export async function comentarPublicacion(datas: any) {
-  const token = getCookie('token');
   const api = '/user/publicacion/' + datas.id;
   const option = {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
     body: JSON.stringify({description: datas.description}),
@@ -525,13 +506,12 @@ export async function comentarPublicacion(datas: any) {
   return data;
 }
 export function GetPublicacionId(id: string) {
-  const token = getCookie('token');
+  const token = getCookie('login');
   const api = '/user/publicacion/' + id;
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -548,7 +528,7 @@ export function GetPublicacionId(id: string) {
   return {dataPubliId: data, isLoadGetPubliId: isLoading};
 }
 export function EnviarMessage(datas: any) {
-  const token = getCookie('token');
+  const token = getCookie('login');
   const api = '/user/room';
   const option = {
     method: 'POST',

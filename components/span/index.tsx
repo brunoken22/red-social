@@ -13,16 +13,16 @@ export function Span() {
         <DivPublicar>
           <Body>Visita mi portafolio</Body>
           <Link
-            href={'https://portafolio-taupe-nine.vercel.app/'}
+            href={'https://brunoken.vercel.app/'}
             target='_blank'
-            className='relative h-[100px] w-[90%] m-auto overflow-hidden'>
+            className='relative h-[100px] w-[90%] m-auto rounded-md overflow-hidden'>
             <Image
               src={'/portafolio.webp'}
               alt='portafolio'
               width={200}
               height={100}
               priority={true}
-              className='object-fill rounded-md hover:scale-[1.1] hover:opacity-70'
+              className='object-fill  hover:scale-[1.1]  rounded-md hover:opacity-70'
             />
           </Link>
           <DivSvg>

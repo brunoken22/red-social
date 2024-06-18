@@ -9,10 +9,10 @@ const robotoSlab = Roboto_Slab({weight: '800', subsets: ['latin']});
 export default function Page() {
   return (
     <div className='min-h-screen flex items-center justify-between'>
-      <div className='w-3/5 bg-secundary  min-h-screen flex justify-center items-center max-md:hidden'>
+      <div className='w-2/4 bg-secundary  min-h-screen flex justify-center items-center max-md:hidden'>
         <img src='/signin.svg' alt='signin' className='w-[500px]' />
       </div>
-      <div className='w-2/5 p-4 flex flex-col justify-between h-[60vh] max-md:w-full '>
+      <div className='w-2/4 p-4 flex flex-col justify-between h-[60vh] max-md:w-full '>
         <LogoPage />
         <div className='flex flex-col justify-between h-3/4 m-auto max-w-[500px] w-full'>
           <Title classType={robotoSlab.className}>Inicio Sesion</Title>

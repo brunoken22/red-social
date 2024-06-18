@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: 'Amigo | UniRed',
   description: 'Amig@s del usuario',
 };
-export default function Perfil() {
+export default function Page() {
   return (
     <Main>
       <PerfilAmigo />

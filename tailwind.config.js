@@ -22,17 +22,21 @@ module.exports = {
         hoverPrimary: "#e1e1e1",
         dark:"#18191A",
         darkComponet:"#242526"
-      },
+    },
       boxShadow: {
         container:"-1px 1px 5px 0px #000"
       },
       animation:{
         rotate: "rotate 1s infinite cubic-bezier(0.4, 0, 1, 1)",
-        animationSkeleton:"animationSkeleton 1s linear infinite;"
+        animationSkeleton: "skeleton 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
+        
       },
       keyframes: {
         rotate: " from {  transform: rotate(0deg)} to {transform: rotate(359deg)}",
-        animationSkeleton:" 100%{background-color: #ffffff;right: 0%;-webkit-filter: blur(1px);box-shadow: 0 0 50px 10px, 0 0 50px 10px;0%{-webkit-filter: blur(1px);right: 100%;}"
+        skeleton: {
+          '0%,100%': { opacity: '1' },
+          '50%': { opacity: '.5' },
+        }
       },
       transitionProperty: {
         dark: "background-color,color,fill",

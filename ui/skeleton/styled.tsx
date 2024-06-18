@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const DivSkeleton = ({children}: {children: React.ReactNode}) => (
-  <div className='w-full'>{children}</div>
+  <div className='w-full '>{children}</div>
 );
 export const PhotoSkeleton = ({
   children,
@@ -24,7 +24,7 @@ export const TextSkeleton = ({
   className?: string;
 }) => (
   <div
-    className={`bg-[#858585] relative overflow-auto w-[120px] h-[30px] m-0 ${className}`}>
+    className={`bg-[#858585] relative overflow-auto w-[120px] h-[30px] m-0 ${className} transition-all	 animate-animationSkeleton`}>
     {children}
   </div>
 );

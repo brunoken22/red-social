@@ -353,14 +353,12 @@ export function DeletePublic(id: number) {
   return {dataDelete: data, isLoadingDeletePubli: isLoading};
 }
 export function GetAmigo(id: string) {
-  const token = getCookie('token');
   const api = `/user/amigos/${id}`;
 
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };

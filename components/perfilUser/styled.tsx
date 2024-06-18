@@ -3,7 +3,7 @@ export const DivPerfilUser = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivHeadPerfil = ({children}: {children: React.ReactNode}) => (
-  <div className='pb-4 border-b-[1px] border-b-[#383838] flex justify-around items-center max-md:flex-col'>
+  <div className='pb-4 border-b-[1px] border-b-[#383838] flex justify-around items-center max-md:flex-col '>
     {children}
   </div>
 );

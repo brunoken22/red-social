@@ -38,9 +38,9 @@ export function Menu(props: any) {
 
   const handleClick = async () => {
     const logoutData = await logOut();
-    if (logoutData) {
-      return window.location.assign(window.location.origin + '/signin');
-    }
+    // if (logoutData) {
+    //   return window.location.assign(window.location.origin + '/signin');
+    // }
   };
   const handleBlur = () => {
     // console.log('salistes del focus');

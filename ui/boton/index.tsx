@@ -71,8 +71,10 @@ export const ButtonNoti = ({
     className={`flex items-center gap-4 w-full border-none h-16 rounded-md p-2${
       visto ? 'bg-hoverPrimary' : ''
     } ${
-      open ? 'opacity-70 fill-white' : 'fill-[#e5e7eb] '
-    } hover:opacity-70   hover:fill-[#e5e7eb]`}>
+      open
+        ? 'opacity-70 dark:fill-white fill-black'
+        : 'dark:fill-[#e5e7eb] fill-gray-800'
+    } hover:opacity-60   `}>
     {children}
   </button>
 );

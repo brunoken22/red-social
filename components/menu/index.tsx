@@ -3,6 +3,7 @@ import Link from 'next/link';
 import {useEffect, useRef, useState} from 'react';
 import ConfigurateSvg from '@/ui/icons/configuration.svg';
 import NightSvg from '@/ui/icons/night.svg';
+import SunSvg from '@/ui/icons/sun.svg';
 import CloseDoorSvg from '@/ui/icons/closeDoor.svg';
 import FotoPerfil from '@/ui/FotoPerfil';
 import {logOut} from '@/lib/hook';
@@ -12,23 +13,12 @@ const className = 'text-center flex items-center gap-2';
 
 export function Menu(props: any) {
   const {push} = useRouter();
-  const themeValue =
-    typeof window !== undefined ? localStorage.getItem('theme') : false;
   const enlaces: any = useRef(null);
-  const [theme, setThemes] = useState<boolean>(
-    (themeValue && JSON.parse(themeValue)) || false
-  );
-
-  useEffect(() => {
-    if (typeof window !== undefined) {
-      localStorage.setItem('theme', JSON.stringify(theme));
-    }
-    if (theme) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
+  // const themeValue =
+  //   typeof window !== undefined ? localStorage.getItem('theme') : false;
+  // const [theme, setThemes] = useState<boolean>(
+  //   (themeValue && JSON.parse(themeValue)) || false
+  // );
 
   useEffect(() => {
     // console.log(enlaces);
@@ -68,10 +58,21 @@ export function Menu(props: any) {
           <FotoPerfil className='w-[20px] h-[20px]' img={props.userImg} />
           <Span> {props.userName}</Span>
         </Link>
-        <button onClick={() => setThemes(!theme)} className={className}>
-          <NightSvg className='fill-black dark:fill-white' />
-          modo dark
-        </button>
+        {props.theme ? (
+          <button
+            onClick={() => props.themebutton(!props.theme)}
+            className={className}>
+            <NightSvg className='fill-black dark:fill-white' />
+            modo oscuro
+          </button>
+        ) : (
+          <button
+            onClick={() => props.themebutton(!props.theme)}
+            className={className}>
+            <SunSvg className='fill-[#ffe289] dark:fill-white' />
+            modo claro
+          </button>
+        )}
         <Link
           href={'/configuracion'}
           onClick={() => props.click(false)}

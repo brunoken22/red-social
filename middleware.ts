@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
       ) {
         return NextResponse.redirect(new URL('/signin', request.url));
       }
-      console.log('isToken', isToken);
+      // console.log('isToken', isToken);
 
       return NextResponse.next();
     } else {
@@ -25,7 +25,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
   } catch (e: any) {
-    console.error(e.message);
     return NextResponse.next();
   }
 }

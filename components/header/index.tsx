@@ -60,6 +60,12 @@ export default function Header() {
   const [allConnectAmigos, setAllConnectAmigos] = useState([]);
   const [connectAmigos, setConnectAmigos] = useState(false);
   const [menu, setMenu] = useState(false);
+  const themeValue =
+    typeof window !== undefined ? localStorage.getItem('theme') : false;
+  const [theme, setThemes] = useState<boolean>(
+    (themeValue && JSON.parse(themeValue)) || false
+  );
+
   const {hits} = useHits();
   const handleMenu = (e: any) => {
     e.preventDefault();
@@ -72,6 +78,16 @@ export default function Header() {
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      localStorage.setItem('theme', JSON.stringify(theme));
+    }
+    if (theme) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
   useEffect(() => {
     if (notificacionesUserAtom.length) {
       const newNotificationSound = notificacionesUserAtom.filter((item) => {
@@ -284,6 +300,8 @@ export default function Header() {
             </button>
             {menu ? (
               <Menu
+                theme={theme}
+                themebutton={(data: boolean) => setThemes(data)}
                 click={handleClick}
                 userImg={dataUser.user.img}
                 userName={dataUser.user.fullName.split(' ')[0]}

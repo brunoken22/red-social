@@ -183,7 +183,7 @@ export function ThemplatePubli(props: {
               loading='lazy'
               height={300}
               width={500}
-              className='object-cover rounded-xl w-full h-full hover:scale-[1.1] transition-all'
+              className='object-cover rounded-xl w-full h-full hover:scale-[1.1]  transition-all '
             />
           </DivImage>
         </ButtonOpenImage>
@@ -239,12 +239,12 @@ export function ThemplatePubli(props: {
           Comentar
         </BottonLike>
       </DivInteractuar>
-      {/* {comentario ? (
+      {comentario ? (
         <ComentarioPublic
           idPublicacion={props.idPublicacion}
           comentarios={props.comentarios}
-          userName={props?.name || (props.name && 'Tú')}
-          name={props.name}
+          userName={props?.user.name}
+          name={props?.user.name}
           imgUserPro={props.imgUserPro}
           userId={props.userId}
           id={props.id}
@@ -255,7 +255,7 @@ export function ThemplatePubli(props: {
             isComentario && setComentariosPubli((prev: number) => prev + 1)
           }
         />
-      ) : null} */}
+      ) : null}
       {openImage ? (
         <div
           style={{

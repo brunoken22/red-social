@@ -42,7 +42,7 @@ export const ButtonOpenImage = ({
 );
 
 export const DivImage = ({children}: {children: React.ReactNode}) => (
-  <div className='flex items-center relative m-[0.1rem] h-[300px]'>
+  <div className='flex items-center relative m-[0.1rem] h-[300px] overflow-hidden	'>
     {children}
   </div>
 );

@@ -49,8 +49,9 @@ export async function logOut() {
     },
   };
   const data = await fetchApiSwr(api, option);
-  setCookie('login', false);
-
+  if (data) {
+    setCookie('login', false);
+  }
   return data;
 }
 export function CreateUser(dataUser: DataUser) {
@@ -127,7 +128,7 @@ export function GetUser() {
   };
 
   const {data, isLoading} = useSWR(
-    token ? api : null,
+    token == 'true' ? api : null,
     (url) => fetchApiSwr(url, option),
     {
       // revalidateOnMount: true,
@@ -295,14 +296,12 @@ export function GetPubliAmigo(id: string, offset: number) {
   const [publicacionesAmigo, setPublicacionesAmigo] = useRecoilState(
     publicacionSearchUser
   );
-  const token = getCookie('token');
 
   const api = `/user/amigos/publicaciones/${id}?offset=${offset}`;
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -537,8 +536,8 @@ export function EnviarMessage(datas: any) {
     credentials: 'include',
     body: JSON.stringify(datas),
   };
-  const {data, isLoading, error} = useSWR(
-    token && datas.message && datas.rtdb ? api : null,
+  const {data, isLoading} = useSWR(
+    token != 'true' && datas.message && datas.rtdb ? api : null,
     (url) => fetchApiSwr(url, option),
     {
       revalidateOnReconnect: true,

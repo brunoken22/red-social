@@ -6,10 +6,12 @@ import NightSvg from '@/ui/icons/night.svg';
 import CloseDoorSvg from '@/ui/icons/closeDoor.svg';
 import FotoPerfil from '@/ui/FotoPerfil';
 import {logOut} from '@/lib/hook';
+import {useRouter} from 'next/navigation';
 
 const className = 'text-center flex items-center gap-2';
 
 export function Menu(props: any) {
+  const {push} = useRouter();
   const themeValue =
     typeof window !== undefined ? localStorage.getItem('theme') : false;
   const enlaces: any = useRef(null);
@@ -39,7 +41,7 @@ export function Menu(props: any) {
   const handleClick = async () => {
     const logoutData = await logOut();
     if (logoutData) {
-      return window.location.assign(window.location.origin + '/signin');
+      return push('/signin');
     }
   };
   const handleBlur = () => {

@@ -14,11 +14,6 @@ const className = 'text-center flex items-center gap-2';
 export function Menu(props: any) {
   const {push} = useRouter();
   const enlaces: any = useRef(null);
-  // const themeValue =
-  //   typeof window !== undefined ? localStorage.getItem('theme') : false;
-  // const [theme, setThemes] = useState<boolean>(
-  //   (themeValue && JSON.parse(themeValue)) || false
-  // );
 
   useEffect(() => {
     // console.log(enlaces);
@@ -58,7 +53,7 @@ export function Menu(props: any) {
           <FotoPerfil className='w-[20px] h-[20px]' img={props.userImg} />
           <Span> {props.userName}</Span>
         </Link>
-        {props.theme ? (
+        {!props.theme ? (
           <button
             onClick={() => props.themebutton(!props.theme)}
             className={className}>

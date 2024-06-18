@@ -38,17 +38,17 @@ export function Menu(props: any) {
 
   const handleClick = async () => {
     const logoutData = await logOut();
-    // if (logoutData) {
-    //   return window.location.assign(window.location.origin + '/signin');
-    // }
+    if (logoutData) {
+      return window.location.assign(window.location.origin + '/signin');
+    }
   };
   const handleBlur = () => {
     // console.log('salistes del focus');
     // if (focus) {
-    setTimeout(() => {
-      // console.log('settimeout');
-      props.click(false);
-    }, 10000);
+    // setTimeout(() => {
+    // console.log('settimeout');
+    // props.click(false);
+    // }, 10000);
     // }
   };
 

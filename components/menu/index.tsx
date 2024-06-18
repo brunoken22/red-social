@@ -57,14 +57,14 @@ export function Menu(props: any) {
           <button
             onClick={() => props.themebutton(!props.theme)}
             className={className}>
-            <NightSvg className='fill-black dark:fill-white' />
+            <NightSvg className='fill-black' />
             modo oscuro
           </button>
         ) : (
           <button
             onClick={() => props.themebutton(!props.theme)}
             className={className}>
-            <SunSvg className='fill-[#ffe289] dark:fill-white' />
+            <SunSvg className=' fill-[#ffe289]' />
             modo claro
           </button>
         )}

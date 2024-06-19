@@ -493,10 +493,6 @@ export async function comentarPublicacion(datas: any) {
     credentials: 'include',
     body: JSON.stringify({description: datas.description}),
   };
-  // const {data, isLoading} = useSWRImmutable(
-  //   token && datas.click ? {api, option} : null,
-  //   fetchApiSwr
-  // );
 
   const data = await fetchApiSwr(api, option);
   mutate(`/user/amigos/publicaciones?offset=0`);

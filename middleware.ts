@@ -3,9 +3,9 @@ import {NextRequest} from 'next/server';
 
 export async function middleware(request: NextRequest) {
   const isToken = request.cookies.get('login')?.value;
-
+  console.log(isToken);
   try {
-    if (isToken === 'false' || !isToken) {
+    if (isToken == 'false' || !isToken) {
       if (
         request.nextUrl.pathname !== '/signin' &&
         request.nextUrl.pathname !== '/signup'

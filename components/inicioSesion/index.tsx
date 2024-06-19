@@ -43,8 +43,9 @@ export function Signin() {
       setIsLoading(false);
 
       if (data) {
+        console.log(data);
         setDataUser(data);
-        router.push('/home', {scroll: true});
+        router.push('/home');
         return;
       }
       alert('Intentalo de nuevo');

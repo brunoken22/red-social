@@ -532,7 +532,7 @@ export function EnviarMessage(datas: any) {
     body: JSON.stringify(datas),
   };
   const {data, isLoading} = useSWR(
-    token == 'false' && datas.message && datas.rtdb ? api : null,
+    token == 'true' && datas.message && datas.rtdb ? api : null,
     (url) => fetchApiSwr(url, option),
     {
       revalidateOnReconnect: true,

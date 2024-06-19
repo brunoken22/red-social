@@ -11,7 +11,7 @@ export const TemplMensaje = ({children}: {children: React.ReactNode}) => (
 );
 
 export const TemplChat = ({children}: {children: React.ReactNode}) => (
-  <div className='flex flex-col gap-4 '>{children}</div>
+  <div className='flex flex-col gap-4 max-md:gap-2 '>{children}</div>
 );
 
 export const TemplSns = ({children}: {children: React.ReactNode}) => (

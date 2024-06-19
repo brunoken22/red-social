@@ -140,9 +140,11 @@ export function PerfilAmigo() {
           {amigoId < 0 && isAmigo !== 'PENDING' ? (
             <ButtonAgregar
               id={data?.user?.id}
-              onClick={isAmigo ? handleEliminarAmigo : handleSolicitudEnv}
+              onClick={
+                isAmigo == 'ACCEPTED' ? handleEliminarAmigo : handleSolicitudEnv
+              }
               bg={isAmigo !== 'REJECTED' ? 'red' : 'blue'}>
-              {isAmigo ? 'Eliminar Amigo' : 'Agregar'}
+              {isAmigo == 'ACCEPTED' ? 'Eliminar Amigo' : 'Agregar'}
             </ButtonAgregar>
           ) : isAmigo == 'PENDING' &&
             soliReci?.find((user) => user.id == data?.user.id) ? (

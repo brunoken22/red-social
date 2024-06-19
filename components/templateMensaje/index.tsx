@@ -155,14 +155,14 @@ export function TemMensaje() {
     <DivTemMensaje>
       {!dataMensajeUser.rtdb ? (
         <TemplMensaje>
-          <h2>Chats</h2>
+          <h2 className='text-2xl font-bold text-center'>Chats</h2>
           <TemplChat>
             {dataGetAllUsersChat?.length
               ? dataGetAllUsersChat.map((e: User, p: number) => {
                   return (
                     <button
                       type='submit'
-                      className='w-full p-2 rounded-md hover:opacity-70 '
+                      className='w-full  rounded-md hover:opacity-70 '
                       key={p}
                       onClick={() => {
                         const rtdbId = existenElementosSimilares(

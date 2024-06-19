@@ -169,7 +169,7 @@ export function TemAmigos() {
                           className='object-cover w-full h-full'
                         />
                       </Link>
-                      <div className='p-2'>
+                      <div className='p-2 h-2/5'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>
@@ -206,7 +206,7 @@ export function TemAmigos() {
                           className='object-cover  w-full h-full'
                         />
                       </Link>{' '}
-                      <div className='p-2'>
+                      <div className='p-2 h-2/5'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>
@@ -252,7 +252,7 @@ export function TemAmigos() {
                           className='object-cover  w-full h-full'
                         />
                       </Link>
-                      <div className='p-2'>
+                      <div className='p-2 h-2/5'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>
@@ -293,7 +293,7 @@ export function TemAmigos() {
                           className='object-cover  w-full h-full'
                         />
                       </Link>
-                      <div className='p-2'>
+                      <div className='p-2 h-2/5'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>

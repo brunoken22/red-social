@@ -213,7 +213,7 @@ export function TemMensaje() {
 
       {dataMensajeUser.rtdb ? (
         <TemplSns>
-          <div className='flex justify-between border-[1px] border-[#3b3b3b] p-4'>
+          <div className='flex justify-between border-[1px] border-[#3b3b3b] p-2'>
             <div className='flex items-center gap-4'>
               <Link href={'/amigos/' + dataMensajeUser.id}>
                 <FotoPerfil
@@ -232,13 +232,7 @@ export function TemMensaje() {
               <CloseSVG />
             </Button>
           </div>
-          <div
-            style={{
-              display: 'inherit',
-              flexDirection: 'column',
-              gap: '1rem',
-              maxHeight: '70vh',
-            }}>
+          <div className='flex flex-col gap-4 h-full  border-[1px] border-[#3b3b3b]'>
             <Sms ref={containerRef}>
               {messagesAll
                 ? messagesAll?.map((e: any, p: any) => {
@@ -281,7 +275,7 @@ export function TemMensaje() {
                 <button
                   type='submit'
                   id={dataMensajeUser.rtdb}
-                  className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70 shrink-[5]'>
+                  className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70 shrink-[5] dark:bg-primary dark:text-black'>
                   Enviar
                 </button>
               </form>

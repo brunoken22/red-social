@@ -15,7 +15,7 @@ export const TemplChat = ({children}: {children: React.ReactNode}) => (
 );
 
 export const TemplSns = ({children}: {children: React.ReactNode}) => (
-  <div className='flex flex-col gap-4 max-w-[800px] w-[90%] border-[1px] border-[#3b3b3b] rounded-md max-lg:p-3'>
+  <div className='flex flex-col gap-4 max-w-[800px] w-full h-[85vh] rounded-md '>
     {children}
   </div>
 );
@@ -23,7 +23,7 @@ export const TemplSns = ({children}: {children: React.ReactNode}) => (
 export const Sms = ({children, ref}: {children: React.ReactNode; ref: any}) => (
   <div
     ref={ref}
-    className='flex flex-col w-full text-primary gap-2 p-4  overflow-y-auto min-h-[50vh]'>
+    className='flex flex-col w-full text-primary gap-2 p-4  overflow-y-auto h-full'>
     {children}
   </div>
 );

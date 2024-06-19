@@ -4,7 +4,7 @@ export const Main = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivMain = ({children}: {children: React.ReactNode}) => (
-  <main className=' pl-4 pr-4 flex gap-12 flex-wrap  items-center p-0 '>
+  <main className='  flex gap-12 flex-wrap  items-center h-full'>
     {children}
   </main>
 );

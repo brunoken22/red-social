@@ -119,7 +119,7 @@ export function TemAmigos() {
     <Section>
       <DivSection>
         <div className='sticky top-16 z-[9]'>
-          <h2 style={{marginTop: '0'}}>Amigos</h2>
+          <h2 className='font-semibold text-2xl text-center p-2'>Amigos</h2>
           <div
             style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
             <ButtonNoti onClick={handleClick} id='suge' open={sugerencia}>
@@ -153,21 +153,23 @@ export function TemAmigos() {
       <DivResult>
         {sugerencia && !soliAmis && !allAmig ? (
           <>
-            <h3 style={{marginTop: '0'}}>Sugerencias de amistad</h3>
+            <h3 className='font-semibold text-xl mb-4'>
+              Sugerencias de amistad
+            </h3>
             <DivResponse>
               {dataAllUser?.length > 0
                 ? dataAllUser?.map((e: User) => (
                     <DivAllAmistades key={e.id}>
                       {' '}
-                      <Link href={'/amigos/' + e.id}>
+                      <Link href={'/amigos/' + e.id} className='h-[70%]'>
                         {' '}
                         <img
                           src={e.img ? e.img : '/user.webp'}
                           alt={e.fullName}
-                          className='object-cover w-full h-3/5'
+                          className='object-cover w-full h-full'
                         />
                       </Link>
-                      <div className='mt-6'>
+                      <div className='p-2'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>
@@ -188,21 +190,23 @@ export function TemAmigos() {
         ) : null}
         {soliAmis ? (
           <>
-            <h3 style={{marginTop: '0'}}>Solicitudes de amistad</h3>
+            <h3 className='font-semibold text-xl mb-4' style={{marginTop: '0'}}>
+              Solicitudes de amistad
+            </h3>
             <DivResponse>
               {dataAllSoliReci?.length > 0
                 ? dataAllSoliReci.map((e: any) => (
                     <DivAllAmistades key={e.id}>
                       {' '}
-                      <Link href={'/amigos/' + e.id}>
+                      <Link href={'/amigos/' + e.id} className='h-[70%]'>
                         {' '}
                         <img
                           src={e.img ? e.img : '/user.webp'}
                           alt={e.fullName}
-                          className='object-cover w-full h-3/5'
+                          className='object-cover  w-full h-full'
                         />
                       </Link>{' '}
-                      <div className='mt-6'>
+                      <div className='p-2'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>
@@ -233,20 +237,22 @@ export function TemAmigos() {
         ) : null}
         {allAmig ? (
           <>
-            <h3 style={{marginTop: '0'}}>Todos tus amigos</h3>
+            <h3 className='font-semibold text-xl mb-4' style={{marginTop: '0'}}>
+              Todos tus amigos
+            </h3>
             <DivResponse>
               {dataAllAmigos?.length > 0
                 ? dataAllAmigos.map((e: any) => (
                     <DivAllAmistades key={e.id}>
-                      <Link href={'/amigos/' + e.id}>
+                      <Link href={'/amigos/' + e.id} className='h-[70%]'>
                         {' '}
                         <img
                           src={e.img ? e.img : '/user.webp'}
                           alt={e.fullName}
-                          className='object-cover w-full h-3/5'
+                          className='object-cover  w-full h-full'
                         />
                       </Link>
-                      <div className='mt-6'>
+                      <div className='p-2'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>
@@ -272,20 +278,22 @@ export function TemAmigos() {
         ) : null}
         {soliEnv ? (
           <>
-            <h3 style={{marginTop: '0'}}>Solicitud Enviado</h3>
+            <h3 className='font-semibold text-xl mb-4' style={{marginTop: '0'}}>
+              Solicitud Enviado
+            </h3>
             <DivResponse>
               {dataAllSoliEnv?.length > 0
                 ? dataAllSoliEnv.map((e: any) => (
                     <DivAllAmistades key={e.id}>
-                      <Link href={'/amigos/' + e.id}>
+                      <Link href={'/amigos/' + e.id} className='h-[70%]'>
                         {' '}
                         <img
                           src={e.img ? e.img : '/user.webp'}
                           alt={e.fullName}
-                          className='object-cover w-full h-3/5'
+                          className='object-cover  w-full h-full'
                         />
                       </Link>
-                      <div className='mt-6'>
+                      <div className='p-2'>
                         <p style={{overflow: 'hidden', height: '1.5rem'}}>
                           {e.fullName}
                         </p>

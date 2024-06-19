@@ -104,7 +104,7 @@ export function TemplateNotifiId() {
   const {id} = useParams();
   const {dataPubliId} = GetPublicacionId(id as string);
   const dataUser = useRecoilValue(user);
-  return dataPubliId ? (
+  return dataPubliId && false ? (
     <div style={{maxWidth: '600px', width: '100%'}}>
       <DivAllPublicaciones>
         <ThemplatePubli

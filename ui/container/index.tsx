@@ -30,7 +30,7 @@ export const DivPublicaciones = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivPublicar = ({children}: {children: React.ReactNode}) => (
-  <div className='bg-primary  p-4 flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto max-md:mt-4 dark:bg-darkComponet dark:text-primary dark:shadow-none'>
+  <div className='bg-primary  p-4 flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto max-md:mt-4 dark:bg-darkComponet dark:text-primary dark:shadow-none text-center  max-w-screen-md	m-auto '>
     {children}
   </div>
 );
@@ -48,7 +48,7 @@ export const DivAllConnect = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivAllAmistades = ({children}: {children: React.ReactNode}) => (
-  <div className='bg-primary flex-col gap-4 rounded-md shadow-container  max-md:mt-4 w-[185px] h-[300px] p-0  block max-md:w-[160px] dark:bg-darkComponet'>
+  <div className='bg-primary flex-col rounded-md shadow-container  max-md:mt-4 w-[185px] h-[300px] p-0   max-md:w-[160px] dark:bg-darkComponet flex justify-between'>
     {children}
   </div>
 );

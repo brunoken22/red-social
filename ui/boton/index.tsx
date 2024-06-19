@@ -68,13 +68,13 @@ export const ButtonNoti = ({
   <button
     id={id}
     onClick={onClick}
-    className={`flex items-center gap-4 w-full border-none h-16 rounded-md p-2${
+    className={`flex items-center text-start   gap-4 w-full border-none h-16 rounded-md p-2 ${
       visto ? 'bg-hoverPrimary' : ''
     } ${
       open
         ? 'opacity-70 dark:fill-white fill-black'
         : 'dark:fill-[#e5e7eb] fill-gray-800'
-    } hover:opacity-60   `}>
+    } hover:opacity-60`}>
     {children}
   </button>
 );
@@ -97,7 +97,7 @@ export const ButtonAgregar = ({
       bg == 'red'
         ? 'bg-[#ff5252] hover:bg-[#ff5252]'
         : 'bg-[#4298ed] hover:bg-[#4298ed]'
-    } border-none text-[0.8rem] p-[0.7rem] rounded-xl text-primary max-md:p-2`}>
+    } border-none text-[0.8rem] p-[0.7rem] rounded-xl text-primary max-md:p-2 hover:opacity-60`}>
     {children}
   </button>
 );

@@ -3,8 +3,6 @@ import {useRouter} from 'next/navigation';
 import {signinUser} from '@/lib/hook';
 import {Loader} from '../loader';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {useRecoilState} from 'recoil';
-import {user} from '@/lib/atom';
 import {useState} from 'react';
 
 type typeForm = {
@@ -13,7 +11,6 @@ type typeForm = {
 };
 export function Signin() {
   const router = useRouter();
-  const [dataUser, setDataUser] = useRecoilState(user);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -21,17 +18,6 @@ export function Signin() {
     handleSubmit,
     formState: {errors: error1},
   } = useForm<typeForm>();
-
-  // useEffect(() => {
-  //   if (data && data.user == false) {
-  //     alert('Contraseña o usuario incorrecto');
-  //     return;
-  //   }
-  //   if (data && data.id) {
-  //     router.replace('/home');
-  //     console.log(data);
-  //   }
-  // }, [data]);
 
   const onSubmit: SubmitHandler<typeForm> = async (dataForm) => {
     setIsLoading(true);
@@ -41,10 +27,9 @@ export function Signin() {
         password: dataForm.password,
       });
       setIsLoading(false);
-
       if (data) {
-        setDataUser(data);
-        router.push('/home');
+        // router.push('/home')
+        window.location.href = window.location.origin + '/home';
         console.log(data);
         return;
       }

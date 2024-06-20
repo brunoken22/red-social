@@ -1,5 +1,4 @@
 'use client';
-import {useRouter} from 'next/navigation';
 import {signinUser} from '@/lib/hook';
 import {Loader} from '../loader';
 import {SubmitHandler, useForm} from 'react-hook-form';
@@ -10,7 +9,6 @@ type typeForm = {
   password: string;
 };
 export function Signin() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -28,9 +26,7 @@ export function Signin() {
       });
       setIsLoading(false);
       if (data) {
-        // router.push('/home')
         window.location.href = window.location.origin + '/home';
-        console.log(data);
         return;
       }
       alert('Intentalo de nuevo');

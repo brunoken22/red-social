@@ -1,18 +1,16 @@
 import {DivEnlaces, Button, Span} from './styled';
 import Link from 'next/link';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef} from 'react';
 import ConfigurateSvg from '@/ui/icons/configuration.svg';
 import NightSvg from '@/ui/icons/night.svg';
 import SunSvg from '@/ui/icons/sun.svg';
 import CloseDoorSvg from '@/ui/icons/closeDoor.svg';
 import FotoPerfil from '@/ui/FotoPerfil';
 import {logOut} from '@/lib/hook';
-import {useRouter} from 'next/navigation';
 
 const className = 'text-center flex items-center gap-2';
 
 export function Menu(props: any) {
-  const {push} = useRouter();
   const enlaces: any = useRef(null);
 
   useEffect(() => {
@@ -26,7 +24,7 @@ export function Menu(props: any) {
   const handleClick = async () => {
     const logoutData = await logOut();
     if (logoutData) {
-      return push('/signin');
+      window.location.href = window.location.origin + '/signin';
     }
   };
   const handleBlur = () => {

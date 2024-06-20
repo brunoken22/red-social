@@ -4,8 +4,6 @@ import {NextRequest} from 'next/server';
 export async function middleware(request: NextRequest) {
   const isToken = request.cookies.get('login')?.value;
   try {
-    console.log(isToken, request.nextUrl.pathname);
-
     if (isToken == 'false' || !isToken) {
       if (
         request.nextUrl.pathname !== '/signin' &&
@@ -13,8 +11,6 @@ export async function middleware(request: NextRequest) {
       ) {
         return NextResponse.redirect(new URL('/signin', request.url));
       }
-      // console.log('isToken', isToken);
-
       return NextResponse.next();
     } else {
       if (
@@ -27,7 +23,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
   } catch (e: any) {
-    console.log(e.message);
     return NextResponse.next();
   }
 }

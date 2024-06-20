@@ -43,6 +43,7 @@ import {
 } from './styled';
 import {ButtonSmsConnect} from '@/ui/boton';
 import {DivAllConnect} from '@/ui/container';
+import {SkeletonNav} from '@/ui/skeleton';
 
 export default function Header() {
   const {load} = useGlobalAudioPlayer();
@@ -365,5 +366,7 @@ export default function Header() {
         </DivConnectAll>
       </DivContenedorConnect>
     </>
-  ) : null;
+  ) : (
+    <SkeletonNav />
+  );
 }

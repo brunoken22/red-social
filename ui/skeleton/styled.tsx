@@ -11,7 +11,9 @@ export const PhotoSkeleton = ({
   className?: string;
 }) => (
   <div
-    className={`rounded-full bg-[#858585] relative overflow-auto h-[80px] w-[80px]${className}`}>
+    className={`rounded-full bg-[#858585] relative overflow-auto  ${
+      className ? className : 'h-[80px] w-[80px]'
+    }  transition-all	 animate-animationSkeleton`}>
     {children}
   </div>
 );

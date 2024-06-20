@@ -24,13 +24,13 @@ export const ContainerMain = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivPublicaciones = ({children}: {children: React.ReactNode}) => (
-  <div className='max-w-[500px] w-full max-md:w-full flex flex-col gap-8'>
+  <div className='max-w-[500px] w-full max-md:w-full flex flex-col gap-8 max-md:gap-4'>
     {children}
   </div>
 );
 
 export const DivPublicar = ({children}: {children: React.ReactNode}) => (
-  <div className='bg-primary  p-4 flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto max-md:mt-4 dark:bg-darkComponet dark:text-primary dark:shadow-none text-center   '>
+  <div className='bg-primary  p-4 flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center   '>
     {children}
   </div>
 );

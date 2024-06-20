@@ -35,7 +35,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
           <div
             className={`${
               pathname !== '/signin' && pathname !== '/signup'
-                ? 'mt-8  ml-2 mr-2 '
+                ? 'mt-8 ml-2 mr-2 max-md:mt-5 '
                 : ''
             } `}>
             {children}

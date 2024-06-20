@@ -168,7 +168,7 @@ export function NotificacionesUser(offset: number) {
     credentials: 'include',
   };
 
-  const {data, isLoading} = useSWR({api, option}, fetchApiSwr, {
+  const {data, isLoading} = useSWR(api, (api) => fetchApiSwr(api, option), {
     revalidateOnReconnect: true,
     revalidateOnMount: true,
     revalidateOnFocus: true,
@@ -222,6 +222,20 @@ export function NotificacionesUserImmutable(offset: number) {
     dataNotiSwr: data,
     isLoadingNotiSwr: isLoading,
   };
+}
+export async function viewNotification(idPublication: string) {
+  const api = `/user/notificaciones/${idPublication}`;
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  };
+
+  const data = await fetchApiSwr(api, option);
+  mutate('/user/notificaciones?offset=0');
+  return data;
 }
 export function GetAllPublicaciones(offset: number) {
   const [publicacionesAllAmigos, setPublicacionesAllAmigos] =

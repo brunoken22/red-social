@@ -282,8 +282,7 @@ export default function Header() {
             amigos={dataSoliReci?.length}
             message={dataMessage.length}
             notification={
-              notificacionesUserAtom?.length > 0 &&
-              notificacionesUserAtom?.filter((e: any) => e.open == true).length
+              notificacionesUserAtom?.length && notificacionesUserAtom?.length
             }
           />
           <div className='relative'>

@@ -1,7 +1,6 @@
 import {usePathname} from 'next/navigation';
 import Link from 'next/link';
 import Home from '@/ui/icons/home.svg';
-import Logo from '@/public/logo.svg';
 import Amigos from '@/ui/icons/amigos.svg';
 import Chat from '@/ui/icons/chat.svg';
 import Notificaciones from '@/ui/icons/notificaciones.svg';

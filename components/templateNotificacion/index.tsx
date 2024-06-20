@@ -3,12 +3,16 @@ import {ButtonNoti} from '@/ui/boton';
 import {DivAllPublicaciones, DivPublicar} from '@/ui/container';
 import FotoPerfil from '@/ui/FotoPerfil';
 import {user, isConnect, notificacionesUser, Publicacion} from '@/lib/atom';
-import {GetPublicacionId, NotificacionesUser} from '@/lib/hook';
+import {
+  GetPublicacionId,
+  NotificacionesUser,
+  viewNotification,
+} from '@/lib/hook';
 import {useRecoilValue, useRecoilState} from 'recoil';
 import Link from 'next/link';
 import {useParams} from 'next/navigation';
 import {Loader} from '../loader';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ButtonMasPubli} from '../publicaciones/styled';
 import {SkeletonNoti} from '@/ui/skeleton';
 import {ThemplatePubli} from '../templatePublicate';
@@ -28,6 +32,7 @@ export function TemNoti() {
     }
     setOffset((prevPagePubli) => prevPagePubli + 15);
   };
+
   return (
     <DivPublicar>
       {notificacionesUserAtom.length
@@ -57,14 +62,14 @@ export function TemNoti() {
                 <FotoPerfil
                   className='w-[40px] h-[40px]'
                   img={
-                    e.comentarios
+                    e.commentPublis
                       ?.slice()
                       .reverse()
-                      .find((e: any) => e.userId !== dataUser.user.id)?.img
+                      .find((e: any) => e.userId !== dataUser.user.id).user?.img
                   }
                   connect={
                     dataIsConnect?.find((eConnect: any) => {
-                      const userComment = e.comentarios
+                      const userComment = e.commentPublis
                         ?.slice()
                         .reverse()
                         .find((e: any) => e.userId !== dataUser.user.id);
@@ -75,10 +80,11 @@ export function TemNoti() {
                 <p>
                   Nueva comentario en tu publicacion de{' '}
                   {
-                    e.comentarios
+                    e.commentPublis
                       ?.slice()
                       .reverse()
-                      .find((e: any) => e.userId !== dataUser.user.id)?.fullName
+                      .find((e: any) => e.userId !== dataUser.user.id).user
+                      ?.fullName
                   }
                 </p>
               </ButtonNoti>
@@ -104,7 +110,13 @@ export function TemplateNotifiId() {
   const {id} = useParams();
   const {dataPubliId} = GetPublicacionId(id as string);
   const dataUser = useRecoilValue(user);
-  return dataPubliId && false ? (
+  useEffect(() => {
+    (async () => {
+      const data = await viewNotification(id as string);
+      return data;
+    })();
+  }, []);
+  return dataPubliId ? (
     <div style={{maxWidth: '600px', width: '100%'}}>
       <DivAllPublicaciones>
         <ThemplatePubli

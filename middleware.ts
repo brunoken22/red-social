@@ -3,8 +3,9 @@ import {NextRequest} from 'next/server';
 
 export async function middleware(request: NextRequest) {
   const isToken = request.cookies.get('login')?.value;
-  console.log(isToken, request.nextUrl.pathname);
   try {
+    console.log(isToken, request.nextUrl.pathname);
+
     if (isToken == 'false' || !isToken) {
       if (
         request.nextUrl.pathname !== '/signin' &&
@@ -16,6 +17,8 @@ export async function middleware(request: NextRequest) {
 
       return NextResponse.next();
     } else {
+      console.log(isToken, request.nextUrl.pathname);
+
       if (
         request.nextUrl.pathname === '/signin' ||
         request.nextUrl.pathname === '/signup' ||
@@ -26,6 +29,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
   } catch (e: any) {
+    console.log(e.message);
     return NextResponse.next();
   }
 }
@@ -41,5 +45,6 @@ export const config = {
     '/search',
     '/signin',
     '/signup',
+    '/',
   ],
 };

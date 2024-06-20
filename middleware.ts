@@ -17,8 +17,6 @@ export async function middleware(request: NextRequest) {
 
       return NextResponse.next();
     } else {
-      console.log(isToken, request.nextUrl.pathname);
-
       if (
         request.nextUrl.pathname === '/signin' ||
         request.nextUrl.pathname === '/signup' ||

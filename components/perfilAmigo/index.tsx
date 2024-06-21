@@ -118,6 +118,8 @@ export function PerfilAmigo() {
     }
     setPagePubli((prevPagePubli) => prevPagePubli + 10);
   };
+  console.log(amigoId, isAmigo, soliReci);
+
   return data ? (
     <DivPerfilUser>
       <DivHeadPerfil>
@@ -133,11 +135,11 @@ export function PerfilAmigo() {
             />
           )}
           <h2 className='text-center  font-bold text-2xl max-md:mb-4'>
-            {data?.user?.fullName}
+            {data.user.fullName}
           </h2>
         </DivFotoNameLink>
         <div>
-          {amigoId < 0 && isAmigo !== 'PENDING' ? (
+          {amigoId < 1 && isAmigo !== 'PENDING' ? (
             <ButtonAgregar
               id={data?.user?.id}
               onClick={
@@ -203,8 +205,6 @@ export function PerfilAmigo() {
       </DivPublicaciones>
     </DivPerfilUser>
   ) : (
-    <>
-      <SkeletonPerfilAmigo />
-    </>
+    <SkeletonPerfilAmigo />
   );
 }

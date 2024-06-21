@@ -467,14 +467,13 @@ export function RechazarSolicitud(dataSoli: any) {
 }
 export function EliminarAmigo(datas: any) {
   const token = getCookie('login');
-  const api = '/user/amigos';
+  const api = '/user/amigos/' + datas.userId;
   const option = {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
     },
     credentials: 'include',
-    body: JSON.stringify(datas),
   };
   const {data, isLoading} = useSWR(
     token && datas.userId > -1 ? api : null,

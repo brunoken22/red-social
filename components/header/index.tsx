@@ -17,7 +17,7 @@ import {usePathname, useRouter} from 'next/navigation';
 import {SearchBox, Hits, useHits} from 'react-instantsearch';
 import {Hit} from '../searchUsers';
 import React, {useEffect, useState} from 'react';
-import {useGlobalAudioPlayer} from 'react-use-audio-player';
+// import {useGlobalAudioPlayer} from 'react-use-audio-player';
 import Logo from '@/public/logo.svg';
 import Link from 'next/link';
 import FotoPerfil from '@/ui/FotoPerfil';
@@ -46,7 +46,7 @@ import {DivAllConnect} from '@/ui/container';
 import {SkeletonNav} from '@/ui/skeleton';
 
 export default function Header() {
-  const {load} = useGlobalAudioPlayer();
+  // const {load} = useGlobalAudioPlayer();
   const pathname = usePathname();
   const router = useRouter();
   const dataUser = useRecoilValue(user);
@@ -89,18 +89,18 @@ export default function Header() {
       document.documentElement.classList.remove('dark');
     }
   }, [theme]);
-  useEffect(() => {
-    if (notificacionesUserAtom.length) {
-      const newNotificationSound = notificacionesUserAtom.filter((item) => {
-        load('/notification.mp3', {autoplay: true});
-        return {
-          ...item,
-          notification: false,
-        };
-      });
-      setNotificationSound(newNotificationSound);
-    }
-  }, [notificacionesUserAtom]);
+  // useEffect(() => {
+  //   if (notificacionesUserAtom.length) {
+  //     const newNotificationSound = notificacionesUserAtom.filter((item) => {
+  //       load('/notification.mp3', {autoplay: true});
+  //       return {
+  //         ...item,
+  //         notification: false,
+  //       };
+  //     });
+  //     setNotificationSound(newNotificationSound);
+  //   }
+  // }, [notificacionesUserAtom]);
   // useEffect(() => {
   //   if (notificationSound.length) {
   //     const newNoti = notificationSound.map((item) => {
@@ -144,7 +144,7 @@ export default function Header() {
               count.push(utlimoMensaje);
               setDataMessage([...count]);
               // play();
-              load('/messages.mp3', {autoplay: true});
+              // load('/messages.mp3', {autoplay: true});
               return;
             }
             if (utlimoMensaje.read) {

@@ -69,9 +69,9 @@ export default function NavegationUrl({
         href={'/notificaciones'}
         aria-label='notificaciones'
         className={className}>
-        {notification && notification !== 0 && (
+        {notification ? (
           <DivNotificacionActi>{notification}</DivNotificacionActi>
-        )}
+        ) : null}
         <span>
           <Notificaciones
             className={`${
@@ -85,12 +85,12 @@ export default function NavegationUrl({
     </div>
   );
 }
-const obtenerObjetosUnicos = (array: any[]) => {
-  return array.reduce((resultado, objeto) => {
-    const existe = resultado.some((item: any) => item['id'] === objeto['id']);
-    if (!existe) {
-      resultado.push(objeto);
-    }
-    return resultado;
-  }, []);
-};
+// const obtenerObjetosUnicos = (array: any[]) => {
+//   return array.reduce((resultado, objeto) => {
+//     const existe = resultado.some((item: any) => item['id'] === objeto['id']);
+//     if (!existe) {
+//       resultado.push(objeto);
+//     }
+//     return resultado;
+//   }, []);
+// };

@@ -161,7 +161,9 @@ export function TemAmigos() {
                 ? dataAllUser?.map((e: User) => (
                     <DivAllAmistades key={e.id}>
                       {' '}
-                      <Link href={'/amigos/' + e.id} className='h-[70%]'>
+                      <Link
+                        href={'/amigos/' + e.id + '/' + e.fullName}
+                        className='h-[70%]'>
                         {' '}
                         <img
                           src={e.img ? e.img : '/user.webp'}
@@ -198,7 +200,9 @@ export function TemAmigos() {
                 ? dataAllSoliReci.map((e: any) => (
                     <DivAllAmistades key={e.id}>
                       {' '}
-                      <Link href={'/amigos/' + e.id} className='h-[70%]'>
+                      <Link
+                        href={'/amigos/' + e.id + '/' + e.fullName}
+                        className='h-[70%]'>
                         {' '}
                         <img
                           src={e.img ? e.img : '/user.webp'}
@@ -244,7 +248,9 @@ export function TemAmigos() {
               {dataAllAmigos?.length > 0
                 ? dataAllAmigos.map((e: any) => (
                     <DivAllAmistades key={e.id}>
-                      <Link href={'/amigos/' + e.id} className='h-[70%]'>
+                      <Link
+                        href={'/amigos/' + e.id + '/' + e.fullName}
+                        className='h-[70%]'>
                         {' '}
                         <img
                           src={e.img ? e.img : '/user.webp'}
@@ -285,7 +291,9 @@ export function TemAmigos() {
               {dataAllSoliEnv?.length > 0
                 ? dataAllSoliEnv.map((e: any) => (
                     <DivAllAmistades key={e.id}>
-                      <Link href={'/amigos/' + e.id} className='h-[70%]'>
+                      <Link
+                        href={'/amigos/' + e.id + '/' + e.fullName}
+                        className='h-[70%]'>
                         {' '}
                         <img
                           src={e.img ? e.img : '/user.webp'}

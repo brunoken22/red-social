@@ -21,13 +21,13 @@ import {
 import Like from '@/ui/icons/like.svg';
 import CloseWhite from '@/ui/icons/closeWhite.svg';
 import Comentar from '@/ui/icons/comentar.svg';
-import {isConnect, getAllUser, user} from '@/lib/atom';
+import {isConnect} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {LikeODisLike, comentarPublicacion, DeletePublic} from '@/lib/hook';
 import {SendComentPubli} from '@/ui/icons';
-import {InputP} from '../publicar/styled';
+// import {InputP} from '../publicar/styled';
 import moment from 'moment';
 const iconConLike = {
   height: ' 20px',
@@ -118,7 +118,7 @@ export function ThemplatePubli(props: {
       <DivPefilDelete aria-label='DivPefilDelete'>
         <DivPerfil>
           {props.user?.id !== props.userId ? (
-            <Link href={'/amigos/' + props.id}>
+            <Link href={'/amigos/' + props.id + '/' + props.user.fullName}>
               <FotoPerfil
                 img={props?.user?.img}
                 className='h-[40px] w-[40px]'
@@ -396,7 +396,7 @@ function TemplateComentario(props: {
     <div style={{margin: '1rem'}}>
       <DivPerfil>
         {props.userName !== 'Tú' ? (
-          <Link href={'/amigos/' + props.userId}>
+          <Link href={'/amigos/' + props.userId + '/' + props.userName}>
             <FotoPerfil
               className='h-[30px] w-[30px]'
               img={props.imgUser}></FotoPerfil>
@@ -411,7 +411,7 @@ function TemplateComentario(props: {
           <div className=' p-2 bg-[#ddddddb0] rounded-[0px_0.5rem_0.5rem] dark:bg-dark'>
             {props.userName !== 'Tú' ? (
               <Link
-                href={'/amigos/' + props.userId}
+                href={'/amigos/' + props.userId + '/' + props.userName}
                 className='font-medium m-0'>
                 {props.userName}
               </Link>

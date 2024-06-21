@@ -215,7 +215,13 @@ export function TemMensaje() {
         <TemplSns>
           <div className='flex justify-between border-[1px] border-[#3b3b3b] p-2'>
             <div className='flex items-center gap-4'>
-              <Link href={'/amigos/' + dataMensajeUser.id}>
+              <Link
+                href={
+                  '/amigos/' +
+                  dataMensajeUser.id +
+                  '/' +
+                  dataMensajeUser.fullName
+                }>
                 <FotoPerfil
                   className='w-[40px] h-[40px]'
                   img={dataMensajeUser.img || ''}

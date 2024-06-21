@@ -118,7 +118,6 @@ export function PerfilAmigo() {
     }
     setPagePubli((prevPagePubli) => prevPagePubli + 10);
   };
-  console.log(amigoId, isAmigo, soliReci);
 
   return data ? (
     <DivPerfilUser>

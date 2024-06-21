@@ -52,7 +52,7 @@ export function Hit({hit}: HitProps) {
 
   return (
     <Link
-      href={'/amigos/' + hit.objectID}
+      href={'/amigos/' + hit.objectID + '/' + hit.fullName}
       style={{
         textDecoration: 'none',
         color: '#fff',

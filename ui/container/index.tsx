@@ -30,7 +30,7 @@ export const DivPublicaciones = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivPublicar = ({children}: {children: React.ReactNode}) => (
-  <div className='bg-primary  p-4 flex flex-col justify-evenly gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center   '>
+  <div className='bg-primary max-w-[500px] w-[inherit] h-max  p-4 flex flex-col justify-evenly gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center   '>
     {children}
   </div>
 );

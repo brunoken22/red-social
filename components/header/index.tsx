@@ -55,7 +55,7 @@ export default function Header() {
   const [, setDatagetAllUsersChat] = useRecoilState(getAllUsersChat);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
-  const [notificationSound, setNotificationSound] = useState<any[]>([]);
+  // const [notificationSound, setNotificationSound] = useState<any[]>([]);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const [search, setSearch] = useState('');
   const [allConnectAmigos, setAllConnectAmigos] = useState([]);
@@ -113,6 +113,7 @@ export default function Header() {
   //     setNotificationSound(newNoti);
   //   }
   // }, [notificationSound]);
+
   useEffect(() => {
     if (!dataUser?.user?.id) return;
     let count: any = [];
@@ -238,6 +239,7 @@ export default function Header() {
       // userReset();
     };
   }, [dataUser?.user?.id]);
+
   return dataUser?.user?.id ? (
     <>
       <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>

@@ -2,13 +2,13 @@
 import {ButtonNoti} from '@/ui/boton';
 import {DivAllPublicaciones, DivPublicar} from '@/ui/container';
 import FotoPerfil from '@/ui/FotoPerfil';
-import {user, isConnect, notificacionesUser, Publicacion} from '@/lib/atom';
+import {user, isConnect, notificacionesUser} from '@/lib/atom';
 import {
   GetPublicacionId,
   NotificacionesUser,
   viewNotification,
 } from '@/lib/hook';
-import {useRecoilValue, useRecoilState} from 'recoil';
+import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
 import {useParams} from 'next/navigation';
 import {Loader} from '../loader';
@@ -18,8 +18,7 @@ import {SkeletonNoti} from '@/ui/skeleton';
 import {ThemplatePubli} from '../templatePublicate';
 
 export function TemNoti() {
-  const [notificacionesUserAtom, setNotificacionesUserAtom] =
-    useRecoilState(notificacionesUser);
+  const notificacionesUserAtom = useRecoilValue(notificacionesUser);
   const dataUser = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);
   const [offset, setOffset] = useState(0);
@@ -37,27 +36,7 @@ export function TemNoti() {
     <DivPublicar>
       {notificacionesUserAtom.length
         ? notificacionesUserAtom.map((e: any, p: any) => (
-            <Link
-              href={'/notificaciones/' + e.id}
-              key={p}
-              id={e.id}
-              style={{
-                textDecoration: 'none',
-                color: '#fff',
-                fontSize: '1rem',
-                borderBottom: '1px solid #2f2f2f',
-              }}
-              onClick={() =>
-                setNotificacionesUserAtom((prev: any) => {
-                  const newData = prev.map((item: Publicacion) => {
-                    if (item.id == e.id) {
-                      return {...item, open: false};
-                    }
-                    return item;
-                  });
-                  return newData;
-                })
-              }>
+            <Link href={'/notificaciones/' + e.id} key={p} id={e.id}>
               <ButtonNoti visto={e.open} id={e.id}>
                 <FotoPerfil
                   className='w-[40px] h-[40px]'

@@ -180,11 +180,11 @@ export function NotificacionesUser(offset: number) {
       if (notificacionesUserAtom.length > 0 && offset !== 0) {
         setNotificacionesUserAtom((prev: any) => [
           ...prev,
-          ...data.publicacion,
+          ...data.publications,
         ]);
         return;
       }
-      setNotificacionesUserAtom([...data?.publicacion]);
+      setNotificacionesUserAtom([...data?.publications]);
     }
   }, [data]);
 
@@ -194,8 +194,7 @@ export function NotificacionesUser(offset: number) {
   };
 }
 export function NotificacionesUserImmutable(offset: number) {
-  const [notificacionesUserAtom, setNotificacionesUserAtom] =
-    useRecoilState(notificacionesUser);
+  const [, setNotificacionesUserAtom] = useRecoilState(notificacionesUser);
   const token = getCookie('login');
   const api = `/user/notificaciones?offset=${offset}`;
 
@@ -213,7 +212,7 @@ export function NotificacionesUserImmutable(offset: number) {
 
   useEffect(() => {
     if (data) {
-      setNotificacionesUserAtom([...data?.publicacion]);
+      setNotificacionesUserAtom([...data?.publications]);
       return;
     }
   }, [data]);

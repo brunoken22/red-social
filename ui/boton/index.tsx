@@ -54,20 +54,20 @@ export const ButtonSmsConnect = ({
 
 export const ButtonNoti = ({
   children,
-  // onClick,
+  onClick,
   visto,
   open,
   id,
 }: {
   children: React.ReactNode;
-  // onClick?: (e: any) => any;
+  onClick?: (e: any) => any;
   visto?: boolean;
   open?: boolean;
   id?: string;
 }) => (
   <div
     id={id}
-    // onClick={onClick}
+    onClick={onClick}
     className={`flex items-center text-start   gap-4 w-full border-none h-16 rounded-md p-2 ${
       visto ? 'dark:bg-[#1c1c1c] bg-hoverPrimary' : ''
     } ${

@@ -299,6 +299,12 @@ function ComentarioPublic(props: any) {
       setPlaceinput(true);
     }
   }, [content]);
+  useEffect(() => {
+    if (!dataComment) {
+      setDataComment(true);
+    }
+  }, [dataComment]);
+
   const handleInput = (event: any) => {
     const text = event.target.textContent;
     setPlaceinput(false);

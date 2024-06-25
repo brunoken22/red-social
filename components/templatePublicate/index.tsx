@@ -352,13 +352,13 @@ function ComentarioPublic(props: any) {
             img={props.imgUserPro}
             connect={props.connect}></FotoPerfil>
           <DivAñadirComentar>
-            <div className='min-w-[200px] max-w-full border-[1px] rounded-md'>
+            <div className='min-w-[200px] max-w-full '>
               <p
                 onInput={handleInput}
                 suppressContentEditableWarning={true}
                 contentEditable={true}
                 // text={placeInput}
-                className={`outline-none w-full p-2  ${
+                className={`outline-none w-full p-2 border-[1px] border-[#ddd] rounded-md dark:focus:bg-[#363636] focus:border-white focus:bg-[#ddd] text-secundary dark:text-primary${
                   placeInput ? 'before:text-[#696969]' : ''
                 } placeholder:text-red-600`}
                 placeholder={!content ? `Añadir un comentario` : ''}>

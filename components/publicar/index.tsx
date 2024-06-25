@@ -77,13 +77,6 @@ function TemplateFormPublicar(props: any) {
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (content.length <= 0) {
-  //     setPlaceinput(true);
-  //     return;
-  //   }
-  // }, [content]);
-
   useEffect(() => {
     if (dataUrl !== '') {
       setPlaceinput(false);
@@ -113,6 +106,7 @@ function TemplateFormPublicar(props: any) {
       img: dataUrl,
     });
     setIsLoading(false);
+    props.close(false);
   };
   if (isLoading) {
     return <Loader />;

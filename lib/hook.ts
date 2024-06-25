@@ -28,7 +28,7 @@ type DataUser = {
 type DataPublicacion = {
   description: string;
   img: string;
-  openSwr: boolean;
+  openSwr?: boolean;
 };
 type DataSingin = {
   email: string;
@@ -384,7 +384,7 @@ export function GetAmigo(id: string) {
 
   return {data, isLoading};
 }
-export function CreatePublicacion(dataPubli: DataPublicacion) {
+export async function CreatePublicacion(dataPubli: DataPublicacion) {
   const api = '/user/publicacion';
   const option = {
     method: 'POST',
@@ -395,17 +395,13 @@ export function CreatePublicacion(dataPubli: DataPublicacion) {
 
     body: JSON.stringify(dataPubli),
   };
-  const {data, isLoading} = useSWR(dataPubli.openSwr ? api : null, (url) =>
-    fetchApiSwr(url, option)
-  );
-  useEffect(() => {
-    if (data) {
-      mutate(`/user/amigos/publicaciones?offset=0`);
-      mutate(`/user/publicacion?offset=0`);
-    }
-  }, [data]);
+  const dataNotiSwr = await fetchApiSwr(api, option);
+  if (dataNotiSwr) {
+    mutate(`/user/amigos/publicaciones?offset=0`);
+    mutate(`/user/publicacion?offset=0`);
+  }
 
-  return {data, isLoading};
+  return dataNotiSwr;
 }
 export function CreateSolicitud(dataSoli: Solicitud) {
   const [userAllData, setUserAllData] = useRecoilState(

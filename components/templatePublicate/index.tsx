@@ -301,7 +301,7 @@ function ComentarioPublic(props: any) {
   }, [content]);
   useEffect(() => {
     if (!dataComment) {
-      setDataComment(true);
+      setDataComment(false);
     }
   }, [dataComment]);
 
@@ -321,11 +321,11 @@ function ComentarioPublic(props: any) {
         id: props.idPublicacion,
         description: content,
       });
-      setDataComment(false);
+      setDataComment(true);
       setDataComentariosAll((prev: any) => [
         ...prev,
         {
-          id: props.idPublicacion,
+          id: Math.random() * (1000 - 100) + 100,
           description: content,
           user: {
             id: props.userId,
@@ -354,15 +354,15 @@ function ComentarioPublic(props: any) {
           <DivAñadirComentar>
             <div className='min-w-[200px] max-w-full '>
               <p
+                onBlur={() => setDataComment(true)}
+                onFocus={() => setDataComment(false)}
                 onInput={handleInput}
                 suppressContentEditableWarning={true}
                 contentEditable={true}
-                // text={placeInput}
-                className={`outline-none w-full p-2 border-[1px] border-[#ddd] rounded-md dark:focus:bg-[#363636] focus:border-white focus:bg-[#ddd] text-secundary dark:text-primary${
+                className={`outline-none w-full p-2 border-[1px] border-[#ddd] rounded-md dark:focus:bg-[#363636] focus:border-white focus:bg-[#ddd] text-secundary dark:text-primary ${
                   placeInput ? 'before:text-[#696969]' : ''
-                } placeholder:text-red-600`}
-                placeholder={!content ? `Añadir un comentario` : ''}>
-                {!dataComment ? '' : null}
+                } placeholder:text-red-600`}>
+                {dataComment ? 'Añadir un comentario' : null}
               </p>
             </div>
             <BottonSendComentario onClick={handleComment}>

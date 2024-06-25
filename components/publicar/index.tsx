@@ -73,27 +73,16 @@ function TemplateFormPublicar(props: any) {
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
   const [dataUrl, setDataUrl] = useState('');
-  const [content, setContent] = useState('');
-  const [openSwr, setOpenSwr] = useState(false);
+  const [content, setContent] = useState(true);
+  const [text, setText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const {data, isLoading} = CreatePublicacion({
-    description: content,
-    img: dataUrl,
-    openSwr,
-  });
-  useEffect(() => {
-    if (content.length <= 0) {
-      setPlaceinput(true);
-      return;
-    }
-  }, [content]);
-
-  useEffect(() => {
-    if (data) {
-      setOpenSwr(false);
-      return props.close(false);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (content.length <= 0) {
+  //     setPlaceinput(true);
+  //     return;
+  //   }
+  // }, [content]);
 
   useEffect(() => {
     if (dataUrl !== '') {
@@ -109,16 +98,21 @@ function TemplateFormPublicar(props: any) {
     const text = event.target.textContent;
     setPlaceinput(false);
     if (text.length <= 250) {
-      setContent(text);
+      setText(text);
     }
     if (text.length >= 250) {
       event.target.textContent = content;
     }
   };
 
-  const handleClickForm = (e: FormEvent) => {
+  const handleClickForm = async (e: FormEvent) => {
     e.preventDefault();
-    setOpenSwr(true);
+    setIsLoading(true);
+    await CreatePublicacion({
+      description: text,
+      img: dataUrl,
+    });
+    setIsLoading(false);
   };
   if (isLoading) {
     return <Loader />;
@@ -155,19 +149,18 @@ function TemplateFormPublicar(props: any) {
               <CloseSvg />
             </Button>
           </div>
-          <InputP
+          <p
+            id='description'
+            className='mt-8 mb-8 text-start indent-3 outline-none'
+            onBlur={() => setContent(true)}
+            onFocus={() => setContent(false)}
             onInput={handleInput}
             suppressContentEditableWarning={true}
-            contentEditable={true}
-            text={placeInput}
-            placeholder={
-              content == ''
-                ? `Qué estás pensado, ${
-                    dataUser?.user?.fullName.split(' ')[0]
-                  }?`
-                : ''
-            }
-          />
+            contentEditable={true}>
+            {content
+              ? `Qué estás pensado, ${dataUser?.user?.fullName.split(' ')[0]}?`
+              : null}
+          </p>
           <div>
             <div>
               <Body>Agregar a tu publicación</Body>

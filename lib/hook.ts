@@ -82,7 +82,9 @@ export async function signinUser(dataUser: DataSingin) {
     body: JSON.stringify(dataUser),
   };
   const data = dataUser.email ? await fetchApiSwr(api, option) : null;
-  setCookie('login', true);
+  if (data.user) {
+    setCookie('login', true);
+  }
   return data;
 }
 export async function modificarUser(dataUser: DataUser) {
@@ -167,13 +169,18 @@ export function NotificacionesUser(offset: number) {
     },
     credentials: 'include',
   };
+  const token = getCookie('login');
 
-  const {data, isLoading} = useSWR(api, (api) => fetchApiSwr(api, option), {
-    revalidateOnReconnect: true,
-    revalidateOnMount: true,
-    revalidateOnFocus: true,
-    refreshInterval: 10000,
-  });
+  const {data, isLoading} = useSWR(
+    token ? api : null,
+    (api) => fetchApiSwr(api, option),
+    {
+      revalidateOnReconnect: true,
+      revalidateOnMount: true,
+      revalidateOnFocus: true,
+      refreshInterval: 10000,
+    }
+  );
 
   useEffect(() => {
     if (data) {

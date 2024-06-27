@@ -56,7 +56,7 @@ export function TemNoti() {
                     })?.connect && true
                   }
                 />
-                <p>
+                <p className='w-[90%]'>
                   Nueva comentario en tu publicacion de{' '}
                   {
                     e.commentPublis

@@ -210,9 +210,7 @@ export default function Header() {
 
       if (valor) {
         const dataConnect: any = Object.values(valor);
-        // console.log(dataConnect);
         setIsConnect(dataConnect);
-        if (!dataUser?.user?.amigos?.length) return;
         const connecam = dataConnect.filter((e: Connect) => {
           return (
             e.id != Number(dataUser.user.id) &&
@@ -239,6 +237,7 @@ export default function Header() {
       // userReset();
     };
   }, [dataUser?.user?.id]);
+  // console.log(dataIsConnect);
 
   return dataUser?.user?.id ? (
     <>

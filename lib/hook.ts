@@ -268,7 +268,11 @@ export function GetAllPublicaciones(offset: number) {
 
   useEffect(() => {
     if (data?.length) {
-      if (publicacionesAllAmigos.length > 0 && offset !== 0) {
+      if (
+        publicacionesAllAmigos &&
+        publicacionesAllAmigos.length > 0 &&
+        offset !== 0
+      ) {
         setPublicacionesAllAmigos((prev: any) => [...prev, ...data]);
         return;
       }
@@ -302,7 +306,7 @@ export function GetAllPublicacionesUser(offset: number) {
 
   useEffect(() => {
     if (data) {
-      if (publicacionesUser.length > 0 && offset !== 0) {
+      if (publicacionesUser && publicacionesUser.length > 0 && offset !== 0) {
         setPublicacionesUser((prev: any) => [...prev, ...data]);
         return;
       }
@@ -334,7 +338,7 @@ export function GetPubliAmigo(id: string, offset: number) {
   });
   useEffect(() => {
     if (data) {
-      if (publicacionesAmigo.length > 0 && offset !== 0) {
+      if (publicacionesAmigo && publicacionesAmigo.length > 0 && offset !== 0) {
         setPublicacionesAmigo((prev: any) => [...prev, ...data]);
         return;
       }
@@ -362,9 +366,9 @@ export function DeletePublic(id: number) {
     if (data) {
       mutate(`/user/amigos/publicaciones?offset=0`);
 
-      const newPublic = publicacionesUser.filter(
-        (publi: Publicacion) => publi.id != id
-      );
+      const newPublic =
+        publicacionesUser &&
+        publicacionesUser.filter((publi: Publicacion) => publi.id != id);
       setPublicacionesUser(newPublic);
     }
   }, [data]);

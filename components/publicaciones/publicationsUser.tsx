@@ -4,8 +4,8 @@ import {publicacionUser, user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {useState} from 'react';
 import {GetAllPublicacionesUser} from '@/lib/hook';
-import {Loader} from '../loader';
 import {ThemplatePubli} from '../templatePublicate';
+import {SkeletonPublicacionAll} from '@/ui/skeleton';
 
 export function PublicacionesUser() {
   const publicacionesUser = useRecoilValue(publicacionUser);
@@ -24,36 +24,34 @@ export function PublicacionesUser() {
 
   return (
     <div className='flex flex-col gap-4'>
-      {publicacionesUser?.length > 0 ? (
-        publicacionesUser.map((item) => (
-          <DivAllPublicaciones key={item.id}>
-            <ThemplatePubli
-              description={item.description}
-              img={item.img}
-              fecha={item.updatedAt}
-              like={item.likePublics}
-              comentarios={item.commentPublis}
-              imgUserPro={dataUser.user.img}
-              id={item.userId}
-              idPublicacion={item.id}
-              userId={dataUser.user.id}
-              user={item.user}
-            />
-          </DivAllPublicaciones>
-        ))
-      ) : (
-        <p style={{textAlign: 'center'}}>No hay publicaciones</p>
-      )}
+      {publicacionesUser ? (
+        publicacionesUser.length ? (
+          publicacionesUser.map((item) => (
+            <DivAllPublicaciones key={item.id}>
+              <ThemplatePubli
+                description={item.description}
+                img={item.img}
+                fecha={item.updatedAt}
+                like={item.likePublics}
+                comentarios={item.commentPublis}
+                imgUserPro={dataUser.user.img}
+                id={item.userId}
+                idPublicacion={item.id}
+                userId={dataUser.user.id}
+                user={item.user}
+              />
+            </DivAllPublicaciones>
+          ))
+        ) : (
+          <p style={{textAlign: 'center'}}>No hay publicaciones</p>
+        )
+      ) : null}
       {dataPubliAllAmigosSwr?.length ? (
         <div style={{textAlign: 'center'}}>
           <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
         </div>
       ) : null}
-      {isLoadingAllAmigos && (
-        <div style={{position: 'relative', margin: '1rem'}}>
-          <Loader></Loader>
-        </div>
-      )}
+      {isLoadingAllAmigos && <SkeletonPublicacionAll />}
     </div>
   );
 }

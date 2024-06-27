@@ -121,24 +121,7 @@ export function SkeletonPerfilAmigo(props: React.ComponentProps<any>) {
           <SpanLuz></SpanLuz>
         </TextSkeleton>
       </DivHeadPerfil>
-      <DivPublicaciones>
-        <DivPublicar>
-          <DivText>
-            <PhotoSkeleton className='w-[40px] h-[]'>
-              <SpanLuz></SpanLuz>
-            </PhotoSkeleton>
-            <TextSkeleton className='w-[50%] h-[30px]'>
-              <SpanLuz></SpanLuz>
-            </TextSkeleton>
-          </DivText>
-          <TextSkeleton className='w-full h-[300px]'>
-            <SpanLuz></SpanLuz>
-          </TextSkeleton>
-          <TextSkeleton className='w-full h-[30px] m-[0_0_1rem_0]'>
-            <SpanLuz></SpanLuz>
-          </TextSkeleton>
-        </DivPublicar>
-      </DivPublicaciones>
+      <SkeletonPublicacionAll />
     </DivSkeleton>
   );
 }
@@ -148,7 +131,7 @@ export function SkeletonPublicacionAll(props: React.ComponentProps<any>) {
       <DivPublicaciones>
         <DivPublicar>
           <DivText>
-            <PhotoSkeleton className='w-[40px] h-[]'>
+            <PhotoSkeleton className='w-[40px] h-[40px]'>
               <SpanLuz></SpanLuz>
             </PhotoSkeleton>
             <TextSkeleton className='w-[50%] h-[30px]'>

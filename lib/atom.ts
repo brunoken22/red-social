@@ -42,9 +42,9 @@ export const user = atom({
   },
 });
 
-export const publicacionUser = atom({
+export const publicacionUser = atom<Publicacion[] | null>({
   key: 'publicacionUser',
-  default: [] as Publicacion[],
+  default: null,
 });
 
 export const getAllUser = atom({
@@ -73,13 +73,13 @@ export const getAllSolicitudesEnviadas = atom({
   default: [] as User[],
 });
 
-export const publicacionAmigos = atom({
+export const publicacionAmigos = atom<Publicacion[] | null>({
   key: 'publicacionAmigos',
-  default: [] as Publicacion[],
+  default: null,
 });
-export const publicacionSearchUser = atom({
+export const publicacionSearchUser = atom<Publicacion[] | null>({
   key: 'publicacionSearchUser',
-  default: [] as Publicacion[],
+  default: null,
 });
 export const isMenssage = atom({
   key: 'isMenssage',

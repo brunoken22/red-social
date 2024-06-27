@@ -23,7 +23,6 @@ import {
   AceptarSolicitud,
   GetPubliAmigo,
 } from '@/lib/hook';
-import {Loader} from '../loader';
 import {useParams} from 'next/navigation';
 import {DivAllPublicaciones} from '@/ui/container';
 import {ButtonAgregar} from '@/ui/boton';
@@ -40,7 +39,7 @@ export function PerfilAmigo() {
   const dataUser = useRecoilValue(user);
   const [pagePubli, setPagePubli] = useState(0);
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
-  const {data, isLoading} = GetAmigo(id as string);
+  const {data} = GetAmigo(id as string);
   const {dataPubliAmigo} = GetPubliAmigo(id as string, pagePubli);
   const [isAmigo, setIsAmigo] = useState<'ACCEPTED' | 'PENDING' | 'REJECTED'>();
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
@@ -171,36 +170,33 @@ export function PerfilAmigo() {
         </div>
       </DivHeadPerfil>
       <DivPublicaciones>
-        {publicacionesAmigo?.length > 0 ? (
-          publicacionesAmigo.map((item) => (
-            <DivAllPublicaciones key={item.id}>
-              <ThemplatePubli
-                description={item.description}
-                img={item.img}
-                fecha={item.updatedAt}
-                like={item.likePublics}
-                comentarios={item.commentPublis}
-                imgUserPro={dataUser?.user?.img}
-                id={item.userId}
-                idPublicacion={item.id}
-                userId={dataUser?.user?.id}
-                user={item.user}
-              />
-            </DivAllPublicaciones>
-          ))
-        ) : (
-          <p style={{textAlign: 'center'}}>No hay publicaciones</p>
-        )}
+        {publicacionesAmigo ? (
+          publicacionesAmigo.length ? (
+            publicacionesAmigo.map((item) => (
+              <DivAllPublicaciones key={item.id}>
+                <ThemplatePubli
+                  description={item.description}
+                  img={item.img}
+                  fecha={item.updatedAt}
+                  like={item.likePublics}
+                  comentarios={item.commentPublis}
+                  imgUserPro={dataUser?.user?.img}
+                  id={item.userId}
+                  idPublicacion={item.id}
+                  userId={dataUser?.user?.id}
+                  user={item.user}
+                />
+              </DivAllPublicaciones>
+            ))
+          ) : (
+            <p style={{textAlign: 'center'}}>No hay publicaciones</p>
+          )
+        ) : null}
         {dataPubliAmigo?.length ? (
           <div style={{textAlign: 'center'}}>
             <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
           </div>
         ) : null}
-        {isLoading && (
-          <div style={{position: 'relative', margin: '1rem'}}>
-            <Loader></Loader>
-          </div>
-        )}
       </DivPublicaciones>
     </DivPerfilUser>
   ) : (

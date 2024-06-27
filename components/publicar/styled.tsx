@@ -1,7 +1,7 @@
 import React, {FormEvent} from 'react';
 
 export const DivText = ({children}: {children: React.ReactNode}) => (
-  <div className='flex gap-4'>{children}</div>
+  <div className='flex gap-4 w-full  items-center'>{children}</div>
 );
 export const DivSubir = ({children}: {children: React.ReactNode}) => (
   <div className='flex justify-around border-t-[1px] border-t-[#474747]'>

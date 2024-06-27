@@ -237,7 +237,6 @@ export default function Header() {
       // userReset();
     };
   }, [dataUser?.user?.id]);
-  // console.log(dataIsConnect);
 
   return dataUser?.user?.id ? (
     <>

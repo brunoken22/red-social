@@ -6,7 +6,8 @@ import {
   DivPublicaciones,
 } from '@/components/perfilUser/styled';
 import {DivSubir, DivText} from '@/components/publicar/styled';
-import {DivPublicar} from '../container';
+import {DivAllChat, DivPublicar} from '../container';
+import {TemplChat, TemplMensaje} from '@/components/templateMensaje/styled';
 
 export function SkeletonNoti(props: React.ComponentProps<any>) {
   return (
@@ -165,6 +166,62 @@ export function SkeletonPublicacionAll(props: React.ComponentProps<any>) {
         </DivPublicar>
       </DivPublicaciones>
     </DivSkeleton>
+  );
+}
+export function SkeletonMenssage() {
+  return (
+    <TemplChat>
+      <DivAllChat className='w-[250px]'>
+        <DivText>
+          <PhotoSkeleton className='w-[40px] h-[40px]'>
+            <SpanLuz></SpanLuz>
+          </PhotoSkeleton>
+          <TextSkeleton className='w-[90%] h-[30px] '>
+            <SpanLuz></SpanLuz>
+          </TextSkeleton>
+        </DivText>
+      </DivAllChat>
+      <DivAllChat className='w-[250px]'>
+        <DivText>
+          <PhotoSkeleton className='w-[40px] h-[40px]'>
+            <SpanLuz></SpanLuz>
+          </PhotoSkeleton>
+          <TextSkeleton className='w-[90%] h-[30px] '>
+            <SpanLuz></SpanLuz>
+          </TextSkeleton>
+        </DivText>
+      </DivAllChat>
+      <DivAllChat className='w-[250px]'>
+        <DivText>
+          <PhotoSkeleton className='w-[40px] h-[40px]'>
+            <SpanLuz></SpanLuz>
+          </PhotoSkeleton>
+          <TextSkeleton className='w-[90%] h-[30px] '>
+            <SpanLuz></SpanLuz>
+          </TextSkeleton>
+        </DivText>
+      </DivAllChat>
+      <DivAllChat className='w-[250px]'>
+        <DivText>
+          <PhotoSkeleton className='w-[40px] h-[40px]'>
+            <SpanLuz></SpanLuz>
+          </PhotoSkeleton>
+          <TextSkeleton className='w-[90%] h-[30px] '>
+            <SpanLuz></SpanLuz>
+          </TextSkeleton>
+        </DivText>
+      </DivAllChat>
+      <DivAllChat className='w-[250px]'>
+        <DivText>
+          <PhotoSkeleton className='w-[40px] h-[40px]'>
+            <SpanLuz></SpanLuz>
+          </PhotoSkeleton>
+          <TextSkeleton className='w-[90%] h-[30px] '>
+            <SpanLuz></SpanLuz>
+          </TextSkeleton>
+        </DivText>
+      </DivAllChat>
+    </TemplChat>
   );
 }
 export function SkeletonNav() {

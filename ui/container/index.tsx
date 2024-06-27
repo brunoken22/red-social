@@ -30,13 +30,21 @@ export const DivPublicaciones = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivPublicar = ({children}: {children: React.ReactNode}) => (
-  <div className='bg-primary max-w-[500px] w-[inherit] h-max  p-4 flex flex-col justify-evenly gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center   '>
+  <div
+    className={` bg-primary max-w-[500px] w-[inherit] h-max  p-4 flex flex-col justify-evenly gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center`}>
     {children}
   </div>
 );
 
-export const DivAllChat = ({children}: {children: React.ReactNode}) => (
-  <div className='relative bg-primary  flex gap-4 rounded-md shadow-container   max-md:mt-4 flex-row items-center p-4 max-md:w-auto hover:opacity-70 dark:bg-darkComponet dark:text-primary dark:transition-dark'>
+export const DivAllChat = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <div
+    className={`${className} relative bg-primary  flex gap-4 rounded-md shadow-container   max-md:mt-4 flex-row items-center p-4 max-md:w-auto hover:opacity-70 dark:bg-darkComponet dark:text-primary dark:transition-dark`}>
     {children}
   </div>
 );

@@ -22,6 +22,7 @@ import CloseSVG from '@/ui/icons/close.svg';
 import {Button} from '../publicar/styled';
 import Link from 'next/link';
 import {useSearchParams, useRouter} from 'next/navigation';
+import {SkeletonMenssage} from '@/ui/skeleton';
 type MessageUser = {
   rtdb?: string | undefined;
   message?: string;
@@ -150,20 +151,20 @@ export function TemMensaje() {
     });
     router.replace('/mensaje');
   };
-
   return (
     <DivTemMensaje>
       {!dataMensajeUser.rtdb ? (
         <TemplMensaje>
           <h2 className='text-2xl font-bold text-center'>Chats</h2>
           <TemplChat>
-            {dataGetAllUsersChat?.length
-              ? dataGetAllUsersChat.map((e: User, p: number) => {
+            {dataGetAllUsersChat ? (
+              dataGetAllUsersChat.length ? (
+                dataGetAllUsersChat.map((e) => {
                   return (
                     <button
                       type='submit'
                       className='w-full  rounded-md hover:opacity-70 '
-                      key={p}
+                      key={e.id}
                       onClick={() => {
                         const rtdbId = existenElementosSimilares(
                           e.rtdb,
@@ -206,7 +207,12 @@ export function TemMensaje() {
                     </button>
                   );
                 })
-              : 'Sin Chat'}
+              ) : (
+                'Sin Chat'
+              )
+            ) : (
+              <SkeletonMenssage />
+            )}
           </TemplChat>
         </TemplMensaje>
       ) : null}

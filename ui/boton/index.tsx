@@ -45,9 +45,8 @@ export const ButtonSmsConnect = ({
 }) => (
   <button
     onClick={onClick}
-    className={`${
-      active ? 'bg-black' : 'bg-inherit'
-    } border-none text-xl  text-primary rounded-md w-full h-auto m-[0.1rem] hover:bg-secundary hover:text-primary hover:rounded-none`}>
+    className={`
+     border-none text-xl  text-primary rounded-md w-full h-auto m-[0.1rem] hover:opacity-70 `}>
     {children}
   </button>
 );

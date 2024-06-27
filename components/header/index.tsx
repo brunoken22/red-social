@@ -315,7 +315,6 @@ export default function Header() {
         <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
           <span>Conectados</span> <DivConnect />
         </DivConectados>
-
         <DivConnectAll>
           {connectAmigos ? (
             allConnectAmigos?.length > 0 ? (

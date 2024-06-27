@@ -42,7 +42,7 @@ export const DivAllChat = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivAllConnect = ({children}: {children: React.ReactNode}) => (
-  <main className='text-black pl-4 pr-4 flex gap-12 flex-wrap min-h-[100vh] items-center p-[0.3rem] flex-row m-0 border-none bg-transparent  '>
+  <main className='text-black pl-4 pr-4 flex gap-12 flex-wrap  items-center p-[0.3rem] flex-row m-0 border-none bg-transparent  '>
     {children}
   </main>
 );

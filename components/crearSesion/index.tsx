@@ -40,6 +40,7 @@ export function Signup() {
   };
 
   useEffect(() => {
+    console.log(data);
     if (data == 'Usuario Registrado') {
       alert('Usuario Registrado');
       return;

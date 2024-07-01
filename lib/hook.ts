@@ -69,7 +69,7 @@ export function CreateUser(dataUser: DataUser) {
     dataUser.email && dataUser.password && dataUser.fullName ? api : null,
     (url) => fetchApiSwr(url, option)
   );
-  if (data.user.id) {
+  if (data?.user.id) {
     setCookie('login', true);
   }
   return {data, isLoading};

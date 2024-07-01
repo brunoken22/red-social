@@ -41,7 +41,8 @@ export function Signup() {
 
   useEffect(() => {
     if (data == 'Usuario Registrado') {
-      alert('Usuario registrado');
+      alert('Usuario Registrado');
+      return;
     }
     if (data?.user.id) {
       setDataUser({

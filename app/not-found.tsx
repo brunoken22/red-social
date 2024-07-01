@@ -1,9 +1,7 @@
 import Error from '@/components/404';
 
-export default function Page() {
+export default function NotFound() {
   return (
-    <div>
       <Error />
-    </div>
   );
 }

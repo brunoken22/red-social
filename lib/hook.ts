@@ -42,7 +42,7 @@ type Solicitud = {
 export async function logOut() {
   const api = '/log-out';
   const option = {
-    method: 'POST',
+    method: 'DELETE',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',

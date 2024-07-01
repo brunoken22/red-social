@@ -1,12 +1,21 @@
 'use client';
 import Ring from '@uiball/loaders/dist/components/Ring';
 import {DivLoader, ImageLogo} from './styled';
+import {useState} from 'react';
 export function Loader() {
+  const [loadingText, setLoadingText] = useState(false);
+  setTimeout(() => {
+    setLoadingText(true);
+  }, 3000);
   return (
-    <DivLoader>
-      <Ring size={45} lineWeight={3} speed={2} color='black' />
-      <ImageLogo src='/logo.webp' alt='logo' />
-    </DivLoader>
+    <>
+      <DivLoader>
+        <ImageLogo src='/logo.webp' alt='logo' />
+        {loadingText ? (
+          <p>Esto puede tardar hasta 1 minuto (Solo la primera vez) </p>
+        ) : null}
+      </DivLoader>
+    </>
   );
 }
 

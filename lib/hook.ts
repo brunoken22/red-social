@@ -85,7 +85,7 @@ export async function signinUser(dataUser: DataSingin) {
     body: JSON.stringify(dataUser),
   };
   const data = dataUser.email ? await fetchApiSwr(api, option) : null;
-  if (data.id) {
+  if (data?.id) {
     setCookie('login', true);
   }
   return data;

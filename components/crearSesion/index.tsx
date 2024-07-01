@@ -45,7 +45,7 @@ export function Signup() {
       alert('Usuario Registrado');
       return;
     }
-    if (data?.user.id) {
+    if (data?.user?.id) {
       setDataUser({
         fullName: '',
         email: '',

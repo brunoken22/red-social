@@ -65,7 +65,7 @@ export function CreateUser(dataUser: DataUser) {
 
     body: JSON.stringify(dataUser),
   };
-  const {data, isLoading} = useSWRImmutable(
+  const {data, isLoading} = useSWR(
     dataUser.email && dataUser.password && dataUser.fullName ? api : null,
     (url) => fetchApiSwr(url, option)
   );
@@ -270,13 +270,13 @@ export function GetAllPublicaciones(offset: number) {
   );
 
   useEffect(() => {
-    if (data?.length) {
+    if (data) {
       if (
         publicacionesAllAmigos &&
         publicacionesAllAmigos.length > 0 &&
         offset !== 0
       ) {
-        setPublicacionesAllAmigos((prev: any) => [...prev, ...data]);
+        setPublicacionesAllAmigos((prev) => [...prev!, ...data]);
         return;
       }
 

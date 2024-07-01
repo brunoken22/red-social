@@ -40,7 +40,6 @@ export function Signup() {
   };
 
   useEffect(() => {
-    console.log(data);
     if (data == 'Usuario Registrado') {
       alert('Usuario Registrado');
       return;
@@ -71,7 +70,7 @@ export function Signup() {
           type='text'
           {...register('fullName', {required: true})}
           id='fullName'
-          autoComplete='fullName'
+          autoComplete='on'
         />
       </div>
       <div>
@@ -83,7 +82,7 @@ export function Signup() {
           type='email'
           {...register('email', {required: true})}
           id='email'
-          autoComplete='email'
+          autoComplete='on'
         />
       </div>
       <div>
@@ -95,7 +94,7 @@ export function Signup() {
           type='password'
           {...register('password', {required: true})}
           id='password'
-          autoComplete='password'
+          autoComplete='on'
         />
       </div>
       <div>
@@ -108,7 +107,7 @@ export function Signup() {
           type='password'
           {...register('repassword', {required: true})}
           id='repassword'
-          autoComplete='password'
+          autoComplete='on'
         />
       </div>
       {error1.exampleRequired && <span>This field is required</span>}

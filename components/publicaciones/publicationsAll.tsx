@@ -23,6 +23,8 @@ export function PublicacionesAll() {
     }
     setPagePubli((prevPagePubli) => prevPagePubli + 10);
   };
+  console.log(publicacionesAmigos);
+
   return (
     <div className='flex flex-col gap-4'>
       {publicacionesAmigos ? (

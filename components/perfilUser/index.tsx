@@ -15,7 +15,6 @@ import {user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {modificarUser, optimizarImage} from '@/lib/hook';
 import {Loader} from '../loader';
-import css from './css.module.css';
 import {SkeletonPerfil} from '@/ui/skeleton';
 import {PublicacionesUser} from '../publicaciones/publicationsUser';
 
@@ -66,10 +65,10 @@ export function PerfilUser() {
         }
         setIsLoading(true);
         const dataObtimizado = await optimizarImage(file.dataURL!);
-        const data = await modificarUser({img: dataObtimizado});
+        await modificarUser({img: dataObtimizado});
         setIsLoading(false);
+        setSubirImg(false);
 
-        // setDataImg(file.dataURL);
         myDropzone.removeFile(file);
       });
     }
@@ -78,7 +77,6 @@ export function PerfilUser() {
   if (isLoading || subirImg) {
     return <Loader />;
   }
-
   return dataValor?.user?.id ? (
     <DivPerfilUser>
       <DivHeadPerfil>
@@ -130,7 +128,9 @@ export function PerfilUser() {
           </h2>
         </DivFotoName>
         <DivButton>
-          <Link className={css.editPerfil} href='/configuracion'>
+          <Link
+            className='p-2 bg-[#51bae9] hover:opacity-60'
+            href='/configuracion'>
             Editar perfil
           </Link>
         </DivButton>

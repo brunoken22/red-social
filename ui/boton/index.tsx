@@ -64,7 +64,7 @@ export const ButtonNoti = ({
   open?: boolean;
   id?: string;
 }) => (
-  <div
+  <button
     id={id}
     onClick={onClick}
     className={`flex items-center text-start   gap-4 w-full border-none h-16 rounded-md p-2 ${
@@ -75,7 +75,7 @@ export const ButtonNoti = ({
         : 'dark:fill-[#e5e7eb] fill-gray-800'
     } hover:opacity-60`}>
     {children}
-  </div>
+  </button>
 );
 
 export const ButtonAgregar = ({

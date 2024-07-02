@@ -19,9 +19,6 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <link rel='preload' href='/portafolio.webp' as='image' />
         <link rel='preload' href='/user.webp' as='image' />
         <link rel='preconnect' href='https://8w3zg1ohsp-2.algolianet.com' />
-        <link
-          rel='preconnect'
-          href='https://5kd3mkwn-3000.brs.devtunnels.ms'></link>
       </head>
       <body
         className={`${poppins.className} dark:bg-dark dark:text-white dark:transition-dark`}>

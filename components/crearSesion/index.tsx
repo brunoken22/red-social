@@ -35,13 +35,15 @@ export function Signup() {
           password: data.password,
         };
         setDataUser(newDataUser);
+        return;
       }
+      alert('La contraseña no coinciden');
     }
   };
 
   useEffect(() => {
     if (data == 'Usuario Registrado') {
-      alert('Usuario Registrado');
+      alert('Usuario existente');
       return;
     }
     if (data?.user?.id) {

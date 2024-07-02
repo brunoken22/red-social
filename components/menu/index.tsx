@@ -27,22 +27,16 @@ export function Menu(props: any) {
       window.location.href = window.location.origin + '/signin';
     }
   };
-  const handleBlur = () => {
-    // console.log('salistes del focus');
-    // if (focus) {
-    // setTimeout(() => {
-    // console.log('settimeout');
-    // props.click(false);
-    // }, 10000);
-    // }
-  };
+  // const handleBlur = () => {
+  //   console.log('salistes del focus');
 
+  //   props.click(false);
+  // };
   return (
     <div
       className='focus:border-[1px_solid_red] absolute right-0 '
       ref={enlaces}
-      tabIndex={0}
-      onBlur={handleBlur}>
+      tabIndex={0}>
       <DivEnlaces>
         <Link
           href={'/perfil'}

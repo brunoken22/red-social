@@ -4,6 +4,7 @@ import {useRouter} from 'next/navigation';
 import {CreateUser} from '@/lib/hook';
 import {useEffect, useState} from 'react';
 import {Loader} from '../loader';
+import {NotificationToastStatus, NotificationToastUser} from '@/ui/toast';
 
 function validarPassword(con1: string, con2: string) {
   if (con1 === con2) return true;
@@ -17,6 +18,7 @@ export function Signup() {
     email: '',
     password: '',
   });
+  const [isError, setError] = useState('');
   const {data, isLoading} = CreateUser(dataUser);
 
   const {
@@ -37,23 +39,19 @@ export function Signup() {
         setDataUser(newDataUser);
         return;
       }
-      alert('La contraseña no coinciden');
+      setError('La contraseña no coinciden');
     }
   };
 
   useEffect(() => {
     if (data == 'Usuario Registrado') {
-      alert('Usuario existente');
+      setError('Usuario existente');
       return;
     }
     if (data?.user?.id) {
-      setDataUser({
-        fullName: '',
-        email: '',
-        password: '',
-      });
-      alert('Usuario registrado con exito');
-      router.push('/home');
+      setTimeout(() => {
+        router.push('/home');
+      }, 3500);
     }
   }, [data]);
   if (isLoading) {
@@ -113,7 +111,6 @@ export function Signup() {
         />
       </div>
       {error1.exampleRequired && <span>This field is required</span>}
-
       <div className='mt-6'>
         <button
           type='submit'
@@ -121,6 +118,19 @@ export function Signup() {
           Continuar
         </button>
       </div>
+      {dataUser && data && data.user ? (
+        <NotificationToastUser
+          close={() => setDataUser({fullName: '', password: '', email: ''})}
+          fullName={data.user.fullName}
+          img={''}></NotificationToastUser>
+      ) : null}
+      {isError ? (
+        <NotificationToastStatus
+          close={() => setError('')}
+          message={isError}
+          status='error'
+        />
+      ) : null}
     </form>
   );
 }

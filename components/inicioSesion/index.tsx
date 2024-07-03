@@ -3,13 +3,18 @@ import {signinUser} from '@/lib/hook';
 import {Loader} from '../loader';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {useState} from 'react';
+import {NotificationToastStatus, NotificationToastUser} from '@/ui/toast';
+import {useRouter} from 'next/navigation';
 
 type typeForm = {
   email: string;
   password: string;
 };
 export function Signin() {
+  const {push} = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setError] = useState(false);
+  const [isData, setData] = useState<any>();
 
   const {
     register,
@@ -25,16 +30,21 @@ export function Signin() {
         password: dataForm.password,
       });
       setIsLoading(false);
-      if (data) {
-        window.location.href = window.location.origin + '/home';
+      if (data && data.id) {
+        setData(data);
+        setTimeout(() => {
+          push('/home');
+        }, 3500);
+        // window.location.href = window.location.origin + '/home';
         return;
       }
-      alert('Intentalo de nuevo');
+      setError(true);
     }
   };
   if (isLoading) {
     return <Loader />;
   }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -79,7 +89,20 @@ export function Signin() {
           className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70'>
           Continuar
         </button>
-      </div>{' '}
+      </div>
+      {isData && isData.id ? (
+        <NotificationToastUser
+          close={() => setData(null)}
+          fullName={isData.fullName}
+          img={isData.img}></NotificationToastUser>
+      ) : null}
+      {isError ? (
+        <NotificationToastStatus
+          close={() => setError(false)}
+          message='Contraseña o email incorrecto'
+          status='error'
+        />
+      ) : null}
     </form>
   );
 }

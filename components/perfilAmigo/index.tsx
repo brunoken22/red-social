@@ -117,8 +117,7 @@ export function PerfilAmigo() {
     }
     setPagePubli((prevPagePubli) => prevPagePubli + 10);
   };
-
-  return data ? (
+  return data && data.user ? (
     <DivPerfilUser>
       <DivHeadPerfil>
         <DivFotoNameLink>

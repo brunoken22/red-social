@@ -436,6 +436,7 @@ export function CreateSolicitud(dataSoli: Solicitud) {
   );
   useEffect(() => {
     if (data) {
+      mutate('/user/token');
       const soli = userAllData ? userAllData : [];
       setUserAllData([...soli, data]);
     }
@@ -455,7 +456,11 @@ export function AceptarSolicitud(dataSoli: Solicitud) {
   const {data, isLoading} = useSWR(dataSoli.amigoId > -1 ? api : null, (url) =>
     fetchApiSwr(url, option)
   );
-
+  useEffect(() => {
+    if (data) {
+      mutate('/user/token');
+    }
+  }, [data]);
   return {dataAcep: data, isLoadingAcep: isLoading};
 }
 export function RechazarSolicitud(dataSoli: any) {
@@ -471,7 +476,11 @@ export function RechazarSolicitud(dataSoli: any) {
   const {data, isLoading} = useSWR(dataSoli.userId > -1 ? api : null, (url) =>
     fetchApiSwr(url, option)
   );
-
+  useEffect(() => {
+    if (data) {
+      mutate('/user/token');
+    }
+  }, [data]);
   return {dataRech: data, isLoadingRech: isLoading};
 }
 export function EliminarAmigo(datas: any) {
@@ -488,6 +497,11 @@ export function EliminarAmigo(datas: any) {
     token && datas.userId > -1 ? api : null,
     (url) => fetchApiSwr(url, option)
   );
+  useEffect(() => {
+    if (data) {
+      mutate('/user/token');
+    }
+  }, [data]);
   return {dataElimAmigo: data, isLoadingElimAmigo: isLoading};
 }
 export async function LikeODisLike(datas: any) {

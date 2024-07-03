@@ -173,9 +173,8 @@ export function NotificacionesUser(offset: number) {
     credentials: 'include',
   };
   const token = getCookie('login');
-
   const {data, isLoading} = useSWR(
-    token ? api : null,
+    token == 'true' ? api : null,
     (api) => fetchApiSwr(api, option),
     {
       revalidateOnReconnect: true,
@@ -216,8 +215,9 @@ export function NotificacionesUserImmutable(offset: number) {
     credentials: 'include',
   };
 
-  const {data, isLoading} = useSWRImmutable(token ? api : null, (url) =>
-    fetchApiSwr(url, option)
+  const {data, isLoading} = useSWRImmutable(
+    token == 'true' ? api : null,
+    (url) => fetchApiSwr(url, option)
   );
 
   useEffect(() => {

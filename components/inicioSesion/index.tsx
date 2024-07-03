@@ -4,14 +4,12 @@ import {Loader} from '../loader';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {useState} from 'react';
 import {NotificationToastStatus, NotificationToastUser} from '@/ui/toast';
-import {useRouter} from 'next/navigation';
 
 type typeForm = {
   email: string;
   password: string;
 };
 export function Signin() {
-  const {push} = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [isData, setData] = useState<any>();
@@ -33,9 +31,8 @@ export function Signin() {
       if (data && data.id) {
         setData(data);
         setTimeout(() => {
-          push('/home');
+          window.location.href = window.location.origin + '/home';
         }, 3500);
-        // window.location.href = window.location.origin + '/home';
         return;
       }
       setError(true);

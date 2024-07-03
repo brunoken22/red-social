@@ -4,9 +4,7 @@ import {Main} from '@/ui/container';
 export default function UsuarioId({params}: {params: {name: string}}) {
   return (
     <>
-      <head>
-        <title>{decodeURIComponent(params.name) + ' | UniRed '}</title>
-      </head>
+      <title>{decodeURIComponent(params.name) + ' | UniRed '}</title>
       <Main>
         <PerfilAmigo />
       </Main>

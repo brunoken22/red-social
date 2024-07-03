@@ -79,6 +79,8 @@ export function PerfilAmigo() {
     }
     if (dataCreateSoli) {
       setAmigoId(-1);
+      setIsAmigo('PENDING');
+
       return;
     }
     if (dataAcep) {
@@ -86,6 +88,7 @@ export function PerfilAmigo() {
       return;
     }
     if (dataRech) {
+      setIsAmigo('REJECTED');
       setRechazarAmigo(-1);
       return;
     }
@@ -98,12 +101,10 @@ export function PerfilAmigo() {
   const handleSolicitudEnv = (e: any) => {
     const id = e.target.id;
     setAmigoId(Number(id));
-    setIsAmigo('PENDING');
   };
   const handleSolicitudRecha = (e: any) => {
     const id = e.target.id;
     setRechazarAmigo(Number(id));
-    setIsAmigo('REJECTED');
   };
   const handleEliminarAmigo = (e: any) => {
     const id = e.target.id;

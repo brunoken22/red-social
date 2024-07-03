@@ -431,7 +431,8 @@ export function CreateSolicitud(dataSoli: Solicitud) {
 
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading} = useSWR(dataSoli.amigoId > -1 ? api : null, (url) =>
+  console.log(dataSoli.amigoId);
+  const {data, isLoading} = useSWR(dataSoli.amigoId >= 1 ? api : null, (url) =>
     fetchApiSwr(url, option)
   );
   useEffect(() => {

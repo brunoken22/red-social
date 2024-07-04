@@ -30,6 +30,7 @@ import {ButtonMasPubli} from '../publicaciones/styled';
 import {SkeletonPerfilAmigo} from '@/ui/skeleton';
 import {ThemplatePubli} from '../templatePublicate';
 import {useRouter} from 'next/navigation';
+import {Loader} from '../loader';
 
 export function PerfilAmigo() {
   const {id} = useParams();
@@ -46,18 +47,18 @@ export function PerfilAmigo() {
   const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
   const [amigoId, setAmigoId] = useState(Number(-1));
   const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
-  const {dataElimAmigo} = EliminarAmigo({
+  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
     userId: eliminarAmigo,
   });
-  const {dataCreateSoli} = CreateSolicitud({
+  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud({
     amigoId,
     estado: false,
   });
-  const {dataAcep} = AceptarSolicitud({
+  const {dataAcep, isLoadingAcep} = AceptarSolicitud({
     amigoId: acepAmigoId,
     estado: true,
   });
-  const {dataRech} = RechazarSolicitud({
+  const {dataRech, isLoadingRech} = RechazarSolicitud({
     userId: rechazarAmigo,
   });
   useEffect(() => {
@@ -118,87 +119,100 @@ export function PerfilAmigo() {
     }
     setPagePubli((prevPagePubli) => prevPagePubli + 10);
   };
+
   return data && data.user ? (
-    <DivPerfilUser>
-      <DivHeadPerfil>
-        <DivFotoNameLink>
-          {data?.user?.id && (
-            <FotoPerfil
-              className='w-[80px] h-[80px]'
-              img={data?.user?.img}
-              connect={
-                dataIsConnect?.find((e: any) => e.id == data?.user?.id)
-                  ?.connect && true
-              }
-            />
-          )}
-          <h2 className='text-center  font-bold text-2xl max-md:mb-4'>
-            {data.user.fullName}
-          </h2>
-        </DivFotoNameLink>
-        <div>
-          {amigoId < 1 && isAmigo !== 'PENDING' ? (
-            <ButtonAgregar
-              id={data?.user?.id}
-              onClick={
-                isAmigo == 'ACCEPTED' ? handleEliminarAmigo : handleSolicitudEnv
-              }
-              bg={isAmigo !== 'REJECTED' ? 'red' : 'blue'}>
-              {isAmigo == 'ACCEPTED' ? 'Eliminar Amigo' : 'Agregar'}
-            </ButtonAgregar>
-          ) : isAmigo == 'PENDING' &&
-            soliReci?.find((user) => user.id == data?.user.id) ? (
-            <DivButtonEliAcep>
+    <>
+      <DivPerfilUser>
+        <DivHeadPerfil>
+          <DivFotoNameLink>
+            {data?.user?.id && (
+              <FotoPerfil
+                className='w-[80px] h-[80px]'
+                img={data?.user?.img}
+                connect={
+                  dataIsConnect?.find((e: any) => e.id == data?.user?.id)
+                    ?.connect && true
+                }
+              />
+            )}
+            <h2 className='text-center  font-bold text-2xl max-md:mb-4'>
+              {data.user.fullName}
+            </h2>
+          </DivFotoNameLink>
+          <div>
+            {amigoId < 1 && isAmigo !== 'PENDING' ? (
+              <ButtonAgregar
+                id={data?.user?.id}
+                onClick={
+                  isAmigo == 'ACCEPTED'
+                    ? handleEliminarAmigo
+                    : handleSolicitudEnv
+                }
+                bg={isAmigo !== 'REJECTED' ? 'red' : 'blue'}>
+                {isAmigo == 'ACCEPTED' ? 'Eliminar Amigo' : 'Agregar'}
+              </ButtonAgregar>
+            ) : isAmigo == 'PENDING' &&
+              soliReci?.find((user) => user.id == data?.user.id) ? (
+              <DivButtonEliAcep>
+                <ButtonAgregar
+                  id={data?.user?.id}
+                  onClick={handleSolicitudRecha}
+                  bg='red'>
+                  Eliminar solicitud
+                </ButtonAgregar>
+                <ButtonAgregar
+                  id={data?.user?.id}
+                  onClick={handleSolicitudAcep}>
+                  Aceptar
+                </ButtonAgregar>
+              </DivButtonEliAcep>
+            ) : (
               <ButtonAgregar
                 id={data?.user?.id}
                 onClick={handleSolicitudRecha}
                 bg='red'>
                 Eliminar solicitud
               </ButtonAgregar>
-              <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudAcep}>
-                Aceptar
-              </ButtonAgregar>
-            </DivButtonEliAcep>
-          ) : (
-            <ButtonAgregar
-              id={data?.user?.id}
-              onClick={handleSolicitudRecha}
-              bg='red'>
-              Eliminar solicitud
-            </ButtonAgregar>
-          )}
-        </div>
-      </DivHeadPerfil>
-      <DivPublicaciones>
-        {publicacionesAmigo ? (
-          publicacionesAmigo.length ? (
-            publicacionesAmigo.map((item) => (
-              <DivAllPublicaciones key={item.id}>
-                <ThemplatePubli
-                  description={item.description}
-                  img={item.img}
-                  fecha={item.updatedAt}
-                  like={item.likePublics}
-                  comentarios={item.commentPublis}
-                  imgUserPro={dataUser?.user?.img}
-                  id={item.userId}
-                  idPublicacion={item.id}
-                  userId={dataUser?.user?.id}
-                  user={item.user}
-                />
-              </DivAllPublicaciones>
-            ))
-          ) : (
-            <p style={{textAlign: 'center'}}>No hay publicaciones</p>
-          )
-        ) : null}
-        {dataPubliAmigo?.length ? (
-          <div style={{textAlign: 'center'}}>
-            <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+            )}
           </div>
-        ) : null}
-      </DivPublicaciones>
-    </DivPerfilUser>
+        </DivHeadPerfil>
+        <DivPublicaciones>
+          {publicacionesAmigo ? (
+            publicacionesAmigo.length ? (
+              publicacionesAmigo.map((item) => (
+                <DivAllPublicaciones key={item.id}>
+                  <ThemplatePubli
+                    description={item.description}
+                    img={item.img}
+                    fecha={item.updatedAt}
+                    like={item.likePublics}
+                    comentarios={item.commentPublis}
+                    imgUserPro={dataUser?.user?.img}
+                    id={item.userId}
+                    idPublicacion={item.id}
+                    userId={dataUser?.user?.id}
+                    user={item.user}
+                  />
+                </DivAllPublicaciones>
+              ))
+            ) : (
+              <p style={{textAlign: 'center'}}>No hay publicaciones</p>
+            )
+          ) : null}
+          {dataPubliAmigo?.length ? (
+            <div style={{textAlign: 'center'}}>
+              <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+            </div>
+          ) : null}
+        </DivPublicaciones>
+      </DivPerfilUser>
+      {isLoadingAcep ||
+      isLoadCreateSoli ||
+      isLoadingElimAmigo ||
+      isLoadingRech ? (
+        <Loader />
+      ) : null}
+    </>
   ) : (
     <SkeletonPerfilAmigo />
   );

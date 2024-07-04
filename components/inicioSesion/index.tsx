@@ -38,9 +38,6 @@ export function Signin() {
       setError(true);
     }
   };
-  if (isLoading) {
-    return <Loader />;
-  }
 
   return (
     <form
@@ -93,6 +90,7 @@ export function Signin() {
           fullName={isData.fullName}
           img={isData.img}></NotificationToastUser>
       ) : null}
+      {isLoading ? <Loader /> : null}
       {isError ? (
         <NotificationToastStatus
           close={() => setError(false)}

@@ -54,9 +54,7 @@ export function Signup() {
       }, 3500);
     }
   }, [data]);
-  if (isLoading) {
-    return <Loader />;
-  }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -124,6 +122,7 @@ export function Signup() {
           fullName={data.user.fullName}
           img={''}></NotificationToastUser>
       ) : null}
+      {isLoading ? <Loader /> : null}
       {isError ? (
         <NotificationToastStatus
           close={() => setError('')}

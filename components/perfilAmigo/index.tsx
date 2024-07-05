@@ -52,11 +52,9 @@ export function PerfilAmigo() {
   });
   const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud({
     amigoId,
-    estado: false,
   });
   const {dataAcep, isLoadingAcep} = AceptarSolicitud({
     amigoId: acepAmigoId,
-    estado: true,
   });
   const {dataRech, isLoadingRech} = RechazarSolicitud({
     userId: rechazarAmigo,

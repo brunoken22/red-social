@@ -35,8 +35,7 @@ type DataSingin = {
   password: string;
 };
 type Solicitud = {
-  amigoId: number;
-  estado: boolean;
+  amigoId?: number;
   userId?: number;
 };
 export async function logOut() {
@@ -415,20 +414,22 @@ export function CreateSolicitud(dataSoli: Solicitud) {
   const [userAllData, setUserAllData] = useRecoilState(
     getAllSolicitudesEnviadas
   );
-  const api = '/user/solicitudAmistad';
+  const api = '/user/solicitudAmistad/' + dataSoli.amigoId;
   const option = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     credentials: 'include',
-
-    body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading} = useSWRImmutable(
-    dataSoli.amigoId >= 1 ? api : null,
-    (url) => fetchApiSwr(url, option)
+
+  // Utilizar el hook SWR solo si amigoId es válido
+  const shouldFetch = dataSoli.amigoId && dataSoli.amigoId >= 1;
+  const {data, isLoading} = useSWR(
+    shouldFetch ? [api, dataSoli.amigoId] : null,
+    (url) => fetchApiSwr(url[0], option)
   );
+
   useEffect(() => {
     if (data) {
       mutate('/user/token');
@@ -437,21 +438,22 @@ export function CreateSolicitud(dataSoli: Solicitud) {
       const soli = userAllData ? userAllData : [];
       setUserAllData([...soli, data]);
     }
-  }, [data]);
+  }, [data, setUserAllData, userAllData]);
+
   return {dataCreateSoli: data, isLoadCreateSoli: isLoading};
 }
 export function AceptarSolicitud(dataSoli: Solicitud) {
-  const api = '/user/amigos';
+  const api = '/user/amigos/' + dataSoli.amigoId;
   const option = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     credentials: 'include',
-    body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading} = useSWR(dataSoli.amigoId > -1 ? api : null, (url) =>
-    fetchApiSwr(url, option)
+  const {data, isLoading} = useSWR(
+    dataSoli.amigoId && dataSoli.amigoId > -1 ? api : null,
+    (url) => fetchApiSwr(url, option)
   );
   useEffect(() => {
     if (data) {
@@ -460,18 +462,18 @@ export function AceptarSolicitud(dataSoli: Solicitud) {
   }, [data]);
   return {dataAcep: data, isLoadingAcep: isLoading};
 }
-export function RechazarSolicitud(dataSoli: any) {
-  const api = '/user/solicitudAmistad';
+export function RechazarSolicitud(dataSoli: Solicitud) {
+  const api = '/user/solicitudAmistad/' + dataSoli.userId;
   const option = {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
     },
     credentials: 'include',
-    body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading} = useSWR(dataSoli.userId > -1 ? api : null, (url) =>
-    fetchApiSwr(url, option)
+  const {data, isLoading} = useSWR(
+    dataSoli.userId && dataSoli.userId > -1 ? api : null,
+    (url) => fetchApiSwr(url, option)
   );
   useEffect(() => {
     if (data) {

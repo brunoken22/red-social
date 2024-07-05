@@ -22,6 +22,10 @@ export default async function RootLayout({
         <link rel='preload' href='/logo.webp' as='image' />
         <link rel='preload' href='/portafolio.webp' as='image' />
         <link rel='preload' href='/user.webp' as='image' />
+        <meta
+          name='google-site-verification'
+          content='CnmK8AWJQTO2MYQ5J7dOu9_dhCFy-ttErrYHDEWbOyw'
+        />
         <link rel='preconnect' href='https://8w3zg1ohsp-2.algolianet.com' />
       </head>
       <body

@@ -119,7 +119,7 @@ export function PerfilAmigo() {
     }
     setPagePubli((prevPagePubli) => prevPagePubli + 10);
   };
-
+  console.log(isLoadCreateSoli, isLoadingRech);
   return data && data.user ? (
     <>
       <DivPerfilUser>

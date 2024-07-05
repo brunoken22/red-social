@@ -1,7 +1,7 @@
 import useSWR, {mutate} from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import {fetchApiSwr} from './api';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useSetRecoilState} from 'recoil';
 import {
   user,
   publicacionUser,
@@ -112,15 +112,12 @@ export async function modificarUser(dataUser: DataUser) {
   return dataMod;
 }
 export function GetUser() {
-  const [userData, setUserData] = useRecoilState(user);
-  const [getAllUserData, setGetAllUserData] = useRecoilState(getAllUser);
-  const [amigoAllData, setAmigosAllData] = useRecoilState(getAllAmigos);
-  const [getSugerenciaAmigosData, setGetSugerenciaAmigosData] =
-    useRecoilState(getSugerenciaAmigos);
-  const [soliAllEnv, setSoliAllEnv] = useRecoilState(getAllSolicitudesEnviadas);
-  const [soliAllReci, setSoliAllReci] = useRecoilState(
-    getAllSolicitudesRecibidas
-  );
+  const setUserData = useSetRecoilState(user);
+  const setGetAllUserData = useSetRecoilState(getAllUser);
+  const setAmigosAllData = useSetRecoilState(getAllAmigos);
+  const setGetSugerenciaAmigosData = useSetRecoilState(getSugerenciaAmigos);
+  const setSoliAllEnv = useSetRecoilState(getAllSolicitudesEnviadas);
+  const setSoliAllReci = useSetRecoilState(getAllSolicitudesRecibidas);
   const token = getCookie('login');
 
   const api = '/user/token';
@@ -136,9 +133,6 @@ export function GetUser() {
     token == 'true' ? api : null,
     (url) => fetchApiSwr(url, option),
     {
-      // revalidateOnMount: true,
-      // revalidateOnFocus: true,
-      // revalidateOnReconnect: true,
       refreshInterval: 10000,
     }
   );
@@ -203,7 +197,7 @@ export function NotificacionesUser(offset: number) {
   };
 }
 export function NotificacionesUserImmutable(offset: number) {
-  const [, setNotificacionesUserAtom] = useRecoilState(notificacionesUser);
+  const setNotificacionesUserAtom = useSetRecoilState(notificacionesUser);
   const token = getCookie('login');
   const api = `/user/notificaciones?offset=${offset}`;
 
@@ -431,12 +425,15 @@ export function CreateSolicitud(dataSoli: Solicitud) {
 
     body: JSON.stringify(dataSoli),
   };
-  const {data, isLoading} = useSWR(dataSoli.amigoId >= 1 ? api : null, (url) =>
-    fetchApiSwr(url, option)
+  const {data, isLoading} = useSWRImmutable(
+    dataSoli.amigoId >= 1 ? api : null,
+    (url) => fetchApiSwr(url, option)
   );
   useEffect(() => {
     if (data) {
       mutate('/user/token');
+      mutate('/user/amigos');
+
       const soli = userAllData ? userAllData : [];
       setUserAllData([...soli, data]);
     }

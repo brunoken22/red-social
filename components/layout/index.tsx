@@ -7,7 +7,7 @@ import RecoidContextProvider from './recoilContextProvider';
 import {RecoilRoot} from 'recoil';
 import {usePathname} from 'next/navigation';
 import {getCookie} from 'cookies-next';
-
+import {Suspense} from 'react';
 export default function Layout({children}: {children: React.ReactNode}) {
   const pathname = usePathname();
   const searchClient = algoliasearch(
@@ -26,22 +26,27 @@ export default function Layout({children}: {children: React.ReactNode}) {
   }, []);
   return (
     <RecoilRoot>
-      <InstantSearch
-        searchClient={searchClient}
-        indexName='users'
-        future={{preserveSharedStateOnUnmount: true}}>
-        <RecoidContextProvider>
-          {pathname !== '/signin' && pathname !== '/signup' ? <Header /> : null}
-          <div
-            className={`${
-              pathname !== '/signin' && pathname !== '/signup'
-                ? 'mt-8  ml-2 mr-2 '
-                : ''
-            } `}>
-            {children}
-          </div>
-        </RecoidContextProvider>
-      </InstantSearch>
+      <Suspense
+        fallback={<div className='bg-red-600 fixed inset-0'>loading...</div>}>
+        <InstantSearch
+          searchClient={searchClient}
+          indexName='users'
+          future={{preserveSharedStateOnUnmount: true}}>
+          <RecoidContextProvider>
+            {pathname !== '/signin' && pathname !== '/signup' ? (
+              <Header />
+            ) : null}
+            <div
+              className={`${
+                pathname !== '/signin' && pathname !== '/signup'
+                  ? 'mt-8  ml-2 mr-2 '
+                  : ''
+              } `}>
+              {children}
+            </div>
+          </RecoidContextProvider>
+        </InstantSearch>
+      </Suspense>
     </RecoilRoot>
   );
 }

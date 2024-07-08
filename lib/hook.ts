@@ -410,10 +410,7 @@ export async function CreatePublicacion(dataPubli: DataPublicacion) {
 
   return dataNotiSwr;
 }
-export function CreateSolicitud(dataSoli: Solicitud) {
-  const [userAllData, setUserAllData] = useRecoilState(
-    getAllSolicitudesEnviadas
-  );
+export async function createSolicitud(dataSoli: Solicitud) {
   const api = '/user/solicitudAmistad/' + dataSoli.amigoId;
   const option = {
     method: 'POST',
@@ -422,26 +419,15 @@ export function CreateSolicitud(dataSoli: Solicitud) {
     },
     credentials: 'include',
   };
-
-  // Utilizar el hook SWR solo si amigoId es válido
   const shouldFetch = dataSoli.amigoId && dataSoli.amigoId >= 1;
-  const {data, isLoading} = useSWR(
-    shouldFetch ? [api, dataSoli.amigoId] : null,
-    (url) => fetchApiSwr(url[0], option),
-    {}
-  );
+  const data = shouldFetch ? await fetchApiSwr(api, option) : null;
 
-  useEffect(() => {
-    if (data) {
-      mutate('/user/token');
-      mutate('/user/amigos');
+  if (data) {
+    mutate('/user/token');
+    mutate('/user/amigos');
+  }
 
-      const soli = userAllData ? userAllData : [];
-      setUserAllData([...soli, data]);
-    }
-  }, [data, setUserAllData, userAllData]);
-
-  return {dataCreateSoli: data, isLoadCreateSoli: isLoading};
+  return {dataCreateSoli: data};
 }
 export function AceptarSolicitud(dataSoli: Solicitud) {
   const api = '/user/amigos/' + dataSoli.amigoId;
@@ -463,7 +449,7 @@ export function AceptarSolicitud(dataSoli: Solicitud) {
   }, [data]);
   return {dataAcep: data, isLoadingAcep: isLoading};
 }
-export function RechazarSolicitud(dataSoli: Solicitud) {
+export async function rechazarSolicitud(dataSoli: Solicitud) {
   const api = '/user/solicitudAmistad/' + dataSoli.userId;
   const option = {
     method: 'DELETE',
@@ -472,16 +458,14 @@ export function RechazarSolicitud(dataSoli: Solicitud) {
     },
     credentials: 'include',
   };
-  const {data, isLoading} = useSWR(
-    dataSoli.userId && dataSoli.userId > -1 ? api : null,
-    (url) => fetchApiSwr(url, option)
-  );
-  useEffect(() => {
-    if (data) {
-      mutate('/user/token');
-    }
-  }, [data]);
-  return {dataRech: data, isLoadingRech: isLoading};
+  const data =
+    dataSoli.userId && dataSoli.userId > -1
+      ? await fetchApiSwr(api, option)
+      : null;
+  if (data) {
+    mutate('/user/token');
+  }
+  return {dataRech: data};
 }
 export function EliminarAmigo(datas: any) {
   const token = getCookie('login');

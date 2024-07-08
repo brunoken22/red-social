@@ -4,7 +4,7 @@ import MyAmigos from '@/ui/icons/myAmigos.svg';
 import {ButtonNoti, ButtonAgregar} from '@/ui/boton';
 import {DivAllAmistades} from '@/ui/container';
 import {useEffect, useState} from 'react';
-import {useRecoilValue} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {
   User,
   getAllAmigos,
@@ -13,9 +13,9 @@ import {
   getSugerenciaAmigos,
 } from '@/lib/atom';
 import {
-  CreateSolicitud,
+  createSolicitud,
   AceptarSolicitud,
-  RechazarSolicitud,
+  rechazarSolicitud,
   EliminarAmigo,
 } from '@/lib/hook';
 import {Loader} from '../loader';
@@ -26,24 +26,20 @@ export function TemAmigos() {
   const dataAllAmigos = useRecoilValue(getAllAmigos);
   const dataAllSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataAllSoliEnv = useRecoilValue(getAllSolicitudesEnviadas);
+  const [createRequestResponse, setCreateRequestResponse] = useState();
   const [sugerencia, setSugerencia] = useState(false);
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [soliEnv, setSoliEnv] = useState(false);
-  const [amigoId, setAmigoId] = useState(Number(-1));
   const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
-  const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
+
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
 
-  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud({
-    amigoId,
-  });
   const {dataAcep, isLoadingAcep} = AceptarSolicitud({
     amigoId: acepAmigoId,
   });
-  const {dataRech, isLoadingRech} = RechazarSolicitud({
-    userId: rechazarAmigo,
-  });
+
   const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
     userId: eliminarAmigo,
   });
@@ -80,17 +76,27 @@ export function TemAmigos() {
       return;
     }
   };
-  const handleSolicitudEnv = (e: any) => {
+  const handleSolicitudEnv = async (e: any) => {
+    setIsLoading(true);
     const id = e.target.id;
-    setAmigoId(Number(id));
+    const {dataCreateSoli} = await createSolicitud({
+      amigoId: Number(id),
+    });
+    setCreateRequestResponse(dataCreateSoli);
+    setIsLoading(false);
   };
   const handleSolicitudAcep = (e: any) => {
     const id = e.target.id;
+
     setAcepAmigoId(Number(id));
   };
-  const handleSolicitudRecha = (e: any) => {
+  const handleSolicitudRecha = async (e: any) => {
     const id = e.target.id;
-    setRechazarAmigo(Number(id));
+    setIsLoading(true);
+    await rechazarSolicitud({
+      userId: Number(id),
+    });
+    setIsLoading(false);
   };
   const handleEliminarAmigo = (e: any) => {
     const id = e.target.id;
@@ -98,19 +104,12 @@ export function TemAmigos() {
   };
 
   useEffect(() => {
-    if (dataCreateSoli || dataAcep || dataRech || dataElimAmigo) {
-      setAmigoId(Number(-1));
+    if (dataAcep || dataElimAmigo) {
       setAcepAmigoId(Number(-1));
-      setRechazarAmigo(Number(-1));
       setEliminarAmigo(Number(-1));
     }
-  }, [dataAcep, dataRech, eliminarAmigo, dataCreateSoli]);
-  if (
-    isLoadCreateSoli ||
-    isLoadingAcep ||
-    isLoadingRech ||
-    isLoadingElimAmigo
-  ) {
+  }, [dataAcep, eliminarAmigo]);
+  if (isLoading) {
     return <Loader></Loader>;
   }
   return (
@@ -176,8 +175,8 @@ export function TemAmigos() {
                         <ButtonAgregar
                           id={e.id}
                           onClick={handleSolicitudEnv}
-                          bg={dataCreateSoli ? 'red' : 'blue'}>
-                          {dataCreateSoli
+                          bg={createRequestResponse ? 'red' : 'blue'}>
+                          {createRequestResponse
                             ? 'Cancelar Solicitud'
                             : 'Añadir amigo'}
                         </ButtonAgregar>

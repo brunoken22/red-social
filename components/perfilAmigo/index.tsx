@@ -18,8 +18,8 @@ import {useRecoilValue} from 'recoil';
 import {
   GetAmigo,
   EliminarAmigo,
-  CreateSolicitud,
-  RechazarSolicitud,
+  createSolicitud,
+  rechazarSolicitud,
   AceptarSolicitud,
   GetPubliAmigo,
 } from '@/lib/hook';
@@ -39,25 +39,18 @@ export function PerfilAmigo() {
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataUser = useRecoilValue(user);
   const [pagePubli, setPagePubli] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
   const {data} = GetAmigo(id as string);
   const {dataPubliAmigo} = GetPubliAmigo(id as string, pagePubli);
   const [isAmigo, setIsAmigo] = useState<'ACCEPTED' | 'PENDING' | 'REJECTED'>();
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
-  const [rechazarAmigo, setRechazarAmigo] = useState(Number(-1));
-  const [amigoId, setAmigoId] = useState(Number(-1));
   const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
   const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
     userId: eliminarAmigo,
   });
-  const {dataCreateSoli, isLoadCreateSoli} = CreateSolicitud({
-    amigoId,
-  });
   const {dataAcep, isLoadingAcep} = AceptarSolicitud({
     amigoId: acepAmigoId,
-  });
-  const {dataRech, isLoadingRech} = RechazarSolicitud({
-    userId: rechazarAmigo,
   });
   useEffect(() => {
     if (Number(id) === dataUser.user.id) {
@@ -76,34 +69,32 @@ export function PerfilAmigo() {
       setEliminarAmigo(-1);
       return;
     }
-    if (dataCreateSoli) {
-      setAmigoId(-1);
-      setIsAmigo('PENDING');
-
-      return;
-    }
     if (dataAcep) {
       setAcepAmigoId(-1);
       return;
     }
-    if (dataRech) {
-      setIsAmigo('REJECTED');
-      setRechazarAmigo(-1);
-      return;
-    }
-  }, [dataElimAmigo, dataCreateSoli, dataAcep, dataRech]);
+  }, [dataElimAmigo, dataAcep]);
   const handleSolicitudAcep = (e: any) => {
     const id = e.target.id;
     setAcepAmigoId(Number(id));
     setIsAmigo('ACCEPTED');
   };
-  const handleSolicitudEnv = (e: any) => {
+  const handleSolicitudEnv = async (e: any) => {
+    setIsLoading(true);
+
     const id = e.target.id;
-    setAmigoId(Number(id));
+    await createSolicitud({
+      amigoId: Number(id),
+    });
+    setIsLoading(false);
   };
-  const handleSolicitudRecha = (e: any) => {
+  const handleSolicitudRecha = async (e: any) => {
     const id = e.target.id;
-    setRechazarAmigo(Number(id));
+    setIsLoading(true);
+    await rechazarSolicitud({
+      userId: Number(id),
+    });
+    setIsLoading(false);
   };
   const handleEliminarAmigo = (e: any) => {
     const id = e.target.id;
@@ -117,7 +108,6 @@ export function PerfilAmigo() {
     }
     setPagePubli((prevPagePubli) => prevPagePubli + 10);
   };
-  console.log(isLoadCreateSoli, isLoadingRech);
   return data && data.user ? (
     <>
       <DivPerfilUser>
@@ -138,7 +128,7 @@ export function PerfilAmigo() {
             </h2>
           </DivFotoNameLink>
           <div>
-            {amigoId < 1 && isAmigo !== 'PENDING' ? (
+            {isAmigo !== 'PENDING' ? (
               <ButtonAgregar
                 id={data?.user?.id}
                 onClick={
@@ -204,12 +194,7 @@ export function PerfilAmigo() {
           ) : null}
         </DivPublicaciones>
       </DivPerfilUser>
-      {isLoadingAcep ||
-      isLoadCreateSoli ||
-      isLoadingElimAmigo ||
-      isLoadingRech ? (
-        <Loader />
-      ) : null}
+      {isLoadingAcep || isLoadingElimAmigo || isLoading ? <Loader /> : null}
     </>
   ) : (
     <SkeletonPerfilAmigo />

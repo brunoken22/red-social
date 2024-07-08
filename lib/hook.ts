@@ -427,7 +427,8 @@ export function CreateSolicitud(dataSoli: Solicitud) {
   const shouldFetch = dataSoli.amigoId && dataSoli.amigoId >= 1;
   const {data, isLoading} = useSWR(
     shouldFetch ? [api, dataSoli.amigoId] : null,
-    (url) => fetchApiSwr(url[0], option)
+    (url) => fetchApiSwr(url[0], option),
+    {}
   );
 
   useEffect(() => {

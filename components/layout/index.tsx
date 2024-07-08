@@ -12,6 +12,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
   const pathname = usePathname();
   const searchClient = algoliasearch(
     '8W3ZG1OHSP',
+
     process.env.NEXT_PUBLIC_ALGOLIA as string
   );
   const themeValue = getCookie('theme');

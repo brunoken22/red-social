@@ -424,7 +424,7 @@ export async function createSolicitud(dataSoli: Solicitud) {
 
   if (data) {
     mutate('/user/token');
-    mutate('/user/amigos');
+    mutate('/user/amigos/' + dataSoli.amigoId);
   }
 
   return {dataCreateSoli: data};
@@ -464,6 +464,7 @@ export async function rechazarSolicitud(dataSoli: Solicitud) {
       : null;
   if (data) {
     mutate('/user/token');
+    mutate('/user/amigos/' + dataSoli.userId);
   }
   return {dataRech: data};
 }
@@ -484,6 +485,7 @@ export function EliminarAmigo(datas: any) {
   useEffect(() => {
     if (data) {
       mutate('/user/token');
+      mutate('/user/amigos/' + datas.userId);
     }
   }, [data]);
   return {dataElimAmigo: data, isLoadingElimAmigo: isLoading};

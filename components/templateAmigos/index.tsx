@@ -36,11 +36,11 @@ export function TemAmigos() {
 
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
 
-  const {dataAcep, isLoadingAcep} = AceptarSolicitud({
+  const {dataAcep} = AceptarSolicitud({
     amigoId: acepAmigoId,
   });
 
-  const {dataElimAmigo, isLoadingElimAmigo} = EliminarAmigo({
+  const {dataElimAmigo} = EliminarAmigo({
     userId: eliminarAmigo,
   });
   const handleClick = (e: any) => {

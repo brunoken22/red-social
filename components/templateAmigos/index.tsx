@@ -26,7 +26,6 @@ export function TemAmigos() {
   const dataAllAmigos = useRecoilValue(getAllAmigos);
   const dataAllSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataAllSoliEnv = useRecoilValue(getAllSolicitudesEnviadas);
-  const [createRequestResponse, setCreateRequestResponse] = useState();
   const [sugerencia, setSugerencia] = useState(false);
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);
@@ -79,10 +78,9 @@ export function TemAmigos() {
   const handleSolicitudEnv = async (e: any) => {
     setIsLoading(true);
     const id = e.target.id;
-    const {dataCreateSoli} = await createSolicitud({
+    await createSolicitud({
       amigoId: Number(id),
     });
-    setCreateRequestResponse(dataCreateSoli);
     setIsLoading(false);
   };
   const handleSolicitudAcep = (e: any) => {
@@ -175,10 +173,8 @@ export function TemAmigos() {
                         <ButtonAgregar
                           id={e.id}
                           onClick={handleSolicitudEnv}
-                          bg={createRequestResponse ? 'red' : 'blue'}>
-                          {createRequestResponse
-                            ? 'Cancelar Solicitud'
-                            : 'Añadir amigo'}
+                          bg={'blue'}>
+                          Añadir amigo
                         </ButtonAgregar>
                       </div>
                     </DivAllAmistades>

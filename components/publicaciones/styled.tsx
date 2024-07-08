@@ -63,18 +63,22 @@ export const BottonLike = ({
   children,
   type,
   id,
+  like,
   onClick,
 }: {
   children: React.ReactNode;
   type: string | any;
   onClick: (e: any) => any;
   id: string;
+  like?: boolean;
 }) => (
   <button
     id={id}
     type={type}
     onClick={onClick}
-    className='bg-transparent border-none  flex items-center gap-2 text-[0.8rem] p-2 hover:opacity-70 hover:bg-[rgb(77_77_77)] hover:rounded-md hover:text-primary'>
+    className={` border-none  flex items-center gap-2 text-[0.8rem] p-2 hover:opacity-70 dark:bg-[rgb(77_77_77)] rounded-md dark:text-primary bg-[#4d4d4d4a] text-secundary ${
+      like ? 'text-[#5a81ff]' : ''
+    }`}>
     {children}
   </button>
 );
@@ -130,13 +134,13 @@ export const ButtonOpenDelete = ({
 }) => (
   <button
     onClick={onClick}
-    className='flex gap-[0.2rem] bg-transparent border-none hover:opacity-70'>
+    className='flex gap-[0.2rem] bg-transparent border-none hover:opacity-70 h-[35px] w-[35px] justify-center items-center hover:backdrop-contrast-50 hover:rounded-full'>
     {children}
   </button>
 );
 
 export const ContentDelete = () => (
-  <span className='h-[7px] w-[7px] bg-secundary dark:bg-primary rounded-full '></span>
+  <span className='h-[5px] w-[5px] bg-secundary dark:bg-primary rounded-full '></span>
 );
 
 export const ButtonDelete = ({

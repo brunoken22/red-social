@@ -223,9 +223,10 @@ export function ThemplatePubli(props: {
         <BottonLike
           type='button'
           onClick={handleClickLike}
+          like={like == 'like' ? true : false}
           id={props.idPublicacion.toString()}>
           <Like
-            className={`${like == 'like' ? 'fill-[#5a81ff]' : 'fill-[#ddd]'}`}
+            className={`${like == 'like' ? 'fill-[#5a81ff]' : 'fill-[#fff]'}`}
           />
           Me gusta
         </BottonLike>
@@ -234,7 +235,7 @@ export function ThemplatePubli(props: {
           type='button'
           id={'comentario' + Number(props.idPublicacion)}>
           <Comentar
-            className={`${comentario ? 'fill-[#84e981]' : 'fill-[#ddd]'}`}
+            className={`${comentario ? 'fill-[#84e981]' : 'fill-[#fff]'}`}
           />
           Comentar
         </BottonLike>

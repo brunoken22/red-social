@@ -19,19 +19,3 @@ export const DivIcons = ({children}: {children: React.ReactNode}) => (
 export const DivResult = ({children}: {children: React.ReactNode}) => (
   <div className=' w-full text-center mt-0 max-md:mt-6'>{children}</div>
 );
-
-// export const DivImageSug = ({
-//   img,
-// }: {
-//   children?: React.ReactNode;
-//   img: string | null;
-// }) => {
-//   console.log(img);
-
-//   return (
-//     <div
-//       className={`p-0 rounded-xl h-[60%] ${
-//         img ? `bg-[url(/user.webp)]` : 'bg-[url(/user.webp)]'
-//       } bg-center bg-cover`}></div>
-//   );
-// };

@@ -12,7 +12,7 @@ export function Loader() {
       <DivLoader>
         <ImageLogo src='/logo.webp' alt='logo' />
         {loadingText ? (
-          <p>Esto puede tardar hasta 1 minuto (Solo la primera vez) </p>
+          <p>Esto puede tardar hasta 1 minuto <br/>(Solo la primera vez) </p>
         ) : null}
       </DivLoader>
     </>

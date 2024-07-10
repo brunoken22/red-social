@@ -55,8 +55,19 @@ export const DivAllConnect = ({children}: {children: React.ReactNode}) => (
   </main>
 );
 
-export const DivAllAmistades = ({children}: {children: React.ReactNode}) => (
-  <div className='bg-primary flex-col rounded-md shadow-container  max-md:mt-4 w-[185px] h-[300px] p-0   max-md:w-[160px] dark:bg-darkComponet flex justify-between'>
+export const DivAllAmistades = ({
+  children,
+  requestClassDuo,
+}: {
+  children: React.ReactNode;
+  requestClassDuo: boolean;
+}) => (
+  <div
+    className={`bg-primary rounded-md shadow-container  max-md:mt-4 w-[185px]  dark:bg-darkComponet grid ${
+      !requestClassDuo
+        ? 'grid-rows-[repeat(1,200px_100px)]'
+        : 'grid-rows-[repeat(1,200px_150px)]'
+    }`}>
     {children}
   </div>
 );

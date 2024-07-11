@@ -24,7 +24,7 @@ export function Menu(props: any) {
   const handleClick = async () => {
     const logoutData = await logOut();
     if (logoutData) {
-      window.location.href = window.location.origin + '/signin';
+      window.location.href = window.location.origin + '/iniciarSesion';
     }
   };
   // const handleBlur = () => {

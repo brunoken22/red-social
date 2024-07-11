@@ -85,12 +85,3 @@ export default function NavegationUrl({
     </div>
   );
 }
-// const obtenerObjetosUnicos = (array: any[]) => {
-//   return array.reduce((resultado, objeto) => {
-//     const existe = resultado.some((item: any) => item['id'] === objeto['id']);
-//     if (!existe) {
-//       resultado.push(objeto);
-//     }
-//     return resultado;
-//   }, []);
-// };

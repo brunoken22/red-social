@@ -49,12 +49,6 @@ export const DivAllChat = ({
   </div>
 );
 
-export const DivAllConnect = ({children}: {children: React.ReactNode}) => (
-  <main className='text-black pl-4 pr-4 flex gap-12 flex-wrap  items-center p-[0.3rem] flex-row m-0 border-none bg-transparent  '>
-    {children}
-  </main>
-);
-
 export const DivAllAmistades = ({
   children,
   requestClassDuo,

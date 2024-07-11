@@ -42,7 +42,6 @@ import {
   DivContenedorConnect,
 } from './styled';
 import {ButtonSmsConnect} from '@/ui/boton';
-import {DivAllConnect} from '@/ui/container';
 import {SkeletonNav} from '@/ui/skeleton';
 
 export default function Header() {
@@ -313,54 +312,42 @@ export default function Header() {
         <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
           <span>Conectados</span> <DivConnect />
         </DivConectados>
-        <DivConnectAll>
-          {connectAmigos ? (
-            allConnectAmigos?.length > 0 ? (
-              allConnectAmigos.map((e: User, p: any) => {
-                return (
-                  <ButtonSmsConnect
-                    key={p}
-                    onClick={() =>
-                      router.push(
-                        '/chat?fullName=' +
-                          e.fullName +
-                          '&rtdb=' +
-                          e.rtdb +
-                          '&id=' +
-                          e.id +
-                          '&img=' +
-                          e.img
-                      )
-                    }>
-                    <DivAllConnect>
-                      <FotoPerfil
-                        img={e.img}
-                        className='h-[30px] w-[30px]'
-                        connect={
-                          dataIsConnect?.find(
-                            (eConnect: any) => e.id == eConnect.id
-                          )?.connect && true
-                        }
-                      />
+        {connectAmigos ? (
+          allConnectAmigos?.length > 0 ? (
+            <DivConnectAll>
+              {allConnectAmigos.map((e: User) => (
+                <ButtonSmsConnect
+                  key={e.id}
+                  onClick={() =>
+                    router.push(
+                      '/chat?fullName=' +
+                        e.fullName +
+                        '&rtdb=' +
+                        e.rtdb +
+                        '&id=' +
+                        e.id +
+                        '&img=' +
+                        e.img
+                    )
+                  }>
+                  <FotoPerfil
+                    img={e.img}
+                    className='h-[30px] w-[30px]'
+                    connect={
+                      dataIsConnect?.find(
+                        (eConnect: any) => e.id == eConnect.id
+                      )?.connect && true
+                    }
+                  />
 
-                      <span
-                        style={{
-                          color: '#000',
-                          margin: 0,
-                          textAlign: 'start',
-                          fontSize: '1rem',
-                        }}>
-                        {e.fullName}
-                      </span>
-                    </DivAllConnect>
-                  </ButtonSmsConnect>
-                );
-              })
-            ) : (
-              <div>No hay conectados</div>
-            )
-          ) : null}
-        </DivConnectAll>
+                  <span className='text-black'>{e.fullName}</span>
+                </ButtonSmsConnect>
+              ))}
+            </DivConnectAll>
+          ) : (
+            <div>No hay conectados</div>
+          )
+        ) : null}
       </DivContenedorConnect>
     </>
   ) : (

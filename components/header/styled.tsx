@@ -64,9 +64,7 @@ export const Button = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivConnectAll = ({children}: {children: React.ReactNode}) => (
-  <div className={`bg-primary flex flex-col items-center justify-around`}>
-    {children}
-  </div>
+  <div className={` backdrop-brightness-90  `}>{children}</div>
 );
 
 export const DivContenedorConnect = ({
@@ -75,7 +73,7 @@ export const DivContenedorConnect = ({
   children: React.ReactNode;
 }) => (
   <div
-    className={`fixed bottom-0 right-[1%] text-secundary w-[250px] z-10 max-md:hidden`}>
+    className={`fixed bottom-0 right-[1%] text-secundary w-[250px] z-10 max-md:hidden  bg-[#a8c0ff]  rounded-tr-[10px] rounded-tl-[10px]`}>
     {children}
   </div>
 );
@@ -89,7 +87,7 @@ export const DivConectados = ({
 }) => (
   <button
     onClick={onClick}
-    className={`flex items-center justify-around h-[40px] bg-[#a8c0ff] rounded-tr-[10px] rounded-tl-[10px] w-full`}>
+    className={`flex items-center justify-around h-[40px] w-full`}>
     {children}
   </button>
 );

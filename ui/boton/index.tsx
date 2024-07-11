@@ -45,8 +45,8 @@ export const ButtonSmsConnect = ({
 }) => (
   <button
     onClick={onClick}
-    className={`
-     border-none text-xl  text-primary rounded-md w-full h-auto m-[0.1rem] hover:opacity-70 `}>
+    className={` flex items-center gap-4
+      text-primary rounded-md w-full h-auto m-[0.1rem] hover:opacity-70 p-4`}>
     {children}
   </button>
 );
@@ -93,8 +93,10 @@ export const ButtonAgregar = ({
     id={id}
     onClick={onClick}
     className={`${
-      bg == 'red' ? 'bg-[#b57b7b4f] text-[#d55656] p-2' : 'bg-[#4c83bdcf]  p-2'
-    } w-full border-none   rounded-xl text-primary  hover:opacity-60`}>
+      bg == 'red'
+        ? 'bg-[#b57b7b4f] text-[#d55656] p-2'
+        : 'text-primary  bg-[#4c83bdcf]  p-2'
+    } w-full border-none   rounded-xl  hover:opacity-60`}>
     {children}
   </button>
 );

@@ -93,9 +93,7 @@ export const ButtonAgregar = ({
     id={id}
     onClick={onClick}
     className={`${
-      bg == 'red'
-        ? 'bg-[#ff5252] hover:bg-[#ff5252] p-2'
-        : 'bg-[#4298ed] hover:bg-[#4298ed] p-2'
+      bg == 'red' ? 'bg-[#b57b7b4f] text-[#d55656] p-2' : 'bg-[#4c83bdcf]  p-2'
     } w-full border-none   rounded-xl text-primary  hover:opacity-60`}>
     {children}
   </button>

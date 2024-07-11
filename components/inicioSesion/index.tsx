@@ -31,7 +31,7 @@ export function Signin() {
       if (data && data.id) {
         setData(data);
         setTimeout(() => {
-          window.location.href = window.location.origin + '/home';
+          window.location.href = window.location.origin + '/inicio';
         }, 3500);
         return;
       }

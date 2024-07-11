@@ -50,7 +50,7 @@ export function Signup() {
     }
     if (data?.user?.id) {
       setTimeout(() => {
-        router.push('/home');
+        router.push('/inicio');
       }, 3500);
     }
   }, [data]);

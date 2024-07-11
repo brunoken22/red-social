@@ -28,12 +28,12 @@ export default function Error() {
       </div>
       <div className='text-center flex flex-col gap-4'>
         <Link
-          href='/home'
+          href='/inicio'
           className='hover:opacity-60 bg-secundary text-primary dark:text-secundary dark:bg-primary p-4 pb-2 pt-2'>
           Ir a casa
         </Link>
         <Link
-          href='/signin'
+          href='/iniciarSesion'
           className='hover:opacity-60 bg-secundary text-primary dark:text-secundary dark:bg-primary p-4 pb-2 pt-2'>
           Inicia sesión
         </Link>

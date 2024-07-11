@@ -1,7 +1,7 @@
 import {Metadata} from 'next';
 import {SearchUser} from '@/components/searchUsers';
 export const metadata: Metadata = {
-  title: 'Search | UniRed',
+  title: 'Buscador | UniRed',
   description: 'Buscador de amig@s',
 };
 export default function Search() {

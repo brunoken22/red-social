@@ -3,9 +3,13 @@ import {Signin} from '@/components/inicioSesion';
 import {Title} from '@/ui/typography';
 import LogoPage from '@/ui/logo';
 import Link from 'next/link';
+import {Metadata} from 'next';
 
 const robotoSlab = Roboto_Slab({weight: '800', subsets: ['latin']});
-
+export const metadata: Metadata = {
+  title: 'Inicia sesión | UniRed',
+  description: 'Inicia sesión',
+};
 export default function Page() {
   return (
     <div className='min-h-screen flex items-center justify-between'>

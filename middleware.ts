@@ -6,39 +6,39 @@ export async function middleware(request: NextRequest) {
   try {
     if (isToken == 'false' || !isToken) {
       if (
-        request.nextUrl.pathname !== '/signin' &&
-        request.nextUrl.pathname !== '/signup'
+        request.nextUrl.pathname !== '/iniciarSesion' &&
+        request.nextUrl.pathname !== '/crearCuenta'
       ) {
-        return NextResponse.redirect(new URL('/signin', request.url));
+        return NextResponse.redirect(new URL('/iniciarSesion', request.url));
       }
       return NextResponse.next();
     } else {
       if (
-        request.nextUrl.pathname === '/signin' ||
-        request.nextUrl.pathname === '/signup' ||
+        request.nextUrl.pathname === '/iniciarSesion' ||
+        request.nextUrl.pathname === '/crearCuenta' ||
         request.nextUrl.pathname === '/'
       ) {
-        return NextResponse.redirect(new URL('/home', request.url));
+        return NextResponse.redirect(new URL('/inicio', request.url));
       }
       return NextResponse.next();
     }
   } catch (e) {
     cookies().set('login', 'false');
-    return NextResponse.redirect(new URL('/signin', request.url));
+    return NextResponse.redirect(new URL('/iniciarSesion', request.url));
   }
 }
 
 export const config = {
   matcher: [
-    '/home',
+    '/inicio',
     '/amigos/:path*',
     '/configuracion',
-    '/mensaje',
+    '/chat',
     '/notificaciones/:path*',
     '/perfil',
     '/search',
-    '/signin',
-    '/signup',
+    '/iniciarSesion',
+    '/crearCuenta',
     '/',
   ],
 };

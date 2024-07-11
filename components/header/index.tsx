@@ -242,7 +242,7 @@ export default function Header() {
       <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
         <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
           <div className='flex gap-4 items-center '>
-            <Link href={'/home'} aria-label='home'>
+            <Link href={'/inicio'} aria-label='home'>
               <Logo className='rounded-md dark:fill-white transition-dark' />
             </Link>
             <div className='border-none relative max-md:hidden'>
@@ -322,7 +322,7 @@ export default function Header() {
                     key={p}
                     onClick={() =>
                       router.push(
-                        '/mensaje?fullName=' +
+                        '/chat?fullName=' +
                           e.fullName +
                           '&rtdb=' +
                           e.rtdb +

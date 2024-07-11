@@ -149,7 +149,7 @@ export function TemMensaje() {
       id: '',
       rtdb: undefined,
     });
-    router.replace('/mensaje');
+    router.replace('/chat');
   };
   return (
     <DivTemMensaje>

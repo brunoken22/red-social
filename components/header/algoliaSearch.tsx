@@ -30,11 +30,11 @@ export default function NavegationUrl({
           />
         </span>
       </Link>
-      <Link href={'/home'} aria-label='home' className={className}>
+      <Link href={'/inicio'} aria-label='home' className={className}>
         <span className={``}>
           <Home
             className={`${
-              pathname == '/home'
+              pathname == '/inicio'
                 ? 'fill-black dark:fill-white'
                 : 'hover:fill-black fill-gray-600 '
             } dark:fill-gray-200`}
@@ -53,12 +53,12 @@ export default function NavegationUrl({
           />
         </span>
       </Link>
-      <Link href={'/mensaje'} aria-label='mensaje' className={className}>
+      <Link href={'/chat'} aria-label='mensaje' className={className}>
         {message > 0 && <DivNotificacionActi>{message}</DivNotificacionActi>}
         <span>
           <Chat
             className={`${
-              pathname == '/mensaje'
+              pathname == '/chat'
                 ? 'fill-black dark:fill-white'
                 : 'hover:fill-black fill-gray-600 '
             } dark:fill-gray-200`}

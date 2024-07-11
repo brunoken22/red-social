@@ -27,7 +27,6 @@ import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {LikeODisLike, comentarPublicacion, DeletePublic} from '@/lib/hook';
 import {SendComentPubli} from '@/ui/icons';
-// import {InputP} from '../publicar/styled';
 import moment from 'moment';
 const iconConLike = {
   height: ' 20px',

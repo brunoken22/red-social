@@ -5,7 +5,7 @@ import {Metadata} from 'next';
 import {PublicacionesAll} from '@/components/publicaciones/publicationsAll';
 
 export const metadata: Metadata = {
-  title: 'Home | UniRed',
+  title: 'Inicio | UniRed',
   description: 'Inicio',
 };
 export default function Home() {

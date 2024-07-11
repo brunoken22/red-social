@@ -34,12 +34,12 @@ export default function Layout({children}: {children: React.ReactNode}) {
           indexName='users'
           future={{preserveSharedStateOnUnmount: true}}>
           <RecoidContextProvider>
-            {pathname !== '/signin' && pathname !== '/signup' ? (
+            {pathname !== '/iniciarSesion' && pathname !== '/crearCuenta' ? (
               <Header />
             ) : null}
             <div
               className={`${
-                pathname !== '/signin' && pathname !== '/signup'
+                pathname !== '/iniciarSesion' && pathname !== '/crearCuenta'
                   ? 'mt-8  ml-2 mr-2 '
                   : ''
               } `}>

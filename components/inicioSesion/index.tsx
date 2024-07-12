@@ -53,7 +53,7 @@ export function Signin() {
           id='email'
           {...register('email', {required: true})}
           placeholder='UniRed@gmail.com'
-          autoComplete='on'
+          autoComplete='email '
         />
         {error1.email && (
           <span className='text-red-500 text-[0.8rem]'>Se requiere Email</span>
@@ -69,7 +69,7 @@ export function Signin() {
           id='password'
           {...register('password', {required: true})}
           placeholder='**********'
-          autoComplete='on'
+          autoComplete='one-time-code'
         />
         {error1.password && (
           <span className='text-red-500 text-[0.8rem]'>

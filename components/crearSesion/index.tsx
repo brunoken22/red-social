@@ -68,7 +68,8 @@ export function Signup() {
           type='text'
           {...register('fullName', {required: true})}
           id='fullName'
-          autoComplete='on'
+          placeholder='UniRed'
+          autoComplete='username'
         />
       </div>
       <div>
@@ -80,7 +81,8 @@ export function Signup() {
           type='email'
           {...register('email', {required: true})}
           id='email'
-          autoComplete='on'
+          placeholder='Unired@unired.com'
+          autoComplete='email'
         />
       </div>
       <div>
@@ -92,7 +94,8 @@ export function Signup() {
           type='password'
           {...register('password', {required: true})}
           id='password'
-          autoComplete='on'
+          placeholder='********'
+          autoComplete='new-password'
         />
       </div>
       <div>
@@ -105,10 +108,10 @@ export function Signup() {
           type='password'
           {...register('repassword', {required: true})}
           id='repassword'
-          autoComplete='on'
+          placeholder='********'
+          autoComplete='current-password'
         />
       </div>
-      {error1.exampleRequired && <span>This field is required</span>}
       <div className='mt-6'>
         <button
           type='submit'

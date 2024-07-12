@@ -17,5 +17,7 @@ export const DivIcons = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivResult = ({children}: {children: React.ReactNode}) => (
-  <div className=' w-[90%] text-center mt-0 max-md:mt-6  pb-4'>{children}</div>
+  <div className=' w-[90%] max-md:w-full text-center mt-0 max-md:mt-6  pb-4'>
+    {children}
+  </div>
 );

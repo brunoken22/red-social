@@ -22,9 +22,9 @@ export default function Home() {
           <Title classType={robotoSlab.className}>Crear cuenta</Title>
           <Signup />
           <p className='mt-8'>
-            Ya ténes una cuenta?
+            Ya ténes una cuenta?{' '}
             <Link
-              href='/iniciaSesion'
+              href='/iniciarSesion'
               className=' font-semibold hover:opacity-70'>
               Inicia sesión
             </Link>

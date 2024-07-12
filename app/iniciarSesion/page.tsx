@@ -23,7 +23,9 @@ export default function Page() {
           <Signin />
           <p className='mt-8'>
             No ténes cuenta?{' '}
-            <Link href='/signup' className='font-semibold hover:opacity-70'>
+            <Link
+              href='/crearCuenta'
+              className='font-semibold hover:opacity-70'>
               Registrate
             </Link>
           </p>

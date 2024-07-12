@@ -46,13 +46,13 @@ export function PublicacionesAll() {
               </DivAllPublicaciones>
             ))}
             {dataPubliAllAmigosSwr?.length ? (
-              <div style={{textAlign: 'center'}}>
+              <div className='text-center'>
                 <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
               </div>
             ) : null}
           </>
         ) : (
-          <p style={{textAlign: 'center'}}>No hay publicaciones</p>
+          <p className='text-center'>No hay publicaciones</p>
         )
       ) : null}
       {isLoadingAllAmigos ? <SkeletonPublicacionAll /> : null}

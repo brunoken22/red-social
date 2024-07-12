@@ -23,6 +23,7 @@ import CloseSvg from '@/ui/icons/close.svg';
 import {user, isConnect} from '@/lib/atom';
 import {CreatePublicacion} from '@/lib/hook';
 import {Loader} from '../loader';
+import Verification from '@/ui/verification';
 
 export function Publicar() {
   const [formClick, setFormClick] = useState(false);
@@ -43,14 +44,13 @@ export function Publicar() {
         <FotoPerfil
           img={dataValor?.user?.img}
           className='w-[40px] h-[40px]'
-          // fullName={dataValor?.user?.fullName}
           connect={
             dataIsConnect?.find((e: any) => e.id == dataValor?.user?.id)
               ?.connect && true
           }
         />
         <DivCrear onClick={() => setFormClick(true)}>
-          <p style={{margin: '0'}}>Crear publicacion</p>
+          <p>Crear publicacion</p>
         </DivCrear>
       </DivText>
       <DivSubir>
@@ -108,68 +108,57 @@ function TemplateFormPublicar(props: any) {
     setIsLoading(false);
     props.close(false);
   };
-  if (isLoading) {
-    return <Loader />;
-  }
   return (
-    <DivForm>
-      <div style={{maxWidth: '550px', width: '90%'}}>
-        <Form onSubmit={handleClickForm}>
-          <div
-            style={{
-              display: 'flex',
-              gap: '1rem',
-
-              alignItems: 'flex-start',
-              fontWeight: 'bolder',
-              justifyContent: 'space-between',
-              width: '100%',
-            }}>
-            <div
-              style={{
-                display: 'flex',
-                gap: '1rem',
-
-                alignItems: 'center',
-              }}>
-              <FotoPerfil
-                className='w-[80px] h-[80px]'
-                img={dataUser?.user?.img}
-                // fullName={dataUser?.user?.fullName}
-              />
-              <h3 className='text-2xl'>{dataUser?.user?.fullName}</h3>
+    <>
+      <DivForm>
+        <div style={{maxWidth: '550px', width: '90%'}}>
+          <Form onSubmit={handleClickForm}>
+            <div className='flex gap-4 items-start font-bold justify-between w-full'>
+              <div className='flex gap-4 items-center'>
+                <FotoPerfil
+                  className='w-[80px] h-[80px]'
+                  img={dataUser?.user?.img}
+                />
+                <div>
+                  <h3 className='text-2xl'>{dataUser?.user?.fullName}</h3>
+                  {dataUser.user.verification ? <Verification /> : null}
+                </div>
+              </div>
+              <Button onClick={handleclose}>
+                <CloseSvg />
+              </Button>
             </div>
-            <Button onClick={handleclose}>
-              <CloseSvg />
-            </Button>
-          </div>
-          <p
-            id='description'
-            className='mt-8 mb-8 text-start indent-3 outline-none'
-            onBlur={() => setContent(true)}
-            onFocus={() => setContent(false)}
-            onInput={handleInput}
-            suppressContentEditableWarning={true}
-            contentEditable={true}>
-            {content
-              ? `Qué estás pensado, ${dataUser?.user?.fullName.split(' ')[0]}?`
-              : null}
-          </p>
-          <div>
+            <p
+              id='description'
+              className='mt-8 mb-8 text-start indent-3 outline-none'
+              onBlur={() => setContent(true)}
+              onFocus={() => setContent(false)}
+              onInput={handleInput}
+              suppressContentEditableWarning={true}
+              contentEditable={true}>
+              {content
+                ? `Qué estás pensado, ${
+                    dataUser?.user?.fullName.split(' ')[0]
+                  }?`
+                : null}
+            </p>
             <div>
-              <Body>Agregar a tu publicación</Body>
+              <div>
+                <Body>Agregar a tu publicación</Body>
+              </div>
+              <ImageSVG
+                dataUrl={(data: string) => setDataUrl(data)}
+                archivo={(data: boolean) => setPlaceinput(data)}></ImageSVG>
             </div>
-            <ImageSVG
-              dataUrl={(data: string) => setDataUrl(data)}
-              archivo={(data: boolean) => setPlaceinput(data)}></ImageSVG>
-          </div>
-          <DivButton>
-            <ButtonPublicar color={!placeInput} disabled={placeInput}>
-              Publicar
-            </ButtonPublicar>
-          </DivButton>
-        </Form>
-      </div>
-    </DivForm>
+            <DivButton>
+              <ButtonPublicar color={!placeInput} disabled={placeInput}>
+                Publicar
+              </ButtonPublicar>
+            </DivButton>
+          </Form>
+        </div>
+      </DivForm>
+      {isLoading ? <Loader /> : null}
+    </>
   );
 }

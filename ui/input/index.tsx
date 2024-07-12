@@ -5,7 +5,7 @@ export const Label = ({
   htmlFor: string;
   children: React.ReactNode;
 }) => (
-  <label htmlFor={htmlFor} className='block'>
+  <label htmlFor={htmlFor} className='block text-[0.9rem]'>
     {children}
   </label>
 );

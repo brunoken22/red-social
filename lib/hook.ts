@@ -563,6 +563,33 @@ export function EnviarMessage(datas: any) {
   );
   return {dataMesssage: data, isLoadMessage: isLoading};
 }
+export async function generateCode() {
+  const api = '/user/generateCode';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  };
+
+  const data = await fetchApiSwr(api, option);
+  return data;
+}
+export async function verificateCode(code: string) {
+  const api = '/user/verificateCode';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({code}),
+  };
+
+  const data = await fetchApiSwr(api, option);
+  return data;
+}
 export async function optimizarImage(dataUrl: string) {
   const optimizedBase64 = await urltoBlob(dataUrl);
   const optimizedBase = await compressAccurately(optimizedBase64, {

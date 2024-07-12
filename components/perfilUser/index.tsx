@@ -17,6 +17,7 @@ import {modificarUser, optimizarImage} from '@/lib/hook';
 import {Loader} from '../loader';
 import {SkeletonPerfil} from '@/ui/skeleton';
 import {PublicacionesUser} from '../publicaciones/publicationsUser';
+import Verification from '@/ui/verification';
 
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);
@@ -81,28 +82,14 @@ export function PerfilUser() {
     <DivPerfilUser>
       <DivHeadPerfil>
         <DivFotoName>
-          <div style={{position: 'relative'}}>
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '0',
-                right: '0',
-                zIndex: 9,
-              }}>
-              <div className='dropzoneClick' style={{height: '24px'}}>
-                <div
-                  className='dz-default dz-message'
-                  style={{margin: '0', height: '24px'}}>
+          <div className='relative'>
+            <div className='absolute bottom-0 right-0 z-[9]'>
+              <div className='dropzoneClick h-[24px]'>
+                <div className='dz-default dz-message m-0 h-[24px]'>
                   <button
-                    className='dz-button'
+                    className='dz-button p-0 border-none bg-transparent h-[24px]'
                     aria-label='dropzonePerfil'
-                    type='button'
-                    style={{
-                      padding: '0',
-                      border: 'none',
-                      backgroundColor: 'transparent',
-                      height: '24px',
-                    }}>
+                    type='button'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       viewBox='0 0 512 512'
@@ -123,9 +110,12 @@ export function PerfilUser() {
               img={dataValor.user.img}
             />
           </div>
-          <h2 className='font-semibold text-2xl'>
-            {dataValor?.user?.fullName}
-          </h2>
+          <div className='flex gap-2 items-center'>
+            <h2 className='font-semibold text-2xl'>
+              {dataValor?.user?.fullName}
+            </h2>
+            {dataValor.user.verification ? <Verification /> : null}
+          </div>
         </DivFotoName>
         <DivButton>
           <Link

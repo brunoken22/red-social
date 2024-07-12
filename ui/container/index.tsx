@@ -85,7 +85,7 @@ export const Form = ({
 }) => (
   <form
     onSubmit={onSubmit}
-    className='flex flex-col gap-4 max-w-[500px] w-[90%] p-4'>
+    className='flex flex-col gap-4 max-w-[500px] w-[90%] pt-4 pb-4 max-md:m-auto'>
     {children}
   </form>
 );

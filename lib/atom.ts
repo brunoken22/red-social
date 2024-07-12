@@ -26,6 +26,7 @@ export type User = {
   email: string;
   img: string;
   amigos: number[];
+  verification: boolean;
   rtdb: string[];
 };
 export const user = atom({
@@ -35,6 +36,7 @@ export const user = atom({
       id: 0,
       email: '',
       fullName: '',
+      verification: false,
       img: '',
       amigos: [] as number[],
       rtdb: ([] as string[]) || null,

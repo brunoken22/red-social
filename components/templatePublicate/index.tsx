@@ -28,6 +28,7 @@ import {useEffect, useState} from 'react';
 import {LikeODisLike, comentarPublicacion, DeletePublic} from '@/lib/hook';
 import {SendComentPubli} from '@/ui/icons';
 import moment from 'moment';
+import Verification from '@/ui/verification';
 const iconConLike = {
   height: ' 20px',
   width: ' 20px',
@@ -136,9 +137,14 @@ export function ThemplatePubli(props: {
               }></FotoPerfil>
           )}
           <div>
-            <Body classType='m-0 font-bold text-base'>
-              {props.user?.id == props.userId ? 'Tú' : props.user.fullName}
-            </Body>
+            <div className='flex items-center gap-2'>
+              <Body classType='m-0 font-bold text-base'>
+                {props.user?.id == props.userId ? 'Tú' : props.user.fullName}
+              </Body>
+              {props.user.verification ? (
+                <Verification publication={true} />
+              ) : null}
+            </div>
             <DivSpan>{diferenteDate(props.fecha)}</DivSpan>
           </div>
         </DivPerfil>
@@ -164,15 +170,7 @@ export function ThemplatePubli(props: {
           </div>
         ) : null}
       </DivPefilDelete>
-      <div
-        style={{
-          padding: '1rem',
-          fontSize: '0.9rem',
-          fontWeight: '100',
-          overflowWrap: 'anywhere',
-        }}>
-        <p>{props.description}</p>
-      </div>
+      <p className='p-4 text-[0.9rem] font-thin'>{props.description}</p>
       {props.img ? (
         <ButtonOpenImage onClick={() => setOpenImage(true)}>
           <DivImage>
@@ -382,6 +380,7 @@ function ComentarioPublic(props: any) {
                   userName={e.user.id == props.userId ? 'Tú' : e.user.fullName}
                   description={e.description}
                   createdAt={e.createdAt}
+                  verification={e.user.verification}
                 />
               );
             })
@@ -396,6 +395,7 @@ function TemplateComentario(props: {
   imgUser: string;
   userName: string;
   description: string;
+  verification: boolean;
   createdAt: string;
 }) {
   return (
@@ -416,13 +416,23 @@ function TemplateComentario(props: {
         <div className='w-[95%]'>
           <div className=' p-2 bg-[#ddddddb0] rounded-[0px_0.5rem_0.5rem] dark:bg-dark'>
             {props.userName !== 'Tú' ? (
-              <Link
-                href={'/amigos/' + props.userId + '/' + props.userName}
-                className='font-medium m-0'>
-                {props.userName}
-              </Link>
+              <div className='flex items-center gap-2'>
+                <Link
+                  href={'/amigos/' + props.userId + '/' + props.userName}
+                  className='font-medium m-0  opacity-80'>
+                  {props.userName}
+                </Link>
+                {props.verification ? (
+                  <Verification publication={true} />
+                ) : null}
+              </div>
             ) : (
-              <p className='font-medium m-0'>{props.userName}</p>
+              <div className='flex items-center gap-2'>
+                <p className='font-medium m-0 opacity-80'>{props.userName}</p>
+                {props.verification ? (
+                  <Verification publication={true} />
+                ) : null}
+              </div>
             )}
             <p className='text-[0.9rem] m-0 '>{props.description}</p>
           </div>

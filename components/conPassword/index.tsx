@@ -52,7 +52,7 @@ export function Password() {
   return (
     <div>
       <div>
-        <h3>Password</h3>
+        <h3 className='text-xl font-semibold'>Contraseña</h3>
       </div>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -84,14 +84,11 @@ export function Password() {
           )}
         </div>
 
-        <div style={{textAlign: 'center'}}>
-          {' '}
-          <button
-            type='submit'
-            className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70'>
-            Modificar
-          </button>
-        </div>
+        <button
+          type='submit'
+          className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70'>
+          Modificar
+        </button>
       </Form>
     </div>
   );

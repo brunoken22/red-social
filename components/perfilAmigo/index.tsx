@@ -31,6 +31,7 @@ import {SkeletonPerfilAmigo} from '@/ui/skeleton';
 import {ThemplatePubli} from '../templatePublicate';
 import {useRouter} from 'next/navigation';
 import {Loader} from '../loader';
+import Verification from '@/ui/verification';
 
 export function PerfilAmigo() {
   const {id} = useParams();
@@ -123,9 +124,12 @@ export function PerfilAmigo() {
                 }
               />
             )}
-            <h2 className='text-center  font-bold text-2xl max-md:mb-4'>
-              {data.user.fullName}
-            </h2>
+            <div className='flex gap-2 items-center'>
+              <h2 className='text-center  font-bold text-2xl max-md:mb-4'>
+                {data.user.fullName}
+              </h2>
+              {data.user.verification ? <Verification /> : null}
+            </div>
           </DivFotoNameLink>
           <div>
             {isAmigo !== 'PENDING' ? (
@@ -184,11 +188,11 @@ export function PerfilAmigo() {
                 </DivAllPublicaciones>
               ))
             ) : (
-              <p style={{textAlign: 'center'}}>No hay publicaciones</p>
+              <p className='text-center'>No hay publicaciones</p>
             )
           ) : null}
           {dataPubliAmigo?.length ? (
-            <div style={{textAlign: 'center'}}>
+            <div className='text-center'>
               <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
             </div>
           ) : null}

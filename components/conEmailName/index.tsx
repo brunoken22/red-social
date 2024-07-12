@@ -1,10 +1,8 @@
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {Form} from '@/ui/container';
-import {Input, Label} from '@/ui/input';
+import {Label} from '@/ui/input';
 import {modificarUser} from '@/lib/hook';
 import {useEffect, useState} from 'react';
-import {user} from '@/lib/atom';
-import {useRecoilValue} from 'recoil';
 import {Loader} from '../loader';
 
 type Inputs = {
@@ -12,7 +10,13 @@ type Inputs = {
   email: string;
 };
 
-export function EmailYName() {
+export function EmailYName({
+  fullName,
+  email,
+}: {
+  fullName: string;
+  email: string;
+}) {
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -20,13 +24,12 @@ export function EmailYName() {
     handleSubmit,
     formState: {errors: error1},
   } = useForm<Inputs>();
-  const userData = useRecoilValue(user);
 
   const onSubmit: SubmitHandler<Inputs> = async (dataInputs) => {
     setIsLoading(true);
     const dataMod = await modificarUser({
-      fullName: dataInputs.fullName || userData.user.fullName,
-      email: dataInputs.email || userData.user.email,
+      fullName: dataInputs.fullName || fullName,
+      email: dataInputs.email || email,
     });
     setIsLoading(false);
 
@@ -44,7 +47,7 @@ export function EmailYName() {
   return (
     <div>
       <div>
-        <h3>Email y Nombre</h3>
+        <h3 className='text-xl font-semibold'>Email y Nombre</h3>
       </div>
       <div>
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -52,7 +55,7 @@ export function EmailYName() {
             <Label htmlFor='fullName'>Nombre</Label>
             <input
               {...register('fullName', {required: true})}
-              defaultValue={userData?.user?.fullName}
+              defaultValue={fullName}
               className='w-full h-[2.5rem] rounded-md border-[1px] text-black border-gray-700 indent-3 p-0'
               autoComplete='current-password'
             />
@@ -67,7 +70,7 @@ export function EmailYName() {
             <input
               {...register('email', {required: true})}
               type='email'
-              defaultValue={userData?.user?.email}
+              defaultValue={email}
               className='w-full h-[2.5rem] rounded-md border-[1px] text-black border-gray-700 indent-3 p-0'
               autoComplete='current-password'
             />

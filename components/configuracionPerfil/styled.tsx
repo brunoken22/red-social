@@ -11,7 +11,7 @@ export const DivConfiguracionPerfil = ({
 );
 
 export const DIvCongifurar = ({children}: {children: React.ReactNode}) => (
-  <div className='max-w-[60%] w-full h-full pl-4 max-md:text-center max-md:mt-6 max-md:max-w-full'>
+  <div className='max-w-[60%] w-full h-full m-auto max-md:text-center max-md:mt-6 max-md:max-w-full'>
     {children}
   </div>
 );

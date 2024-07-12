@@ -24,7 +24,7 @@ export function Signup() {
   const {
     register,
     handleSubmit,
-    formState: {errors: error1},
+    formState: {errors: error},
   } = useForm();
 
   const onSubmit = (data: any) => {
@@ -58,7 +58,7 @@ export function Signup() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='flex flex-col gap-4 w-full '>
+      className='flex flex-col gap-4 w-full mt-4 mb-4'>
       <div>
         <label className='block' htmlFor='fullName'>
           Nombre <span className='text-[#f57888]'>*</span>
@@ -71,6 +71,9 @@ export function Signup() {
           placeholder='UniRed'
           autoComplete='username'
         />
+        {error.fullName && (
+          <span className='text-red-500 text-[0.8rem]'>Se requiere nombre</span>
+        )}
       </div>
       <div>
         <label className='block' htmlFor='email'>
@@ -84,6 +87,9 @@ export function Signup() {
           placeholder='Unired@unired.com'
           autoComplete='email'
         />
+        {error.email && (
+          <span className='text-red-500 text-[0.8rem]'>Se requiere email</span>
+        )}
       </div>
       <div>
         <label className='block' htmlFor='password'>
@@ -97,6 +103,11 @@ export function Signup() {
           placeholder='********'
           autoComplete='new-password'
         />
+        {error.password && (
+          <span className='text-red-500 text-[0.8rem]'>
+            Se requiere contraseña
+          </span>
+        )}
       </div>
       <div>
         {' '}
@@ -111,6 +122,11 @@ export function Signup() {
           placeholder='********'
           autoComplete='current-password'
         />
+        {error.repassword && (
+          <span className='text-red-500 text-[0.8rem]'>
+            Se requiere repetir contraseña
+          </span>
+        )}
       </div>
       <div className='mt-6'>
         <button

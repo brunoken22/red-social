@@ -61,7 +61,7 @@ export function Password() {
             type='password'
             id='password'
             {...register('password', {required: true})}
-            autoComplete='password'
+            autoComplete='new-password'
           />
           {error1.password && (
             <span className='text-red-500 text-[0.8rem]'>
@@ -75,9 +75,9 @@ export function Password() {
             type='password'
             {...register('repassword', {required: true})}
             id='repassword'
-            autoComplete='password'
+            autoComplete='current-password'
           />
-          {error1.password && (
+          {error1.repassword && (
             <span className='text-red-500 text-[0.8rem]'>
               Se requiere repetir contraseña
             </span>

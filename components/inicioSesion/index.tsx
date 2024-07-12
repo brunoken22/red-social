@@ -42,7 +42,7 @@ export function Signin() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='flex flex-col gap-4 w-full '>
+      className='flex flex-col gap-4 w-full mt-4 mb-4'>
       <div>
         <label className='block' htmlFor='email'>
           Email <span className='text-[#f57888]'>*</span>

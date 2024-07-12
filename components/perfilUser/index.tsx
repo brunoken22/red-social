@@ -114,7 +114,9 @@ export function PerfilUser() {
             <h2 className='font-semibold text-2xl'>
               {dataValor?.user?.fullName}
             </h2>
-            {dataValor.user.verification ? <Verification /> : null}
+            {dataValor.user.verification ? (
+              <Verification publication={false} />
+            ) : null}
           </div>
         </DivFotoName>
         <DivButton>

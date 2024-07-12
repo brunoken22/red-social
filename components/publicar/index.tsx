@@ -121,7 +121,9 @@ function TemplateFormPublicar(props: any) {
                 />
                 <div>
                   <h3 className='text-2xl'>{dataUser?.user?.fullName}</h3>
-                  {dataUser.user.verification ? <Verification /> : null}
+                  {dataUser.user.verification ? (
+                    <Verification publication={false} />
+                  ) : null}
                 </div>
               </div>
               <Button onClick={handleclose}>

@@ -128,7 +128,9 @@ export function PerfilAmigo() {
               <h2 className='text-center  font-bold text-2xl max-md:mb-4'>
                 {data.user.fullName}
               </h2>
-              {data.user.verification ? <Verification /> : null}
+              {data.user.verification ? (
+                <Verification publication={false} />
+              ) : null}
             </div>
           </DivFotoNameLink>
           <div>

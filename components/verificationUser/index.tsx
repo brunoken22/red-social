@@ -53,7 +53,7 @@ export default function VerificationUser({
       <div>
         <h3 className='text-xl font-semibold'>Verificar</h3>
       </div>
-      {verification ? (
+      {!verification ? (
         <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='flex items-center justify-between max-xl:flex-col max-xl:gap-4'>
             <div>

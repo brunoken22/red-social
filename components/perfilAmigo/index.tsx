@@ -124,8 +124,8 @@ export function PerfilAmigo() {
                 }
               />
             )}
-            <div className='flex gap-2 items-center'>
-              <h2 className='text-center  font-bold text-2xl max-md:mb-4'>
+            <div className='flex gap-2 items-center max-md:mb-4'>
+              <h2 className='text-center  font-bold text-2xl'>
                 {data.user.fullName}
               </h2>
               {data.user.verification ? (

@@ -32,7 +32,7 @@ export default function VerificationUser({
     setIsLoading(true);
     const verificate = await verificateCode(dataInputs.code);
     setIsLoading(false);
-    if (!verificate || verificate.error) {
+    if (verificate.error) {
       setMessage({
         message: verificate.message || 'Hubo un error',
         status: 'error',
@@ -48,7 +48,7 @@ export default function VerificationUser({
     const data = await generateCode();
     setIsLoading(false);
 
-    if (!data || data.error) {
+    if (data.error) {
       setMessage({
         message: data.message || 'Hubo un error',
         status: 'error',

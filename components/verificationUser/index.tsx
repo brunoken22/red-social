@@ -1,9 +1,10 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Form} from '@/ui/container';
-import {Input, Label} from '@/ui/input';
+import {Label} from '@/ui/input';
 import React, {useState} from 'react';
 import {generateCode, verificateCode} from '@/lib/hook';
 import {Loader} from '../loader';
+import {NotificationToastStatus} from '@/ui/toast';
 type Inputs = {
   code: string;
 };
@@ -15,6 +16,10 @@ export default function VerificationUser({
   verification: boolean;
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState<{
+    message: string;
+    status: 'info' | 'success' | 'warning' | 'error';
+  } | null>(null);
 
   const {
     register,
@@ -27,13 +32,15 @@ export default function VerificationUser({
     setIsLoading(true);
     const verificate = await verificateCode(dataInputs.code);
     setIsLoading(false);
-    if (verificate) {
-      reset();
-      alert('Se modifico correctamente');
+    if (!verificate || verificate.error) {
+      setMessage({
+        message: verificate.message || 'Hubo un error',
+        status: 'error',
+      });
       return;
     }
-
-    alert('Hubo algun problema, intentalo de nuevo');
+    reset();
+    setMessage({message: 'Se modifico correctamente', status: 'success'});
   };
   const handleGenerateCode = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -41,11 +48,17 @@ export default function VerificationUser({
     const data = await generateCode();
     setIsLoading(false);
 
-    if (data) {
-      alert('Revisa en tu correo el codigo proporsionado');
+    if (!data || data.error) {
+      setMessage({
+        message: data.message || 'Hubo un error',
+        status: 'error',
+      });
       return;
     }
-    alert('Intenta con otro código');
+    setMessage({
+      message: 'Revisa en tu correo el codigo proporsionado',
+      status: 'success',
+    });
   };
 
   return (
@@ -88,11 +101,19 @@ export default function VerificationUser({
           </button>
         </Form>
       ) : (
-        <div>
+        <div className='flex items-center flex-col justify-center'>
+          <img src='/verify.svg' alt='verify' />
           <span className='text-2xl text-center font-bold'>YA VERIFICADO</span>
         </div>
       )}
       {isLoading ? <Loader /> : null}
+      {message ? (
+        <NotificationToastStatus
+          message={message.message}
+          status={message.status}
+          close={() => setMessage(null)}
+        />
+      ) : null}{' '}
     </div>
   );
 }

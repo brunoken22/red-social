@@ -8,7 +8,7 @@ import {
   DivButton,
   DivPublicaciones,
 } from './styled';
-import {Publicar} from '../publicar';
+import Publicar from '../publicar';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {user} from '@/lib/atom';

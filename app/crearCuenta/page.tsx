@@ -19,7 +19,7 @@ export default function Home() {
       <div className='w-2/4 p-4 flex flex-col justify-between  max-md:w-full '>
         <LogoPage />
         <div className='flex flex-col justify-between h-3/4 m-auto max-w-[500px] mt-4 mb-4 w-full'>
-          <Title classType={robotoSlab.className}>Crear cuenta</Title>
+          <Title>Crear cuenta</Title>
           <Signup />
           <p className='mt-8'>
             Ya ténes una cuenta?{' '}

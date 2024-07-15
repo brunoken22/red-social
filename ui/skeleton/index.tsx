@@ -1,5 +1,5 @@
 import React from 'react';
-import {DivSkeleton, PhotoSkeleton, TextSkeleton, SpanLuz} from './styled';
+import {DivSkeleton, PhotoSkeleton, SpanLuz, TextSkeleton} from './styled';
 import {
   DivHeadPerfil,
   DivFotoName,
@@ -7,7 +7,7 @@ import {
 } from '@/components/perfilUser/styled';
 import {DivSubir, DivText} from '@/components/publicar/styled';
 import {DivAllChat, DivPublicar} from '../container';
-import {TemplChat, TemplMensaje} from '@/components/templateMensaje/styled';
+import {TemplChat} from '@/components/templateMensaje/styled';
 
 export function SkeletonNoti(props: React.ComponentProps<any>) {
   return (

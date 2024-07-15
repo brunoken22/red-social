@@ -112,7 +112,6 @@ export function ThemplatePubli(props: {
     setComentario(false);
     e.target.style.fill = '#ddd';
   };
-
   return (
     <div className='w-full '>
       <DivPefilDelete aria-label='DivPefilDelete'>
@@ -138,7 +137,7 @@ export function ThemplatePubli(props: {
           )}
           <div>
             <div className='flex items-center gap-2'>
-              <Body classType='m-0 font-bold text-base'>
+              <Body>
                 {props.user?.id == props.userId ? 'Tú' : props.user.fullName}
               </Body>
               {props.user.verification ? (

@@ -1,19 +1,13 @@
 import React from 'react';
+import {Roboto_Slab} from 'next/font/google';
 
-export const Title = ({
-  children,
-  classType,
-}: {
-  children: React.ReactNode;
-  classType?: any;
-}) => (
-  <h1 className={`${classType} font-bold text-4xl text-center`}>{children}</h1>
+const robotoSlab = Roboto_Slab({weight: ['500', '800'], subsets: ['latin']});
+
+export const Title = ({children}: {children: React.ReactNode}) => (
+  <h1 className={`${robotoSlab.className} font-bold text-4xl text-center`}>
+    {children}
+  </h1>
 );
-// export const Subtitle = styled.h2``;
-export const Body = ({
-  children,
-  classType,
-}: {
-  children: React.ReactNode;
-  classType?: any;
-}) => <p className={`m-0 z-0 text-sm ${classType}   `}>{children}</p>;
+export const Body = ({children}: {children: React.ReactNode}) => (
+  <p className={`  ${robotoSlab.className} `}>{children}</p>
+);

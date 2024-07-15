@@ -76,8 +76,8 @@ export const BottonLike = ({
     id={id}
     type={type}
     onClick={onClick}
-    className={` border-none  flex items-center gap-2 text-[0.8rem] p-2 hover:opacity-70 dark:bg-[rgb(77_77_77)] rounded-md dark:text-primary bg-[#4d4d4d4a] text-secundary ${
-      like ? 'text-[#5a81ff]' : ''
+    className={` border-none  flex items-center gap-2 text-[0.8rem] p-2 hover:backdrop-contrast-50 rounded-md  ${
+      like ? 'text-[#5a81ff]' : 'text-secundary dark:text-primary'
     }`}>
     {children}
   </button>

@@ -1,4 +1,6 @@
 'use client';
+import dynamic from 'next/dynamic';
+import algoliasearch from 'algoliasearch/lite';
 import {
   ref,
   onValue,
@@ -14,15 +16,12 @@ import {
 import {rtdb} from '@/lib/firebase';
 import './style.css';
 import {usePathname, useRouter} from 'next/navigation';
-import {SearchBox, Hits, useHits} from 'react-instantsearch';
-import {Hit} from '../searchUsers';
 import React, {useEffect, useState} from 'react';
+import {GetUser, NotificacionesUser} from '@/lib/hook';
 // import {useGlobalAudioPlayer} from 'react-use-audio-player';
-import Logo from '@/public/logo.svg';
 import Link from 'next/link';
-import FotoPerfil from '@/ui/FotoPerfil';
 import {Menu} from '@/components/menu';
-import {useRecoilValue, useRecoilState} from 'recoil';
+import {useRecoilValue, useRecoilState, useSetRecoilState} from 'recoil';
 import {
   user,
   getAllSolicitudesRecibidas,
@@ -34,24 +33,51 @@ import {
   getAllUser,
   getAllUsersChat,
 } from '@/lib/atom';
-import NavegationUrl from './algoliaSearch';
-import {
-  DivConectados,
-  DivConnect,
-  DivConnectAll,
-  DivContenedorConnect,
-} from './styled';
-import {ButtonSmsConnect} from '@/ui/boton';
-import {SkeletonNav} from '@/ui/skeleton';
+import Logo from '@/public/logo.svg';
+const SkeletonNav = dynamic(() =>
+  import('@/ui/skeleton').then((mod) => mod.SkeletonNav)
+);
+const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
+const ButtonSmsConnect = dynamic(() =>
+  import('@/ui/boton').then((mod) => mod.ButtonSmsConnect)
+);
+const DivConectados = dynamic(() =>
+  import('./styled').then((mod) => mod.DivConectados)
+);
+const DivConnect = dynamic(() =>
+  import('./styled').then((mod) => mod.DivConnect)
+);
+const DivConnectAll = dynamic(() =>
+  import('./styled').then((mod) => mod.DivConnectAll)
+);
+const DivContenedorConnect = dynamic(() =>
+  import('./styled').then((mod) => mod.DivContenedorConnect)
+);
+const SearchUser = dynamic(() =>
+  import('../searchUsers').then((mod) => mod.SearchUser)
+);
+const InstantSearch = dynamic(() =>
+  import('react-instantsearch').then((mod) => mod.InstantSearch)
+);
+const SearchBox = dynamic(() =>
+  import('react-instantsearch').then((mod) => mod.SearchBox)
+);
+const NavegationUrl = dynamic(() => import('./algoliaSearch'));
 
-export default function Header() {
+export default function Header({themeDate}: {themeDate: string}) {
+  const searchClient = algoliasearch(
+    '8W3ZG1OHSP',
+    process.env.NEXT_PUBLIC_ALGOLIA as string
+  );
+  GetUser();
+  NotificacionesUser(0);
   // const {load} = useGlobalAudioPlayer();
   const pathname = usePathname();
   const router = useRouter();
   const dataUser = useRecoilValue(user);
   const getAllUserData = useRecoilValue(getAllUser);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
-  const [, setDatagetAllUsersChat] = useRecoilState(getAllUsersChat);
+  const setDatagetAllUsersChat = useSetRecoilState(getAllUsersChat);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
   // const [notificationSound, setNotificationSound] = useState<any[]>([]);
@@ -60,13 +86,8 @@ export default function Header() {
   const [allConnectAmigos, setAllConnectAmigos] = useState([]);
   const [connectAmigos, setConnectAmigos] = useState(false);
   const [menu, setMenu] = useState(false);
-  const themeValue =
-    typeof window !== undefined ? localStorage.getItem('theme') : false;
-  const [theme, setThemes] = useState<boolean>(
-    (themeValue && JSON.parse(themeValue)) || false
-  );
+  const [theme, setThemes] = useState<string>(themeDate);
 
-  const {hits} = useHits();
   const handleMenu = (e: any) => {
     e.preventDefault();
     if (menu) {
@@ -79,14 +100,18 @@ export default function Header() {
     setMenu(data);
   };
   useEffect(() => {
-    if (typeof window !== undefined) {
-      localStorage.setItem('theme', JSON.stringify(theme));
-    }
-    if (theme) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    const cookieResponse = async () => {
+      const setCookie = await import('cookies-next').then(
+        (mod) => mod.setCookie
+      );
+      setCookie('theme', theme);
+      if (theme !== 'true') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    };
+    cookieResponse();
   }, [theme]);
   // useEffect(() => {
   //   if (notificacionesUserAtom.length) {
@@ -238,76 +263,66 @@ export default function Header() {
   }, [dataUser?.user?.id]);
   return dataUser?.user?.id ? (
     <>
-      <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
-        <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
-          <div className='flex gap-4 items-center '>
-            <Link href={'/inicio'} aria-label='home'>
-              <Logo className='rounded-md dark:fill-white transition-dark' />
-            </Link>
-            <div className='border-none relative max-md:hidden'>
-              {pathname !== '/search' && (
-                <SearchBox
-                  placeholder='UniRed'
-                  onChangeCapture={(e: any) => {
-                    e.target.form
-                      .querySelector('.ais-SearchBox-reset')
-                      .addEventListener('click', () => setSearch(''));
-                    setSearch(e.target.value);
-                  }}
-                />
-              )}
+      <InstantSearch
+        searchClient={searchClient}
+        indexName='users'
+        future={{preserveSharedStateOnUnmount: true}}>
+        <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
+          <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
+            <div className='flex gap-4 items-center '>
+              <Link href={'/inicio'} aria-label='home'>
+                <Logo className='rounded-md dark:fill-white transition-dark' />
+              </Link>
+              <div className='border-none relative max-md:hidden'>
+                {pathname !== '/search' && (
+                  <SearchBox
+                    placeholder='UniRed'
+                    onChangeCapture={(e: any) => {
+                      e.target.form
+                        .querySelector('.ais-SearchBox-reset')
+                        .addEventListener('click', () => setSearch(''));
+                      setSearch(e.target.value);
+                    }}
+                  />
+                )}
 
-              {search && pathname !== '/search' ? (
-                hits.length ? (
-                  <>
-                    <Hits hitComponent={Hit} />
-                  </>
-                ) : (
-                  <p
-                    style={{
-                      position: 'absolute',
-                      backgroundColor: '#ff1100',
-                      padding: '1rem',
-                    }}>
-                    {' '}
-                    No se encontraron resultado
-                  </p>
-                )
+                {search && pathname !== '/search' ? <SearchUser /> : null}
+              </div>
+            </div>
+            <NavegationUrl
+              amigos={dataSoliReci?.length}
+              message={dataMessage.length}
+              notification={
+                notificacionesUserAtom?.length && notificacionesUserAtom?.length
+              }
+            />
+            <div className='relative'>
+              <button
+                onClick={handleMenu}
+                className='m-0 bg-transparent border-none '>
+                <FotoPerfil
+                  className='w-[40px] h-[40px]'
+                  img={dataUser.user.img}
+                  connect={
+                    dataIsConnect?.find(
+                      (e: any) => e.id == dataUser.user?.id
+                    ) && true
+                  }
+                />
+              </button>
+              {menu ? (
+                <Menu
+                  theme={theme}
+                  themebutton={(data: string) => setThemes(data)}
+                  click={handleClick}
+                  userImg={dataUser.user.img}
+                  userName={dataUser.user.fullName.split(' ')[0]}
+                />
               ) : null}
             </div>
-          </div>
-          <NavegationUrl
-            amigos={dataSoliReci?.length}
-            message={dataMessage.length}
-            notification={
-              notificacionesUserAtom?.length && notificacionesUserAtom?.length
-            }
-          />
-          <div className='relative'>
-            <button
-              onClick={handleMenu}
-              className='m-0 bg-transparent border-none '>
-              <FotoPerfil
-                className='w-[40px] h-[40px]'
-                img={dataUser.user.img}
-                connect={
-                  dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) &&
-                  true
-                }
-              />
-            </button>
-            {menu ? (
-              <Menu
-                theme={theme}
-                themebutton={(data: boolean) => setThemes(data)}
-                click={handleClick}
-                userImg={dataUser.user.img}
-                userName={dataUser.user.fullName.split(' ')[0]}
-              />
-            ) : null}
-          </div>
-        </nav>
-      </header>
+          </nav>
+        </header>
+      </InstantSearch>
       <DivContenedorConnect>
         <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
           <span>Conectados</span> <DivConnect />
@@ -345,7 +360,7 @@ export default function Header() {
               ))}
             </DivConnectAll>
           ) : (
-            <div>No hay conectados</div>
+            <div className='text-center'>No hay conectados</div>
           )
         ) : null}
       </DivContenedorConnect>

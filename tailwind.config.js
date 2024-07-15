@@ -24,7 +24,7 @@ module.exports = {
         darkComponet:"#242526"
     },
       boxShadow: {
-        container:"-1px 1px 5px 0px #000"
+        container:"-1px 1px 5px 0px #ddd"
       },
       animation:{
         rotate: "rotate 1s infinite cubic-bezier(0.4, 0, 1, 1)",

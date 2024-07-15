@@ -2,14 +2,9 @@
 import {useForm} from 'react-hook-form';
 import {useRouter} from 'next/navigation';
 import {CreateUser} from '@/lib/hook';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Loader} from '../loader';
 import {NotificationToastStatus, NotificationToastUser} from '@/ui/toast';
-
-function validarPassword(con1: string, con2: string) {
-  if (con1 === con2) return true;
-  return false;
-}
 
 export function Signup() {
   const router = useRouter();
@@ -23,14 +18,14 @@ export function Signup() {
 
   const {
     register,
+
     handleSubmit,
     formState: {errors: error},
   } = useForm();
 
   const onSubmit = (data: any) => {
     if (data) {
-      const validar = validarPassword(data.repassword, data.password);
-      if (validar) {
+      if (data.repassword === data.password) {
         const newDataUser = {
           fullName: data.fullName,
           email: data.email,
@@ -43,17 +38,15 @@ export function Signup() {
     }
   };
 
-  useEffect(() => {
-    if (data == 'Usuario Registrado') {
-      setError('Usuario existente');
-      return;
-    }
-    if (data?.user?.id) {
-      setTimeout(() => {
-        router.push('/inicio');
-      }, 3500);
-    }
-  }, [data]);
+  if (data == 'Usuario Registrado') {
+    setError('Usuario existente');
+    return;
+  }
+  if (data?.user?.id) {
+    setTimeout(() => {
+      router.push('/inicio');
+    }, 3500);
+  }
 
   return (
     <form

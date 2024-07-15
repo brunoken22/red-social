@@ -1,14 +1,28 @@
 'use client';
-import {DivAllPublicaciones} from '@/ui/container';
-import {ButtonMasPubli} from './styled';
+import dynamic from 'next/dynamic';
 import {user, publicacionAmigos, Publicacion} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {useState} from 'react';
 import {GetAllPublicaciones} from '@/lib/hook';
-import {SkeletonPublicacionAll} from '@/ui/skeleton';
-import {ThemplatePubli} from '../templatePublicate';
 
-export function PublicacionesAll() {
+const DivAllPublicaciones = dynamic(
+  () => import('@/ui/container').then((mod) => mod.DivAllPublicaciones),
+  {ssr: false}
+);
+const ButtonMasPubli = dynamic(
+  () => import('./styled').then((mod) => mod.ButtonMasPubli),
+  {ssr: false}
+);
+const ThemplatePubli = dynamic(
+  () => import('../templatePublicate').then((mod) => mod.ThemplatePubli),
+  {ssr: false}
+);
+const SkeletonPublicacionAll = dynamic(
+  () => import('@/ui/skeleton').then((mod) => mod.SkeletonPublicacionAll),
+  {ssr: false}
+);
+
+export default function PublicacionesAll() {
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
   const dataUser = useRecoilValue(user);
   const [pagePubli, setPagePubli] = useState(0);

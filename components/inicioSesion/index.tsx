@@ -1,15 +1,23 @@
 'use client';
+import dynamic from 'next/dynamic';
 import {signinUser} from '@/lib/hook';
-import {Loader} from '../loader';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {useState} from 'react';
-import {NotificationToastStatus, NotificationToastUser} from '@/ui/toast';
 
 type typeForm = {
   email: string;
   password: string;
 };
-export function Signin() {
+
+const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
+const NotificationToastStatus = dynamic(() =>
+  import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
+);
+const NotificationToastUser = dynamic(() =>
+  import('@/ui/toast').then((mod) => mod.NotificationToastUser)
+);
+
+export default function Signin() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [isData, setData] = useState<any>();

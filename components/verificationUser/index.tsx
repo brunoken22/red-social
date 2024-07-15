@@ -31,6 +31,8 @@ export default function VerificationUser({
   const onSubmit: SubmitHandler<Inputs> = async (dataInputs) => {
     setIsLoading(true);
     const verificate = await verificateCode(dataInputs.code);
+    const {mutate} = await import('swr');
+    mutate('/user/token');
     setIsLoading(false);
     if (verificate.error) {
       setMessage({
@@ -40,7 +42,7 @@ export default function VerificationUser({
       return;
     }
     reset();
-    setMessage({message: 'Se modifico correctamente', status: 'success'});
+    setMessage({message: 'Cuenta verificada', status: 'success'});
   };
   const handleGenerateCode = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

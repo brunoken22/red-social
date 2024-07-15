@@ -1,4 +1,5 @@
 'use client';
+import dynamic from 'next/dynamic';
 import FotoPerfil from '@/ui/FotoPerfil';
 import {Body} from '@/ui/typography';
 import {DivPublicar} from '@/ui/container';
@@ -10,22 +11,22 @@ import {
   DivForm,
   Form,
   Button,
-  InputP,
   DivButton,
   ButtonPublicar,
   DivCrear,
 } from './styled';
-import VideoSubir from '@/ui/icons/video.svg';
 import {FormEvent, useEffect, useState} from 'react';
 import {ImageSVG} from '@/ui/icons';
-import ImageSubir from '@/ui/icons/image.svg';
-import CloseSvg from '@/ui/icons/close.svg';
 import {user, isConnect} from '@/lib/atom';
 import {CreatePublicacion} from '@/lib/hook';
-import {Loader} from '../loader';
-import Verification from '@/ui/verification';
 
-export function Publicar() {
+const Verification = dynamic(() => import('@/ui/verification'));
+const CloseSvg = dynamic(() => import('@/ui/icons/close.svg'));
+const ImageSubir = dynamic(() => import('@/ui/icons/image.svg'));
+const VideoSubir = dynamic(() => import('@/ui/icons/video.svg'));
+const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
+
+export default function Publicar() {
   const [formClick, setFormClick] = useState(false);
   const dataValor = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);

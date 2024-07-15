@@ -1,8 +1,10 @@
 import './globals.css';
+import dynamic from 'next/dynamic';
 import type {Metadata} from 'next';
 import {Poppins} from 'next/font/google';
-import Layout from '@/components/layout';
 const poppins = Poppins({weight: '400', subsets: ['latin']});
+
+const Layout = dynamic(() => import('@/components/layout'), {ssr: false});
 
 export const metadata: Metadata = {
   title: 'UniRed',
@@ -20,8 +22,6 @@ export default async function RootLayout({
     <html lang='es'>
       <head>
         <link rel='preload' href='/logo.webp' as='image' />
-        <link rel='preload' href='/portafolio.webp' as='image' />
-        <link rel='preload' href='/user.webp' as='image' />
         <meta
           name='google-site-verification'
           content='CnmK8AWJQTO2MYQ5J7dOu9_dhCFy-ttErrYHDEWbOyw'

@@ -1,14 +1,13 @@
-import {DivSpan, DivSvg} from './styled';
+import dynamic from 'next/dynamic';
 import {DivPublicar} from '@/ui/container';
-import {Body} from '@/ui/typography';
 import Image from 'next/image';
 import Link from 'next/link';
-import Github from '@/ui/icons/github.svg';
-import Linkedin from '@/ui/icons/linkedin.svg';
+
+const Body = dynamic(() => import('@/ui/typography').then((mod) => mod.Body));
 
 export function Span() {
   return (
-    <DivSpan>
+    <div className='min-w-[250px] max-w-[20%]  text-center  max-md:hidden'>
       <div className='sticky top-20'>
         <DivPublicar>
           <Body>Visita mi portafolio</Body>
@@ -25,22 +24,22 @@ export function Span() {
               className='object-fill  hover:scale-[1.1]  rounded-md hover:opacity-70'
             />
           </Link>
-          <DivSvg>
+          <div className='flex justify-around items-center'>
             <Link
               href={'https://github.com/brunoken22'}
               target='_blank'
               className=' hover:opacity-70 dark:fill-white'>
-              <Github />
+              <img src='/github.svg' alt='github' />
             </Link>
             <Link
               href={'https://www.linkedin.com/in/brunoken18/'}
               target='_blank'
               className=' hover:opacity-70 dark:fill-white'>
-              <Linkedin />
+              <img src='/linkedin.svg' alt='github' />
             </Link>
-          </DivSvg>
+          </div>
         </DivPublicar>
       </div>
-    </DivSpan>
+    </div>
   );
 }

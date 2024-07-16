@@ -112,6 +112,7 @@ export const ButtonPublicar = ({
   disabled: boolean;
 }) => (
   <button
+    type='submit'
     disabled={disabled}
     className={`w-full p-2 text-primary ${
       color

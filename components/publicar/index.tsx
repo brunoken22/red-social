@@ -102,6 +102,7 @@ function TemplateFormPublicar(props: any) {
     props.close(false);
   };
   const fullName = dataUser?.user?.fullName.split(' ')[0];
+
   return (
     <>
       <DivForm>
@@ -142,7 +143,7 @@ function TemplateFormPublicar(props: any) {
               <ImageSVG dataUrl={(data: string) => setDataUrl(data)}></ImageSVG>
             </div>
             <DivButton>
-              <ButtonPublicar color={text} disabled={text ? true : false}>
+              <ButtonPublicar color={text} disabled={!text ? true : false}>
                 Publicar
               </ButtonPublicar>
             </DivButton>

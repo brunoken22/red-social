@@ -72,16 +72,10 @@ export default function Publicar() {
 
 function TemplateFormPublicar(props: any) {
   const dataUser = useRecoilValue(user);
-  const [placeInput, setPlaceinput] = useState(true);
   const [dataUrl, setDataUrl] = useState('');
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (dataUrl !== '') {
-      setPlaceinput(false);
-    }
-  }, [dataUrl]);
   const handleclose = (e: any) => {
     e.preventDefault();
     props.close(false);
@@ -89,7 +83,6 @@ function TemplateFormPublicar(props: any) {
 
   const handleInput = (event: any) => {
     const textContent = event.target.textContent;
-    setPlaceinput(false);
     if (text.length <= 250) {
       setText(textContent);
     }
@@ -146,9 +139,7 @@ function TemplateFormPublicar(props: any) {
               <div>
                 <Body>Agregar a tu publicación</Body>
               </div>
-              <ImageSVG
-                dataUrl={(data: string) => setDataUrl(data)}
-                archivo={(data: boolean) => setPlaceinput(data)}></ImageSVG>
+              <ImageSVG dataUrl={(data: string) => setDataUrl(data)}></ImageSVG>
             </div>
             <DivButton>
               <ButtonPublicar color={text} disabled={text ? true : false}>

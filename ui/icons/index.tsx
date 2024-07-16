@@ -42,7 +42,6 @@ export function ImageSVG(props: any) {
           const dataObtimizado = await optimizarImage(files.dataURL as string);
           setIsLoading(false);
           props.dataUrl(dataObtimizado);
-          props.archivo(true);
           return;
         },
       });
@@ -62,7 +61,6 @@ export function ImageSVG(props: any) {
         }
         const dataObtimizado = await optimizarImage(file.dataURL as string);
         props.dataUrl(dataObtimizado);
-        props.archivo(true);
       });
     }
 

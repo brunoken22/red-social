@@ -22,7 +22,7 @@ export const SpanIco = ({
   <span
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
-    className=' text-[0.7rem]  flex items-center justify-center gap-[0.2rem] mb-[0.2rem]'>
+    className=' text-[0.7rem]  flex items-center justify-center gap-[0.2rem] mb-[0.2rem] relative'>
     {children}
   </span>
 );
@@ -172,7 +172,7 @@ export const ButtonMasPubli = ({
 );
 
 export const DivUserLikes = ({children}: {children: React.ReactNode}) => (
-  <div className='absolute bottom-[2rem] bg-black text-primary p-4 m-auto text-[0.8rem] font-black rounded-sm '>
+  <div className='absolute bottom-[2rem] left-0 right-0 bg-black text-primary p-4 m-auto text-[0.8rem] font-black rounded-sm '>
     {children}
   </div>
 );

@@ -47,8 +47,10 @@ export function Hit({hit}: HitProps) {
             dataIsConnect?.find((eConnect: any) => hit.id == eConnect.id)
               ?.connect && true
           }></FotoPerfil>
-        <div className='flex items-center gap-2'>
-          <p>{hit.fullName}</p>
+        <div className='flex items-center gap-2 overflow-hidden'>
+          <p className='whitespace-nowrap overflow-hidden text-ellipsis'>
+            {hit.fullName}
+          </p>
           {hit.verification ? <Verification publication={true} /> : null}
         </div>
       </DivLinkUser>

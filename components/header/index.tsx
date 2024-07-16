@@ -268,8 +268,7 @@ export default function Header({themeDate}: {themeDate: string}) {
       <InstantSearch
         searchClient={searchClient}
         indexName='users'
-        future={{ preserveSharedStateOnUnmount: true }}
-      >
+        future={{preserveSharedStateOnUnmount: true}}>
         <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
           <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
             <div className='flex gap-4 items-center '>
@@ -358,7 +357,9 @@ export default function Header({themeDate}: {themeDate: string}) {
                     }
                   />
 
-                  <span className='text-black'>{e.fullName}</span>
+                  <span className='text-black whitespace-nowrap overflow-hidden text-ellipsis'>
+                    {e.fullName}
+                  </span>
                 </ButtonSmsConnect>
               ))}
             </DivConnectAll>

@@ -208,7 +208,7 @@ export function ThemplatePubli(props: {
                 {props.like.map((e: any) => (
                   <div
                     key={e.id}
-                    className='whitespace-nowrap	 overflow-hidden text-ellipsis m-0'>
+                    className='w-full whitespace-nowrap	 overflow-hidden text-ellipsis m-0'>
                     {e.user.id !== props.userId ? e.user.fullName : 'Tú'}
                   </div>
                 ))}

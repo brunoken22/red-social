@@ -22,7 +22,7 @@ export function SearchUser() {
       {hits.length > 0 ? (
         <Hits
           hitComponent={Hit}
-          className='dark:text-primary text-secundary  bg-primary dark:bg-dark flex flex-col gap-2'
+          className='dark:text-primary text-secundary  bg-primary dark:bg-dark p-2'
         />
       ) : (
         <p className='absolute bg-[#ff4a3d] p-4'>No se encontraron resultado</p>

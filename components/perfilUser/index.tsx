@@ -119,7 +119,7 @@ export function PerfilUser() {
             />
           </div>
           <div className='flex gap-2 items-center'>
-            <h2 className='font-semibold text-2xl'>
+            <h2 className='font-semibold text-2xl max-w-[250px] whitespace-nowrap overflow-hidden text-ellipsis'>
               {dataValor?.user?.fullName}
             </h2>
             {dataValor.user.verification ? (

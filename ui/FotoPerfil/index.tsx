@@ -8,7 +8,7 @@ export default function FotoPerfil({
   connect?: boolean | undefined;
 }) {
   return (
-    <div className={`${className} relative`}>
+    <div className={`${className} relative shrink-0`}>
       <img
         src={(img == 'false' && '/user.webp') || img || '/user.webp'}
         height={40}

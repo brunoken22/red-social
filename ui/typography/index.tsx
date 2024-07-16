@@ -9,5 +9,8 @@ export const Title = ({children}: {children: React.ReactNode}) => (
   </h1>
 );
 export const Body = ({children}: {children: React.ReactNode}) => (
-  <p className={`  ${robotoSlab.className} `}>{children}</p>
+  <p
+    className={`  ${robotoSlab.className} max-w-[250px] whitespace-nowrap	 overflow-hidden text-ellipsis`}>
+    {children}
+  </p>
 );

@@ -35,5 +35,7 @@ export const Button = ({
 );
 
 export const Span = ({children}: {children: React.ReactNode}) => (
-  <span className=' hover:opacity-70'>{children}</span>
+  <span className=' hover:opacity-70 whitespace-nowrap overflow-hidden text-ellipsis'>
+    {children}
+  </span>
 );

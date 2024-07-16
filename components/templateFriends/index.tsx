@@ -40,7 +40,7 @@ export default function TemplateFriendRequest({
       <div className='p-2 h-full w-[inherit]'>
         <Link
           href={'/amigos/' + id + '/' + fullName}
-          className='p-2 font-semibold hover:opacity-60 block text-nowrap overflow-hidden text-ellipsis'>
+          className='p-2 font-semibold hover:opacity-60 block whitespace-nowrap	 overflow-hidden text-ellipsis'>
           {fullName}
         </Link>
         {typeRequest == 'suggestion' && handleSolicitudEnv ? (

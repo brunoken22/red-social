@@ -23,6 +23,7 @@ import {Button} from '../publicar/styled';
 import Link from 'next/link';
 import {useSearchParams, useRouter} from 'next/navigation';
 import {SkeletonMenssage} from '@/ui/skeleton';
+import Verification from '@/ui/verification';
 type MessageUser = {
   rtdb?: string | undefined;
   message?: string;
@@ -30,6 +31,7 @@ type MessageUser = {
   fullName?: string;
   img?: string;
   id?: string;
+  verification?: boolean;
 };
 export function TemMensaje() {
   const params = useSearchParams();
@@ -238,7 +240,14 @@ export function TemMensaje() {
                   }
                 />
               </Link>
-              <h5 style={{margin: '0'}}>{dataMensajeUser.fullName}</h5>
+              <div className='flex items-center gap-2'>
+                <h5 className='whitespace-nowrap	 overflow-hidden text-ellipsis m-0'>
+                  {dataMensajeUser.fullName}
+                </h5>
+                {dataMensajeUser.verification ? (
+                  <Verification publication={true} />
+                ) : null}
+              </div>
             </div>
             <Button onClick={handleClose}>
               <CloseSVG />

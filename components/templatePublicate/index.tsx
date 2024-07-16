@@ -112,6 +112,7 @@ export function ThemplatePubli(props: {
     setComentario(false);
     e.target.style.fill = '#ddd';
   };
+
   return (
     <div className='w-full '>
       <DivPefilDelete aria-label='DivPefilDelete'>
@@ -137,9 +138,20 @@ export function ThemplatePubli(props: {
           )}
           <div>
             <div className='flex items-center gap-2'>
-              <Body>
-                {props.user?.id == props.userId ? 'Tú' : props.user.fullName}
-              </Body>
+              {props.user?.id !== props.userId ? (
+                <Link href={'/amigos/' + props.id + '/' + props.user.fullName}>
+                  <Body>
+                    {props.user?.id == props.userId
+                      ? 'Tú'
+                      : props.user.fullName}
+                  </Body>
+                </Link>
+              ) : (
+                <Body>
+                  {props.user?.id == props.userId ? 'Tú' : props.user.fullName}
+                </Body>
+              )}
+
               {props.user.verification ? (
                 <Verification publication={true} />
               ) : null}
@@ -194,7 +206,9 @@ export function ThemplatePubli(props: {
             {userLikes ? (
               <DivUserLikes>
                 {props.like.map((e: any) => (
-                  <div key={e.id}>
+                  <div
+                    key={e.id}
+                    className='whitespace-nowrap	 overflow-hidden text-ellipsis m-0'>
                     {e.user.id !== props.userId ? e.user.fullName : 'Tú'}
                   </div>
                 ))}
@@ -417,7 +431,7 @@ function TemplateComentario(props: {
               <div className='flex items-center gap-2'>
                 <Link
                   href={'/amigos/' + props.userId + '/' + props.userName}
-                  className='font-medium m-0  opacity-80'>
+                  className='font-medium m-0 max-w-[250px]  opacity-80 whitespace-nowrap overflow-hidden text-ellipsis '>
                   {props.userName}
                 </Link>
                 {props.verification ? (

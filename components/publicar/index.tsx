@@ -15,7 +15,7 @@ import {
   ButtonPublicar,
   DivCrear,
 } from './styled';
-import {FormEvent, useEffect, useState} from 'react';
+import {FormEvent, useState} from 'react';
 import {ImageSVG} from '@/ui/icons';
 import {user, isConnect} from '@/lib/atom';
 import {CreatePublicacion} from '@/lib/hook';
@@ -30,14 +30,6 @@ export default function Publicar() {
   const [formClick, setFormClick] = useState(false);
   const dataValor = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);
-
-  useEffect(() => {
-    if (formClick) {
-      (document as any).body.style.overflow = 'hidden';
-    } else {
-      (document as any).body.style.overflow = 'auto';
-    }
-  }, [formClick]);
 
   return (
     <DivPublicar>

@@ -2,7 +2,7 @@
 import {useForm} from 'react-hook-form';
 import {useRouter} from 'next/navigation';
 import {CreateUser} from '@/lib/hook';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Loader} from '../loader';
 import {NotificationToastStatus, NotificationToastUser} from '@/ui/toast';
 
@@ -38,15 +38,15 @@ export function Signup() {
     }
   };
 
-  if (data == 'Usuario Registrado') {
-    setError('Usuario existente');
-    return;
-  }
-  if (data?.user?.id) {
-    setTimeout(() => {
-      router.push('/inicio');
-    }, 3500);
-  }
+  useEffect(() => {
+    if (data === 'Usuario Registrado') {
+      setError('Usuario existente');
+    } else if (data?.user?.id) {
+      setTimeout(() => {
+        router.push('/inicio');
+      }, 3500);
+    }
+  }, [data, router]);
 
   return (
     <form
@@ -124,7 +124,7 @@ export function Signup() {
       <div className='mt-6'>
         <button
           type='submit'
-          className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70'>
+          className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70'>
           Continuar
         </button>
       </div>

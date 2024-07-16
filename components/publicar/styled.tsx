@@ -24,7 +24,7 @@ export const DivASubir = ({
 );
 
 export const DivForm = ({children}: {children: React.ReactNode}) => (
-  <div className='flex items-center justify-center absolute inset-0  z-10 text-black backdrop-brightness-50'>
+  <div className='flex items-center justify-center fixed inset-0  z-10 text-black backdrop-brightness-50'>
     {children}
   </div>
 );
@@ -115,9 +115,7 @@ export const ButtonPublicar = ({
     type='submit'
     disabled={disabled}
     className={`w-full p-2 text-primary ${
-      color
-        ? 'bg-light dark:bg-secundary cursor-pointer'
-        : 'bg-[#3e485e] cursor-not-allowed'
+      color ? 'bg-light  cursor-pointer' : 'bg-[#3e485e] cursor-not-allowed'
     } border-none rounded-md hover:opacity-70`}>
     {children}
   </button>

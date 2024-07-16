@@ -287,7 +287,7 @@ export function TemMensaje() {
                 <button
                   type='submit'
                   id={dataMensajeUser.rtdb}
-                  className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70 shrink-[5] dark:bg-primary dark:text-black'>
+                  className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70 shrink-[5] '>
                   Enviar
                 </button>
               </form>

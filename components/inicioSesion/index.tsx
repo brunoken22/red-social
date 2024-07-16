@@ -88,7 +88,7 @@ export default function Signin() {
       <div className='mt-6'>
         <button
           type='submit'
-          className='w-full p-2 bg-secundary text-primary rounded-md hover:opacity-70'>
+          className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70'>
           Continuar
         </button>
       </div>

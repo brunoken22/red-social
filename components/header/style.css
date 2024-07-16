@@ -5,14 +5,6 @@
 .ais-SearchBox-reset {
   display: none;
 }
-.ais-Hits-item {
-  background-color: #262626 !important;
-  border: 1px solid #2d2d2d;
-  padding: 0.5rem;
-}
-.ais-Hits-item:hover {
-  background-color: #6d6d6d;
-}
 .ais-SearchBox-form {
   background-color: #fff;
   display: flex;
@@ -53,9 +45,4 @@
 .ais-SearchBox-reset[hidden],
 .ais-SearchBox-submit {
   display: none;
-}
-.ais-Hits-list {
-  width: 100%;
-  padding: 0;
-  margin: 0;
 }

@@ -18,7 +18,7 @@ export const DivASubir = ({
 }) => (
   <button
     onClick={onClick}
-    className='flex items-center gap-4 m-2 h-[25px] rounded-md p-2 hover:backdrop-contrast-50 hover:overflow-hidden'>
+    className='flex items-center gap-4 mt-2  rounded-md p-1 hover:backdrop-contrast-50 hover:overflow-hidden'>
     {children}
   </button>
 );
@@ -108,14 +108,16 @@ export const ButtonPublicar = ({
   disabled,
 }: {
   children: React.ReactNode;
-  color: boolean;
+  color: string;
   disabled: boolean;
 }) => (
   <button
     disabled={disabled}
     className={`w-full p-2 text-primary ${
-      color ? 'bg-secundary cursor-pointer ' : 'bg-[#3e485e] cursor-not-allowed'
-    }] border-none rounded-md hover:opacity-70`}>
+      color
+        ? 'bg-light dark:bg-secundary cursor-pointer'
+        : 'bg-[#3e485e] cursor-not-allowed'
+    } border-none rounded-md hover:opacity-70`}>
     {children}
   </button>
 );

@@ -31,7 +31,7 @@ export const DivPublicaciones = ({children}: {children: React.ReactNode}) => (
 
 export const DivPublicar = ({children}: {children: React.ReactNode}) => (
   <div
-    className={` bg-primary max-w-[500px] w-[inherit] h-max  p-4 flex flex-col justify-evenly gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center`}>
+    className={` bg-primary max-w-[500px] w-[inherit] h-max  p-4 max-md:p-2 pb-2 flex flex-col justify-evenly gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center`}>
     {children}
   </div>
 );
@@ -44,7 +44,7 @@ export const DivAllChat = ({
   className?: string;
 }) => (
   <div
-    className={`${className} relative bg-primary  flex gap-4 rounded-md shadow-container   max-md:mt-4 flex-row items-center p-4 max-md:w-auto hover:opacity-70 dark:bg-darkComponet dark:text-primary dark:transition-dark`}>
+    className={`${className} relative bg-primary  flex gap-4 rounded-md shadow-container   max-md:mt-4 flex-row items-center p-4 max-md:w-auto hover:opacity-70 dark:bg-darkComponet dark:text-primary dark:transition-dark dark:shadow-dark`}>
     {children}
   </div>
 );
@@ -57,7 +57,7 @@ export const DivAllAmistades = ({
   requestClassDuo: boolean;
 }) => (
   <div
-    className={`bg-primary rounded-md shadow-container  max-md:mt-4 w-[185px]  dark:bg-darkComponet grid ${
+    className={`bg-primary rounded-md shadow-container dark:shadow-dark max-md:mt-4 w-[185px]  dark:bg-darkComponet grid ${
       !requestClassDuo
         ? 'grid-rows-[repeat(1,200px_100px)]'
         : 'grid-rows-[repeat(1,200px_150px)]'
@@ -71,7 +71,7 @@ export const DivAllPublicaciones = ({
 }: {
   children: React.ReactNode;
 }) => (
-  <div className='bg-primary p-4 flex flex-col gap-4 rounded-md shadow-container  max-md:mt-4 max-md:w-auto max-md:p-3 dark:bg-darkComponet dark:text-primary dark:shadow-none'>
+  <div className='bg-primary p-4 flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto max-md:p-2  pb-0 max-md:pb-0 dark:bg-darkComponet dark:text-primary dark:shadow-dark'>
     {children}
   </div>
 );

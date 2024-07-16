@@ -14,17 +14,21 @@ module.exports = {
         primary: '#fff',
         secundary: '#000;',
         black: '#000',
+        hoverPrimary: "rgb(87 87 87)",
+
       },
       backgroundColor: {
         primary: '#fff',
         secundary: '#000;',
         black: '#000',
         hoverPrimary: "#e1e1e1",
+        light:"#598fff",
         dark:"#18191A",
         darkComponet:"#242526"
     },
       boxShadow: {
-        container:"-1px 1px 5px 0px #ddd"
+        container: "-1px 1px 5px 0px #ddd",
+        dark:"-1px 1px 5px 0px #010101"
       },
       animation:{
         rotate: "rotate 1s infinite cubic-bezier(0.4, 0, 1, 1)",
@@ -41,6 +45,9 @@ module.exports = {
       transitionProperty: {
         dark: "background-color,color,fill",
      
+      },
+      fill: {
+        unired:"#598fff"
       },
       borderColor: {
         dark: "#575757",

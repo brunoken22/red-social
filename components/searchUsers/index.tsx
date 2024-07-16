@@ -1,32 +1,31 @@
 'use client';
-import {DivLinkUser} from './styled';
-import {Hits, Highlight, useHits} from 'react-instantsearch';
+import dynamic from 'next/dynamic';
+import {useHits} from 'react-instantsearch';
 import type {Hit} from 'instantsearch.js';
-import FotoPerfil from '@/ui/FotoPerfil';
 import Link from 'next/link';
 import {isConnect} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 
+const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
+const Verification = dynamic(() => import('@/ui/verification'));
+const Hits = dynamic(() =>
+  import('react-instantsearch').then((mod) => mod.Hits)
+);
+const DivLinkUser = dynamic(() =>
+  import('./styled').then((mod) => mod.DivLinkUser)
+);
 export function SearchUser() {
   const {hits} = useHits();
 
   return (
-    <div style={{position: 'relative'}}>
+    <div className='relative'>
       {hits.length > 0 ? (
-        <>
-          <Hits hitComponent={Hit} />
-          {/* <Pagination /> */}
-        </>
+        <Hits
+          hitComponent={Hit}
+          className='dark:text-primary text-secundary  bg-primary dark:bg-dark flex flex-col gap-2'
+        />
       ) : (
-        <p
-          style={{
-            position: 'absolute',
-            backgroundColor: '#ff1100',
-            padding: '1rem',
-          }}>
-          {' '}
-          No se encontraron resultado
-        </p>
+        <p className='absolute bg-[#ff4a3d] p-4'>No se encontraron resultado</p>
       )}
     </div>
   );
@@ -36,15 +35,10 @@ type HitProps = {
 };
 export function Hit({hit}: HitProps) {
   const dataIsConnect = useRecoilValue(isConnect);
-
   return (
     <Link
-      href={'/amigos/' + hit.objectID + '/' + hit.fullName}
-      style={{
-        textDecoration: 'none',
-        color: '#fff',
-        width: '100%',
-      }}>
+      className='w-full hover:opacity-70'
+      href={'/amigos/' + hit.objectID + '/' + hit.fullName}>
       <DivLinkUser>
         <FotoPerfil
           className='w-[40px] h-[40px]'
@@ -53,9 +47,10 @@ export function Hit({hit}: HitProps) {
             dataIsConnect?.find((eConnect: any) => hit.id == eConnect.id)
               ?.connect && true
           }></FotoPerfil>
-        <p>
-          <Highlight attribute='fullName' hit={hit} />
-        </p>
+        <div className='flex items-center gap-2'>
+          <p>{hit.fullName}</p>
+          {hit.verification ? <Verification publication={true} /> : null}
+        </div>
       </DivLinkUser>
     </Link>
   );

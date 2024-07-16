@@ -16,9 +16,9 @@ export async function fetchApiSwr(api: string, option: any) {
     ) {
       import('cookies-next').then((cookie) => {
         cookie.setCookie('login', 'false');
-        window.location.replace(window.location.origin+"/signin")
+        window.location.replace(window.location.origin + '/signin');
       });
     }
-    return e.message;
+    return false;
   }
 }

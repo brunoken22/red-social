@@ -74,7 +74,6 @@ function TemplateFormPublicar(props: any) {
   const dataUser = useRecoilValue(user);
   const [placeInput, setPlaceinput] = useState(true);
   const [dataUrl, setDataUrl] = useState('');
-  const [content, setContent] = useState(true);
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -89,13 +88,13 @@ function TemplateFormPublicar(props: any) {
   };
 
   const handleInput = (event: any) => {
-    const text = event.target.textContent;
+    const textContent = event.target.textContent;
     setPlaceinput(false);
     if (text.length <= 250) {
-      setText(text);
+      setText(textContent);
     }
     if (text.length >= 250) {
-      event.target.textContent = content;
+      event.target.textContent = text;
     }
   };
 
@@ -109,6 +108,7 @@ function TemplateFormPublicar(props: any) {
     setIsLoading(false);
     props.close(false);
   };
+  const fullName = dataUser?.user?.fullName.split(' ')[0];
   return (
     <>
       <DivForm>
@@ -117,11 +117,11 @@ function TemplateFormPublicar(props: any) {
             <div className='flex gap-4 items-start font-bold justify-between w-full'>
               <div className='flex gap-4 items-center'>
                 <FotoPerfil
-                  className='w-[80px] h-[80px]'
+                  className='w-[50px] h-[50px]'
                   img={dataUser?.user?.img}
                 />
-                <div>
-                  <h3 className='text-2xl'>{dataUser?.user?.fullName}</h3>
+                <div className='flex items-center gap-2'>
+                  <h3 className='text-xl'>{dataUser?.user?.fullName}</h3>
                   {dataUser.user.verification ? (
                     <Verification publication={false} />
                   ) : null}
@@ -133,18 +133,15 @@ function TemplateFormPublicar(props: any) {
             </div>
             <p
               id='description'
-              className='mt-8 mb-8 text-start indent-3 outline-none'
-              onBlur={() => setContent(true)}
-              onFocus={() => setContent(false)}
+              data-before={'En que estas pensando ' + fullName + ' ?'}
+              className={`relative z-10 mt-8 mb-8 text-start indent-3 outline-none ${
+                !text
+                  ? `before:relative before:z-[-1]   before:content-[attr(data-before)] before:text-hoverPrimary  before:text-2xl`
+                  : ''
+              }`}
               onInput={handleInput}
               suppressContentEditableWarning={true}
-              contentEditable={true}>
-              {content
-                ? `Qué estás pensado, ${
-                    dataUser?.user?.fullName.split(' ')[0]
-                  }?`
-                : null}
-            </p>
+              contentEditable={true}></p>
             <div>
               <div>
                 <Body>Agregar a tu publicación</Body>
@@ -154,7 +151,7 @@ function TemplateFormPublicar(props: any) {
                 archivo={(data: boolean) => setPlaceinput(data)}></ImageSVG>
             </div>
             <DivButton>
-              <ButtonPublicar color={!placeInput} disabled={placeInput}>
+              <ButtonPublicar color={text} disabled={text ? true : false}>
                 Publicar
               </ButtonPublicar>
             </DivButton>

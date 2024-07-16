@@ -222,7 +222,11 @@ export function ThemplatePubli(props: {
           like={like == 'like' ? true : false}
           id={props.idPublicacion.toString()}>
           <Like
-            className={`${like == 'like' ? 'fill-[#5a81ff]' : 'fill-[#fff]'}`}
+            className={`${
+              like == 'like'
+                ? 'fill-[#5a81ff]'
+                : 'dark:fill-[#ddd] fill-[#919191]'
+            }`}
           />
           Me gusta
         </BottonLike>
@@ -231,7 +235,9 @@ export function ThemplatePubli(props: {
           type='button'
           id={'comentario' + Number(props.idPublicacion)}>
           <Comentar
-            className={`${comentario ? 'fill-[#84e981]' : 'fill-[#fff]'}`}
+            className={`${
+              comentario ? 'fill-[#84e981]' : 'dark:fill-[#ddd] fill-[#919191]'
+            }`}
           />
           Comentar
         </BottonLike>
@@ -284,18 +290,12 @@ export function ThemplatePubli(props: {
 }
 
 function ComentarioPublic(props: any) {
-  const [placeInput, setPlaceinput] = useState(true);
   const [content, setContent] = useState('');
   const [dataComment, setDataComment] = useState(true);
   const [dataComentariosAll, setDataComentariosAll] = useState<any[]>(
     props.comentarios
   );
 
-  useEffect(() => {
-    if (content.length <= 0) {
-      setPlaceinput(true);
-    }
-  }, [content]);
   useEffect(() => {
     if (!dataComment) {
       setDataComment(false);
@@ -304,7 +304,6 @@ function ComentarioPublic(props: any) {
 
   const handleInput = (event: any) => {
     const text = event.target.textContent;
-    setPlaceinput(false);
     if (text.length <= 250) {
       setContent(text);
     }
@@ -356,11 +355,11 @@ function ComentarioPublic(props: any) {
                 onInput={handleInput}
                 suppressContentEditableWarning={true}
                 contentEditable={true}
-                className={`outline-none w-full p-2 border-[1px] border-[#ddd] rounded-md dark:focus:bg-[#363636] focus:border-white focus:bg-[#ddd] text-secundary dark:text-primary ${
-                  placeInput ? 'before:text-[#696969]' : ''
-                } placeholder:text-red-600`}>
-                {dataComment ? 'Añadir un comentario' : null}
-              </p>
+                className={`outline-none w-full p-2 border-[1px] dark:border-[#ddd] border-[#616161] rounded-md dark:focus:bg-[#363636] focus:border-white focus:bg-[#ddd] text-secundary dark:text-primary ${
+                  !content
+                    ? 'before:text-secundary dark:before:text-primary  before:content-["Añadir_un_comentario"]'
+                    : ''
+                } `}></p>
             </div>
             <BottonSendComentario onClick={handleComment}>
               <SendComentPubli />

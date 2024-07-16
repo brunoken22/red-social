@@ -1,57 +1,77 @@
+import dynamic from 'next/dynamic';
 import Dropzone from 'dropzone';
 import {useEffect, useState} from 'react';
 import {Body} from '../typography';
 import 'dropzone/dist/dropzone.css';
 import {optimizarImage} from '@/lib/hook';
-import {LoaderComponent} from '@/components/loader';
+
+const LoaderComponent = dynamic(() =>
+  import('@/components/loader').then((mod) => mod.LoaderComponent)
+);
+
 export function ImageSVG(props: any) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const myDropzone = new Dropzone('.dropzone', {
-      url: '/perfil',
-      autoProcessQueue: false,
-      uploadMultiple: false,
-      maxFiles: 1,
-      maxFilesize: 100,
-      maxThumbnailFilesize: 100,
-      resizeQuality: 0.5,
-      acceptedFiles: 'image/png, image/jpeg, image/jpg',
-      addRemoveLinks: true,
-      dictRemoveFile: 'Eliminar',
-      init: function () {
-        this.on('maxfilesexceeded', function () {
-          alert('Solo un archivo porfavor!');
-        });
-      },
-      maxfilesexceeded: async function (files) {
-        (this as any).removeAllFiles();
-        (this as any).addFile(files);
-        setIsLoading(true);
-        const dataObtimizado = await optimizarImage(files.dataURL as string);
-        setIsLoading(false);
+    // Verifica si Dropzone ya está inicializado
+    const existingDropzone = Dropzone.instances.find((dz) =>
+      dz.element.classList.contains('dropzone')
+    );
+
+    if (!existingDropzone) {
+      const myDropzone = new Dropzone('.dropzone', {
+        url: '/perfil',
+        autoProcessQueue: false,
+        uploadMultiple: false,
+        maxFiles: 1,
+        maxFilesize: 100,
+        maxThumbnailFilesize: 100,
+        resizeQuality: 0.5,
+        acceptedFiles: 'image/png, image/jpeg, image/jpg',
+        addRemoveLinks: true,
+        dictRemoveFile: 'Eliminar',
+        init: function () {
+          this.on('maxfilesexceeded', function () {
+            alert('Solo un archivo porfavor!');
+          });
+        },
+        maxfilesexceeded: async function (files) {
+          (this as any).removeAllFiles();
+          (this as any).addFile(files);
+          setIsLoading(true);
+          const dataObtimizado = await optimizarImage(files.dataURL as string);
+          setIsLoading(false);
+          props.dataUrl(dataObtimizado);
+          props.archivo(true);
+          return;
+        },
+      });
+
+      myDropzone.on('thumbnail', async function (file) {
+        const fileSizeInBytes = file.size;
+        const fileSizeInKB = fileSizeInBytes / 1024;
+        const fileSizeInMB = fileSizeInKB / 1024;
+        if (fileSizeInMB > 30) {
+          alert(
+            `Tamaño del archivo excedido: ${fileSizeInMB.toFixed(
+              2
+            )}MB (MAXIMO 30MB)`
+          );
+          myDropzone.removeFile(file);
+          return;
+        }
+        const dataObtimizado = await optimizarImage(file.dataURL as string);
         props.dataUrl(dataObtimizado);
         props.archivo(true);
-        return;
-      },
-    });
-    myDropzone.on('thumbnail', async function (file) {
-      const fileSizeInBytes = file.size;
-      const fileSizeInKB = fileSizeInBytes / 1024;
-      const fileSizeInMB = fileSizeInKB / 1024;
-      if (fileSizeInMB > 30) {
-        alert(
-          `Tamaño del archivo excedido: ${fileSizeInMB.toFixed(
-            2
-          )}MB (MAXIMO 30MB)`
-        );
-        myDropzone.removeFile(file);
-        return;
+      });
+    }
+
+    // Cleanup: Remover Dropzone al desmontar el componente
+    return () => {
+      if (existingDropzone) {
+        existingDropzone.destroy();
       }
-      const dataObtimizado = await optimizarImage(file.dataURL as string);
-      props.dataUrl(dataObtimizado);
-      props.archivo(true);
-    });
+    };
   }, []);
 
   return (
@@ -76,9 +96,7 @@ export function ImageSVG(props: any) {
           </button>
         </div>
         {!isLoading ? (
-          <div
-            className='dz-default dz-message"
-      '></div>
+          <div className='dz-default dz-message'></div>
         ) : (
           <LoaderComponent />
         )}

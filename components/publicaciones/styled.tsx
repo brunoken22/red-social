@@ -54,7 +54,7 @@ export const DivCantidad = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivInteractuar = ({children}: {children: React.ReactNode}) => (
-  <div className='flex  items-center pt-4 justify-around gap-0 border-t-[1px] border-dark '>
+  <div className='flex  items-center pt-1 pb-1 justify-around gap-0 border-t-[1px] border-dark '>
     {children}
   </div>
 );

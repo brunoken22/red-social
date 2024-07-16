@@ -34,6 +34,7 @@ import {
   getAllUsersChat,
 } from '@/lib/atom';
 import Logo from '@/public/logo.svg';
+import {useDebounce} from 'use-debounce';
 const SkeletonNav = dynamic(() =>
   import('@/ui/skeleton').then((mod) => mod.SkeletonNav)
 );
@@ -62,7 +63,7 @@ const InstantSearch = dynamic(() =>
 const SearchBox = dynamic(() =>
   import('react-instantsearch').then((mod) => mod.SearchBox)
 );
-const NavegationUrl = dynamic(() => import('./algoliaSearch'));
+const NavegationUrl = dynamic(() => import('./navHeader'));
 
 export default function Header({themeDate}: {themeDate: string}) {
   const searchClient = algoliasearch(
@@ -87,6 +88,7 @@ export default function Header({themeDate}: {themeDate: string}) {
   const [connectAmigos, setConnectAmigos] = useState(false);
   const [menu, setMenu] = useState(false);
   const [theme, setThemes] = useState<string>(themeDate);
+  const [value] = useDebounce(search, 1000);
 
   const handleMenu = (e: any) => {
     e.preventDefault();
@@ -266,14 +268,15 @@ export default function Header({themeDate}: {themeDate: string}) {
       <InstantSearch
         searchClient={searchClient}
         indexName='users'
-        future={{preserveSharedStateOnUnmount: true}}>
+        future={{ preserveSharedStateOnUnmount: true }}
+      >
         <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
           <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
             <div className='flex gap-4 items-center '>
               <Link href={'/inicio'} aria-label='home'>
-                <Logo className='rounded-md dark:fill-white transition-dark' />
+                <Logo className='rounded-md fill-unired transition-dark' />
               </Link>
-              <div className='border-none relative max-md:hidden'>
+              <div className='border-none relative max-md:hidden '>
                 {pathname !== '/search' && (
                   <SearchBox
                     placeholder='UniRed'
@@ -286,7 +289,7 @@ export default function Header({themeDate}: {themeDate: string}) {
                   />
                 )}
 
-                {search && pathname !== '/search' ? <SearchUser /> : null}
+                {value && pathname !== '/search' ? <SearchUser /> : null}
               </div>
             </div>
             <NavegationUrl

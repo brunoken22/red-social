@@ -1,7 +1,8 @@
 import './globals.css';
 import dynamic from 'next/dynamic';
 import type {Metadata} from 'next';
-import {Poppins} from 'next/font/google';
+import { Poppins } from 'next/font/google';
+import { cookies } from 'next/headers';
 const poppins = Poppins({weight: '400', subsets: ['latin']});
 
 const Layout = dynamic(() => import('@/components/layout'), {ssr: false});
@@ -13,11 +14,11 @@ export const metadata: Metadata = {
     'La red social líder para conectar con amigos, compartir fotos. Únete hoy mismo y forma parte de nuestra comunidad.',
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({children}: {children: React.ReactNode}) {
+  const theme = 
+  (cookies().get("theme")?.value) ||
+  'false';
+
   return (
     <html lang='es'>
       <head>
@@ -30,7 +31,7 @@ export default async function RootLayout({
       </head>
       <body
         className={`${poppins.className} dark:bg-dark dark:text-white dark:transition-dark`}>
-        <Layout>{children}</Layout>
+        <Layout dateTheme={theme }>{children}</Layout>
       </body>
     </html>
   );

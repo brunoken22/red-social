@@ -5,17 +5,19 @@ import {usePathname} from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 const Header = dynamic(() => import('@/components/header'));
-export default async function Layout({children}: {children: React.ReactNode}) {
+export default function Layout({
+  children,
+  dateTheme,
+}: {
+  children: React.ReactNode;
+  dateTheme: string;
+}) {
   const pathname = usePathname();
-  const theme =
-    (await import('cookies-next').then((mod) => mod.getCookie('theme'))) ||
-    'false';
-
   return (
     <RecoilRoot>
       {' '}
       {pathname !== '/iniciarSesion' && pathname !== '/crearCuenta' ? (
-        <Header themeDate={theme} />
+        <Header themeDate={dateTheme} />
       ) : null}
       <div
         className={`${

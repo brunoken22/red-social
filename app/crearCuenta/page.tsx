@@ -1,11 +1,9 @@
-import {Roboto_Slab} from 'next/font/google';
 import {Title} from '@/ui/typography';
 import LogoPage from '@/ui/logo';
 import Link from 'next/link';
 import {Signup} from '@/components/crearSesion';
 import {Metadata} from 'next';
 
-const robotoSlab = Roboto_Slab({weight: '800', subsets: ['latin']});
 export const metadata: Metadata = {
   title: 'Crear cuenta | UniRed',
   description: 'Crear cuenta',

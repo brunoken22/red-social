@@ -24,9 +24,9 @@ export default function NavegationUrl({
           <Search
             className={`${
               pathname == '/search'
-                ? 'fill-black dark:fill-white'
-                : 'hover:fill-black fill-gray-600 '
-            } dark:fill-gray-200`}
+                ? 'fill-unired '
+                : 'hover:opacity-70 dark:fill-gray-200 fill-gray-600 '
+            }`}
           />
         </span>
       </Link>
@@ -35,9 +35,9 @@ export default function NavegationUrl({
           <Home
             className={`${
               pathname == '/inicio'
-                ? 'fill-black dark:fill-white'
-                : 'hover:fill-black fill-gray-600 '
-            } dark:fill-gray-200`}
+                ? 'fill-unired '
+                : 'hover:opacity-70 dark:fill-gray-200 fill-gray-600 '
+            }`}
           />
         </span>
       </Link>
@@ -47,9 +47,9 @@ export default function NavegationUrl({
           <Amigos
             className={`${
               pathname == '/amigos'
-                ? 'fill-black dark:fill-white'
-                : 'hover:fill-black fill-gray-600 '
-            } dark:fill-gray-200`}
+                ? 'fill-unired '
+                : 'hover:opacity-70 dark:fill-gray-200 fill-gray-600 '
+            }`}
           />
         </span>
       </Link>
@@ -59,9 +59,9 @@ export default function NavegationUrl({
           <Chat
             className={`${
               pathname == '/chat'
-                ? 'fill-black dark:fill-white'
-                : 'hover:fill-black fill-gray-600 '
-            } dark:fill-gray-200`}
+                ? 'fill-unired '
+                : 'hover:opacity-70 dark:fill-gray-200 fill-gray-600 '
+            }`}
           />{' '}
         </span>
       </Link>
@@ -76,9 +76,9 @@ export default function NavegationUrl({
           <Notificaciones
             className={`${
               pathname == '/notificaciones'
-                ? 'fill-black dark:fill-white'
-                : 'hover:fill-black fill-gray-600 '
-            } dark:fill-gray-200`}
+                ? 'fill-unired '
+                : 'hover:opacity-70 dark:fill-gray-200 fill-gray-600 '
+            }`}
           />{' '}
         </span>
       </Link>

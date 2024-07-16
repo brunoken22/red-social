@@ -1,4 +1,5 @@
 'use client';
+import dynamic from 'next/dynamic';
 import Dropzone from 'dropzone';
 import FotoPerfil from '@/ui/FotoPerfil';
 import {
@@ -14,10 +15,17 @@ import {useEffect, useState} from 'react';
 import {user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {modificarUser, optimizarImage} from '@/lib/hook';
-import {Loader} from '../loader';
-import {SkeletonPerfil} from '@/ui/skeleton';
-import {PublicacionesUser} from '../publicaciones/publicationsUser';
-import Verification from '@/ui/verification';
+
+const Verification = dynamic(() => import('@/ui/verification'));
+const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
+const SkeletonPerfil = dynamic(() =>
+  import('@/ui/skeleton').then((mod) => mod.SkeletonPerfil)
+);
+const PublicacionesUser = dynamic(() =>
+  import('../publicaciones/publicationsUser').then(
+    (mod) => mod.PublicacionesUser
+  )
+);
 
 export function PerfilUser() {
   const dataValor = useRecoilValue(user);

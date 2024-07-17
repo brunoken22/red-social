@@ -99,6 +99,7 @@ export function TemplateNotifiId() {
     <div style={{maxWidth: '600px', width: '100%'}}>
       <DivAllPublicaciones>
         <ThemplatePubli
+          vereficationUser={dataUser.user?.verification}
           description={dataPubliId.description}
           img={dataPubliId.img}
           fecha={dataPubliId.createdAt}

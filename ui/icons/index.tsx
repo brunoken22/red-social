@@ -1,9 +1,6 @@
 import dynamic from 'next/dynamic';
 import Dropzone from 'dropzone';
 import {useEffect, useState} from 'react';
-import {Body} from '../typography';
-import 'dropzone/dist/dropzone.css';
-import {optimizarImage} from '@/lib/hook';
 
 const LoaderComponent = dynamic(() =>
   import('@/components/loader').then((mod) => mod.LoaderComponent)
@@ -13,7 +10,6 @@ export function ImageSVG(props: any) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Verifica si Dropzone ya está inicializado
     const existingDropzone = Dropzone.instances.find((dz) =>
       dz.element.classList.contains('dropzone')
     );
@@ -39,6 +35,8 @@ export function ImageSVG(props: any) {
           (this as any).removeAllFiles();
           (this as any).addFile(files);
           setIsLoading(true);
+          const optimizarImage = (await import('@/lib/hook')).optimizarImage;
+
           const dataObtimizado = await optimizarImage(files.dataURL as string);
           setIsLoading(false);
           props.dataUrl(dataObtimizado);
@@ -59,12 +57,12 @@ export function ImageSVG(props: any) {
           myDropzone.removeFile(file);
           return;
         }
+        const optimizarImage = (await import('@/lib/hook')).optimizarImage;
         const dataObtimizado = await optimizarImage(file.dataURL as string);
         props.dataUrl(dataObtimizado);
       });
     }
 
-    // Cleanup: Remover Dropzone al desmontar el componente
     return () => {
       if (existingDropzone) {
         existingDropzone.destroy();
@@ -74,8 +72,8 @@ export function ImageSVG(props: any) {
 
   return (
     <>
-      <div className='dropzone' style={{position: 'relative'}}>
-        <div className='dz-default dz-message'>
+      <div className='dropzone relative max-md:p-2 p-4 max-md:h-[200px] flex justify-center items-center'>
+        <div className='dz-default dz-message max-md:m-0'>
           <button className='dz-button' type='button'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -87,17 +85,14 @@ export function ImageSVG(props: any) {
               />
             </svg>
             <div>
-              <Body>
+              <p className='opacity-80'>
                 <strong>Agregar Foto</strong> <br />o Arrastra y suelta
-              </Body>
+              </p>
             </div>
           </button>
         </div>
-        {!isLoading ? (
-          <div className='dz-default dz-message'></div>
-        ) : (
-          <LoaderComponent />
-        )}
+        <div className='dz-preview dz-image-preview'></div>
+        {isLoading ? <LoaderComponent /> : null}
       </div>
     </>
   );

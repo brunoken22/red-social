@@ -68,19 +68,14 @@ function TemplateFormPublicar(props: any) {
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleclose = (e: any) => {
-    e.preventDefault();
-    props.close(false);
-  };
-
   const handleInput = (event: any) => {
     const textContent = event.target.textContent;
-    if (text.length <= 250) {
-      setText(textContent);
-    }
-    if (text.length >= 250) {
-      event.target.textContent = text;
-    }
+
+    setText(textContent);
+
+    // if (text.length >= 250) {
+    //   event.target.textContent = text;
+    // }
   };
 
   const handleClickForm = async (e: FormEvent) => {
@@ -98,7 +93,7 @@ function TemplateFormPublicar(props: any) {
   return (
     <>
       <DivForm>
-        <div style={{maxWidth: '550px', width: '90%'}}>
+        <div className='max-w-[550px] w-[90%]'>
           <Form onSubmit={handleClickForm}>
             <div className='flex gap-4 items-start font-bold justify-between w-full'>
               <div className='flex gap-4 items-center'>
@@ -113,14 +108,14 @@ function TemplateFormPublicar(props: any) {
                   ) : null}
                 </div>
               </div>
-              <Button onClick={handleclose}>
+              <Button onClick={() => props.close(false)}>
                 <CloseSvg />
               </Button>
             </div>
             <p
               id='description'
               data-before={'En que estas pensando ' + fullName + ' ?'}
-              className={`relative z-10 mt-8 mb-8 text-start indent-3 outline-none ${
+              className={`relative z-10 mt-8 mb-8 text-start p-2 outline-none overflow-auto max-h-[250px] ${
                 !text
                   ? `before:relative before:z-[-1]   before:content-[attr(data-before)] before:text-hoverPrimary  before:text-2xl`
                   : ''
@@ -130,12 +125,16 @@ function TemplateFormPublicar(props: any) {
               contentEditable={true}></p>
             <div>
               <div>
-                <Body>Agregar a tu publicación</Body>
+                <p className='text-center opacity-80'>
+                  Agregar a tu publicación
+                </p>
               </div>
               <ImageSVG dataUrl={(data: string) => setDataUrl(data)}></ImageSVG>
             </div>
             <DivButton>
-              <ButtonPublicar color={text} disabled={!text ? true : false}>
+              <ButtonPublicar
+                color={text || dataUrl}
+                disabled={!text && !dataUrl ? true : false}>
                 Publicar
               </ButtonPublicar>
             </DivButton>

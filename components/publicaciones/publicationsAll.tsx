@@ -46,6 +46,7 @@ export default function PublicacionesAll() {
             {publicacionesAmigos.map((item: Publicacion) => (
               <DivAllPublicaciones key={item.id}>
                 <ThemplatePubli
+                  vereficationUser={dataUser.user.verification}
                   description={item.description}
                   img={item.img}
                   fecha={item.updatedAt}

@@ -29,6 +29,7 @@ export function PublicacionesUser() {
           publicacionesUser.map((item) => (
             <DivAllPublicaciones key={item.id}>
               <ThemplatePubli
+                vereficationUser={dataUser.user.verification}
                 description={item.description}
                 img={item.img}
                 fecha={item.updatedAt}

@@ -40,6 +40,7 @@ const iconConLike = {
 
 export function ThemplatePubli(props: {
   description?: string;
+  vereficationUser: boolean;
   img?: string;
   fecha: string;
   like: any[];
@@ -259,6 +260,7 @@ export function ThemplatePubli(props: {
       {comentario ? (
         <ComentarioPublic
           idPublicacion={props.idPublicacion}
+          verification={props.vereficationUser}
           comentarios={props.comentarios}
           userName={props?.user.name}
           name={props?.user.name}
@@ -305,16 +307,9 @@ export function ThemplatePubli(props: {
 
 function ComentarioPublic(props: any) {
   const [content, setContent] = useState('');
-  const [dataComment, setDataComment] = useState(true);
   const [dataComentariosAll, setDataComentariosAll] = useState<any[]>(
     props.comentarios
   );
-
-  useEffect(() => {
-    if (!dataComment) {
-      setDataComment(false);
-    }
-  }, [dataComment]);
 
   const handleInput = (event: any) => {
     const text = event.target.textContent;
@@ -331,7 +326,7 @@ function ComentarioPublic(props: any) {
         id: props.idPublicacion,
         description: content,
       });
-      setDataComment(true);
+      setContent('');
       setDataComentariosAll((prev: any) => [
         ...prev,
         {
@@ -341,6 +336,7 @@ function ComentarioPublic(props: any) {
             id: props.userId,
             img: props.imgUserPro,
             fullName: props.userName,
+            verification: props.verification,
           },
         },
       ]);
@@ -351,11 +347,7 @@ function ComentarioPublic(props: any) {
   };
   return (
     <div>
-      <div
-        style={{
-          marginTop: '0.5rem',
-          marginBottom: '0.5rem',
-        }}>
+      <div className='mt-2 mb-2'>
         <DivPerfil className='items-center'>
           <FotoPerfil
             className='h-[30px] w-[30px]'
@@ -364,8 +356,6 @@ function ComentarioPublic(props: any) {
           <DivAñadirComentar>
             <div className='min-w-[200px] max-w-full '>
               <p
-                onBlur={() => setDataComment(true)}
-                onFocus={() => setDataComment(false)}
                 onInput={handleInput}
                 suppressContentEditableWarning={true}
                 contentEditable={true}
@@ -373,7 +363,9 @@ function ComentarioPublic(props: any) {
                   !content
                     ? 'before:text-secundary dark:before:text-primary  before:content-["Añadir_un_comentario"]'
                     : ''
-                } `}></p>
+                } `}>
+                {!content ? '' : null}
+              </p>
             </div>
             <BottonSendComentario onClick={handleComment}>
               <SendComentPubli />

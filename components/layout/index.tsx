@@ -22,7 +22,7 @@ export default function Layout({
       <div
         className={`${
           pathname !== '/iniciarSesion' && pathname !== '/crearCuenta'
-            ? 'mt-8  ml-2 mr-2 '
+            ? 'mt-8  ml-2 mr-2 max-md:mt-4'
             : ''
         } `}>
         {children}

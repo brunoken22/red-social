@@ -99,7 +99,7 @@ export const DivCrear = ({
 );
 
 export const DivButton = ({children}: {children: React.ReactNode}) => (
-  <div className={`m-[0.5rem_0]`}>{children}</div>
+  <div className={`mt-4 mb-4`}>{children}</div>
 );
 
 export const ButtonPublicar = ({

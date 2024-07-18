@@ -62,7 +62,7 @@ export default function Page() {
       </main>
 
       <footer className='bg-primary dark:bg-darkComponent dark:text-white text-secondary text-center p-4'>
-        <p className='flex items-center justify-center'>
+        <p className='flex items-center justify-center max-md:flex-col'>
           &copy; 2024 UniRed. Todos los derechos reservados. Hecho por Bruno
           Ken.{' '}
           <Link href='https://brunoken.vercel.app/' target='_blank'>

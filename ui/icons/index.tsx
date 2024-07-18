@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
-import Dropzone from 'dropzone';
-import {useEffect, useState} from 'react';
+import {useCallback, useState} from 'react';
+import Dropzone from 'react-dropzone';
 
 const LoaderComponent = dynamic(() =>
   import('@/components/loader').then((mod) => mod.LoaderComponent)
@@ -8,92 +8,79 @@ const LoaderComponent = dynamic(() =>
 
 export function ImageSVG(props: any) {
   const [isLoading, setIsLoading] = useState(false);
+  const [dataUrl, setDataUrl] = useState<string | null>(null);
 
-  useEffect(() => {
-    const existingDropzone = Dropzone.instances.find((dz) =>
-      dz.element.classList.contains('dropzone')
-    );
-
-    if (!existingDropzone) {
-      const myDropzone = new Dropzone('.dropzone', {
-        url: '/perfil',
-        autoProcessQueue: false,
-        uploadMultiple: false,
-        maxFiles: 1,
-        maxFilesize: 100,
-        maxThumbnailFilesize: 100,
-        resizeQuality: 0.5,
-        acceptedFiles: 'image/png, image/jpeg, image/jpg',
-        addRemoveLinks: true,
-        dictRemoveFile: 'Eliminar',
-        init: function () {
-          this.on('maxfilesexceeded', function () {
-            alert('Solo un archivo porfavor!');
-          });
-        },
-        maxfilesexceeded: async function (files) {
-          (this as any).removeAllFiles();
-          (this as any).addFile(files);
-          setIsLoading(true);
-          const optimizarImage = (await import('@/lib/hook')).optimizarImage;
-
-          const dataObtimizado = await optimizarImage(files.dataURL as string);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        setIsLoading(true);
+        const file = acceptedFiles[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          setDataUrl(result);
+          props.dataUrl(result);
           setIsLoading(false);
-          props.dataUrl(dataObtimizado);
-          return;
-        },
-      });
-
-      myDropzone.on('thumbnail', async function (file) {
-        const fileSizeInBytes = file.size;
-        const fileSizeInKB = fileSizeInBytes / 1024;
-        const fileSizeInMB = fileSizeInKB / 1024;
-        if (fileSizeInMB > 30) {
-          alert(
-            `Tamaño del archivo excedido: ${fileSizeInMB.toFixed(
-              2
-            )}MB (MAXIMO 30MB)`
-          );
-          myDropzone.removeFile(file);
-          return;
-        }
-        const optimizarImage = (await import('@/lib/hook')).optimizarImage;
-        const dataObtimizado = await optimizarImage(file.dataURL as string);
-        props.dataUrl(dataObtimizado);
-      });
-    }
-
-    return () => {
-      if (existingDropzone) {
-        existingDropzone.destroy();
+        };
+        reader.readAsDataURL(file);
       }
-    };
-  }, []);
+    },
+    [props]
+  );
 
   return (
     <>
-      <div className='dropzone relative max-md:p-2 p-4 max-md:h-[200px] flex justify-center items-center'>
-        <div className='dz-default dz-message max-md:m-0'>
-          <button className='dz-button' type='button'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 512 512'
-              width='80px'>
-              <path
-                fill='#2196F3'
-                d='M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM323.8 202.5c-4.5-6.6-11.9-10.5-19.8-10.5s-15.4 3.9-19.8 10.5l-87 127.6L170.7 297c-4.6-5.7-11.5-9-18.7-9s-14.2 3.3-18.7 9l-64 80c-5.8 7.2-6.9 17.1-2.9 25.4s12.4 13.6 21.6 13.6h96 32H424c8.9 0 17.1-4.9 21.2-12.8s3.6-17.4-1.4-24.7l-120-176zM112 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z'
-              />
-            </svg>
-            <div>
-              <p className='opacity-80'>
-                <strong>Agregar Foto</strong> <br />o Arrastra y suelta
-              </p>
+      <Dropzone
+        onDrop={onDrop}
+        accept={{
+          'image/png': [],
+          'image/jpeg': [],
+          'image/jpg': [],
+          'image/webp': [],
+        }}
+        maxFiles={1}
+        maxSize={30 * 1024 * 1024}>
+        {({getRootProps, getInputProps}) => (
+          <section className='flex items-center justify-center flex-col'>
+            <div
+              {...getRootProps()}
+              className='p-4 max-md:p-2 cursor-pointer flex items-center flex-col'>
+              <input {...getInputProps()} />
+              <svg
+                className='w-[70px] max-md:w-[30px]'
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 512 512'>
+                <path
+                  fill='#2196F3'
+                  d='M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM323.8 202.5c-4.5-6.6-11.9-10.5-19.8-10.5s-15.4 3.9-19.8 10.5l-87 127.6L170.7 297c-4.6-5.7-11.5-9-18.7-9s-14.2 3.3-18.7 9l-64 80c-5.8 7.2-6.9 17.1-2.9 25.4s12.4 13.6 21.6 13.6h96 32H424c8.9 0 17.1-4.9 21.2-12.8s3.6-17.4-1.4-24.7l-120-176zM112 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z'
+                />
+              </svg>
+              <div>
+                <p className='opacity-80 max-md:text-[0.9rem]'>
+                  <strong>Agregar Foto</strong> <br />o Arrastra y suelta
+                </p>
+              </div>
             </div>
-          </button>
-        </div>
-        <div className='dz-preview dz-image-preview'></div>
-        {isLoading ? <LoaderComponent /> : null}
-      </div>
+            {dataUrl && (
+              <div className='relative group w-full h-28 '>
+                <img
+                  src={dataUrl}
+                  alt='file-preview'
+                  className='p-2 w-full h-28 object-cover'
+                />
+                <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300'>
+                  <button
+                    onClick={() => setDataUrl(null)}
+                    className='p-2 text-red-500 bg-white bg-opacity-75 rounded transition-opacity duration-300 opacity-0 group-hover:opacity-100'>
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+      </Dropzone>
+      {isLoading ? <LoaderComponent /> : null}
     </>
   );
 }

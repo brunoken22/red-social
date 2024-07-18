@@ -1,11 +1,9 @@
 import './globals.css';
-import dynamic from 'next/dynamic';
 import type {Metadata} from 'next';
-import { Poppins } from 'next/font/google';
-import { cookies } from 'next/headers';
+import {Poppins} from 'next/font/google';
+import {cookies} from 'next/headers';
+import Layout from '@/components/layout';
 const poppins = Poppins({weight: '400', subsets: ['latin']});
-
-const Layout = dynamic(() => import('@/components/layout'), {ssr: false});
 
 export const metadata: Metadata = {
   title: 'UniRed',
@@ -15,9 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
-  const theme = 
-  (cookies().get("theme")?.value) ||
-  'false';
+  const theme = cookies().get('theme')?.value || 'false';
 
   return (
     <html lang='es'>
@@ -31,7 +27,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       </head>
       <body
         className={`${poppins.className} dark:bg-dark dark:text-white dark:transition-dark`}>
-        <Layout dateTheme={theme }>{children}</Layout>
+        <Layout themeDate={theme}>{children}</Layout>
       </body>
     </html>
   );

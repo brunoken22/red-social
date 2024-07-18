@@ -182,17 +182,17 @@ export function ThemplatePubli(props: {
           </div>
         ) : null}
       </DivPefilDelete>
-      <p className='p-4 text-[0.9rem] font-thin'>{props.description}</p>
+      <p className='p-6 text-[0.9rem] font-thin'>{props.description}</p>
       {props.img ? (
         <ButtonOpenImage onClick={() => setOpenImage(true)}>
           <DivImage>
             <img
               src={props?.img}
-              alt='iamgen user'
+              alt='imagen user'
               loading='lazy'
               height={300}
               width={500}
-              className='object-cover rounded-xl w-full h-full hover:scale-[1.1]  transition-all '
+              className='object-cover  w-full h-full hover:scale-[1.1]  transition-all '
             />
           </DivImage>
         </ButtonOpenImage>
@@ -346,7 +346,7 @@ function ComentarioPublic(props: any) {
     alert('Escribe Algo');
   };
   return (
-    <div>
+    <div className='p-4 max-md:p-2'>
       <div className='mt-2 mb-2'>
         <DivPerfil className='items-center'>
           <FotoPerfil

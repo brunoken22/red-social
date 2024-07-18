@@ -71,7 +71,7 @@ export const DivAllPublicaciones = ({
 }: {
   children: React.ReactNode;
 }) => (
-  <div className='bg-primary p-4 flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto max-md:p-2  pb-0 max-md:pb-0 dark:bg-darkComponet dark:text-primary dark:shadow-dark'>
+  <div className='bg-primary flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-dark'>
     {children}
   </div>
 );

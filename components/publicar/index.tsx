@@ -124,11 +124,6 @@ function TemplateFormPublicar(props: any) {
               suppressContentEditableWarning={true}
               contentEditable={true}></p>
             <div>
-              <div>
-                <p className='text-center opacity-80'>
-                  Agregar a tu publicación
-                </p>
-              </div>
               <ImageSVG dataUrl={(data: string) => setDataUrl(data)}></ImageSVG>
             </div>
             <DivButton>

@@ -1,6 +1,5 @@
 'use client';
 import dynamic from 'next/dynamic';
-import algoliasearch from 'algoliasearch/lite';
 import {
   ref,
   onValue,
@@ -39,6 +38,7 @@ const SkeletonNav = dynamic(() =>
   import('@/ui/skeleton').then((mod) => mod.SkeletonNav)
 );
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
+
 const ButtonSmsConnect = dynamic(() =>
   import('@/ui/boton').then((mod) => mod.ButtonSmsConnect)
 );
@@ -57,19 +57,12 @@ const DivContenedorConnect = dynamic(() =>
 const SearchUser = dynamic(() =>
   import('../searchUsers').then((mod) => mod.SearchUser)
 );
-const InstantSearch = dynamic(() =>
-  import('react-instantsearch').then((mod) => mod.InstantSearch)
-);
 const SearchBox = dynamic(() =>
   import('react-instantsearch').then((mod) => mod.SearchBox)
 );
 const NavegationUrl = dynamic(() => import('./navHeader'));
 
 export default function Header({themeDate}: {themeDate: string}) {
-  const searchClient = algoliasearch(
-    '8W3ZG1OHSP',
-    process.env.NEXT_PUBLIC_ALGOLIA as string
-  );
   GetUser();
   NotificacionesUser(0);
   // const {load} = useGlobalAudioPlayer();
@@ -265,66 +258,60 @@ export default function Header({themeDate}: {themeDate: string}) {
   }, [dataUser?.user?.id]);
   return dataUser?.user?.id ? (
     <>
-      <InstantSearch
-        searchClient={searchClient}
-        indexName='users'
-        future={{preserveSharedStateOnUnmount: true}}>
-        <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
-          <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
-            <div className='flex gap-4 items-center '>
-              <Link href={'/inicio'} aria-label='home'>
-                <Logo className='rounded-md fill-unired transition-dark' />
-              </Link>
-              <div className='border-none relative max-md:hidden '>
-                {pathname !== '/search' && (
-                  <SearchBox
-                    placeholder='UniRed'
-                    onChangeCapture={(e: any) => {
-                      e.target.form
-                        .querySelector('.ais-SearchBox-reset')
-                        .addEventListener('click', () => setSearch(''));
-                      setSearch(e.target.value);
-                    }}
-                  />
-                )}
+      <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
+        <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
+          <div className='flex gap-4 items-center '>
+            <Link href={'/inicio'} aria-label='home'>
+              <Logo className='rounded-md fill-unired transition-dark' />
+            </Link>
+            <div className='border-none relative max-md:hidden '>
+              {pathname !== '/search' && (
+                <SearchBox
+                  placeholder='UniRed'
+                  onChangeCapture={(e: any) => {
+                    e.target.form
+                      .querySelector('.ais-SearchBox-reset')
+                      .addEventListener('click', () => setSearch(''));
+                    setSearch(e.target.value);
+                  }}
+                />
+              )}
 
-                {value && pathname !== '/search' ? <SearchUser /> : null}
-              </div>
+              {value && pathname !== '/search' ? <SearchUser /> : null}
             </div>
-            <NavegationUrl
-              amigos={dataSoliReci?.length}
-              message={dataMessage.length}
-              notification={
-                notificacionesUserAtom?.length && notificacionesUserAtom?.length
-              }
-            />
-            <div className='relative'>
-              <button
-                onClick={handleMenu}
-                className='m-0 bg-transparent border-none '>
-                <FotoPerfil
-                  className='w-[40px] h-[40px]'
-                  img={dataUser.user.img}
-                  connect={
-                    dataIsConnect?.find(
-                      (e: any) => e.id == dataUser.user?.id
-                    ) && true
-                  }
-                />
-              </button>
-              {menu ? (
-                <Menu
-                  theme={theme}
-                  themebutton={(data: string) => setThemes(data)}
-                  click={handleClick}
-                  userImg={dataUser.user.img}
-                  userName={dataUser.user.fullName.split(' ')[0]}
-                />
-              ) : null}
-            </div>
-          </nav>
-        </header>
-      </InstantSearch>
+          </div>
+          <NavegationUrl
+            amigos={dataSoliReci?.length}
+            message={dataMessage.length}
+            notification={
+              notificacionesUserAtom?.length && notificacionesUserAtom?.length
+            }
+          />
+          <div className='relative'>
+            <button
+              onClick={handleMenu}
+              className='m-0 bg-transparent border-none '>
+              <FotoPerfil
+                className='w-[40px] h-[40px]'
+                img={dataUser.user.img}
+                connect={
+                  dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) &&
+                  true
+                }
+              />
+            </button>
+            {menu ? (
+              <Menu
+                theme={theme}
+                themebutton={(data: string) => setThemes(data)}
+                click={handleClick}
+                userImg={dataUser.user.img}
+                userName={dataUser.user.fullName.split(' ')[0]}
+              />
+            ) : null}
+          </div>
+        </nav>
+      </header>
       <DivContenedorConnect>
         <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
           <span>Conectados</span> <DivConnect />

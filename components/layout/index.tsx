@@ -1,32 +1,27 @@
 'use client';
 import React from 'react';
-import {RecoilRoot} from 'recoil';
-import {usePathname} from 'next/navigation';
-import dynamic from 'next/dynamic';
+import RecoilRootLayout from './recoilRoot';
+import algoliasearch from 'algoliasearch/lite';
+import {InstantSearch} from 'react-instantsearch';
 
-const Header = dynamic(() => import('@/components/header'));
+const searchClient = algoliasearch(
+  '8W3ZG1OHSP',
+  process.env.NEXT_PUBLIC_ALGOLIA as string
+);
 export default function Layout({
   children,
-  dateTheme,
+  themeDate,
 }: {
   children: React.ReactNode;
-  dateTheme: string;
+  themeDate: string;
 }) {
-  const pathname = usePathname();
   return (
-    <RecoilRoot>
-      {' '}
-      {pathname !== '/iniciarSesion' && pathname !== '/crearCuenta' ? (
-        <Header themeDate={dateTheme} />
-      ) : null}
-      <div
-        className={`${
-          pathname !== '/iniciarSesion' && pathname !== '/crearCuenta'
-            ? 'mt-8  ml-2 mr-2 max-md:mt-4'
-            : ''
-        } `}>
-        {children}
-      </div>
-    </RecoilRoot>
+    <InstantSearch
+      indexName='users'
+      searchClient={searchClient}
+      future={{preserveSharedStateOnUnmount: true}}
+      routing>
+      <RecoilRootLayout dateTheme={themeDate}>{children}</RecoilRootLayout>
+    </InstantSearch>
   );
 }

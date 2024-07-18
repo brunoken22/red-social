@@ -42,7 +42,7 @@ export const ButtonOpenImage = ({
 );
 
 export const DivImage = ({children}: {children: React.ReactNode}) => (
-  <div className='flex items-center relative m-[0.1rem] h-[300px] overflow-hidden	'>
+  <div className='flex items-center relative  h-[300px] overflow-hidden	'>
     {children}
   </div>
 );
@@ -122,7 +122,9 @@ export const DivAñadirComentar = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivPefilDelete = ({children}: {children: React.ReactNode}) => (
-  <div className='flex items-center justify-between'>{children}</div>
+  <div className='flex items-center justify-between p-4 max-md:p-2'>
+    {children}
+  </div>
 );
 
 export const ButtonOpenDelete = ({

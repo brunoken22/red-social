@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/dropzone": "^5.7.4",
     "@types/node": "20.4.10",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
@@ -17,7 +16,6 @@
     "algoliasearch": "^4.20.0",
     "cloudinary": "^1.40.0",
     "cookies-next": "^4.1.1",
-    "dropzone": "^6.0.0-beta.2",
     "firebase": "^10.3.1",
     "image-conversion": "^2.1.1",
     "jose": "^5.2.4",
@@ -26,9 +24,9 @@
     "next-svgr": "^0.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.45.4",
     "react-instantsearch": "^7.0.3",
-    "react-instantsearch-router-nextjs": "^7.11.3",
     "react-toastify": "^10.0.5",
     "react-use-audio-player": "^2.2.0",
     "recoil": "^0.7.7",

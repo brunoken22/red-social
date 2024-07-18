@@ -7,9 +7,10 @@ export async function middleware(request: NextRequest) {
     if (isToken == 'false' || !isToken) {
       if (
         request.nextUrl.pathname !== '/iniciarSesion' &&
+        request.nextUrl.pathname !== '/' &&
         request.nextUrl.pathname !== '/crearCuenta'
       ) {
-        return NextResponse.redirect(new URL('/iniciarSesion', request.url));
+        return NextResponse.redirect(new URL('/', request.url));
       }
       return NextResponse.next();
     } else {
@@ -24,7 +25,7 @@ export async function middleware(request: NextRequest) {
     }
   } catch (e) {
     cookies().set('login', 'false');
-    return NextResponse.redirect(new URL('/iniciarSesion', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
 }
 

@@ -14,7 +14,9 @@ export default function RecoilRootLayout({
 }) {
   const pathname = usePathname();
   const comparationPathname =
-    pathname !== '/iniciarSesion' && pathname !== '/crearCuenta';
+    pathname !== '/iniciarSesion' &&
+    pathname !== '/crearCuenta' &&
+    pathname !== '/';
   return (
     <RecoilRoot>
       {comparationPathname ? <Header themeDate={dateTheme} /> : null}

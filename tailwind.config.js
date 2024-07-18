@@ -30,6 +30,11 @@ module.exports = {
         container: "-1px 1px 5px 0px #ddd",
         dark:"-1px 1px 5px 0px #010101"
       },
+      boxShadowColor: {
+        light: "#598fff",
+        darkComponet:"#242526"
+        
+      },
       animation:{
         rotate: "rotate 1s infinite cubic-bezier(0.4, 0, 1, 1)",
         animationSkeleton: "skeleton 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
@@ -51,7 +56,10 @@ module.exports = {
       },
       borderColor: {
         dark: "#575757",
-        secundary:"#fff"
+        darkComponet:"#242526",
+        secundary: "#fff",
+        light:"#598fff",
+        
       }
     },
   },

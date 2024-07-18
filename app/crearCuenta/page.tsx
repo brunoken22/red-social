@@ -15,7 +15,9 @@ export default function Home() {
         <img src='/signin.svg' alt='signin' className='w-[500px]' />
       </div>
       <div className='w-2/4 p-4 flex flex-col justify-between  max-md:w-full '>
-        <LogoPage />
+        <Link href={'/'}>
+          <LogoPage />
+        </Link>
         <div className='flex flex-col justify-between h-3/4 m-auto max-w-[500px] mt-4 mb-4 w-full'>
           <Title>Crear cuenta</Title>
           <Signup />

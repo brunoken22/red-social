@@ -1586,11 +1586,6 @@
   resolved "https://registry.npmjs.org/@next/env/-/env-14.2.4.tgz"
   integrity sha512-3EtkY5VDkuV2+lNmKlbkibIJxcO4oIHEhBWne6PaAp+76J9KoSsGvNikp6ivzAT8dhhBMYrm6op2pS1ApG0Hzg==
 
-"@next/swc-win32-x64-msvc@14.2.4":
-  version "14.2.4"
-  resolved "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.4.tgz"
-  integrity sha512-tkLrjBzqFTP8DVrAAQmZelEahfR9OxWpFR++vAI9FBhCiIxtwHwBHC23SBHCTURBtwB4kc/x44imVOnkKGNVGg==
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -1611,11 +1606,6 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
-
-"@pkgjs/parseargs@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz"
-  integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
@@ -1868,13 +1858,6 @@ algoliasearch-helper@3.19.0:
   version "3.19.0"
   resolved "https://registry.npmjs.org/algoliasearch-helper/-/algoliasearch-helper-3.19.0.tgz"
   integrity sha512-AaSb5DZDMZmDQyIy6lf4aL0OZGgyIdqvLIIvSuVQOIOqfhrYSY7TvotIFI2x0Q3cP3xUpTd7lI1astUC4aXBJw==
-  dependencies:
-    "@algolia/events" "^4.0.1"
-
-algoliasearch-helper@3.22.3:
-  version "3.22.3"
-  resolved "https://registry.npmjs.org/algoliasearch-helper/-/algoliasearch-helper-3.22.3.tgz"
-  integrity sha512-2eoEz8mG4KHE+DzfrBTrCmDPxVXv7aZZWPojAJFtARpxxMO6lkos1dJ+XDCXdPvq7q3tpYWRi6xXmVQikejtpA==
   dependencies:
     "@algolia/events" "^4.0.1"
 
@@ -2894,13 +2877,6 @@ instantsearch-ui-components@0.5.0:
   dependencies:
     "@babel/runtime" "^7.1.2"
 
-instantsearch-ui-components@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.npmjs.org/instantsearch-ui-components/-/instantsearch-ui-components-0.7.0.tgz"
-  integrity sha512-4dHmCFbKWap5iSR2VmF5pSBECGQbAa8sPMoazMihYY2/0ahVzdHrOOtT8/hferG1A/xTT8nzfU7PIg+8lomNsA==
-  dependencies:
-    "@babel/runtime" "^7.1.2"
-
 instantsearch.js@4.68.0:
   version "4.68.0"
   resolved "https://registry.npmjs.org/instantsearch.js/-/instantsearch.js-4.68.0.tgz"
@@ -2918,24 +2894,6 @@ instantsearch.js@4.68.0:
     preact "^10.10.0"
     qs "^6.5.1 < 6.10"
     search-insights "^2.13.0"
-
-instantsearch.js@4.73.2:
-  version "4.73.2"
-  resolved "https://registry.npmjs.org/instantsearch.js/-/instantsearch.js-4.73.2.tgz"
-  integrity sha512-96S6wKh7TVXbmnliESPphPHrcpQ6BiJvVqgnS6lZmHI72sLKgadIwuBXCo1cIFIU5LaCH77ydCUCo2BO5HmX9w==
-  dependencies:
-    "@algolia/events" "^4.0.1"
-    "@types/dom-speech-recognition" "^0.0.1"
-    "@types/google.maps" "^3.45.3"
-    "@types/hogan.js" "^3.0.0"
-    "@types/qs" "^6.5.3"
-    algoliasearch-helper "3.22.3"
-    hogan.js "^3.0.2"
-    htm "^3.0.0"
-    instantsearch-ui-components "0.7.0"
-    preact "^10.10.0"
-    qs "^6.5.1 < 6.10"
-    search-insights "^2.15.0"
 
 internal-slot@^1.0.7:
   version "1.0.7"
@@ -3367,7 +3325,7 @@ next-svgr@^0.0.2:
   dependencies:
     "@svgr/webpack" "^4.3.0"
 
-next@^14.2.4, "next@>= 13.4 && < 15", "next@>= 9 && < 15":
+next@^14.2.4:
   version "14.2.4"
   resolved "https://registry.npmjs.org/next/-/next-14.2.4.tgz"
   integrity sha512-R8/V7vugY+822rsQGQCjoLhMuC9oFj9SOi4Cl4b2wjDrseD0LRZ10W7R6Czo4w9ZznVSshKjuIomsRjvm9EKJQ==
@@ -3653,16 +3611,6 @@ react-hook-form@^7.45.4:
   resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.51.4.tgz"
   integrity sha512-V14i8SEkh+V1gs6YtD0hdHYnoL4tp/HX/A45wWQN15CYr9bFRmmRdYStSO5L65lCCZRF+kYiSKhm9alqbcdiVA==
 
-react-instantsearch-core@7.12.2:
-  version "7.12.2"
-  resolved "https://registry.npmjs.org/react-instantsearch-core/-/react-instantsearch-core-7.12.2.tgz"
-  integrity sha512-5RCXyhfp3w57iSZPHFuYmY4h6LfykD8sHjQfrs7pFHLaZxkeLwsyDauDZfEVP+rdRVI0JA+MTAQ01SuN47Z5xw==
-  dependencies:
-    "@babel/runtime" "^7.1.2"
-    algoliasearch-helper "3.22.3"
-    instantsearch.js "4.73.2"
-    use-sync-external-store "^1.0.0"
-
 react-instantsearch-core@7.7.3:
   version "7.7.3"
   resolved "https://registry.npmjs.org/react-instantsearch-core/-/react-instantsearch-core-7.7.3.tgz"
@@ -3673,20 +3621,7 @@ react-instantsearch-core@7.7.3:
     instantsearch.js "4.68.0"
     use-sync-external-store "^1.0.0"
 
-react-instantsearch-nextjs@^0.3.7:
-  version "0.3.7"
-  resolved "https://registry.npmjs.org/react-instantsearch-nextjs/-/react-instantsearch-nextjs-0.3.7.tgz"
-  integrity sha512-7hPf1TQrBgIltAXHMx66PB+JTdhCDvQJIz2GtnY52F1noGInd1BbZW8GytVdd+ttPxUuXDM8iRmBET7RulcG5w==
-
-react-instantsearch-router-nextjs@^7.12.2:
-  version "7.12.2"
-  resolved "https://registry.npmjs.org/react-instantsearch-router-nextjs/-/react-instantsearch-router-nextjs-7.12.2.tgz"
-  integrity sha512-dM0V85eUz7dqTMxcIP0O6uuk3kqtuu2JtKCiwAqbvAf8KtbmWuH7d/Xbsqsn7WD2me+MyvS0U5pH/CBL3bfrEA==
-  dependencies:
-    instantsearch.js "4.73.2"
-    react-instantsearch-core "7.12.2"
-
-react-instantsearch@^7.0.3, "react-instantsearch@>= 7.1.0 && < 8":
+react-instantsearch@^7.0.3:
   version "7.7.3"
   resolved "https://registry.npmjs.org/react-instantsearch/-/react-instantsearch-7.7.3.tgz"
   integrity sha512-ncXGoWsJYLcdWgtMLSQrtIkMZ0D7jP5jUvJX/zJEx8vNUzUk8Zm/OruS/vY48EAJ76TKTUCzC7Wl7cxgBQnrBg==
@@ -3863,7 +3798,7 @@ scheduler@^0.23.2:
   dependencies:
     loose-envify "^1.1.0"
 
-search-insights@^2.13.0, search-insights@^2.15.0:
+search-insights@^2.13.0:
   version "2.15.0"
   resolved "https://registry.npmjs.org/search-insights/-/search-insights-2.15.0.tgz"
   integrity sha512-ch2sPCUDD4sbPQdknVl9ALSi9H7VyoeVbsxznYz6QV55jJ8CI3EtwpO1i84keN4+hF5IeHWIeGvc08530JkVXQ==

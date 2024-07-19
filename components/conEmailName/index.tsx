@@ -1,14 +1,19 @@
+import dynamic from 'next/dynamic';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {Form} from '@/ui/container';
 import {Label} from '@/ui/input';
 import {modificarUser} from '@/lib/hook';
-import {useEffect, useState} from 'react';
-import {Loader} from '../loader';
+import {useState} from 'react';
 
 type Inputs = {
   fullName: string;
   email: string;
 };
+
+const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
+const NotificationToastStatus = dynamic(() =>
+  import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
+);
 
 export function EmailYName({
   fullName,
@@ -18,6 +23,9 @@ export function EmailYName({
   email: string;
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [alert, setAlert] = useState<
+    {message: string; status: 'success' | 'error' | 'info' | 'warning'} | false
+  >(false);
 
   const {
     register,
@@ -34,10 +42,13 @@ export function EmailYName({
     setIsLoading(false);
 
     if (dataMod) {
-      alert('Se modifico correctamente');
+      setAlert({message: 'Se modifico correctamente', status: 'success'});
       return;
     }
-    alert('Hubo algun problema, intentalo de nuevo');
+    setAlert({
+      message: 'Hubo algun problema, intentalo de nuevo',
+      status: 'error',
+    });
     return;
   };
 
@@ -87,6 +98,13 @@ export function EmailYName({
           </button>
         </Form>
       </div>
+      {alert && (
+        <NotificationToastStatus
+          message={alert.message}
+          status={alert.status}
+          close={() => setAlert(false)}
+        />
+      )}
     </div>
   );
 }

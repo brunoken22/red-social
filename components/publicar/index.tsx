@@ -25,11 +25,17 @@ const CloseSvg = dynamic(() => import('@/ui/icons/close.svg'));
 const ImageSubir = dynamic(() => import('@/ui/icons/image.svg'));
 const VideoSubir = dynamic(() => import('@/ui/icons/video.svg'));
 const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
+const NotificationToastStatus = dynamic(() =>
+  import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
+);
 
 export default function Publicar() {
   const [formClick, setFormClick] = useState(false);
   const dataValor = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);
+  const [alert, setAlert] = useState<
+    {message: string; status: 'success' | 'error' | 'info' | 'warning'} | false
+  >(false);
 
   return (
     <DivPublicar>
@@ -53,11 +59,19 @@ export default function Publicar() {
         {formClick ? (
           <TemplateFormPublicar close={(data: boolean) => setFormClick(data)} />
         ) : null}
-        <DivASubir onClick={() => alert('Proximamente')}>
+        <DivASubir
+          onClick={() => setAlert({message: 'Proximamente', status: 'info'})}>
           <VideoSubir />
           <Body>Video</Body>
         </DivASubir>
       </DivSubir>
+      {alert && (
+        <NotificationToastStatus
+          message={alert.message}
+          status={alert.status}
+          close={() => setAlert(false)}
+        />
+      )}
     </DivPublicar>
   );
 }

@@ -59,19 +59,31 @@ export default function Page() {
             <p>Comenta y da me gusta a las publicaciones de otros.</p>
           </div>
         </section>
+
+        <section className='mt-12 text-center max-w-4xl mx-auto px-4'>
+          <h3 className='text-2xl font-bold mb-2'>Proyecto Personal</h3>
+          <p className='text-lg'>
+            Este es un proyecto personal que construí tanto en el backend como
+            en el frontend. ¡Espero que lo disfrutes!
+          </p>
+        </section>
       </main>
 
       <footer className='bg-primary dark:bg-darkComponent dark:text-white text-secondary text-center p-4'>
         <p className='flex items-center justify-center max-md:flex-col'>
           &copy; 2024 UniRed. Todos los derechos reservados. Hecho por Bruno
-          Ken.{' '}
-          <Link href='https://brunoken.vercel.app/' target='_blank'>
+          Ken.
+          <Link
+            href='https://brunoken.vercel.app/'
+            target='_blank'
+            className='flex items-center ml-2'>
             <img
               src='/logoByMe.svg'
               alt='bruno ken'
               loading='lazy'
               width={35}
               height={35}
+              className='ml-2'
             />
           </Link>
         </p>

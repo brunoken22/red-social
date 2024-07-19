@@ -1,9 +1,10 @@
+import dynamic from 'next/dynamic';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Form} from '@/ui/container';
 import {Input, Label} from '@/ui/input';
 import {useState} from 'react';
 import {modificarUser} from '@/lib/hook';
-import {Loader} from '../loader';
+
 type Inputs = {
   password: string;
   repassword: string;
@@ -14,8 +15,16 @@ function validarPassword(con1: string, con2: string) {
   return false;
 }
 
+const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
+const NotificationToastStatus = dynamic(() =>
+  import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
+);
+
 export function Password() {
   const [isLoading, setIsLoading] = useState(false);
+  const [alert, setAlert] = useState<
+    {message: string; status: 'success' | 'error' | 'info' | 'warning'} | false
+  >(false);
 
   const {
     register,
@@ -34,15 +43,22 @@ export function Password() {
       setIsLoading(false);
       if (dataMod) {
         reset();
-
-        alert('Se modifico correctamente');
+        setAlert({message: 'Se modifico correctamente', status: 'success'});
         return;
       }
-      alert('Hubo algun problema, intentalo de nuevo');
+      setAlert({
+        message: 'Hubo algun problema, intentalo de nuevo',
+        status: 'error',
+      });
+
       return;
     }
     setIsLoading(false);
-    alert('La contraseña no coinciden');
+
+    setAlert({
+      message: 'La contraseña no coinciden',
+      status: 'error',
+    });
   };
 
   if (isLoading) {
@@ -90,6 +106,13 @@ export function Password() {
           Modificar
         </button>
       </Form>
+      {alert && (
+        <NotificationToastStatus
+          message={alert.message}
+          status={alert.status}
+          close={() => setAlert(false)}
+        />
+      )}
     </div>
   );
 }

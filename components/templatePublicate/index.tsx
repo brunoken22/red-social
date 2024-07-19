@@ -1,5 +1,5 @@
 'use client';
-import FotoPerfil from '@/ui/FotoPerfil';
+import dynamic from 'next/dynamic';
 import {Body} from '@/ui/typography';
 import {
   DivPerfil,
@@ -26,9 +26,7 @@ import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {LikeODisLike, comentarPublicacion, DeletePublic} from '@/lib/hook';
-import {SendComentPubli} from '@/ui/icons';
-import moment from 'moment';
-import Verification from '@/ui/verification';
+
 const iconConLike = {
   height: ' 20px',
   width: ' 20px',
@@ -37,6 +35,15 @@ const iconConLike = {
   padding: '2px',
   backgroundColor: '#5a81ff',
 };
+
+const Verification = dynamic(() => import('@/ui/verification'));
+const NotificationToastStatus = dynamic(() =>
+  import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
+);
+const SendComentPubli = dynamic(() =>
+  import('@/ui/icons').then((mod) => mod.SendComentPubli)
+);
+const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
 
 export function ThemplatePubli(props: {
   description?: string;
@@ -310,7 +317,9 @@ function ComentarioPublic(props: any) {
   const [dataComentariosAll, setDataComentariosAll] = useState<any[]>(
     props.comentarios
   );
-
+  const [alert, setAlert] = useState<
+    {message: string; status: 'success' | 'error' | 'info' | 'warning'} | false
+  >(false);
   const handleInput = (event: any) => {
     const text = event.target.textContent;
     if (text.length <= 250) {
@@ -343,7 +352,7 @@ function ComentarioPublic(props: any) {
       props.publicComentario(true);
       return;
     }
-    alert('Escribe Algo');
+    setAlert({message: 'Escribe Algo', status: 'error'});
   };
   return (
     <div className='p-4 max-md:p-2'>
@@ -390,6 +399,13 @@ function ComentarioPublic(props: any) {
             })
           : null}
       </div>
+      {alert && (
+        <NotificationToastStatus
+          message={alert.message}
+          status={alert.status}
+          close={() => setAlert(false)}
+        />
+      )}
     </div>
   );
 }
@@ -449,7 +465,8 @@ function TemplateComentario(props: {
   );
 }
 
-function diferenteDate(date: string) {
+async function diferenteDate(date: string) {
+  const moment = (await import('moment')).default;
   const targetDate = moment(date);
   const currentDate = moment();
   const differenceInMilliseconds = Math.abs(targetDate.diff(currentDate));

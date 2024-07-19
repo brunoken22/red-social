@@ -419,7 +419,7 @@ function TemplateComentario(props: {
   createdAt: string;
 }) {
   return (
-    <div style={{margin: '1rem'}}>
+    <div className='m-4'>
       <DivPerfil>
         {props.userName !== 'Tú' ? (
           <Link href={'/amigos/' + props.userId + '/' + props.userName}>
@@ -454,7 +454,9 @@ function TemplateComentario(props: {
                 ) : null}
               </div>
             )}
-            <p className='text-[0.9rem] m-0 '>{props.description}</p>
+            <p className='text-[0.9rem] m-0 overflow-hidden whitespace-nowrap	 text-ellipsis'>
+              {props.description}
+            </p>
           </div>
           <span className='text-[0.7rem] pl-2'>
             {diferenteDate(props.createdAt)}

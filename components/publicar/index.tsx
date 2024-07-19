@@ -83,13 +83,8 @@ function TemplateFormPublicar(props: any) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInput = (event: any) => {
-    const textContent = event.target.textContent;
-
+    const textContent = event.target.value;
     setText(textContent);
-
-    // if (text.length >= 250) {
-    //   event.target.textContent = text;
-    // }
   };
 
   const handleClickForm = async (e: FormEvent) => {
@@ -102,7 +97,6 @@ function TemplateFormPublicar(props: any) {
     setIsLoading(false);
     props.close(false);
   };
-  const fullName = dataUser?.user?.fullName.split(' ')[0];
 
   return (
     <>
@@ -126,17 +120,16 @@ function TemplateFormPublicar(props: any) {
                 <CloseSvg />
               </Button>
             </div>
-            <p
+            <textarea
               id='description'
-              data-before={'En que estas pensando ' + fullName + ' ?'}
-              className={`relative z-10 mt-8 mb-8 text-start p-2 outline-none overflow-auto max-h-[250px] ${
-                !text
-                  ? `before:relative before:z-[-1]   before:content-[attr(data-before)] before:text-hoverPrimary  before:text-2xl`
-                  : ''
-              }`}
-              onInput={handleInput}
-              suppressContentEditableWarning={true}
-              contentEditable={true}></p>
+              maxLength={1000}
+              placeholder={`En qué estás pensando ${
+                dataUser?.user?.fullName.split(' ')[0]
+              }?`}
+              className='bg-transparent relative z-10 mt-8 mb-8 max-md:mt-4 max-md:mb-4 text-start p-2 outline-none overflow-auto min-h-[150px] resize-none placeholder:text-2xl'
+              required={true}
+              value={text}
+              onChange={handleInput}></textarea>
             <div>
               <ImageSVG dataUrl={(data: string) => setDataUrl(data)}></ImageSVG>
             </div>

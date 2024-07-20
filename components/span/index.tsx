@@ -2,6 +2,8 @@ import dynamic from 'next/dynamic';
 import {DivPublicar} from '@/ui/container';
 import Image from 'next/image';
 import Link from 'next/link';
+import Github from "@/ui/icons/github.svg"
+import Linkedin from "@/ui/icons/linkedin.svg"
 
 const Body = dynamic(() => import('@/ui/typography').then((mod) => mod.Body));
 
@@ -29,13 +31,13 @@ export function Span() {
               href={'https://github.com/brunoken22'}
               target='_blank'
               className=' hover:opacity-70 dark:fill-white'>
-              <img src='/github.svg' alt='github' />
+              <Github />
             </Link>
             <Link
               href={'https://www.linkedin.com/in/brunoken18/'}
               target='_blank'
               className=' hover:opacity-70 dark:fill-white'>
-              <img src='/linkedin.svg' alt='github' />
+              <Linkedin />
             </Link>
           </div>
         </DivPublicar>

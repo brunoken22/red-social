@@ -1,4 +1,5 @@
 'use client';
+
 import dynamic from 'next/dynamic';
 import {useHits} from 'react-instantsearch';
 import type {Hit} from 'instantsearch.js';

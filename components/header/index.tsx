@@ -268,6 +268,7 @@ export default function Header({themeDate}: {themeDate: string}) {
               {pathname !== '/search' && (
                 <SearchBox
                   placeholder='UniRed'
+                  className='flex p-2'
                   onChangeCapture={(e: any) => {
                     e.target.form
                       .querySelector('.ais-SearchBox-reset')

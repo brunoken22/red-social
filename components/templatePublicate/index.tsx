@@ -86,7 +86,7 @@ export function ThemplatePubli(props: {
     setLike(!isLike ? 'disLike' : 'like');
 
     setTotalLike(props.like?.length);
-  }, [props.like]);
+  }, [props.like, props.userId]);
 
   useEffect(() => {
     if (dataDelete) {
@@ -455,9 +455,7 @@ function TemplateComentario(props: {
                 ) : null}
               </div>
             )}
-            <p className='text-[0.9rem] m-0 overflow-hidden whitespace-nowrap	 text-ellipsis'>
-              {props.description}
-            </p>
+            <p className='text-[0.9rem] m-0 break-words'>{props.description}</p>
           </div>
           <span className='text-[0.7rem] pl-2'>
             {diferenteDate(props.createdAt)}

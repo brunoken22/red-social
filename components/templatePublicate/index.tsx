@@ -26,7 +26,7 @@ import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {LikeODisLike, comentarPublicacion, DeletePublic} from '@/lib/hook';
-
+import diferenteDate from './diferenteDate';
 const iconConLike = {
   height: ' 20px',
   width: ' 20px',
@@ -77,6 +77,7 @@ export function ThemplatePubli(props: {
   );
 
   const {dataDelete} = DeletePublic(publiId);
+
   useEffect(() => {
     const isLike =
       props?.like?.length > 0
@@ -85,7 +86,7 @@ export function ThemplatePubli(props: {
     setLike(!isLike ? 'disLike' : 'like');
 
     setTotalLike(props.like?.length);
-  }, [props.like, props.userId]);
+  }, [props.like]);
 
   useEffect(() => {
     if (dataDelete) {
@@ -123,7 +124,7 @@ export function ThemplatePubli(props: {
 
   return (
     <div className='w-full '>
-      <DivPefilDelete aria-label='DivPefilDelete'>
+      <DivPefilDelete>
         <DivPerfil>
           {props.user?.id !== props.userId ? (
             <Link href={'/amigos/' + props.id + '/' + props.user.fullName}>
@@ -164,11 +165,11 @@ export function ThemplatePubli(props: {
                 <Verification publication={true} />
               ) : null}
             </div>
-            <DivSpan>{diferenteDate(props.fecha)}</DivSpan>
+            <span className='text-[0.7rem] '>{diferenteDate(props.fecha)}</span>
           </div>
         </DivPerfil>
         {props.id == props.userId ? (
-          <div style={{position: 'relative'}} aria-label='Eliminar'>
+          <div className='relative'>
             <ButtonOpenDelete
               onClick={() => setOpenDelete(!openDelete)}
               aria-label='EliminarContet'>
@@ -290,7 +291,7 @@ export function ThemplatePubli(props: {
             zIndex: 10,
             backdropFilter: 'brightness(0.3)',
           }}>
-          <div style={{display: 'flex', justifyContent: 'end'}}>
+          <div className='flex justify-end'>
             <button
               onClick={() => setOpenImage(false)}
               style={{
@@ -304,7 +305,7 @@ export function ThemplatePubli(props: {
           <img
             src={props?.img}
             alt='imagen'
-            style={{width: '100%', height: '100%', objectFit: 'contain'}}
+            className='w-full h-full object-contain'
           />
         </div>
       ) : null}
@@ -355,7 +356,7 @@ function ComentarioPublic(props: any) {
     setAlert({message: 'Escribe Algo', status: 'error'});
   };
   return (
-    <div className='p-4 max-md:p-2'>
+    <div className='p-4 mt-0 max-md:p-2 max-md:pt-0'>
       <div className='mt-2 mb-2'>
         <DivPerfil className='items-center'>
           <FotoPerfil
@@ -465,44 +466,4 @@ function TemplateComentario(props: {
       </DivPerfil>
     </div>
   );
-}
-
-async function diferenteDate(date: string) {
-  const moment = (await import('moment')).default;
-  const targetDate = moment(date);
-  const currentDate = moment();
-  const differenceInMilliseconds = Math.abs(targetDate.diff(currentDate));
-
-  const yearsDifference = Math.floor(
-    differenceInMilliseconds / (1000 * 60 * 60 * 24 * 365)
-  );
-  const monthsDifference = Math.floor(
-    (differenceInMilliseconds % (1000 * 60 * 60 * 24 * 365)) /
-      (1000 * 60 * 60 * 24 * 30)
-  );
-  const weeksDifference = Math.floor(
-    (differenceInMilliseconds % (1000 * 60 * 60 * 24 * 30)) /
-      (1000 * 60 * 60 * 24 * 7)
-  );
-  const daysDifference = Math.floor(
-    (differenceInMilliseconds % (1000 * 60 * 60 * 24 * 7)) /
-      (1000 * 60 * 60 * 24)
-  );
-  const hoursDifference = Math.floor(
-    (differenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-  const minutesDifference = Math.floor(
-    (differenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60)
-  );
-  const secondsDifference = Math.floor(
-    (differenceInMilliseconds % (1000 * 60)) / 1000
-  );
-
-  if (yearsDifference) return 'Hace ' + yearsDifference + ' años';
-  if (monthsDifference) return 'Hace ' + monthsDifference + ' meses';
-  if (weeksDifference) return 'Hace ' + weeksDifference + ' sem';
-  if (daysDifference) return 'Hace ' + daysDifference + ' d';
-  if (hoursDifference) return 'Hace ' + hoursDifference + ' h';
-  if (minutesDifference) return 'Hace ' + minutesDifference + ' min';
-  return 'Hace ' + secondsDifference + ' s';
 }

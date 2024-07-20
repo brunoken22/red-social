@@ -240,3 +240,29 @@ export function SkeletonNav() {
     </div>
   );
 }
+export function SkeletonPlicate() {
+  return (
+    <DivSkeleton>
+      <DivPublicaciones>
+        <DivPublicar>
+          <DivText>
+            <PhotoSkeleton className='w-[40px] h-[40px]'>
+              <SpanLuz></SpanLuz>
+            </PhotoSkeleton>
+            <TextSkeleton className='w-full h-[30px]'>
+              <SpanLuz></SpanLuz>
+            </TextSkeleton>
+          </DivText>
+          <DivText>
+            <TextSkeleton className='w-full h-[30px]'>
+              <SpanLuz></SpanLuz>
+            </TextSkeleton>
+            <TextSkeleton className='w-full h-[30px]'>
+              <SpanLuz></SpanLuz>
+            </TextSkeleton>
+          </DivText>
+        </DivPublicar>
+      </DivPublicaciones>
+    </DivSkeleton>
+  );
+}

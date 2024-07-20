@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import {user, publicacionAmigos, Publicacion} from '@/lib/atom';
+import {user, publicacionAmigos} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {useState} from 'react';
 import {GetAllPublicaciones} from '@/lib/hook';
@@ -43,7 +43,7 @@ export default function PublicacionesAll() {
       {publicacionesAmigos ? (
         publicacionesAmigos.length ? (
           <>
-            {publicacionesAmigos.map((item: Publicacion) => (
+            {publicacionesAmigos.map((item) => (
               <DivAllPublicaciones key={item.id}>
                 <ThemplatePubli
                   vereficationUser={dataUser.user.verification}
@@ -61,7 +61,7 @@ export default function PublicacionesAll() {
               </DivAllPublicaciones>
             ))}
             {dataPubliAllAmigosSwr?.length ? (
-              <div className='text-center'>
+              <div className='text-center m-4'>
                 <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
               </div>
             ) : null}

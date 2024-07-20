@@ -112,8 +112,7 @@ export default function AmigosComponent() {
       <DivSection>
         <div className='sticky top-16 z-[9]'>
           <h2 className='font-semibold text-2xl text-center p-2'>Amigos</h2>
-          <div
-            style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+          <div className='flex flex-col gap-2'>
             <ButtonNoti onClick={handleClick} id='suge' open={sugerencia}>
               <DivIcons>
                 <MyAmigos /> {'>'}

@@ -15,7 +15,7 @@ import {
 import {rtdb} from '@/lib/firebase';
 import './style.css';
 import {usePathname, useRouter} from 'next/navigation';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {GetUser, NotificacionesUser} from '@/lib/hook';
 // import {useGlobalAudioPlayer} from 'react-use-audio-player';
 import Link from 'next/link';
@@ -82,7 +82,8 @@ export default function Header({themeDate}: {themeDate: string}) {
   const [menu, setMenu] = useState(false);
   const [theme, setThemes] = useState<string>(themeDate);
   const [value] = useDebounce(search, 1000);
-
+  const [openNav, setOpenNav] = useState(true);
+  const lastScrollY = useRef(0);
   const handleMenu = (e: any) => {
     e.preventDefault();
     if (menu) {
@@ -256,9 +257,32 @@ export default function Header({themeDate}: {themeDate: string}) {
       // userReset();
     };
   }, [dataUser?.user?.id]);
+
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    const scrollDifference = Math.abs(currentScrollY - lastScrollY.current);
+    if (scrollDifference >= 80) {
+      if (currentScrollY > lastScrollY.current) {
+        setOpenNav(false);
+      } else {
+        setOpenNav(true);
+      }
+      lastScrollY.current = currentScrollY; // Actualizar el valor del ref solo si la diferencia es >= 100px
+    }
+  };
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, {passive: true});
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return dataUser?.user?.id ? (
     <>
-      <header className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
+      <header
+        className={`${
+          openNav ? 'translate-y-0' : 'max-md:-translate-y-full'
+        } p-2 sticky top-0 right-0 left-0 z-10 bg-primary transition-transform duration-300 dark:bg-darkComponet`}>
         <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
           <div className='flex gap-4 items-center '>
             <Link href={'/inicio'} aria-label='home'>

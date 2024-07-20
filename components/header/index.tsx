@@ -261,13 +261,13 @@ export default function Header({themeDate}: {themeDate: string}) {
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
     const scrollDifference = Math.abs(currentScrollY - lastScrollY.current);
-    if (scrollDifference >= 80) {
+    if (scrollDifference >= 60) {
       if (currentScrollY > lastScrollY.current) {
         setOpenNav(false);
       } else {
         setOpenNav(true);
       }
-      lastScrollY.current = currentScrollY; // Actualizar el valor del ref solo si la diferencia es >= 100px
+      lastScrollY.current = currentScrollY;
     }
   };
   useEffect(() => {

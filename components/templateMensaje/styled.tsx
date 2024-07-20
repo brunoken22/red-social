@@ -6,8 +6,19 @@ export const DivTemMensaje = ({children}: {children: React.ReactNode}) => (
   </div>
 );
 
-export const TemplMensaje = ({children}: {children: React.ReactNode}) => (
-  <div className='flex flex-col gap-4 mb-4'>{children}</div>
+export const TemplMensaje = ({
+  children,
+  mobile,
+}: {
+  children: React.ReactNode;
+  mobile: boolean;
+}) => (
+  <div
+    className={`${
+      !mobile ? 'max-md:hidden' : 'block'
+    } flex flex-col gap-4 mb-4`}>
+    {children}
+  </div>
 );
 
 export const TemplChat = ({children}: {children: React.ReactNode}) => (
@@ -15,7 +26,7 @@ export const TemplChat = ({children}: {children: React.ReactNode}) => (
 );
 
 export const TemplSns = ({children}: {children: React.ReactNode}) => (
-  <div className='flex flex-col gap-4 max-w-[800px] w-full h-[75vh] rounded-md '>
+  <div className='sticky top-28 flex flex-col gap-4 max-w-[800px] w-full h-[75vh] rounded-md '>
     {children}
   </div>
 );

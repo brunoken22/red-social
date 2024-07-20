@@ -206,7 +206,7 @@ export default function Header({themeDate}: {themeDate: string}) {
         if (userDataMenssage) {
           const userChatUser = userDataMenssage.map((snap: any) => {
             if (snap.userId == dataUser.user.id) {
-              return snap.amigoId;
+              return Number(snap.amigoId);
             }
             if (snap.amigoId == dataUser.user.id) return snap.userId;
           });

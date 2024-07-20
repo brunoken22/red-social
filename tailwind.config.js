@@ -15,6 +15,7 @@ module.exports = {
         secundary: '#000;',
         black: '#000',
         hoverPrimary: "rgb(87 87 87)",
+        light:"#598fff",
 
       },
       backgroundColor: {

@@ -26,25 +26,27 @@ export function TemNoti() {
 
   const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!dataNotiSwr?.publicacion?.length) {
+
+    if (!dataNotiSwr?.length) {
       return;
     }
-    setOffset((prevPagePubli) => prevPagePubli + 15);
+    setOffset((prevPagePubli) => prevPagePubli + 10);
   };
 
   return (
     <DivPublicar>
-      {notificacionesUserAtom.length
-        ? notificacionesUserAtom.map((e: any, p: any) => (
-            <Link href={'/notificaciones/' + e.id} key={p} id={e.id}>
-              <ButtonNoti visto={e.open} id={e.id}>
+      {notificacionesUserAtom
+        ? notificacionesUserAtom.publicacion.map((e) => (
+            <Link href={'/notificaciones/' + e.id} key={e.id}>
+              <ButtonNoti visto={!e.open} id={e.id.toString()}>
                 <FotoPerfil
                   className='w-[40px] h-[40px]'
                   img={
                     e.commentPublis
                       ?.slice()
                       .reverse()
-                      .find((e: any) => e.userId !== dataUser.user.id).user?.img
+                      .find((e: any) => e.userId !== dataUser.user.id)?.user
+                      ?.img
                   }
                   connect={
                     dataIsConnect?.find((eConnect: any) => {
@@ -52,7 +54,7 @@ export function TemNoti() {
                         ?.slice()
                         .reverse()
                         .find((e: any) => e.userId !== dataUser.user.id);
-                      return userComment?.userId == eConnect.id;
+                      return userComment?.user.id == eConnect.id;
                     })?.connect && true
                   }
                 />
@@ -62,7 +64,7 @@ export function TemNoti() {
                     e.commentPublis
                       ?.slice()
                       .reverse()
-                      .find((e: any) => e.userId !== dataUser.user.id).user
+                      .find((e: any) => e.userId !== dataUser.user.id)?.user
                       ?.fullName
                   }
                 </p>
@@ -71,16 +73,11 @@ export function TemNoti() {
           ))
         : 'Sin notificaciones'}
       {isLoadingNotiSwr ? <SkeletonNoti /> : null}
-      {dataNotiSwr?.publicacion?.length ? (
-        <div style={{textAlign: 'center'}}>
+      {dataNotiSwr?.length ? (
+        <div className='backdrop-contrast-50'>
           <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
         </div>
       ) : null}
-      {isLoadingNotiSwr && (
-        <div style={{position: 'relative', margin: '1rem'}}>
-          <Loader></Loader>
-        </div>
-      )}
     </DivPublicar>
   );
 }

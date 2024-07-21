@@ -18,16 +18,10 @@ export function SkeletonNoti(props: React.ComponentProps<any>) {
             <PhotoSkeleton className='w-[40px] h-[40px]'>
               <SpanLuz></SpanLuz>
             </PhotoSkeleton>
-            <TextSkeleton className='w-[50%] h-[30px]'>
+            <TextSkeleton className='w-full h-[30px]'>
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivText>
-          <TextSkeleton className='w-full h-[300px]'>
-            <SpanLuz></SpanLuz>
-          </TextSkeleton>
-          <TextSkeleton className='w-full h-[30px] m-[0_0_1rem_0]'>
-            <SpanLuz></SpanLuz>
-          </TextSkeleton>
         </DivPublicar>
       </DivPublicaciones>
       <DivPublicaciones>
@@ -36,16 +30,10 @@ export function SkeletonNoti(props: React.ComponentProps<any>) {
             <PhotoSkeleton className='w-[40px] h-[40px]'>
               <SpanLuz></SpanLuz>
             </PhotoSkeleton>
-            <TextSkeleton className='w-[50%] h-[30px] '>
+            <TextSkeleton className='w-full h-[30px] '>
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivText>
-          <TextSkeleton className='w-full h-[300px] '>
-            <SpanLuz></SpanLuz>
-          </TextSkeleton>
-          <TextSkeleton className='w-full h-[30px] m-[0_0_1rem_0]'>
-            <SpanLuz></SpanLuz>
-          </TextSkeleton>
         </DivPublicar>
       </DivPublicaciones>
     </DivSkeleton>

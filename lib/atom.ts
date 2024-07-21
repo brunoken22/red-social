@@ -6,7 +6,7 @@ export type Publicacion = {
   img: string;
   updatedAt: string;
   likePublics: [];
-  commentPublis: [];
+  commentPublis: {user: User}[];
   userId: number;
   open?: boolean;
   user: User;
@@ -87,9 +87,12 @@ export const isMenssage = atom({
   key: 'isMenssage',
   default: [] as Message[],
 });
-export const notificacionesUser = atom({
+export const notificacionesUser = atom<{
+  publicacion: Publicacion[];
+  newPubliOPen: number;
+} | null>({
   key: 'notificacionesUser',
-  default: [] as Publicacion[],
+  default: null,
 });
 export const isConnect = atom({
   key: 'isConnet',

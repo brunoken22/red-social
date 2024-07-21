@@ -168,7 +168,7 @@ export const ButtonMasPubli = ({
 }) => (
   <button
     onClick={onClick}
-    className='mt-4 border-none bg-transparent  hover:opacity-70 dark:text-primary'>
+    className='border-none bg-transparent  hover:opacity-70 dark:text-primary p-2 w-full'>
     {children}
   </button>
 );

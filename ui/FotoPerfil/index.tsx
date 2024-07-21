@@ -4,7 +4,7 @@ export default function FotoPerfil({
   connect,
 }: {
   className: string;
-  img: string;
+  img: string | undefined;
   connect?: boolean | undefined;
 }) {
   return (

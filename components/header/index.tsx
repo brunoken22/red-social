@@ -307,9 +307,7 @@ export default function Header({themeDate}: {themeDate: string}) {
           <NavegationUrl
             amigos={dataSoliReci?.length}
             message={dataMessage.length}
-            notification={
-              notificacionesUserAtom?.length && notificacionesUserAtom?.length
-            }
+            notification={notificacionesUserAtom?.newPubliOPen}
           />
           <div className='relative'>
             <button

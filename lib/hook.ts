@@ -178,20 +178,30 @@ export function NotificacionesUser(offset: number) {
   );
 
   useEffect(() => {
-    if (data) {
-      if (notificacionesUserAtom.length > 0 && offset !== 0) {
-        setNotificacionesUserAtom((prev: any) => [
-          ...prev,
-          ...data.publications,
-        ]);
+    if (data && data?.publications) {
+      if (
+        notificacionesUserAtom &&
+        notificacionesUserAtom.publicacion.length &&
+        offset !== 0
+      ) {
+        setNotificacionesUserAtom(() => ({
+          publicacion: [
+            ...notificacionesUserAtom.publicacion,
+            ...data?.publications,
+          ],
+          newPubliOPen: data.newPubliOPen + notificacionesUserAtom.newPubliOPen,
+        }));
         return;
       }
-      setNotificacionesUserAtom([...data?.publications]);
+      setNotificacionesUserAtom({
+        publicacion: [...data?.publications],
+        newPubliOPen: data.newPubliOPen,
+      });
     }
   }, [data]);
 
   return {
-    dataNotiSwr: data,
+    dataNotiSwr: data?.publications,
     isLoadingNotiSwr: isLoading,
   };
 }
@@ -215,7 +225,10 @@ export function NotificacionesUserImmutable(offset: number) {
 
   useEffect(() => {
     if (data) {
-      setNotificacionesUserAtom([...data?.publications]);
+      setNotificacionesUserAtom({
+        publicacion: [...data?.publications],
+        newPubliOPen: data.newPubliOPen,
+      });
       return;
     }
   }, [data]);

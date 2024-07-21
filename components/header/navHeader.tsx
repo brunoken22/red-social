@@ -13,7 +13,7 @@ export default function NavegationUrl({
 }: {
   amigos: number;
   message: number;
-  notification: number | false;
+  notification: number | undefined;
 }) {
   const pathname = usePathname();
   const className = 'relative';

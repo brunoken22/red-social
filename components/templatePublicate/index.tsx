@@ -25,7 +25,7 @@ import {isConnect} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
-import {LikeODisLike, comentarPublicacion, DeletePublic} from '@/lib/hook';
+import {DeletePublic} from '@/lib/hook';
 import diferenteDate from './diferenteDate';
 const iconConLike = {
   height: ' 20px',
@@ -96,20 +96,8 @@ export function ThemplatePubli(props: {
   }, [dataDelete]);
   const handleClickLike = async (e: any) => {
     e.preventDefault();
-
-    await LikeODisLike({
-      id: props.idPublicacion,
-    });
-
-    if (like == 'like') {
-      setLike('disLike');
-      setTotalLike((prev: number) => prev - 1);
-      return;
-    }
-    if (like == 'disLike') {
-      setLike('like');
-      setTotalLike((prev: number) => prev + 1);
-    }
+    const likeODisLike = (await import('@/lib/hook')).likeODisLike;
+    await likeODisLike(props.idPublicacion.toString());
   };
   const handleClickOpenComen = (e: any) => {
     e.preventDefault();
@@ -332,6 +320,9 @@ function ComentarioPublic(props: any) {
   };
   const handleComment = async () => {
     if (content) {
+      const comentarPublicacion = (await import('@/lib/hook'))
+        .comentarPublicacion;
+
       await comentarPublicacion({
         id: props.idPublicacion,
         description: content,

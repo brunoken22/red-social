@@ -490,8 +490,8 @@ export function EliminarAmigo(datas: any) {
   }, [data]);
   return {dataElimAmigo: data, isLoadingElimAmigo: isLoading};
 }
-export async function LikeODisLike(datas: any) {
-  const api = '/user/publicacion/' + datas.id;
+export async function likeODisLike(id: string) {
+  const api = '/user/publicacion/' + id;
   const option = {
     method: 'POST',
     headers: {
@@ -503,7 +503,7 @@ export async function LikeODisLike(datas: any) {
   const data = await fetchApiSwr(api, option);
   mutate(`/user/amigos/publicaciones?offset=0`);
 
-  return {dataLike: data};
+  return data;
 }
 export async function comentarPublicacion(datas: any) {
   const api = '/user/publicacion/' + datas.id;

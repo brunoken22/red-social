@@ -15,7 +15,7 @@ export const TemplMensaje = ({
 }) => (
   <div
     className={`${
-      !mobile ? 'max-md:hidden' : 'block'
+      !mobile ? 'max-xl:hidden' : 'block'
     } flex flex-col gap-4 mb-4`}>
     {children}
   </div>

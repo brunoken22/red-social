@@ -113,7 +113,7 @@ export default function TemplateChat({
   return (
     <TemplSns>
       <div className='flex justify-between border-[1px] border-[#3b3b3b] p-2'>
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-4 overflow-hidden'>
           <Link
             href={
               '/amigos/' + dataMensajeUser.id + '/' + dataMensajeUser.fullName

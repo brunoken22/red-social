@@ -40,7 +40,7 @@ export const Sms = ({children, ref}: {children: React.ReactNode; ref: any}) => (
 );
 
 export const SpanNoti = ({children}: {children: React.ReactNode}) => (
-  <span className='h-[20px] w-[20px] bg-[#ff3a3a]  absolute right-0 top-0 rounded-full text-[0.8rem] flex items-center justify-center'>
+  <span className='h-[20px] w-[20px] bg-[#ff3a3a] text-primary  absolute right-0 top-0 rounded-full text-[0.8rem] flex items-center justify-center'>
     {children}
   </span>
 );

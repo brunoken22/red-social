@@ -159,9 +159,7 @@ export default function TemplateChat({
           {messagesAll?.length > 0 &&
             (messagesAll[messagesAll.length - 1] as any).id === id &&
             (messagesAll[messagesAll.length - 1] as any).read && (
-              <p className='text-end dark:text-primary text-secundary text-[0.8rem] text-light'>
-                ✔✔ Visto
-              </p>
+              <p className='text-end  text-[0.8rem] text-light'>✔✔ Visto</p>
             )}
         </div>
         <div>

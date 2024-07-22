@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const DivTemMensaje = ({children}: {children: React.ReactNode}) => (
-  <div className='flex w-full h-full justify-around gap-4 flex-wrap'>
+  <div className='flex w-full h-full justify-center gap-16 flex-wrap'>
     {children}
   </div>
 );

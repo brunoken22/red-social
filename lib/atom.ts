@@ -4,6 +4,7 @@ export type Publicacion = {
   id: number;
   description: string;
   img: string;
+  createdAt: string;
   updatedAt: string;
   likePublics: [];
   commentPublis: {user: User}[];

@@ -32,7 +32,7 @@ export function PublicacionesUser() {
                 vereficationUser={dataUser.user.verification}
                 description={item.description}
                 img={item.img}
-                fecha={item.updatedAt}
+                fecha={item.createdAt}
                 like={item.likePublics}
                 comentarios={item.commentPublis}
                 imgUserPro={dataUser.user.img}

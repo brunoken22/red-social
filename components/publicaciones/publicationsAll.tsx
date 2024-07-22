@@ -49,7 +49,7 @@ export default function PublicacionesAll() {
                   vereficationUser={dataUser.user.verification}
                   description={item.description}
                   img={item.img}
-                  fecha={item.updatedAt}
+                  fecha={item.createdAt}
                   like={item.likePublics}
                   comentarios={item.commentPublis}
                   id={item.userId}

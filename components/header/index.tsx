@@ -222,10 +222,8 @@ export default function Header({themeDate}: {themeDate: string}) {
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
-    goOnline(rtdb);
     const connectRef = ref(rtdb, '/connect');
-    const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
-    onValue(connectRef, (snapshot: any) => {
+    onValue(connectRef, async (snapshot: any) => {
       const valor = snapshot.val();
 
       if (valor) {
@@ -239,23 +237,8 @@ export default function Header({themeDate}: {themeDate: string}) {
           );
         });
         setAllConnectAmigos(connecam);
-        update(connectRefData, {
-          ...dataUser?.user,
-          connect: true,
-        });
       }
     });
-    window.addEventListener('beforeunload', () => {
-      onDisconnect(connectRefData).update({connect: false});
-    });
-    return () => {
-      if (!dataUser?.user?.id) return;
-      onDisconnect(connectRefData).update({connect: false});
-      goOffline(rtdb);
-      off(connectRef);
-      off(connectRefData);
-      // userReset();
-    };
   }, [dataUser?.user?.id]);
 
   const handleScroll = () => {
@@ -276,6 +259,38 @@ export default function Header({themeDate}: {themeDate: string}) {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (!dataUser?.user?.id) return;
+      console.log(dataUser?.user?.id);
+      const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
+
+      if (document.hidden) {
+        console.log('La pestaña está oculta');
+        await update(connectRefData, {
+          connect: false,
+        });
+
+        // Aquí puedes realizar acciones cuando la pestaña está oculta
+      } else {
+        await update(connectRefData, {
+          ...dataUser.user,
+          connect: true,
+        });
+
+        console.log('La pestaña está visible');
+        // Aquí puedes realizar acciones cuando la pestaña está visible
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Limpia el evento cuando el componente se desmonte
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [dataUser?.user?.id]);
 
   return dataUser?.user?.id ? (
     <>

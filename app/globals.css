@@ -8,22 +8,21 @@
   --color: #fff;
   --colorSecundario: #000;
 }
-.dark *::-webkit-scrollbar {
+::-webkit-scrollbar {
   background: #fff;
   width: 10px;
   border-radius: 4px;
 }
-.dark *::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #568bff;
   border-radius: 4px;
 }
-.dark *::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: #7fa8ff;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
 }
 
-/* Cambiamos el fondo cuando esté en active */
-.dark *::-webkit-scrollbar-thumb:active {
+::-webkit-scrollbar-thumb:active {
   background-color: #568bff;
 }
 

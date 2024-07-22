@@ -263,24 +263,17 @@ export default function Header({themeDate}: {themeDate: string}) {
   useEffect(() => {
     const handleVisibilityChange = async () => {
       if (!dataUser?.user?.id) return;
-      console.log(dataUser?.user?.id);
       const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
 
       if (document.hidden) {
-        console.log('La pestaña está oculta');
         await update(connectRefData, {
           connect: false,
         });
-
-        // Aquí puedes realizar acciones cuando la pestaña está oculta
       } else {
         await update(connectRefData, {
           ...dataUser.user,
           connect: true,
         });
-
-        console.log('La pestaña está visible');
-        // Aquí puedes realizar acciones cuando la pestaña está visible
       }
     };
 

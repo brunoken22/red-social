@@ -44,7 +44,7 @@ export const DivAllChat = ({
   className?: string;
 }) => (
   <div
-    className={`${className} relative bg-primary  flex gap-4 rounded-md shadow-container   max-md:mt-4 flex-row items-center p-4 max-md:w-auto hover:opacity-70 dark:bg-darkComponet dark:text-primary dark:transition-dark dark:shadow-dark max-w-[300px]`}>
+    className={`${className} relative bg-primary  flex gap-4 rounded-md shadow-container   max-md:mt-4 flex-row items-center p-4  hover:opacity-70 dark:bg-darkComponet dark:text-primary dark:transition-dark dark:shadow-dark max-w-[300px]`}>
     {children}
   </div>
 );

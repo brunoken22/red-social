@@ -27,6 +27,7 @@ import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {DeletePublic} from '@/lib/hook';
 import diferenteDate from './diferenteDate';
+import {useDebouncedCallback} from 'use-debounce';
 const iconConLike = {
   height: ' 20px',
   width: ' 20px',
@@ -53,7 +54,7 @@ export function ThemplatePubli(props: {
   userId: number;
   user: any;
 }) {
-  const [like, setLike] = useState<string>();
+  const [like, setLike] = useState<'like' | 'disLike'>();
   const [comentario, setComentario] = useState(
     props.comentarios?.length &&
       props.comentarios.length > 0 &&
@@ -70,7 +71,10 @@ export function ThemplatePubli(props: {
   const [comentariosPubli, setComentariosPubli] = useState(
     props.comentarios?.length || 0
   );
-
+  const debounced = useDebouncedCallback(async () => {
+    const likeODisLike = (await import('@/lib/hook')).likeODisLike;
+    await likeODisLike(props.idPublicacion.toString());
+  }, 500);
   const {dataDelete} = DeletePublic(publiId);
 
   useEffect(() => {
@@ -91,8 +95,14 @@ export function ThemplatePubli(props: {
   }, [dataDelete]);
   const handleClickLike = async (e: any) => {
     e.preventDefault();
-    const likeODisLike = (await import('@/lib/hook')).likeODisLike;
-    await likeODisLike(props.idPublicacion.toString());
+    if (like == 'like') {
+      setLike('disLike');
+      setTotalLike(totalLike - 1);
+    } else {
+      setTotalLike(totalLike + 1);
+      setLike('like');
+    }
+    await debounced();
   };
   const handleClickOpenComen = (e: any) => {
     e.preventDefault();

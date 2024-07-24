@@ -255,7 +255,7 @@ export function ThemplatePubli(props: {
           Comentar
         </BottonLike>
       </DivInteractuar>
-      {props.comentarios?.length ? (
+      {comentario ? (
         <Comment
           idPublicacion={props.idPublicacion}
           verification={props.vereficationUser}

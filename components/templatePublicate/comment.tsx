@@ -25,13 +25,8 @@ export default function Comment(props: any) {
     {message: string; status: 'success' | 'error' | 'info' | 'warning'} | false
   >(false);
   const handleInput = (event: any) => {
-    const text = event.target.textContent;
-    if (text.length <= 250) {
-      setContent(text);
-    }
-    if (text.length >= 250) {
-      event.target.textContent = content;
-    }
+    const text = event.target.value;
+    setContent(text);
   };
   const handleComment = async () => {
     if (content) {
@@ -71,17 +66,15 @@ export default function Comment(props: any) {
             connect={props.connect}></FotoPerfil>
           <DivAñadirComentar>
             <div className='min-w-[200px] max-w-full '>
-              <p
-                onInput={handleInput}
-                suppressContentEditableWarning={true}
-                contentEditable={true}
-                className={`outline-none w-full p-2 border-[1px] dark:border-[#ddd] border-[#616161] rounded-md dark:focus:bg-[#363636] focus:border-white focus:bg-[#ddd] text-secundary dark:text-primary ${
-                  !content
-                    ? 'before:text-secundary dark:before:text-primary  before:content-["Añadir_un_comentario"]'
-                    : ''
-                } `}>
-                {!content ? '' : null}
-              </p>
+              <textarea
+                id='description'
+                rows={1}
+                maxLength={1000}
+                placeholder={`Añadir un comentario`}
+                className='w-full bg-transparent rounded-md outline outline-1 outline-gray-400 focus:outline-gray-600 dark:focus:outline-gray-100  p-2  overflow-auto  resize-none '
+                required={true}
+                value={content}
+                onChange={handleInput}></textarea>
             </div>
             <BottonSendComentario onClick={handleComment}>
               <SendComentPubli />

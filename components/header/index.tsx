@@ -192,7 +192,6 @@ export default function Header({themeDate}: {themeDate: string}) {
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
-
     const dbRef = ref(getDatabase());
     get(child(dbRef, 'rooms')).then((snapshot) => {
       if (snapshot.exists()) {
@@ -215,10 +214,9 @@ export default function Header({themeDate}: {themeDate: string}) {
           );
           setDatagetAllUsersChat(newUserConnectChat);
         }
-      } else {
       }
     });
-  }, [dataUser?.user?.id, getAllUserData, dataMessage]);
+  }, [dataUser?.user?.id, getAllUserData]);
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;

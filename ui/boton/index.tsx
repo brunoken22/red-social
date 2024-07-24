@@ -94,7 +94,7 @@ export const ButtonAgregar = ({
       bg == 'red'
         ? 'bg-[#b57b7b4f] text-[#d55656] p-2'
         : 'text-primary  bg-[#4c83bdcf]  p-2'
-    } w-full border-none   rounded-xl  hover:opacity-60`}>
+    } w-full border-none   rounded-lg  hover:opacity-60 text-nowrap`}>
     {children}
   </button>
 );

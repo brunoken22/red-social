@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import {signinUser} from '@/lib/hook';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {useState} from 'react';
+import {useRouter} from 'next/navigation';
 
 type typeForm = {
   email: string;
@@ -18,6 +19,7 @@ const NotificationToastUser = dynamic(() =>
 );
 
 export default function Signin() {
+  const {push} = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setError] = useState(false);
   const [isData, setData] = useState<any>();
@@ -39,7 +41,7 @@ export default function Signin() {
       if (data && data.id) {
         setData(data);
         setTimeout(() => {
-          window.location.href = window.location.origin + '/inicio';
+          push('/inicio');
         }, 3500);
         return;
       }

@@ -41,11 +41,10 @@ export function PerfilAmigo() {
   const dataIsConnect = useRecoilValue(isConnect);
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataUser = useRecoilValue(user);
-  const [pagePubli, setPagePubli] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
   const {data} = GetAmigo(id as string);
-  const {dataPubliAmigo} = GetPubliAmigo(id as string, pagePubli);
+  const {dataPubliAmigo, size, setSize} = GetPubliAmigo(id as string);
   const [isAmigo, setIsAmigo] = useState<'ACCEPTED' | 'PENDING' | 'REJECTED'>();
   const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
   const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
@@ -109,7 +108,7 @@ export function PerfilAmigo() {
     if (!dataPubliAmigo?.length) {
       return;
     }
-    setPagePubli((prevPagePubli) => prevPagePubli + 10);
+    setSize(size + 1);
   };
   return data && data.user ? (
     <>
@@ -211,14 +210,14 @@ export function PerfilAmigo() {
               <p className='text-center'>No hay publicaciones</p>
             )
           ) : null}
+          {dataPubliAmigo?.length ? (
+            <div className='text-center'>
+              <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+            </div>
+          ) : null}
         </DivPublicaciones>
       </DivPerfilUser>
       {isLoadingAcep || isLoadingElimAmigo || isLoading ? <Loader /> : null}
-      {dataPubliAmigo?.length ? (
-        <div className='text-center'>
-          <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
-        </div>
-      ) : null}
     </>
   ) : (
     <SkeletonPerfilAmigo />

@@ -2,7 +2,6 @@ import {DivAllPublicaciones} from '@/ui/container';
 import {ButtonMasPubli} from './styled';
 import {publicacionUser, user} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
-import {useState} from 'react';
 import {GetAllPublicacionesUser} from '@/lib/hook';
 import {ThemplatePubli} from '../templatePublicate';
 import {SkeletonPublicacionAll} from '@/ui/skeleton';
@@ -10,16 +9,15 @@ import {SkeletonPublicacionAll} from '@/ui/skeleton';
 export function PublicacionesUser() {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
-  const [pagePubli, setPagePubli] = useState(0);
 
-  const {dataPubliAllAmigosSwr, isLoadingAllAmigos} =
-    GetAllPublicacionesUser(pagePubli);
+  const {dataPubliAllAmigosSwr, isLoading, setSize, size} =
+    GetAllPublicacionesUser();
   const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!dataPubliAllAmigosSwr?.length) {
       return;
     }
-    setPagePubli((prevPagePubli) => prevPagePubli + 10);
+    setSize(size + 1);
   };
 
   return (
@@ -47,12 +45,13 @@ export function PublicacionesUser() {
           <p className='text-center'>No hay publicaciones</p>
         )
       ) : null}
+
+      {isLoading && <SkeletonPublicacionAll />}
       {dataPubliAllAmigosSwr?.length ? (
         <div className='text-center'>
           <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
         </div>
       ) : null}
-      {isLoadingAllAmigos && <SkeletonPublicacionAll />}
     </div>
   );
 }

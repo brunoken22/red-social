@@ -211,14 +211,14 @@ export function PerfilAmigo() {
               <p className='text-center'>No hay publicaciones</p>
             )
           ) : null}
-          {dataPubliAmigo?.length ? (
-            <div className='text-center'>
-              <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
-            </div>
-          ) : null}
         </DivPublicaciones>
       </DivPerfilUser>
       {isLoadingAcep || isLoadingElimAmigo || isLoading ? <Loader /> : null}
+      {dataPubliAmigo?.length ? (
+        <div className='text-center'>
+          <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+        </div>
+      ) : null}
     </>
   ) : (
     <SkeletonPerfilAmigo />

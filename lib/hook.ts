@@ -277,7 +277,7 @@ export function GetAllPublicaciones() {
   useEffect(() => {
     if (data) {
       const flatArray = data.flat();
-      setPublicacionesAllAmigos([...flatArray]);
+      setPublicacionesAllAmigos(flatArray);
     }
   }, [data]);
 
@@ -288,11 +288,9 @@ export function GetAllPublicaciones() {
     size,
   };
 }
-export function GetAllPublicacionesUser(offset: number) {
-  const [publicacionesUser, setPublicacionesUser] =
-    useRecoilState(publicacionUser);
+export function GetAllPublicacionesUser() {
+  const setPublicacionesUser = useSetRecoilState(publicacionUser);
 
-  const api = `/user/publicacion?offset=${offset}`;
   const option = {
     method: 'GET',
     headers: {
@@ -300,24 +298,30 @@ export function GetAllPublicacionesUser(offset: number) {
     },
     credentials: 'include',
   };
-  const {data, isLoading} = useSWR(api, (url) => fetchApiSwr(url, option), {
-    revalidateOnReconnect: true,
-    revalidateOnMount: true,
-    revalidateOnFocus: true,
-    refreshInterval: 100000,
-  });
 
+  const {data, isLoading, setSize, size} = useSWRInfinite(
+    (pageIndex, previousPageData) => {
+      if (previousPageData && !previousPageData.length) return null;
+      return `/user/publicacion?offset=${pageIndex * 10}`;
+    },
+    (api) => fetchApiSwr(api, option),
+    {
+      revalidateAll: true,
+    }
+  );
   useEffect(() => {
-    if (data) {
-      if (publicacionesUser && publicacionesUser.length > 0 && offset !== 0) {
-        setPublicacionesUser((prev: any) => [...prev, ...data]);
-        return;
-      }
-      setPublicacionesUser([...data]);
+    if (data?.length) {
+      const flatArray = data.flat();
+      setPublicacionesUser(flatArray);
     }
   }, [data]);
 
-  return {dataPubliAllAmigosSwr: data, isLoadingAllAmigos: isLoading};
+  return {
+    dataPubliAllAmigosSwr: data,
+    isLoading,
+    setSize,
+    size,
+  };
 }
 export function GetPubliAmigo(id: string, offset: number) {
   const [publicacionesAmigo, setPublicacionesAmigo] = useRecoilState(

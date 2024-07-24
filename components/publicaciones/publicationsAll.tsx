@@ -60,17 +60,17 @@ export default function PublicacionesAll() {
                 />
               </div>
             ))}
-            {dataPubliAllAmigosSwr?.length ? (
-              <div className='text-center m-4'>
-                <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
-              </div>
-            ) : null}
           </>
         ) : (
           <p className='text-center'>No hay publicaciones</p>
         )
       ) : null}
       {isLoadingAllAmigos ? <SkeletonPublicacionAll /> : null}
+      {dataPubliAllAmigosSwr?.length ? (
+        <div className='text-center m-4'>
+          <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+        </div>
+      ) : null}
     </div>
   );
 }

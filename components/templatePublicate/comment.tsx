@@ -18,9 +18,7 @@ const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
 
 export default function Comment(props: any) {
   const [content, setContent] = useState('');
-  const [dataComentariosAll, setDataComentariosAll] = useState<any[]>(
-    props.comentarios
-  );
+
   const [alert, setAlert] = useState<
     {message: string; status: 'success' | 'error' | 'info' | 'warning'} | false
   >(false);
@@ -38,24 +36,11 @@ export default function Comment(props: any) {
         description: content,
       });
       setContent('');
-      setDataComentariosAll((prev: any) => [
-        ...prev,
-        {
-          id: Math.random() * (1000 - 100) + 100,
-          description: content,
-          user: {
-            id: props.userId,
-            img: props.imgUserPro,
-            fullName: props.userName,
-            verification: props.verification,
-          },
-        },
-      ]);
-      props.publicComentario(true);
       return;
     }
     setAlert({message: 'Escribe Algo', status: 'error'});
   };
+
   return (
     <div className='p-4 mt-0 max-md:p-2 max-md:pt-0'>
       <div className='mt-2 mb-2'>
@@ -83,8 +68,8 @@ export default function Comment(props: any) {
         </DivPerfil>
       </div>
       <div>
-        {dataComentariosAll?.length > 0
-          ? dataComentariosAll.map((e) => {
+        {props.comentarios.length
+          ? props.comentarios.map((e: any) => {
               return (
                 <TemplateComment
                   key={e.id}

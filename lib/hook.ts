@@ -1,5 +1,6 @@
 import useSWR, {mutate} from 'swr';
 import useSWRImmutable from 'swr/immutable';
+import useSWRInfinite from 'swr/infinite';
 import {fetchApiSwr} from './api';
 import {useRecoilState, useSetRecoilState} from 'recoil';
 import {
@@ -252,10 +253,8 @@ export async function viewNotification(idPublication: string) {
   mutate('/user/notificaciones?offset=0');
   return data;
 }
-export function GetAllPublicaciones(offset: number) {
-  const [publicacionesAllAmigos, setPublicacionesAllAmigos] =
-    useRecoilState(publicacionAmigos);
-  const api = `/user/amigos/publicaciones?offset=${offset}`;
+export function GetAllPublicaciones() {
+  const setPublicacionesAllAmigos = useSetRecoilState(publicacionAmigos);
   const option = {
     method: 'GET',
     headers: {
@@ -264,34 +263,29 @@ export function GetAllPublicaciones(offset: number) {
     credentials: 'include',
   };
 
-  const {data, isLoading} = useSWRImmutable(
-    api,
-    (url) => fetchApiSwr(url, option),
+  const {data, isLoading, setSize, size} = useSWRInfinite(
+    (pageIndex, previousPageData) => {
+      if (previousPageData && !previousPageData.length) return null;
+      return `/user/amigos/publicaciones?offset=${pageIndex * 10}`;
+    },
+    (api) => fetchApiSwr(api, option),
     {
-      revalidateOnReconnect: true,
-      revalidateOnMount: true,
-      revalidateOnFocus: true,
-      refreshInterval: 100000,
+      revalidateAll: true,
     }
   );
 
   useEffect(() => {
     if (data) {
-      if (
-        publicacionesAllAmigos &&
-        publicacionesAllAmigos.length > 0 &&
-        offset !== 0
-      ) {
-        setPublicacionesAllAmigos((prev) => [...prev!, ...data]);
-        return;
-      }
-
-      setPublicacionesAllAmigos([...data]);
+      const flatArray = data.flat();
+      setPublicacionesAllAmigos([...flatArray]);
     }
   }, [data]);
+
   return {
     dataPubliAllAmigosSwr: data,
     isLoadingAllAmigos: isLoading,
+    setSize,
+    size,
   };
 }
 export function GetAllPublicacionesUser(offset: number) {
@@ -373,8 +367,6 @@ export function DeletePublic(id: number) {
   );
   useEffect(() => {
     if (data) {
-      mutate(`/user/amigos/publicaciones?offset=0`);
-
       const newPublic =
         publicacionesUser &&
         publicacionesUser.filter((publi: Publicacion) => publi.id != id);
@@ -417,7 +409,6 @@ export async function CreatePublicacion(dataPubli: DataPublicacion) {
   };
   const dataNotiSwr = await fetchApiSwr(api, option);
   if (dataNotiSwr) {
-    mutate(`/user/amigos/publicaciones?offset=0`);
     mutate(`/user/publicacion?offset=0`);
   }
 
@@ -514,7 +505,6 @@ export async function likeODisLike(id: string) {
   };
 
   const data = await fetchApiSwr(api, option);
-  mutate(`/user/amigos/publicaciones?offset=0`);
 
   return data;
 }
@@ -530,7 +520,6 @@ export async function comentarPublicacion(datas: any) {
   };
 
   const data = await fetchApiSwr(api, option);
-  mutate(`/user/amigos/publicaciones?offset=0`);
   return data;
 }
 export function GetPublicacionId(id: string) {

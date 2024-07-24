@@ -2,7 +2,6 @@
 import dynamic from 'next/dynamic';
 import {user, publicacionAmigos} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
-import {useState} from 'react';
 import {GetAllPublicaciones} from '@/lib/hook';
 
 const DivAllPublicaciones = dynamic(
@@ -25,17 +24,16 @@ const SkeletonPublicacionAll = dynamic(
 export default function PublicacionesAll() {
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
   const dataUser = useRecoilValue(user);
-  const [pagePubli, setPagePubli] = useState(0);
 
-  const {dataPubliAllAmigosSwr, isLoadingAllAmigos} =
-    GetAllPublicaciones(pagePubli);
+  const {dataPubliAllAmigosSwr, isLoadingAllAmigos, size, setSize} =
+    GetAllPublicaciones();
 
   const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!dataPubliAllAmigosSwr?.length) {
       return;
     }
-    setPagePubli((prevPagePubli) => prevPagePubli + 10);
+    setSize(size + 1);
   };
 
   return (
@@ -44,7 +42,9 @@ export default function PublicacionesAll() {
         publicacionesAmigos.length ? (
           <>
             {publicacionesAmigos.map((item) => (
-              <DivAllPublicaciones key={item.id}>
+              <div
+                className='bg-primary flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-dark'
+                key={item.id}>
                 <ThemplatePubli
                   vereficationUser={dataUser.user.verification}
                   description={item.description}
@@ -58,7 +58,7 @@ export default function PublicacionesAll() {
                   userId={dataUser?.user?.id}
                   user={item.user}
                 />
-              </DivAllPublicaciones>
+              </div>
             ))}
             {dataPubliAllAmigosSwr?.length ? (
               <div className='text-center m-4'>

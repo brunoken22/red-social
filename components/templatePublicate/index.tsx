@@ -10,8 +10,6 @@ import {
   BottonLike,
   DivCantidad,
   SpanIco,
-  DivAñadirComentar,
-  BottonSendComentario,
   DivPefilDelete,
   ContentDelete,
   ButtonDelete,
@@ -28,6 +26,7 @@ import {useEffect, useState} from 'react';
 import {DeletePublic} from '@/lib/hook';
 import diferenteDate from './diferenteDate';
 import {useDebouncedCallback} from 'use-debounce';
+
 const iconConLike = {
   height: ' 20px',
   width: ' 20px',
@@ -68,9 +67,7 @@ export function ThemplatePubli(props: {
   const [publiId, setPubliId] = useState<number>(-1);
   const [totalLike, setTotalLike] = useState(props.like?.length || 0);
   const [userLikes, setUserLikes] = useState<boolean>(false);
-  const [comentariosPubli, setComentariosPubli] = useState(
-    props.comentarios?.length || 0
-  );
+
   const debounced = useDebouncedCallback(async () => {
     const likeODisLike = (await import('@/lib/hook')).likeODisLike;
     await likeODisLike(props.idPublicacion.toString());
@@ -223,9 +220,9 @@ export function ThemplatePubli(props: {
         ) : (
           <div></div>
         )}
-        {comentariosPubli > 0 ? (
+        {props.comentarios?.length ? (
           <SpanIco>
-            <DivSpan>Comentarios {comentariosPubli} </DivSpan>
+            <DivSpan>Comentarios {props.comentarios?.length} </DivSpan>
           </SpanIco>
         ) : (
           <div></div>
@@ -258,7 +255,7 @@ export function ThemplatePubli(props: {
           Comentar
         </BottonLike>
       </DivInteractuar>
-      {comentario ? (
+      {props.comentarios?.length ? (
         <Comment
           idPublicacion={props.idPublicacion}
           verification={props.vereficationUser}
@@ -270,9 +267,6 @@ export function ThemplatePubli(props: {
           id={props.id}
           connect={
             dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
-          }
-          publicComentario={(isComentario: boolean) =>
-            isComentario && setComentariosPubli((prev: number) => prev + 1)
           }
         />
       ) : null}

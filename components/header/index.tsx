@@ -295,10 +295,9 @@ export default function Header({themeDate}: {themeDate: string}) {
             <div className='border-none relative max-md:hidden '>
               {pathname !== '/search' && (
                 <SearchBox
+                  aria-label='searchAlgolia'
                   id='searchAlgolia'
-                  itemID='searchAlgolia'
                   placeholder='UniRed'
-                  aria-autocomplete='list'
                   loadingIconComponent={() => <></>}
                   onChangeCapture={(e: any) => {
                     const form = e.currentTarget;

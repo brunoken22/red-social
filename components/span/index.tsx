@@ -28,12 +28,14 @@ export function Span() {
           </Link>
           <div className='flex justify-around items-center'>
             <Link
+              aria-label='github'
               href={'https://github.com/brunoken22'}
               target='_blank'
               className=' hover:opacity-70 dark:fill-white'>
               <Github />
             </Link>
             <Link
+              aria-label='linkedin'
               href={'https://www.linkedin.com/in/brunoken18/'}
               target='_blank'
               className=' hover:opacity-70 dark:fill-white'>

@@ -51,6 +51,7 @@ export const Button = ({
   onClick: (e: any) => any;
 }) => (
   <button
+    id='close'
     className='border-none bg-transparent  hover:rounded-full hover:opacity-70'
     onClick={onClick}>
     {children}

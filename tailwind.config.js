@@ -15,7 +15,7 @@ module.exports = {
         secundary: '#000;',
         black: '#000',
         hoverPrimary: "rgb(87 87 87)",
-        light:"#598fff",
+        light:"#0f4fbe",
 
       },
       backgroundColor: {
@@ -23,7 +23,7 @@ module.exports = {
         secundary: '#000;',
         black: '#000',
         hoverPrimary: "#e1e1e1",
-        light:"#598fff",
+        light:"#0f4fbe",
         dark:"#18191A",
         darkComponet:"#242526"
     },
@@ -32,7 +32,7 @@ module.exports = {
         dark:"-1px 1px 5px 0px #010101"
       },
       boxShadowColor: {
-        light: "#598fff",
+        light:"#0f4fbe",
         darkComponet:"#242526"
         
       },
@@ -53,13 +53,13 @@ module.exports = {
      
       },
       fill: {
-        unired:"#598fff"
+        unired:"#0f4fbe",
       },
       borderColor: {
         dark: "#575757",
         darkComponet:"#242526",
         secundary: "#fff",
-        light:"#598fff",
+        light:"#0f4fbe",
         
       }
     },

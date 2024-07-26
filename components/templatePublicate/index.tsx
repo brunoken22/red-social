@@ -237,7 +237,7 @@ export function ThemplatePubli(props: {
           <Like
             className={`${
               like == 'like'
-                ? 'fill-[#5a81ff]'
+                ? 'fill-[#063ef5] dark:fill-[#5a81ff]'
                 : 'dark:fill-[#ddd] fill-[#919191]'
             }`}
           />
@@ -292,7 +292,8 @@ export function ThemplatePubli(props: {
           <img
             src={props?.img}
             alt='imagen'
-            className='w-full h-full object-contain'
+            className='w-full h-[95vh] object-contain'
+            loading='lazy'
           />
         </div>
       ) : null}

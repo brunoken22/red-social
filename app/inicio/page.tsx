@@ -2,10 +2,9 @@ import dynamic from 'next/dynamic';
 import {DivPublicaciones} from '@/ui/container';
 import {Span} from '@/components/span';
 import {Metadata} from 'next';
-const Publicar = dynamic(() => import('@/components/publicar'), {ssr: false});
+const Publicar = dynamic(() => import('@/components/publicar'));
 const PublicacionesAll = dynamic(
-  () => import('@/components/publicaciones/publicationsAll'),
-  {ssr: false}
+  () => import('@/components/publicaciones/publicationsAll')
 );
 
 export const metadata: Metadata = {

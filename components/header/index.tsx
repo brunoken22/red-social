@@ -4,10 +4,8 @@ import {
   ref,
   onValue,
   update,
-  onDisconnect,
   goOffline,
   goOnline,
-  off,
   get,
   child,
   getDatabase,
@@ -297,17 +295,22 @@ export default function Header({themeDate}: {themeDate: string}) {
             <div className='border-none relative max-md:hidden '>
               {pathname !== '/search' && (
                 <SearchBox
+                  id='searchAlgolia'
+                  itemID='searchAlgolia'
                   placeholder='UniRed'
+                  aria-autocomplete='list'
+                  loadingIconComponent={() => <></>}
                   onChangeCapture={(e: any) => {
-                    e.target.form
+                    const form = e.currentTarget;
+                    form
                       .querySelector('.ais-SearchBox-reset')
-                      .addEventListener('click', () => setSearch(''));
-                    setSearch(e.target.value);
+                      ?.addEventListener('click', () => setSearch(''));
+                    setSearch(e.currentTarget.value);
                   }}
                 />
               )}
 
-              {value && pathname !== '/search' ? <SearchUser /> : null}
+              <SearchUser />
             </div>
           </div>
           <NavegationUrl

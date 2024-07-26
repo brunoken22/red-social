@@ -6,7 +6,6 @@ import {
   BottonSendComentario,
 } from '@/components/publicaciones/styled';
 import {useState} from 'react';
-import {mutate} from 'swr';
 const NotificationToastStatus = dynamic(() =>
   import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
 );
@@ -52,7 +51,8 @@ export default function Comment(props: any) {
             connect={props.connect}></FotoPerfil>
           <DivAñadirComentar>
             <textarea
-              id='description'
+              id={`${props.idPublicacion}Description`}
+              name={`${props.idPublicacion}Description`}
               rows={1}
               maxLength={1000}
               placeholder={`Añadir un comentario`}

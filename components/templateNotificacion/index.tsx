@@ -1,21 +1,22 @@
 'use client';
-import {ButtonNoti} from '@/ui/boton';
-import {DivAllPublicaciones, DivPublicar} from '@/ui/container';
-import FotoPerfil from '@/ui/FotoPerfil';
+import dynamic from 'next/dynamic';
+import {DivPublicar} from '@/ui/container';
 import {user, isConnect, notificacionesUser} from '@/lib/atom';
-import {
-  GetPublicacionId,
-  NotificacionesUser,
-  viewNotification,
-} from '@/lib/hook';
+import {NotificacionesUser} from '@/lib/hook';
 import {useRecoilValue} from 'recoil';
-import Link from 'next/link';
-import {useParams} from 'next/navigation';
-import {Loader} from '../loader';
-import {useEffect, useState} from 'react';
-import {ButtonMasPubli} from '../publicaciones/styled';
-import {SkeletonNoti} from '@/ui/skeleton';
-import {ThemplatePubli} from '../templatePublicate';
+import {useState} from 'react';
+
+const SkeletonNoti = dynamic(() =>
+  import('@/ui/skeleton').then((mod) => mod.SkeletonNoti)
+);
+const ButtonMasPubli = dynamic(() =>
+  import('../publicaciones/styled').then((mod) => mod.ButtonMasPubli)
+);
+const ButtonNoti = dynamic(() =>
+  import('@/ui/boton').then((mod) => mod.ButtonNoti)
+);
+const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
+const Link = dynamic(() => import('next/link'));
 
 export function TemNoti() {
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
@@ -79,37 +80,5 @@ export function TemNoti() {
         </div>
       ) : null}
     </DivPublicar>
-  );
-}
-
-export function TemplateNotifiId() {
-  const {id} = useParams();
-  const {dataPubliId} = GetPublicacionId(id as string);
-  const dataUser = useRecoilValue(user);
-  useEffect(() => {
-    (async () => {
-      const data = await viewNotification(id as string);
-      return data;
-    })();
-  }, []);
-  return dataPubliId ? (
-    <div style={{maxWidth: '600px', width: '100%'}}>
-      <DivAllPublicaciones>
-        <ThemplatePubli
-          vereficationUser={dataUser.user?.verification}
-          description={dataPubliId.description}
-          img={dataPubliId.img}
-          fecha={dataPubliId.createdAt}
-          like={dataPubliId.likePublics}
-          comentarios={dataPubliId.commentPublis}
-          imgUserPro={dataUser.user.img}
-          id={dataPubliId.userId}
-          idPublicacion={dataPubliId.id}
-          userId={dataUser.user.id}
-          user={dataPubliId.user}></ThemplatePubli>
-      </DivAllPublicaciones>
-    </div>
-  ) : (
-    <Loader></Loader>
   );
 }

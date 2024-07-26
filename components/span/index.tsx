@@ -2,15 +2,15 @@ import dynamic from 'next/dynamic';
 import {DivPublicar} from '@/ui/container';
 import Image from 'next/image';
 import Link from 'next/link';
-import Github from "@/ui/icons/github.svg"
-import Linkedin from "@/ui/icons/linkedin.svg"
+import Github from '@/ui/icons/github.svg';
+import Linkedin from '@/ui/icons/linkedin.svg';
 
 const Body = dynamic(() => import('@/ui/typography').then((mod) => mod.Body));
 
 export function Span() {
   return (
     <div className='min-w-[250px] max-w-[20%]  text-center  max-md:hidden'>
-      <div className='sticky top-20'>
+      <div className='sticky top-2'>
         <DivPublicar>
           <Body>Visita mi portafolio</Body>
           <Link

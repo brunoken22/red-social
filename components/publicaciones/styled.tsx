@@ -77,7 +77,9 @@ export const BottonLike = ({
     type={type}
     onClick={onClick}
     className={` border-none  flex items-center gap-2 text-[0.8rem] p-2 hover:backdrop-contrast-50 rounded-md  ${
-      like ? 'text-[#5a81ff]' : 'text-secundary dark:text-primary'
+      like
+        ? 'dark:text-[#5a81ff] text-[#063ef5]'
+        : 'text-secundary dark:text-primary'
     }`}>
     {children}
   </button>
@@ -111,7 +113,7 @@ export const BottonSendComentario = ({
   onClick: () => any;
 }) => (
   <button
-    id='Comentar'
+    aria-label='Comentar'
     onClick={onClick}
     className='bg-transparent  flex items-center justify-center h-full rounded-md border-solid border-[1px]  border-gray-400 hover:border-gray-600 dark:hover:border-gray-100 dark:fill-white dark:hover:fill-light hover:fill-light'>
     {children}
@@ -138,6 +140,7 @@ export const ButtonOpenDelete = ({
   onClick: () => any;
 }) => (
   <button
+    aria-label='deletePublication'
     onClick={onClick}
     className='flex gap-[0.2rem] bg-transparent border-none hover:opacity-70 h-[35px] w-[35px] justify-center items-center hover:backdrop-contrast-50 hover:rounded-full'>
     {children}

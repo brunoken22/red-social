@@ -88,9 +88,9 @@ export function TemMensaje() {
                         />
 
                         <div className='flex gap-2 items-center overflow-hidden'>
-                          <h4 className='m-0 text-start truncate'>
+                          <p className='m-0 text-start truncate'>
                             {e.fullName}
-                          </h4>
+                          </p>
                           {e.verification && (
                             <Verification publication={false} />
                           )}

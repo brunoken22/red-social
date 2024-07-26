@@ -4,21 +4,14 @@ import {user, publicacionAmigos} from '@/lib/atom';
 import {useRecoilValue} from 'recoil';
 import {GetAllPublicaciones} from '@/lib/hook';
 
-const DivAllPublicaciones = dynamic(
-  () => import('@/ui/container').then((mod) => mod.DivAllPublicaciones),
-  {ssr: false}
+const ButtonMasPubli = dynamic(() =>
+  import('./styled').then((mod) => mod.ButtonMasPubli)
 );
-const ButtonMasPubli = dynamic(
-  () => import('./styled').then((mod) => mod.ButtonMasPubli),
-  {ssr: false}
+const ThemplatePubli = dynamic(() =>
+  import('../templatePublicate').then((mod) => mod.ThemplatePubli)
 );
-const ThemplatePubli = dynamic(
-  () => import('../templatePublicate').then((mod) => mod.ThemplatePubli),
-  {ssr: false}
-);
-const SkeletonPublicacionAll = dynamic(
-  () => import('@/ui/skeleton').then((mod) => mod.SkeletonPublicacionAll),
-  {ssr: false}
+const SkeletonPublicacionAll = dynamic(() =>
+  import('@/ui/skeleton').then((mod) => mod.SkeletonPublicacionAll)
 );
 
 export default function PublicacionesAll() {

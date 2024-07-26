@@ -53,7 +53,7 @@ module.exports = {
      
       },
       fill: {
-        unired:"#0f4fbe",
+        unired:"#3360dd",
       },
       borderColor: {
         dark: "#575757",

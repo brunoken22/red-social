@@ -10,17 +10,10 @@ const SearchUser = dynamic(() =>
 );
 
 export default function SearchMobile() {
-  const [search, setSearch] = useState(false);
-
   return (
     <div className='relative'>
-      <SearchBox
-        placeholder='UniRed'
-        onChangeCapture={() => {
-          setSearch(true);
-        }}
-      />
-      {search && <SearchUser />}
+      <SearchBox placeholder='UniRed' />
+      <SearchUser />
     </div>
   );
 }

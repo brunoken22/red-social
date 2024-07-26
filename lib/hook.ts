@@ -305,9 +305,7 @@ export function GetAllPublicacionesUser() {
       return `/user/publicacion?offset=${pageIndex * 10}`;
     },
     (api) => fetchApiSwr(api, option),
-    {
-      revalidateAll: true,
-    }
+    {}
   );
   useEffect(() => {
     if (data?.length) {
@@ -340,9 +338,7 @@ export function GetPubliAmigo(id: string) {
       return `/user/amigos/publicaciones/${id}?offset=${pageIndex * 10}`;
     },
     (api) => fetchApiSwr(api, option),
-    {
-      revalidateAll: true,
-    }
+    {}
   );
   useEffect(() => {
     if (data?.length) {
@@ -520,7 +516,6 @@ export async function comentarPublicacion(datas: any) {
     credentials: 'include',
     body: JSON.stringify({description: datas.description}),
   };
-
   const data = await fetchApiSwr(api, option);
   return data;
 }

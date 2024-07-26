@@ -1,4 +1,5 @@
 'use client';
+import dynamic from 'next/dynamic';
 import FotoPerfil from '@/ui/FotoPerfil';
 import {
   DivPerfilUser,
@@ -27,13 +28,20 @@ import {useParams} from 'next/navigation';
 import {DivAllPublicaciones} from '@/ui/container';
 import {ButtonAgregar} from '@/ui/boton';
 import MessageSvg from '@/ui/icons/chat.svg';
-import {ButtonMasPubli} from '../publicaciones/styled';
-import {SkeletonPerfilAmigo} from '@/ui/skeleton';
-import {ThemplatePubli} from '../templatePublicate';
 import {useRouter} from 'next/navigation';
-import {Loader} from '../loader';
-import Verification from '@/ui/verification';
 import Link from 'next/link';
+
+const Verification = dynamic(() => import('@/ui/verification'));
+const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
+const ButtonMasPubli = dynamic(() =>
+  import('../publicaciones/styled').then((mod) => mod.ButtonMasPubli)
+);
+const SkeletonPerfilAmigo = dynamic(() =>
+  import('@/ui/skeleton').then((mod) => mod.SkeletonPerfilAmigo)
+);
+const ThemplatePubli = dynamic(() =>
+  import('../templatePublicate').then((mod) => mod.ThemplatePubli)
+);
 
 export function PerfilAmigo() {
   const {id} = useParams();
@@ -126,7 +134,7 @@ export function PerfilAmigo() {
               />
             )}
             <div className='flex gap-2 items-center max-md:mb-4'>
-              <h2 className='  font-bold text-2xl max-w-[250px] truncate'>
+              <h2 className='text-xl max-w-[250px] truncate'>
                 {data.user.fullName}
               </h2>
               {data.user.verification ? (
@@ -135,21 +143,23 @@ export function PerfilAmigo() {
             </div>
           </DivFotoNameLink>
           <div className='flex gap-2 items-center max-md:flex-col  flex-row'>
-            <Link
-              className=' p-2 rounded-lg text-primary flex items-center gap-1 backdrop-contrast-[0.4] hover:backdrop-contrast-[0.1]'
-              href={
-                '/chat?fullName=' +
-                data.user.fullName +
-                '&rtdb=' +
-                data.user.rtdb +
-                '&id=' +
-                data.user.id +
-                '&img=' +
-                data.user.img
-              }>
-              <MessageSvg className='fill-primary w-[20px] text-nowrap' />
-              Mensaje
-            </Link>
+            {isAmigo == 'ACCEPTED' ? (
+              <Link
+                className=' p-2 rounded-lg text-primary flex items-center gap-1 backdrop-contrast-[0.4] hover:backdrop-contrast-[0.1]'
+                href={
+                  '/chat?fullName=' +
+                  data.user.fullName +
+                  '&rtdb=' +
+                  data.user.rtdb +
+                  '&id=' +
+                  data.user.id +
+                  '&img=' +
+                  data.user.img
+                }>
+                <MessageSvg className='fill-primary w-[20px] text-nowrap' />
+                Mensaje
+              </Link>
+            ) : null}
             {isAmigo !== 'PENDING' ? (
               <ButtonAgregar
                 id={data?.user?.id}
@@ -210,7 +220,7 @@ export function PerfilAmigo() {
               <p className='text-center'>No hay publicaciones</p>
             )
           ) : null}
-          {dataPubliAmigo?.length ? (
+          {dataPubliAmigo?.flat()?.length ? (
             <div className='text-center'>
               <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
             </div>

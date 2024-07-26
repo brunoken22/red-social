@@ -6,6 +6,7 @@ import {
   BottonSendComentario,
 } from '@/components/publicaciones/styled';
 import {useState} from 'react';
+import {mutate} from 'swr';
 const NotificationToastStatus = dynamic(() =>
   import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
 );
@@ -28,16 +29,16 @@ export default function Comment(props: any) {
   };
   const handleComment = async () => {
     if (content) {
+      setContent('');
       const comentarPublicacion = (await import('@/lib/hook'))
         .comentarPublicacion;
-
       await comentarPublicacion({
         id: props.idPublicacion,
         description: content,
       });
-      setContent('');
       return;
     }
+
     setAlert({message: 'Escribe Algo', status: 'error'});
   };
 
@@ -50,17 +51,15 @@ export default function Comment(props: any) {
             img={props.imgUserPro}
             connect={props.connect}></FotoPerfil>
           <DivAñadirComentar>
-            <div className='min-w-[200px] max-w-full '>
-              <textarea
-                id='description'
-                rows={1}
-                maxLength={1000}
-                placeholder={`Añadir un comentario`}
-                className='w-full bg-transparent rounded-md outline outline-1 outline-gray-400 focus:outline-gray-600 dark:focus:outline-gray-100  p-2  overflow-auto  resize-none '
-                required={true}
-                value={content}
-                onChange={handleInput}></textarea>
-            </div>
+            <textarea
+              id='description'
+              rows={1}
+              maxLength={1000}
+              placeholder={`Añadir un comentario`}
+              className='w-full bg-transparent rounded-md outline outline-1 outline-gray-400 focus:outline-gray-600 dark:focus:outline-gray-100  p-2  overflow-auto  resize-none '
+              required={true}
+              value={content}
+              onChange={handleInput}></textarea>
             <BottonSendComentario onClick={handleComment}>
               <SendComentPubli />
             </BottonSendComentario>

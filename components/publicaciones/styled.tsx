@@ -110,13 +110,16 @@ export const BottonSendComentario = ({
   children: React.ReactNode;
   onClick: () => any;
 }) => (
-  <button onClick={onClick} className='bg-transparent border-none '>
+  <button
+    id='Comentar'
+    onClick={onClick}
+    className='bg-transparent  flex items-center justify-center h-full rounded-md border-solid border-[1px]  border-gray-400 hover:border-gray-600 dark:hover:border-gray-100 dark:fill-white dark:hover:fill-light hover:fill-light'>
     {children}
   </button>
 );
 
 export const DivAñadirComentar = ({children}: {children: React.ReactNode}) => (
-  <div className='rounded-md w-full  p-2 grid items-center text-[0.9rem] grid-cols-[repeat(1,90%_10%)] focus:border-2 focus:border-red-500'>
+  <div className='rounded-md w-full  p-2 grid items-center text-[0.9rem] grid-cols-[repeat(1,90%_10%)] focus:border-2 focus:border-red-500 gap-2'>
     {children}
   </div>
 );

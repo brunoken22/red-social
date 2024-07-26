@@ -10,7 +10,7 @@ const Body = dynamic(() => import('@/ui/typography').then((mod) => mod.Body));
 export function Span() {
   return (
     <div className='min-w-[250px] max-w-[20%]  text-center  max-md:hidden'>
-      <div className='sticky top-2'>
+      <div className='sticky top-20'>
         <DivPublicar>
           <Body>Visita mi portafolio</Body>
           <Link

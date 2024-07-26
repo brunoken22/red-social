@@ -237,7 +237,7 @@ export function ThemplatePubli(props: {
           <Like
             className={`${
               like == 'like'
-                ? 'fill-[#063ef5] dark:fill-[#5a81ff]'
+                ? 'fill-[#063ef5] dark:fill-[#7696fd]'
                 : 'dark:fill-[#ddd] fill-[#919191]'
             }`}
           />

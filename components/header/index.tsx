@@ -37,18 +37,13 @@ const SkeletonNav = dynamic(() =>
 );
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
 
-const ButtonSmsConnect = dynamic(() =>
-  import('@/ui/boton').then((mod) => mod.ButtonSmsConnect)
-);
 const DivConectados = dynamic(() =>
   import('./styled').then((mod) => mod.DivConectados)
 );
 const DivConnect = dynamic(() =>
   import('./styled').then((mod) => mod.DivConnect)
 );
-const DivConnectAll = dynamic(() =>
-  import('./styled').then((mod) => mod.DivConnectAll)
-);
+
 const DivContenedorConnect = dynamic(() =>
   import('./styled').then((mod) => mod.DivContenedorConnect)
 );
@@ -58,6 +53,7 @@ const SearchUser = dynamic(() =>
 const SearchBox = dynamic(() =>
   import('react-instantsearch').then((mod) => mod.SearchBox)
 );
+const ConnectedUsers = dynamic(() => import('./connectedUser'));
 const NavegationUrl = dynamic(() => import('./navHeader'));
 
 export default function Header({themeDate}: {themeDate: string}) {
@@ -347,42 +343,10 @@ export default function Header({themeDate}: {themeDate: string}) {
           <span>Conectados</span> <DivConnect />
         </DivConectados>
         {connectAmigos ? (
-          allConnectAmigos?.length > 0 ? (
-            <DivConnectAll>
-              {allConnectAmigos.map((e: User) => (
-                <ButtonSmsConnect
-                  key={e.id}
-                  onClick={() =>
-                    router.push(
-                      '/chat?fullName=' +
-                        e.fullName +
-                        '&rtdb=' +
-                        e.rtdb +
-                        '&id=' +
-                        e.id +
-                        '&img=' +
-                        e.img
-                    )
-                  }>
-                  <FotoPerfil
-                    img={e.img}
-                    className='h-[30px] w-[30px]'
-                    connect={
-                      dataIsConnect?.find(
-                        (eConnect: any) => e.id == eConnect.id
-                      )?.connect && true
-                    }
-                  />
-
-                  <span className='text-black whitespace-nowrap overflow-hidden text-ellipsis'>
-                    {e.fullName}
-                  </span>
-                </ButtonSmsConnect>
-              ))}
-            </DivConnectAll>
-          ) : (
-            <div className='text-center'>No hay conectados</div>
-          )
+          <ConnectedUsers
+            allConnectAmigos={allConnectAmigos}
+            dataIsConnect={dataIsConnect}
+          />
         ) : null}
       </DivContenedorConnect>
     </>

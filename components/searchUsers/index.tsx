@@ -19,7 +19,6 @@ const DivLinkUser = dynamic(() =>
 export function SearchUser() {
   const {hits} = useHits();
   const {query} = useSearchBox();
-
   return (
     <div className='relative'>
       {query ? (

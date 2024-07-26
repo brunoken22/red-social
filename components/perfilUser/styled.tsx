@@ -27,5 +27,7 @@ export const DivButtonEliAcep = ({children}: {children: React.ReactNode}) => (
 );
 
 export const DivPublicaciones = ({children}: {children: React.ReactNode}) => (
-  <div className='m-auto max-w-[500px] flex flex-col gap-6'>{children}</div>
+  <div className='m-auto max-w-[500px] flex flex-col gap-6 mt-4'>
+    {children}
+  </div>
 );

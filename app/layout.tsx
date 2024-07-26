@@ -18,12 +18,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang='es'>
       <head>
-        <link rel='preload' href='/logo.webp' as='image' />
         <meta
           name='google-site-verification'
           content='CnmK8AWJQTO2MYQ5J7dOu9_dhCFy-ttErrYHDEWbOyw'
         />
-        {/* <link rel='preconnect' href='https://8w3zg1ohsp-2.algolianet.com' /> */}
         <link rel='preconnect' href='https://red-social-node.onrender.com' />
         <link rel='preconnect' href='https://res.cloudinary.com' />
       </head>

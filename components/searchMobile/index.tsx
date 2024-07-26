@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import {useState} from 'react';
 const SearchBox = dynamic(() =>
   import('react-instantsearch').then((mod) => mod.SearchBox)
 );

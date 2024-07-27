@@ -18,11 +18,10 @@ export default function ConnectedUsers({
   dataIsConnect: any;
 }) {
   const {push} = useRouter();
-
   return (
     <>
       <DivConnectAll>
-        {allConnectAmigos ? (
+        {allConnectAmigos.length ? (
           allConnectAmigos.map((e) => (
             <ButtonSmsConnect
               key={e.id}

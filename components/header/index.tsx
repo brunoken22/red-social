@@ -6,19 +6,17 @@ import {
   update,
   goOffline,
   goOnline,
-  get,
-  child,
-  getDatabase,
+  onDisconnect,
 } from 'firebase/database';
 import {rtdb} from '@/lib/firebase';
 import './style.css';
-import {usePathname, useRouter} from 'next/navigation';
+import {usePathname} from 'next/navigation';
 import React, {useEffect, useRef, useState} from 'react';
 import {GetUser, NotificacionesUser} from '@/lib/hook';
 // import {useGlobalAudioPlayer} from 'react-use-audio-player';
 import Link from 'next/link';
 import {Menu} from '@/components/menu';
-import {useRecoilValue, useRecoilState, useSetRecoilState} from 'recoil';
+import {useRecoilValue, useRecoilState} from 'recoil';
 import {
   user,
   getAllSolicitudesRecibidas,
@@ -26,12 +24,10 @@ import {
   isConnect,
   Connect,
   notificacionesUser,
-  User,
   getAllUser,
-  getAllUsersChat,
 } from '@/lib/atom';
 import Logo from '@/public/logo.svg';
-import {useDebounce} from 'use-debounce';
+import {useDebouncedCallback} from 'use-debounce';
 const SkeletonNav = dynamic(() =>
   import('@/ui/skeleton').then((mod) => mod.SkeletonNav)
 );
@@ -61,23 +57,22 @@ export default function Header({themeDate}: {themeDate: string}) {
   NotificacionesUser(0);
   // const {load} = useGlobalAudioPlayer();
   const pathname = usePathname();
-  const router = useRouter();
   const dataUser = useRecoilValue(user);
   const getAllUserData = useRecoilValue(getAllUser);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
-  const setDatagetAllUsersChat = useSetRecoilState(getAllUsersChat);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
   // const [notificationSound, setNotificationSound] = useState<any[]>([]);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
-  const [search, setSearch] = useState('');
   const [allConnectAmigos, setAllConnectAmigos] = useState([]);
   const [connectAmigos, setConnectAmigos] = useState(false);
   const [menu, setMenu] = useState(false);
   const [theme, setThemes] = useState<string>(themeDate);
-  const [value] = useDebounce(search, 1000);
   const [openNav, setOpenNav] = useState(true);
   const lastScrollY = useRef(0);
+  const useDebounce = useDebouncedCallback((query, search) => {
+    search(query);
+  }, 1000);
   const handleMenu = (e: any) => {
     e.preventDefault();
     if (menu) {
@@ -186,38 +181,9 @@ export default function Header({themeDate}: {themeDate: string}) {
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, 'rooms')).then((snapshot) => {
-      if (snapshot.exists()) {
-        const value = Object.values(snapshot.val());
-
-        const userDataMenssage = value.filter(
-          (dataUserChat: any) =>
-            dataUserChat.userId == dataUser.user.id ||
-            dataUserChat.amigoId == dataUser.user.id
-        );
-        if (userDataMenssage) {
-          const userChatUser = userDataMenssage.map((snap: any) => {
-            if (snap.userId == dataUser.user.id) {
-              return Number(snap.amigoId);
-            }
-            if (snap.amigoId == dataUser.user.id) return snap.userId;
-          });
-          const newUserConnectChat = getAllUserData.filter((item: User) =>
-            userChatUser.includes(item.id)
-          );
-          setDatagetAllUsersChat(newUserConnectChat);
-        }
-      }
-    });
-  }, [dataUser?.user?.id, getAllUserData]);
-
-  useEffect(() => {
-    if (!dataUser?.user?.id) return;
     const connectRef = ref(rtdb, '/connect');
     onValue(connectRef, async (snapshot: any) => {
       const valor = snapshot.val();
-
       if (valor) {
         const dataConnect: any = Object.values(valor);
         setIsConnect(dataConnect);
@@ -233,18 +199,6 @@ export default function Header({themeDate}: {themeDate: string}) {
     });
   }, [dataUser?.user?.id]);
 
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-    const scrollDifference = Math.abs(currentScrollY - lastScrollY.current);
-    if (scrollDifference >= 60) {
-      if (currentScrollY > lastScrollY.current) {
-        setOpenNav(false);
-      } else {
-        setOpenNav(true);
-      }
-      lastScrollY.current = currentScrollY;
-    }
-  };
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, {passive: true});
     return () => {
@@ -253,10 +207,16 @@ export default function Header({themeDate}: {themeDate: string}) {
   }, []);
 
   useEffect(() => {
+    if (dataUser?.user?.id) {
+      const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
+      update(connectRefData, {
+        ...dataUser.user,
+        connect: true,
+      });
+    }
     const handleVisibilityChange = async () => {
       if (!dataUser?.user?.id) return;
       const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
-
       if (document.hidden) {
         await update(connectRefData, {
           connect: false,
@@ -270,12 +230,26 @@ export default function Header({themeDate}: {themeDate: string}) {
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    // Limpia el evento cuando el componente se desmonte
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [dataUser?.user?.id]);
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    const scrollDifference = Math.abs(currentScrollY - lastScrollY.current);
+    if (scrollDifference >= 60) {
+      if (currentScrollY > lastScrollY.current) {
+        setOpenNav(false);
+      } else {
+        setOpenNav(true);
+      }
+      lastScrollY.current = currentScrollY;
+    }
+  };
+  const closeSession = () => {
+    const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
+    return onDisconnect(connectRefData).update({connect: false});
+  };
 
   return dataUser?.user?.id ? (
     <>
@@ -294,17 +268,9 @@ export default function Header({themeDate}: {themeDate: string}) {
                   aria-label='searchAlgolia'
                   id='searchAlgolia'
                   placeholder='UniRed'
-                  loadingIconComponent={() => <></>}
-                  onChangeCapture={(e: any) => {
-                    const form = e.currentTarget;
-                    form
-                      .querySelector('.ais-SearchBox-reset')
-                      ?.addEventListener('click', () => setSearch(''));
-                    setSearch(e.currentTarget.value);
-                  }}
+                  queryHook={useDebounce}
                 />
               )}
-
               <SearchUser />
             </div>
           </div>
@@ -329,6 +295,7 @@ export default function Header({themeDate}: {themeDate: string}) {
             {menu ? (
               <Menu
                 theme={theme}
+                closeSession={closeSession}
                 themebutton={(data: string) => setThemes(data)}
                 click={handleClick}
                 userImg={dataUser.user.img}

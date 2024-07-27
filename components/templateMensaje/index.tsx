@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import {DivAllChat} from '@/ui/container';
 import {DivTemMensaje, TemplMensaje, TemplChat, SpanNoti} from './styled';
 import {useRecoilValue} from 'recoil';
-import {user, isMenssage, isConnect, getAllUsersChat} from '@/lib/atom';
+import {user, isMenssage, isConnect, getAllAmigos} from '@/lib/atom';
 import {useEffect, useState} from 'react';
 import {useSearchParams} from 'next/navigation';
 
@@ -26,12 +26,13 @@ type MessageUserChat = {
 export function TemMensaje() {
   const params = useSearchParams();
   const dataUser = useRecoilValue(user);
-  const dataGetAllUsersChat = useRecoilValue(getAllUsersChat);
+  const dataFriendAll = useRecoilValue(getAllAmigos);
   const dataIsConnect = useRecoilValue(isConnect);
   const dataMessage = useRecoilValue(isMenssage);
   const [dataMensajeUser, setDataMensajeUser] = useState<
     MessageUserChat | false
   >(false);
+
   useEffect(() => {
     const rtdbParams = params.get('rtdb') as any;
     const imgParams = params.get('img') as string;
@@ -50,15 +51,16 @@ export function TemMensaje() {
       });
     }
   }, [params.get('fullName')]);
+
   return (
     <DivTemMensaje>
       {dataUser.user.id ? (
         <TemplMensaje mobile={!dataMensajeUser}>
           <h2 className='text-2xl font-bold text-center'>Chats</h2>
           <TemplChat>
-            {dataGetAllUsersChat ? (
-              dataGetAllUsersChat.length ? (
-                dataGetAllUsersChat.map((e) => {
+            {dataFriendAll ? (
+              dataFriendAll.length ? (
+                dataFriendAll.map((e) => {
                   return (
                     <button
                       type='submit'

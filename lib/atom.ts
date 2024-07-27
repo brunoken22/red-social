@@ -58,10 +58,6 @@ export const getAllAmigos = atom({
   key: 'getAllAmigos',
   default: [] as User[],
 });
-export const getAllUsersChat = atom<User[] | null>({
-  key: 'getAllUsersChat',
-  default: null,
-});
 export const getSugerenciaAmigos = atom({
   key: 'getSugerenciaAmigos',
   default: [] as User[],

@@ -1,24 +1,18 @@
 'use client';
+import dynamic from 'next/dynamic';
 import {Section, DivSection, DivIcons, DivResponse, DivResult} from './styled';
 import MyAmigos from '@/ui/icons/myAmigos.svg';
 import {ButtonNoti} from '@/ui/boton';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useRecoilValue} from 'recoil';
 import {
-  User,
   getAllAmigos,
   getAllSolicitudesRecibidas,
   getAllSolicitudesEnviadas,
   getSugerenciaAmigos,
 } from '@/lib/atom';
-import {
-  createSolicitud,
-  AceptarSolicitud,
-  rechazarSolicitud,
-  EliminarAmigo,
-} from '@/lib/hook';
-import {Loader} from '../loader';
-import TemplateFriendRequest from '../templateFriends';
+
+const TemplateFriendRequest = dynamic(() => import('../templateFriends'));
 
 export default function AmigosComponent() {
   const dataAllUser = useRecoilValue(getSugerenciaAmigos);
@@ -28,19 +22,8 @@ export default function AmigosComponent() {
   const [sugerencia, setSugerencia] = useState(false);
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [soliEnv, setSoliEnv] = useState(false);
-  const [acepAmigoId, setAcepAmigoId] = useState(Number(-1));
 
-  const [eliminarAmigo, setEliminarAmigo] = useState(Number(-1));
-
-  const {dataAcep} = AceptarSolicitud({
-    amigoId: acepAmigoId,
-  });
-
-  const {dataElimAmigo} = EliminarAmigo({
-    userId: eliminarAmigo,
-  });
   const handleClick = (e: any) => {
     e.preventDefault();
     if (e.target.id == 'suge') {
@@ -74,38 +57,6 @@ export default function AmigosComponent() {
       return;
     }
   };
-  const handleSolicitudEnv = async (e: any) => {
-    setIsLoading(true);
-    const id = e.target.id;
-    await createSolicitud({
-      amigoId: Number(id),
-    });
-    setIsLoading(false);
-  };
-  const handleSolicitudAcep = (e: any) => {
-    const id = e.target.id;
-
-    setAcepAmigoId(Number(id));
-  };
-  const handleSolicitudRecha = async (e: any) => {
-    const id = e.target.id;
-    setIsLoading(true);
-    await rechazarSolicitud({
-      userId: Number(id),
-    });
-    setIsLoading(false);
-  };
-  const handleEliminarAmigo = (e: any) => {
-    const id = e.target.id;
-    setEliminarAmigo(Number(id));
-  };
-
-  useEffect(() => {
-    if (dataAcep || dataElimAmigo) {
-      setAcepAmigoId(Number(-1));
-      setEliminarAmigo(Number(-1));
-    }
-  }, [dataAcep, eliminarAmigo]);
 
   return (
     <Section>
@@ -155,7 +106,6 @@ export default function AmigosComponent() {
                       id={user.id}
                       fullName={user.fullName}
                       img={user.img}
-                      handleSolicitudEnv={handleSolicitudEnv}
                       requestClassDuo={false}
                       typeRequest='suggestion'
                     />
@@ -177,8 +127,6 @@ export default function AmigosComponent() {
                       id={user.id}
                       fullName={user.fullName}
                       img={user.img}
-                      handleSolicitudAcep={handleSolicitudAcep}
-                      handleSolicitudRecha={handleSolicitudRecha}
                       requestClassDuo={true}
                       typeRequest='requestFriend'
                     />
@@ -189,7 +137,7 @@ export default function AmigosComponent() {
         ) : null}
         {allAmig ? (
           <>
-            <h3 className='font-semibold text-xl mb-4' style={{marginTop: '0'}}>
+            <h3 className='font-semibold text-xl mb-4 mt-0'>
               Todos tus amigos
             </h3>
             <DivResponse>
@@ -200,7 +148,6 @@ export default function AmigosComponent() {
                       id={user.id}
                       fullName={user.fullName}
                       img={user.img}
-                      handleEliminarAmigo={handleEliminarAmigo}
                       typeRequest={'allFriend'}
                       requestClassDuo={false}
                     />
@@ -211,7 +158,7 @@ export default function AmigosComponent() {
         ) : null}
         {soliEnv ? (
           <>
-            <h3 className='font-semibold text-xl mb-4' style={{marginTop: '0'}}>
+            <h3 className='font-semibold text-xl mb-4  mt-0'>
               Solicitud Enviado
             </h3>
             <DivResponse>
@@ -222,9 +169,8 @@ export default function AmigosComponent() {
                       id={user.id}
                       fullName={user.fullName}
                       img={user.img}
-                      handleSolicitudRecha={handleSolicitudRecha}
-                      requestClassDuo={false}
                       typeRequest={'requestSent'}
+                      requestClassDuo={false}
                     />
                   ))
                 : 'No enviastes solicitudes'}
@@ -232,7 +178,6 @@ export default function AmigosComponent() {
           </>
         ) : null}
       </DivResult>
-      {isLoading ? <Loader /> : null}
     </Section>
   );
 }

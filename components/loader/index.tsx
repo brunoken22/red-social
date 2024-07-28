@@ -12,7 +12,10 @@ export function Loader() {
       <DivLoader>
         <ImageLogo src='/logo.webp' alt='logo' />
         {loadingText ? (
-          <p>Esto puede tardar hasta 1 minuto <br/>(Solo la primera vez) </p>
+          <p>
+            Esto puede tardar hasta 1 minuto <br />
+            (Solo la primera vez){' '}
+          </p>
         ) : null}
       </DivLoader>
     </>
@@ -24,5 +27,13 @@ export function LoaderComponent() {
     <DivLoader>
       <Ring size={40} lineWeight={5} speed={2} color='black' />
     </DivLoader>
+  );
+}
+
+export function LoaderRequest() {
+  return (
+    <div>
+      <Ring size={40} lineWeight={5} speed={2} color='#5495e3' />
+    </div>
   );
 }

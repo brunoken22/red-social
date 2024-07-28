@@ -347,7 +347,7 @@ export function GetPubliAmigo(id: string) {
     }
   }, [data]);
 
-  return {dataPubliAmigo: data, isLoading, setSize, size};
+  return {dataPubliAmigo: data, isLoadingGetFriend: isLoading, setSize, size};
 }
 export function DeletePublic(id: number) {
   const [publicacionesUser, setPublicacionesUser] =
@@ -431,8 +431,8 @@ export async function createSolicitud(dataSoli: Solicitud) {
 
   return {dataCreateSoli: data};
 }
-export function AceptarSolicitud(dataSoli: Solicitud) {
-  const api = '/user/amigos/' + dataSoli.amigoId;
+export async function aceptarSolicitud(id: number) {
+  const api = '/user/amigos/' + id;
   const option = {
     method: 'POST',
     headers: {
@@ -440,16 +440,11 @@ export function AceptarSolicitud(dataSoli: Solicitud) {
     },
     credentials: 'include',
   };
-  const {data, isLoading} = useSWR(
-    dataSoli.amigoId && dataSoli.amigoId > -1 ? api : null,
-    (url) => fetchApiSwr(url, option)
-  );
-  useEffect(() => {
-    if (data) {
-      mutate('/user/token');
-    }
-  }, [data]);
-  return {dataAcep: data, isLoadingAcep: isLoading};
+  const data = await fetchApiSwr(api, option);
+  if (data) {
+    mutate('/user/token');
+  }
+  return data;
 }
 export async function rechazarSolicitud(dataSoli: Solicitud) {
   const api = '/user/solicitudAmistad/' + dataSoli.userId;
@@ -470,9 +465,8 @@ export async function rechazarSolicitud(dataSoli: Solicitud) {
   }
   return {dataRech: data};
 }
-export function EliminarAmigo(datas: any) {
-  const token = getCookie('login');
-  const api = '/user/amigos/' + datas.userId;
+export async function eliminarAmigo(id: number) {
+  const api = '/user/amigos/' + id;
   const option = {
     method: 'DELETE',
     headers: {
@@ -480,17 +474,14 @@ export function EliminarAmigo(datas: any) {
     },
     credentials: 'include',
   };
-  const {data, isLoading} = useSWR(
-    token && datas.userId > -1 ? api : null,
-    (url) => fetchApiSwr(url, option)
-  );
-  useEffect(() => {
-    if (data) {
-      mutate('/user/token');
-      mutate('/user/amigos/' + datas.userId);
-    }
-  }, [data]);
-  return {dataElimAmigo: data, isLoadingElimAmigo: isLoading};
+
+  const dataElimAmigo = await fetchApiSwr(api, option);
+
+  if (dataElimAmigo) {
+    mutate('/user/token');
+    mutate('/user/amigos/' + id);
+  }
+  return dataElimAmigo;
 }
 export async function likeODisLike(id: string) {
   const api = '/user/publicacion/' + id;

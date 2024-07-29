@@ -250,7 +250,6 @@ export default function Header({themeDate}: {themeDate: string}) {
     const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
     return onDisconnect(connectRefData).update({connect: false});
   };
-
   return dataUser?.user?.id ? (
     <>
       <header

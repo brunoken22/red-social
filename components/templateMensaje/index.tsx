@@ -10,9 +10,6 @@ import {useSearchParams} from 'next/navigation';
 const TemplateChat = dynamic(() => import('./templateChat'));
 const Verification = dynamic(() => import('@/ui/verification'));
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
-const SkeletonMenssage = dynamic(() =>
-  import('@/ui/skeleton').then((mod) => mod.SkeletonMenssage)
-);
 
 type MessageUserChat = {
   rtdb: string | undefined;
@@ -58,9 +55,8 @@ export function TemMensaje() {
         <TemplMensaje mobile={!dataMensajeUser}>
           <h2 className='text-2xl font-bold text-center'>Chats</h2>
           <TemplChat>
-            {dataFriendAll ? (
-              dataFriendAll.length ? (
-                dataFriendAll.map((e) => {
+            {dataFriendAll.length
+              ? dataFriendAll.map((e) => {
                   return (
                     <button
                       type='submit'
@@ -110,12 +106,7 @@ export function TemMensaje() {
                     </button>
                   );
                 })
-              ) : (
-                'Sin Chat'
-              )
-            ) : (
-              <SkeletonMenssage />
-            )}
+              : 'Sin Chat'}
           </TemplChat>
         </TemplMensaje>
       ) : null}

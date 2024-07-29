@@ -78,7 +78,7 @@ export default function VerificationUser({
             <button
               type='button'
               onClick={handleGenerateCode}
-              className='h-full p-4 rounded-xl bg-cyan-600 hover:opacity-70'>
+              className='h-full p-4 rounded-xl text-primary bg-cyan-600 hover:opacity-70'>
               Enviar código
             </button>
           </div>

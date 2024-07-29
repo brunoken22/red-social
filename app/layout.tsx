@@ -12,7 +12,11 @@ export const metadata: Metadata = {
     'La red social líder para conectar con amigos, compartir fotos. Únete hoy mismo y forma parte de nuestra comunidad.',
 };
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const theme = cookies().get('theme')?.value || 'false';
 
   return (

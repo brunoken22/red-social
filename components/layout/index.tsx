@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, {useEffect} from 'react';
 import RecoilRootLayout from './recoilRoot';
 import algoliasearch from 'algoliasearch/lite';
 import {InstantSearch} from 'react-instantsearch';
@@ -15,6 +15,15 @@ export default function Layout({
   children: React.ReactNode;
   themeDate: string;
 }) {
+  useEffect(() => {
+    const firstConnect = async () => {
+      await fetch(`${process.env.NEXT_PUBLIC_PORT}`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+    };
+    firstConnect();
+  }, []);
   return (
     <InstantSearch
       indexName='users'

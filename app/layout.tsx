@@ -28,6 +28,7 @@ export default async function RootLayout({
         />
         <link rel='preconnect' href='https://red-social-node.onrender.com' />
         <link rel='preconnect' href='https://res.cloudinary.com' />
+        <meta name='color-scheme' content='only light' />
       </head>
       <body
         className={`${poppins.className} dark:bg-dark dark:text-white dark:transition-dark`}>

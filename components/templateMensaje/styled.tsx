@@ -54,7 +54,7 @@ export const Menssage = ({
 }) => (
   <p
     className={`inline-block p-2 rounded-[40px] max-w-full ${
-      isUser ? 'bg-[#0662ab]' : 'bg-[#575757]'
+      isUser ? 'bg-[rgb(26_38_47)]' : 'bg-[#575757]'
     }`}>
     {children}
   </p>

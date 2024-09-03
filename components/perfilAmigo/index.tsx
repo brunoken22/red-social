@@ -161,7 +161,7 @@ export function PerfilAmigo() {
                       '&id=' +
                       data.user.id +
                       '&img=' +
-                      data.user.img
+                      (data.user.img ? data.user.img : '')
                     }>
                     <MessageSvg className='fill-primary w-[20px] text-nowrap' />
                     Mensaje

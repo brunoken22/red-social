@@ -48,6 +48,7 @@ export function TemMensaje() {
       });
     }
   }, [params.get('fullName')]);
+  // console.log(dataMessage);
 
   return (
     <DivTemMensaje>
@@ -113,6 +114,13 @@ export function TemMensaje() {
 
       {dataMensajeUser ? (
         <TemplateChat
+          connect={
+            (dataIsConnect?.find(
+              (eConnect: any) => dataMensajeUser.id == eConnect.id
+            )?.connect &&
+              true) ||
+            false
+          }
           dataMensajeUser={dataMensajeUser}
           id={dataUser.user.id}
           close={() => setDataMensajeUser(false)}

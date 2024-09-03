@@ -119,7 +119,6 @@ export function GetUser() {
   const setSoliAllEnv = useSetRecoilState(getAllSolicitudesEnviadas);
   const setSoliAllReci = useSetRecoilState(getAllSolicitudesRecibidas);
   const token = getCookie('login');
-
   const api = '/user/token';
   const option = {
     method: 'GET',
@@ -129,13 +128,9 @@ export function GetUser() {
     },
   };
 
-  const {data, isLoading} = useSWR(
-    token == 'true' ? api : null,
-    (url) => fetchApiSwr(url, option),
-    {
-      refreshInterval: 10000,
-    }
-  );
+  const {data, isLoading} = useSWR(api, (url) => fetchApiSwr(url, option), {
+    refreshInterval: 10000,
+  });
   useEffect(() => {
     if (data?.getUserRes?.id) {
       setUserData({
@@ -275,7 +270,7 @@ export function GetAllPublicaciones() {
   );
 
   useEffect(() => {
-    if (data) {
+    if (data && data[0]) {
       const flatArray = data.flat();
       setPublicacionesAllAmigos(flatArray);
     }

@@ -24,7 +24,7 @@ import {
   isConnect,
   Connect,
   notificacionesUser,
-  getAllUser,
+  // getAllUser,
 } from '@/lib/atom';
 import Logo from '@/public/logo.svg';
 import {useDebouncedCallback} from 'use-debounce';
@@ -58,7 +58,7 @@ export default function Header({themeDate}: {themeDate: string}) {
   // const {load} = useGlobalAudioPlayer();
   const pathname = usePathname();
   const dataUser = useRecoilValue(user);
-  const getAllUserData = useRecoilValue(getAllUser);
+  // const getAllUserData = useRecoilValue(getAllUser);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
@@ -132,12 +132,14 @@ export default function Header({themeDate}: {themeDate: string}) {
       return onValue(chatrooms, (snapshot: any) => {
         const valor = snapshot.val();
         if (valor) {
+          console.log(valor)
           const datas: any = Object?.values(valor);
           const utlimoMensaje: any = datas[datas.length - 1];
           datas.reverse().findIndex((object: any, indice: number) => {
             if (object.id != dataUser.user.id && object.read) {
               return object;
             }
+            
             const reversedDatas = datas.reverse();
             const lastIndex = reversedDatas.length - indice;
 
@@ -234,6 +236,7 @@ export default function Header({themeDate}: {themeDate: string}) {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [dataUser?.user?.id]);
+
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
     const scrollDifference = Math.abs(currentScrollY - lastScrollY.current);
@@ -250,6 +253,7 @@ export default function Header({themeDate}: {themeDate: string}) {
     const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
     return onDisconnect(connectRefData).update({connect: false});
   };
+
   return dataUser?.user?.id ? (
     <>
       <header

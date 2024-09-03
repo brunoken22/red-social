@@ -3,6 +3,7 @@ import React, {useEffect} from 'react';
 import RecoilRootLayout from './recoilRoot';
 import algoliasearch from 'algoliasearch/lite';
 import {InstantSearch} from 'react-instantsearch';
+import {history} from 'instantsearch.js/es/lib/routers';
 
 const searchClient = algoliasearch(
   '8W3ZG1OHSP',
@@ -29,7 +30,11 @@ export default function Layout({
       indexName='users'
       searchClient={searchClient}
       future={{preserveSharedStateOnUnmount: true}}
-      routing>
+      routing={{
+        router: history({
+          cleanUrlOnDispose: false,
+        }),
+      }}>
       <RecoilRootLayout dateTheme={themeDate}>{children}</RecoilRootLayout>
     </InstantSearch>
   );

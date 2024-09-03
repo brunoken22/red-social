@@ -1,5 +1,4 @@
 'use client';
-import dynamic from 'next/dynamic';
 import {TemplSns, Sms, Menssage} from './styled';
 import FotoPerfil from '@/ui/FotoPerfil';
 import {Input} from '@/ui/input';
@@ -10,6 +9,7 @@ import {EnviarMessage} from '@/lib/hook';
 import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, get} from 'firebase/database';
+import linkify from '@/utils/formtText';
 
 type MessageUserChat = {
   rtdb: string | undefined;
@@ -24,10 +24,12 @@ export default function TemplateChat({
   dataMensajeUser,
   id,
   close,
+  connect,
 }: {
   dataMensajeUser: MessageUserChat;
   id: number;
   close: () => any;
+  connect: boolean;
 }) {
   const smsRef: any = useRef(null);
   const [messageUser, setMessageUser] = useState<MessageUserChat | false>(
@@ -35,8 +37,8 @@ export default function TemplateChat({
   );
   const [claveMessage, setclaveMessage] = useState('');
   const [messagesAll, setMessagesAll] = useState([]);
-
   const {dataMesssage} = EnviarMessage(messageUser);
+
   useEffect(() => {
     if (dataMesssage) {
       return setMessageUser((prev: any) => ({...prev, message: ''}));
@@ -109,7 +111,7 @@ export default function TemplateChat({
       e.target.message.value = '';
     }, 200);
   };
-
+  
   return (
     <TemplSns>
       <div className='flex justify-between border-[1px] border-[#3b3b3b] p-2'>
@@ -120,11 +122,12 @@ export default function TemplateChat({
             }>
             <FotoPerfil
               className='w-[40px] h-[40px]'
-              img={dataMensajeUser.img || ''}
-              //   connect={
-              //     dataIsConnect?.find((eConnect: any) => id == eConnect.id)
-              //       ?.connect && true
-              //   }
+              img={
+                dataMensajeUser.img ||
+                (dataMensajeUser.img == 'null' && '') ||
+                ''
+              }
+              connect={connect}
             />
           </Link>
           <div className='flex items-center gap-2 overflow-hidden'>
@@ -150,7 +153,7 @@ export default function TemplateChat({
                       textAlign: e.id == id ? 'end' : 'start',
                     }}>
                     <Menssage isUser={e.id == id ? true : false}>
-                      {e.message}
+                      {linkify(e.message || '')}
                     </Menssage>
                   </div>
                 );

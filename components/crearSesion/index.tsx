@@ -38,15 +38,15 @@ export function Signup() {
     }
   };
 
-  useEffect(() => {
-    if (data === 'Usuario Registrado') {
-      setError('Usuario existente');
-    } else if (data?.user?.id) {
-      setTimeout(() => {
-        router.push('/inicio');
-      }, 3500);
-    }
-  }, [data, router]);
+  // useEffect(() => {
+  //   if (data === 'Usuario Registrado') {
+  //     setError('Usuario existente');
+  //   } else if (data?.user?.id) {
+  //     setTimeout(() => {
+  //       router.push('/inicio');
+  //     }, 3500);
+  //   }
+  // }, [data, router]);
 
   return (
     <form

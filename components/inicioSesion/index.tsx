@@ -4,7 +4,6 @@ import {signinUser} from '@/lib/hook';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {useState} from 'react';
 import {useRouter} from 'next/navigation';
-
 type typeForm = {
   email: string;
   password: string;
@@ -32,13 +31,15 @@ export default function Signin() {
 
   const onSubmit: SubmitHandler<typeForm> = async (dataForm) => {
     setIsLoading(true);
+
     if (dataForm) {
       const data = await signinUser({
         email: dataForm.email,
         password: dataForm.password,
       });
+
       setIsLoading(false);
-      if (data && data.id) {
+      if (data) {
         setData(data);
         setTimeout(() => {
           push('/inicio');

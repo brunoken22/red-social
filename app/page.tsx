@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import Logo from '@/public/logo.svg';
-
-import {Metadata} from 'next';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Bienvenid@ a UniRed',
   description:
     'Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)',
 };
+
 export default function Page() {
   return (
     <div className='flex flex-col min-h-screen'>

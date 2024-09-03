@@ -28,7 +28,6 @@ export default function PublicacionesAll() {
     }
     setSize(size + 1);
   };
-
   return (
     <div className='flex flex-col gap-4'>
       {publicacionesAmigos ? (
@@ -36,8 +35,8 @@ export default function PublicacionesAll() {
           <>
             {publicacionesAmigos.map((item) => (
               <div
-                className='bg-primary flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-dark'
-                key={item.id}>
+                key={item.id}
+                className='bg-primary flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-dark'>
                 <ThemplatePubli
                   vereficationUser={dataUser.user.verification}
                   description={item.description}

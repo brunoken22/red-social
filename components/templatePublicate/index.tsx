@@ -26,6 +26,7 @@ import {useEffect, useState} from 'react';
 import {DeletePublic} from '@/lib/hook';
 import diferenteDate from './diferenteDate';
 import {useDebouncedCallback} from 'use-debounce';
+import linkify from '@/utils/formtText';
 
 const iconConLike = {
   height: ' 20px',
@@ -90,6 +91,7 @@ export function ThemplatePubli(props: {
       return;
     }
   }, [dataDelete]);
+
   const handleClickLike = async (e: any) => {
     e.preventDefault();
     if (like == 'like') {
@@ -116,7 +118,7 @@ export function ThemplatePubli(props: {
     <div className='w-full '>
       <DivPefilDelete>
         <DivPerfil>
-          {props.user?.id !== props.userId ? (
+          {props.user && props.user?.id !== props.userId ? (
             <Link href={'/amigos/' + props.id + '/' + props.user.fullName}>
               <FotoPerfil
                 img={props?.user?.img}
@@ -137,7 +139,7 @@ export function ThemplatePubli(props: {
           )}
           <div>
             <div className='flex items-center gap-2'>
-              {props.user?.id !== props.userId ? (
+              {props.user && props.user?.id !== props.userId ? (
                 <Link href={'/amigos/' + props.id + '/' + props.user.fullName}>
                   <Body>
                     {props.user?.id == props.userId
@@ -147,7 +149,9 @@ export function ThemplatePubli(props: {
                 </Link>
               ) : (
                 <Body>
-                  {props.user?.id == props.userId ? 'Tú' : props.user.fullName}
+                  {props.user && props.user?.id == props.userId
+                    ? 'Tú'
+                    : props.user.fullName}
                 </Body>
               )}
 
@@ -180,7 +184,9 @@ export function ThemplatePubli(props: {
           </div>
         ) : null}
       </DivPefilDelete>
-      <p className='p-6 text-[0.9rem] font-thin'>{props.description}</p>
+      <p className='p-6 text-[0.9rem] font-thin'>
+        {linkify(props.description || '')}
+      </p>
       {props.img ? (
         <ButtonOpenImage onClick={() => setOpenImage(true)}>
           <DivImage>

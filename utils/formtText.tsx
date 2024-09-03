@@ -16,7 +16,7 @@ export default function Linkify({text}: {text: string}) {
               key={index}
               href={part}
               target='_blank'
-              rel='noopener noreferrer'
+              style={{color: 'rgb(59 184 246/87%)'}}
               className='text-[rgb(59_184_246/87%)] hover:opacity-60'>
               {domainName}
             </Link>

@@ -26,7 +26,7 @@ import {useEffect, useState} from 'react';
 import {DeletePublic} from '@/lib/hook';
 import diferenteDate from './diferenteDate';
 import {useDebouncedCallback} from 'use-debounce';
-import linkify from '@/utils/formtText';
+import Linkify from '@/utils/formtText';
 
 const iconConLike = {
   height: ' 20px',
@@ -185,7 +185,7 @@ export function ThemplatePubli(props: {
         ) : null}
       </DivPefilDelete>
       <p className='p-6 text-[0.9rem] font-thin'>
-        {linkify(props.description || '')}
+        <Linkify text={props.description || ''} />
       </p>
       {props.img ? (
         <ButtonOpenImage onClick={() => setOpenImage(true)}>

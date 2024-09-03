@@ -1,4 +1,4 @@
-export default function linkify(text: string) {
+export default function Linkify({text}: {text: string}) {
   const urlPattern =
     /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
 
@@ -7,7 +7,6 @@ export default function linkify(text: string) {
   return (
     <>
       {parts.map((part, index) => {
-        console.log(part);
 
         if (urlPattern.test(part)) {
           const domainName = part.replace(/(^\w+:|^)\/\//, '').split('/')[0];

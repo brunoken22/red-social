@@ -9,7 +9,7 @@ import {EnviarMessage} from '@/lib/hook';
 import {useEffect, useRef, useState} from 'react';
 import {rtdb} from '@/lib/firebase';
 import {ref, onValue, update, get} from 'firebase/database';
-import linkify from '@/utils/formtText';
+import Linkify from '@/utils/formtText';
 
 type MessageUserChat = {
   rtdb: string | undefined;
@@ -111,7 +111,7 @@ export default function TemplateChat({
       e.target.message.value = '';
     }, 200);
   };
-  
+
   return (
     <TemplSns>
       <div className='flex justify-between border-[1px] border-[#3b3b3b] p-2'>
@@ -153,7 +153,7 @@ export default function TemplateChat({
                       textAlign: e.id == id ? 'end' : 'start',
                     }}>
                     <Menssage isUser={e.id == id ? true : false}>
-                      {linkify(e.message || '')}
+                      <Linkify text={e.message || ''} />
                     </Menssage>
                   </div>
                 );

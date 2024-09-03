@@ -132,7 +132,6 @@ export default function Header({themeDate}: {themeDate: string}) {
       return onValue(chatrooms, (snapshot: any) => {
         const valor = snapshot.val();
         if (valor) {
-          console.log(valor)
           const datas: any = Object?.values(valor);
           const utlimoMensaje: any = datas[datas.length - 1];
           datas.reverse().findIndex((object: any, indice: number) => {

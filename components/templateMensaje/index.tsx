@@ -48,7 +48,6 @@ export function TemMensaje() {
       });
     }
   }, [params.get('fullName')]);
-  // console.log(dataMessage);
 
   return (
     <DivTemMensaje>

@@ -18,10 +18,25 @@ export default function Layout({
 }) {
   useEffect(() => {
     const firstConnect = async () => {
-      await fetch(`${process.env.NEXT_PUBLIC_PORT}`, {
-        method: 'GET',
-        credentials: 'include',
-      });
+      const apiUrl = process.env.NEXT_PUBLIC_PORT;
+      if (apiUrl) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'GET',
+            credentials: 'include',
+          });
+          if (!response.ok) {
+            console.error(
+              'Error en la respuesta del servidor:',
+              response.statusText
+            );
+          }
+        } catch (error) {
+          console.error('Error en la solicitud fetch:', error);
+        }
+      }
+      {
+      }
     };
     firstConnect();
   }, []);

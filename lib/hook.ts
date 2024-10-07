@@ -107,7 +107,7 @@ export async function modificarUser(dataUser: DataUser) {
       : null;
 
   if (dataMod) {
-    mutate('/user/token');
+    await mutate('/user/token');
   }
   return dataMod;
 }
@@ -245,7 +245,7 @@ export async function viewNotification(idPublication: string) {
   };
 
   const data = await fetchApiSwr(api, option);
-  mutate('/user/notificaciones?offset=0');
+  await mutate('/user/notificaciones?offset=0');
   return data;
 }
 export function GetAllPublicaciones() {
@@ -402,7 +402,7 @@ export async function CreatePublicacion(dataPubli: DataPublicacion) {
   };
   const dataNotiSwr = await fetchApiSwr(api, option);
   if (dataNotiSwr) {
-    mutate(`/user/publicacion?offset=0`);
+    await mutate(`/user/publicacion?offset=0`);
   }
 
   return dataNotiSwr;
@@ -420,8 +420,8 @@ export async function createSolicitud(dataSoli: Solicitud) {
   const data = shouldFetch ? await fetchApiSwr(api, option) : null;
 
   if (data) {
-    mutate('/user/token');
-    mutate('/user/amigos/' + dataSoli.amigoId);
+    await mutate('/user/token');
+    await mutate('/user/amigos/' + dataSoli.amigoId);
   }
 
   return {dataCreateSoli: data};
@@ -437,7 +437,7 @@ export async function aceptarSolicitud(id: number) {
   };
   const data = await fetchApiSwr(api, option);
   if (data) {
-    mutate('/user/token');
+    await mutate('/user/token');
   }
   return data;
 }
@@ -455,8 +455,8 @@ export async function rechazarSolicitud(dataSoli: Solicitud) {
       ? await fetchApiSwr(api, option)
       : null;
   if (data) {
-    mutate('/user/token');
-    mutate('/user/amigos/' + dataSoli.userId);
+    await mutate('/user/token');
+    await mutate('/user/amigos/' + dataSoli.userId);
   }
   return {dataRech: data};
 }
@@ -473,8 +473,8 @@ export async function eliminarAmigo(id: number) {
   const dataElimAmigo = await fetchApiSwr(api, option);
 
   if (dataElimAmigo) {
-    mutate('/user/token');
-    mutate('/user/amigos/' + id);
+    await mutate('/user/token');
+    await mutate('/user/amigos/' + id);
   }
   return dataElimAmigo;
 }

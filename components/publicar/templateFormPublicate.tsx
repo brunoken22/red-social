@@ -54,7 +54,6 @@ export default function TemplateFormPublicar({
 
   return (
     <>
-      (
       <DivForm>
         <div className='max-w-[550px] w-[90%]'>
           <Form onSubmit={handleClickForm}>
@@ -91,7 +90,7 @@ export default function TemplateFormPublicar({
           </Form>
         </div>
       </DivForm>
-      ){isLoading ? <Loader /> : null}
+      {isLoading ? <Loader /> : null}
     </>
   );
 }

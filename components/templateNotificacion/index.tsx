@@ -1,20 +1,16 @@
 'use client';
 import dynamic from 'next/dynamic';
-import {DivPublicar} from '@/ui/container';
-import {user, isConnect, notificacionesUser} from '@/lib/atom';
-import {NotificacionesUser} from '@/lib/hook';
-import {useRecoilValue} from 'recoil';
-import {useState} from 'react';
+import { DivPublicar } from '@/ui/container';
+import { user, isConnect, notificacionesUser } from '@/lib/atom';
+import { NotificacionesUser } from '@/lib/hook';
+import { useRecoilValue } from 'recoil';
+import { useState } from 'react';
 
-const SkeletonNoti = dynamic(() =>
-  import('@/ui/skeleton').then((mod) => mod.SkeletonNoti)
-);
+const SkeletonNoti = dynamic(() => import('@/ui/skeleton').then((mod) => mod.SkeletonNoti));
 const ButtonMasPubli = dynamic(() =>
   import('../publicaciones/styled').then((mod) => mod.ButtonMasPubli)
 );
-const ButtonNoti = dynamic(() =>
-  import('@/ui/boton').then((mod) => mod.ButtonNoti)
-);
+const ButtonNoti = dynamic(() => import('@/ui/boton').then((mod) => mod.ButtonNoti));
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
 const Link = dynamic(() => import('next/link'));
 
@@ -23,7 +19,7 @@ export function TemNoti() {
   const dataUser = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);
   const [offset, setOffset] = useState(0);
-  const {dataNotiSwr, isLoadingNotiSwr} = NotificacionesUser(offset);
+  const { dataNotiSwr, isLoadingNotiSwr } = NotificacionesUser(offset);
 
   const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -33,10 +29,9 @@ export function TemNoti() {
     }
     setOffset((prevPagePubli) => prevPagePubli + 10);
   };
-
   return (
     <DivPublicar>
-      {notificacionesUserAtom
+      {notificacionesUserAtom && notificacionesUserAtom.publicacion.length
         ? notificacionesUserAtom.publicacion.map((e) => (
             <Link href={'/notificaciones/' + e.id} key={e.id}>
               <ButtonNoti visto={!e.open} id={e.id.toString()}>
@@ -46,8 +41,7 @@ export function TemNoti() {
                     e.commentPublis
                       ?.slice()
                       .reverse()
-                      .find((e: any) => e.userId !== dataUser.user.id)?.user
-                      ?.img
+                      .find((e: any) => e.userId !== dataUser.user.id)?.user?.img
                   }
                   connect={
                     dataIsConnect?.find((eConnect: any) => {
@@ -65,8 +59,7 @@ export function TemNoti() {
                     e.commentPublis
                       ?.slice()
                       .reverse()
-                      .find((e: any) => e.userId !== dataUser.user.id)?.user
-                      ?.fullName
+                      .find((e: any) => e.userId !== dataUser.user.id)?.user?.fullName
                   }
                 </p>
               </ButtonNoti>

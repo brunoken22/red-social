@@ -1,11 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
-import {Body} from '@/ui/typography';
+import { Body } from '@/ui/typography';
 import {
   DivPerfil,
   DivSpan,
   ButtonOpenImage,
-  DivImage,
   DivInteractuar,
   BottonLike,
   DivCantidad,
@@ -19,14 +18,15 @@ import {
 import Like from '@/ui/icons/like.svg';
 import CloseWhite from '@/ui/icons/closeWhite.svg';
 import Comentar from '@/ui/icons/comentar.svg';
-import {isConnect} from '@/lib/atom';
-import {useRecoilValue} from 'recoil';
+import { isConnect } from '@/lib/atom';
+import { useRecoilValue } from 'recoil';
 import Link from 'next/link';
-import {useEffect, useState} from 'react';
-import {DeletePublic} from '@/lib/hook';
+import { useEffect, useState } from 'react';
+import { DeletePublic } from '@/lib/hook';
 import diferenteDate from './diferenteDate';
-import {useDebouncedCallback} from 'use-debounce';
+import { useDebouncedCallback } from 'use-debounce';
 import Linkify from '@/utils/formtText';
+import { LoaderRequest } from '../loader';
 
 const iconConLike = {
   height: ' 20px',
@@ -39,7 +39,11 @@ const iconConLike = {
 
 const Verification = dynamic(() => import('@/ui/verification'));
 const Comment = dynamic(() => import('./comment'));
-const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
+const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), { loading: () => <LoaderRequest /> });
+const DivImage = dynamic(
+  () => import('@/components/publicaciones/styled').then((mod) => mod.DivImage),
+  { loading: () => <LoaderRequest /> }
+);
 
 export function ThemplatePubli(props: {
   description?: string;
@@ -56,9 +60,7 @@ export function ThemplatePubli(props: {
 }) {
   const [like, setLike] = useState<'like' | 'disLike'>();
   const [comentario, setComentario] = useState(
-    props.comentarios?.length &&
-      props.comentarios.length > 0 &&
-      props.comentarios.length < 3
+    props.comentarios?.length && props.comentarios.length > 0 && props.comentarios.length < 3
       ? true
       : false
   );
@@ -73,13 +75,11 @@ export function ThemplatePubli(props: {
     const likeODisLike = (await import('@/lib/hook')).likeODisLike;
     await likeODisLike(props.idPublicacion.toString());
   }, 500);
-  const {dataDelete} = DeletePublic(publiId);
+  const { dataDelete } = DeletePublic(publiId);
 
   useEffect(() => {
     const isLike =
-      props?.like?.length > 0
-        ? props.like?.find((e: any) => e.user.id == props.userId)
-        : false;
+      props?.like?.length > 0 ? props.like?.find((e: any) => e.user.id == props.userId) : false;
     setLike(!isLike ? 'disLike' : 'like');
 
     setTotalLike(props.like?.length);
@@ -124,8 +124,7 @@ export function ThemplatePubli(props: {
                 img={props?.user?.img}
                 className='h-[40px] w-[40px]'
                 connect={
-                  dataIsConnect?.find((e: any) => e.id == props.id)?.connect &&
-                  true
+                  dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
                 }></FotoPerfil>
             </Link>
           ) : (
@@ -133,31 +132,22 @@ export function ThemplatePubli(props: {
               img={props?.user?.img}
               className='h-[40px] w-[40px]'
               connect={
-                dataIsConnect?.find((e: any) => e.id == props.id)?.connect &&
-                true
+                dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
               }></FotoPerfil>
           )}
           <div>
             <div className='flex items-center gap-2'>
               {props.user && props.user?.id !== props.userId ? (
                 <Link href={'/amigos/' + props.id + '/' + props.user.fullName}>
-                  <Body>
-                    {props.user?.id == props.userId
-                      ? 'Tú'
-                      : props.user.fullName}
-                  </Body>
+                  <Body>{props.user?.id == props.userId ? 'Tú' : props.user.fullName}</Body>
                 </Link>
               ) : (
                 <Body>
-                  {props.user && props.user?.id == props.userId
-                    ? 'Tú'
-                    : props.user.fullName}
+                  {props.user && props.user?.id == props.userId ? 'Tú' : props.user.fullName}
                 </Body>
               )}
 
-              {props.user.verification ? (
-                <Verification publication={true} />
-              ) : null}
+              {props.user.verification ? <Verification publication={true} /> : null}
             </div>
             <span className='text-[0.7rem] '>{diferenteDate(props.fecha)}</span>
           </div>
@@ -254,9 +244,7 @@ export function ThemplatePubli(props: {
           type='button'
           id={'comentario' + Number(props.idPublicacion)}>
           <Comentar
-            className={`${
-              comentario ? 'fill-[#84e981]' : 'dark:fill-[#ddd] fill-[#919191]'
-            }`}
+            className={`${comentario ? 'fill-[#84e981]' : 'dark:fill-[#ddd] fill-[#919191]'}`}
           />
           Comentar
         </BottonLike>
@@ -271,9 +259,7 @@ export function ThemplatePubli(props: {
           imgUserPro={props.imgUserPro}
           userId={props.userId}
           id={props.id}
-          connect={
-            dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
-          }
+          connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
         />
       ) : null}
       {openImage ? (

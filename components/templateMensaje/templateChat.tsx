@@ -1,24 +1,16 @@
 'use client';
-import {TemplSns, Sms, Menssage} from './styled';
+import { TemplSns, Menssage } from './styled';
 import FotoPerfil from '@/ui/FotoPerfil';
-import {Input} from '@/ui/input';
+import { Input } from '@/ui/input';
 import CloseSVG from '@/ui/icons/close.svg';
-import {Button} from '../publicar/styled';
+import { Button } from '../publicar/styled';
 import Link from 'next/link';
-import {EnviarMessage} from '@/lib/hook';
-import {useEffect, useRef, useState} from 'react';
-import {rtdb} from '@/lib/firebase';
-import {ref, onValue, update, get} from 'firebase/database';
+import { EnviarMessage } from '@/lib/hook';
+import { useEffect, useRef, useState } from 'react';
+import { rtdb } from '@/lib/firebase';
+import { ref, onValue, update, get } from 'firebase/database';
 import Linkify from '@/utils/formtText';
-
-type MessageUserChat = {
-  rtdb: string | undefined;
-  message?: string;
-  read?: boolean;
-  fullName: string;
-  img: string;
-  id: string;
-};
+import { MessageUserChat } from '.';
 
 export default function TemplateChat({
   dataMensajeUser,
@@ -32,26 +24,14 @@ export default function TemplateChat({
   connect: boolean;
 }) {
   const smsRef: any = useRef(null);
-  const [messageUser, setMessageUser] = useState<MessageUserChat | false>(
-    dataMensajeUser
-  );
   const [claveMessage, setclaveMessage] = useState('');
   const [messagesAll, setMessagesAll] = useState([]);
-  const {dataMesssage} = EnviarMessage(messageUser);
 
-  useEffect(() => {
-    if (dataMesssage) {
-      return setMessageUser((prev: any) => ({...prev, message: ''}));
-    }
-  }, [dataMesssage]);
   useEffect(() => {
     if (dataMensajeUser) {
-      const chatrooms = ref(
-        rtdb,
-        '/rooms/' + dataMensajeUser?.rtdb + '/messages'
-      );
+      const chatrooms = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/messages');
 
-      return onValue(chatrooms, (snapshot: any) => {
+      return onValue(chatrooms, (snapshot) => {
         const valor = snapshot.val();
         if (valor) {
           const datas: any = Object.values(valor);
@@ -65,8 +45,9 @@ export default function TemplateChat({
       });
     }
   }, [dataMensajeUser]);
+
   useEffect(() => {
-    if (dataMensajeUser) {
+    if (claveMessage) {
       if (messagesAll) {
         const utlimoMensaje: any = messagesAll[messagesAll.length - 1];
 
@@ -91,7 +72,8 @@ export default function TemplateChat({
         }
       }
     }
-  }, [messagesAll]);
+  }, [claveMessage]);
+
   useEffect(() => {
     if (!smsRef.current) {
       return;
@@ -100,33 +82,35 @@ export default function TemplateChat({
     container.scrollTop = container.scrollHeight;
   }, [messagesAll]);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setMessageUser((prev: any) => ({
-      ...prev,
-      message: e.target.message.value,
+
+    const target = e.currentTarget;
+
+    const messageUser: MessageUserChat = {
+      rtdb: dataMensajeUser.rtdb,
+      id: dataMensajeUser.id,
+      fullName: dataMensajeUser.fullName,
+      img: dataMensajeUser.img,
+      message: target.message.value,
       read: false,
-    }));
-    setTimeout(() => {
-      e.target.message.value = '';
-    }, 200);
+    };
+
+    const data = await EnviarMessage(messageUser);
+    if (data) {
+      return (target.message.value = '');
+    }
+    alert('Error al mandar mensaje');
   };
 
   return (
     <TemplSns>
-      <div className='flex justify-between border-[1px] border-[#3b3b3b] p-2'>
+      <div className=' flex justify-between border-[1px] border-[#3b3b3b] p-2'>
         <div className='flex items-center gap-4 overflow-hidden'>
-          <Link
-            href={
-              '/amigos/' + dataMensajeUser.id + '/' + dataMensajeUser.fullName
-            }>
+          <Link href={'/amigos/' + dataMensajeUser.id + '/' + dataMensajeUser.fullName}>
             <FotoPerfil
               className='w-[40px] h-[40px]'
-              img={
-                dataMensajeUser.img ||
-                (dataMensajeUser.img == 'null' && '') ||
-                ''
-              }
+              img={dataMensajeUser.img || (dataMensajeUser.img == 'null' && '') || ''}
               connect={connect}
             />
           </Link>
@@ -159,13 +143,14 @@ export default function TemplateChat({
                 );
               })
             : null}
-          {messagesAll?.length > 0 &&
-            (messagesAll[messagesAll.length - 1] as any).id === id &&
-            (messagesAll[messagesAll.length - 1] as any).read && (
-              <p className='text-end  text-[0.8rem] text-light -mt-2'>
-                ✔✔ Visto
-              </p>
-            )}
+          {messagesAll?.length > 0 && (messagesAll[messagesAll.length - 1] as any).id === id && (
+            <p
+              className={`text-end  text-[0.8rem] ${
+                (messagesAll[messagesAll.length - 1] as any).read ? 'text-light' : 'text-gray-500'
+              } -mt-2`}>
+              ✔✔ {(messagesAll[messagesAll.length - 1] as any).read ? 'Leido' : 'Sin leer'}
+            </p>
+          )}
         </div>
         <div>
           <form

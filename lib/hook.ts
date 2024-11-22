@@ -1,8 +1,8 @@
-import useSWR, {mutate} from 'swr';
+import useSWR, { mutate } from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import useSWRInfinite from 'swr/infinite';
-import {fetchApiSwr} from './api';
-import {useRecoilState, useSetRecoilState} from 'recoil';
+import { fetchApiSwr } from './api';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
   user,
   publicacionUser,
@@ -15,10 +15,12 @@ import {
   notificacionesUser,
   Publicacion,
   getSugerenciaAmigos,
+  User,
 } from '@/lib/atom';
-import {useEffect} from 'react';
-import {urltoBlob, filetoDataURL, compressAccurately} from 'image-conversion';
-import {getCookie, setCookie} from 'cookies-next';
+import { useEffect, useState } from 'react';
+import { urltoBlob, filetoDataURL, compressAccurately } from 'image-conversion';
+import { getCookie, setCookie } from 'cookies-next';
+import { MessageUserChat } from '@/components/templateMensaje';
 
 type DataUser = {
   fullName?: string;
@@ -39,6 +41,49 @@ type Solicitud = {
   amigoId?: number;
   userId?: number;
 };
+import { getDatabase, ref, onValue, onDisconnect, set } from 'firebase/database';
+
+export const useConnectionStatus = (user: User) => {
+  const [status, setStatus] = useState(false);
+
+  useEffect(() => {
+    if (!user.id) return;
+
+    const db = getDatabase();
+    const userStatusRef = ref(db, `/connect/${user.id}`);
+    const connectedRef = ref(db, '.info/connected');
+
+    const isOnline = {
+      ...user,
+      connect: true,
+      lastChanged: Date.now(),
+    };
+
+    const isOffline = {
+      ...user,
+      connect: false,
+      lastChanged: Date.now(),
+    };
+
+    // Escuchar cambios en la conexión
+    const unsubscribe = onValue(connectedRef, (snapshot) => {
+      if (snapshot.val() === true) {
+        // Marcar como conectado
+        set(userStatusRef, isOnline);
+        // Configurar onDisconnect para marcar como desconectado
+        onDisconnect(userStatusRef).set(isOffline);
+        setStatus(true);
+      } else {
+        setStatus(false);
+      }
+    });
+
+    // Limpiar cuando se desmonte el componente
+    return () => unsubscribe();
+  }, [user]);
+
+  return status;
+};
 export async function logOut() {
   const api = '/log-out';
   const option = {
@@ -54,7 +99,7 @@ export async function logOut() {
   }
   return data;
 }
-export function CreateUser(dataUser: DataUser) {
+export async function CreateUser(dataUser: DataUser) {
   const api = '/auth';
   const option = {
     method: 'POST',
@@ -65,14 +110,15 @@ export function CreateUser(dataUser: DataUser) {
 
     body: JSON.stringify(dataUser),
   };
-  const {data, isLoading} = useSWR(
-    dataUser.email && dataUser.password && dataUser.fullName ? api : null,
-    (url) => fetchApiSwr(url, option)
-  );
+  const data =
+    dataUser.email && dataUser.password && dataUser.fullName
+      ? await fetchApiSwr(api, option)
+      : null;
+
   if (data?.user?.id) {
     setCookie('login', true);
   }
-  return {data, isLoading};
+  return data;
 }
 export async function signinUser(dataUser: DataSingin) {
   const api = '/signin';
@@ -128,7 +174,7 @@ export function GetUser() {
     },
   };
 
-  const {data, isLoading} = useSWR(api, (url) => fetchApiSwr(url, option), {
+  const { data, isLoading } = useSWR(api, (url) => fetchApiSwr(url, option), {
     refreshInterval: 10000,
   });
   useEffect(() => {
@@ -140,18 +186,38 @@ export function GetUser() {
       });
 
       // setPublicacionesUser([...data.getUserRes.publicacions]);
-      setAmigosAllData(data.friendsAccepted);
+      setAmigosAllData({ isLoading: false, data: data.friendsAccepted });
       setGetAllUserData(data.getAllUserRes);
       setGetSugerenciaAmigosData(data.getAllUserSugeridos);
       setSoliAllEnv(data.friendEnv);
       setSoliAllReci(data.friendReci);
     }
   }, [data]);
-  return {data, isLoading};
+  return { data, isLoading };
+}
+export function GetAllUserChat() {
+  const token = getCookie('login');
+  const api = '/user/chat-users';
+  const option = {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const { data, isLoading } = useSWR(
+    token === 'true' ? api : null,
+    (url) => fetchApiSwr(url, option),
+    {
+      refreshInterval: 10000,
+    }
+  );
+
+  return { data, isLoading };
 }
 export function NotificacionesUser(offset: number) {
-  const [notificacionesUserAtom, setNotificacionesUserAtom] =
-    useRecoilState(notificacionesUser);
+  const [notificacionesUserAtom, setNotificacionesUserAtom] = useRecoilState(notificacionesUser);
   const api = `/user/notificaciones?offset=${offset}`;
 
   const option = {
@@ -162,7 +228,7 @@ export function NotificacionesUser(offset: number) {
     credentials: 'include',
   };
   const token = getCookie('login');
-  const {data, isLoading} = useSWR(
+  const { data, isLoading } = useSWR(
     token == 'true' ? api : null,
     (api) => fetchApiSwr(api, option),
     {
@@ -175,16 +241,9 @@ export function NotificacionesUser(offset: number) {
 
   useEffect(() => {
     if (data && data?.publications) {
-      if (
-        notificacionesUserAtom &&
-        notificacionesUserAtom.publicacion.length &&
-        offset !== 0
-      ) {
+      if (notificacionesUserAtom && notificacionesUserAtom.publicacion.length && offset !== 0) {
         setNotificacionesUserAtom(() => ({
-          publicacion: [
-            ...notificacionesUserAtom.publicacion,
-            ...data?.publications,
-          ],
+          publicacion: [...notificacionesUserAtom.publicacion, ...data?.publications],
           newPubliOPen: data.newPubliOPen + notificacionesUserAtom.newPubliOPen,
         }));
         return;
@@ -214,9 +273,8 @@ export function NotificacionesUserImmutable(offset: number) {
     credentials: 'include',
   };
 
-  const {data, isLoading} = useSWRImmutable(
-    token == 'true' ? api : null,
-    (url) => fetchApiSwr(url, option)
+  const { data, isLoading } = useSWRImmutable(token == 'true' ? api : null, (url) =>
+    fetchApiSwr(url, option)
   );
 
   useEffect(() => {
@@ -250,6 +308,7 @@ export async function viewNotification(idPublication: string) {
 }
 export function GetAllPublicaciones() {
   const setPublicacionesAllAmigos = useSetRecoilState(publicacionAmigos);
+
   const option = {
     method: 'GET',
     headers: {
@@ -258,19 +317,16 @@ export function GetAllPublicaciones() {
     credentials: 'include',
   };
 
-  const {data, isLoading, setSize, size} = useSWRInfinite(
+  const { data, isLoading, setSize, size } = useSWRInfinite(
     (pageIndex, previousPageData) => {
       if (previousPageData && !previousPageData.length) return null;
       return `/user/amigos/publicaciones?offset=${pageIndex * 10}`;
     },
-    (api) => fetchApiSwr(api, option),
-    {
-      revalidateAll: true,
-    }
+    (api) => fetchApiSwr(api, option)
   );
 
   useEffect(() => {
-    if (data && data[0]) {
+    if (data && data.length) {
       const flatArray = data.flat();
       setPublicacionesAllAmigos(flatArray);
     }
@@ -294,13 +350,12 @@ export function GetAllPublicacionesUser() {
     credentials: 'include',
   };
 
-  const {data, isLoading, setSize, size} = useSWRInfinite(
+  const { data, isLoading, setSize, size } = useSWRInfinite(
     (pageIndex, previousPageData) => {
       if (previousPageData && !previousPageData.length) return null;
       return `/user/publicacion?offset=${pageIndex * 10}`;
     },
-    (api) => fetchApiSwr(api, option),
-    {}
+    (api) => fetchApiSwr(api, option)
   );
   useEffect(() => {
     if (data?.length) {
@@ -327,7 +382,7 @@ export function GetPubliAmigo(id: string) {
     credentials: 'include',
   };
 
-  const {data, isLoading, setSize, size} = useSWRInfinite(
+  const { data, isLoading, setSize, size } = useSWRInfinite(
     (pageIndex, previousPageData) => {
       if (previousPageData && !previousPageData.length) return null;
       return `/user/amigos/publicaciones/${id}?offset=${pageIndex * 10}`;
@@ -342,11 +397,10 @@ export function GetPubliAmigo(id: string) {
     }
   }, [data]);
 
-  return {dataPubliAmigo: data, isLoadingGetFriend: isLoading, setSize, size};
+  return { dataPubliAmigo: data, isLoadingGetFriend: isLoading, setSize, size };
 }
 export function DeletePublic(id: number) {
-  const [publicacionesUser, setPublicacionesUser] =
-    useRecoilState(publicacionUser);
+  const [publicacionesUser, setPublicacionesUser] = useRecoilState(publicacionUser);
   const api = '/user/publicacion/' + id;
   const option = {
     method: 'DELETE',
@@ -355,19 +409,16 @@ export function DeletePublic(id: number) {
     },
     credentials: 'include',
   };
-  const {data, isLoading} = useSWR(id > -1 ? api : null, (url) =>
-    fetchApiSwr(url, option)
-  );
+  const { data, isLoading } = useSWR(id > -1 ? api : null, (url) => fetchApiSwr(url, option));
   useEffect(() => {
     if (data) {
       const newPublic =
-        publicacionesUser &&
-        publicacionesUser.filter((publi: Publicacion) => publi.id != id);
+        publicacionesUser && publicacionesUser.filter((publi: Publicacion) => publi.id != id);
       setPublicacionesUser(newPublic);
     }
   }, [data]);
 
-  return {dataDelete: data, isLoadingDeletePubli: isLoading};
+  return { dataDelete: data, isLoadingDeletePubli: isLoading };
 }
 export function GetAmigo(id: string) {
   const api = `/user/amigos/${id}`;
@@ -380,14 +431,14 @@ export function GetAmigo(id: string) {
     credentials: 'include',
   };
 
-  const {data, isLoading} = useSWR(api, (url) => fetchApiSwr(url, option), {
+  const { data, isLoading } = useSWR(api, (url) => fetchApiSwr(url, option), {
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
     revalidateOnMount: true,
     refreshInterval: 100000,
   });
 
-  return {data, isLoading};
+  return { data, isLoading };
 }
 export async function CreatePublicacion(dataPubli: DataPublicacion) {
   const api = '/user/publicacion';
@@ -424,7 +475,7 @@ export async function createSolicitud(dataSoli: Solicitud) {
     await mutate('/user/amigos/' + dataSoli.amigoId);
   }
 
-  return {dataCreateSoli: data};
+  return { dataCreateSoli: data };
 }
 export async function aceptarSolicitud(id: number) {
   const api = '/user/amigos/' + id;
@@ -450,15 +501,12 @@ export async function rechazarSolicitud(dataSoli: Solicitud) {
     },
     credentials: 'include',
   };
-  const data =
-    dataSoli.userId && dataSoli.userId > -1
-      ? await fetchApiSwr(api, option)
-      : null;
+  const data = dataSoli.userId && dataSoli.userId > -1 ? await fetchApiSwr(api, option) : null;
   if (data) {
     await mutate('/user/token');
     await mutate('/user/amigos/' + dataSoli.userId);
   }
-  return {dataRech: data};
+  return { dataRech: data };
 }
 export async function eliminarAmigo(id: number) {
   const api = '/user/amigos/' + id;
@@ -500,7 +548,7 @@ export async function comentarPublicacion(datas: any) {
       'Content-Type': 'application/json',
     },
     credentials: 'include',
-    body: JSON.stringify({description: datas.description}),
+    body: JSON.stringify({ description: datas.description }),
   };
   const data = await fetchApiSwr(api, option);
   return data;
@@ -515,19 +563,15 @@ export function GetPublicacionId(id: string) {
     },
     credentials: 'include',
   };
-  const {data, isLoading} = useSWR(
-    token && id ? api : null,
-    (url) => fetchApiSwr(url, option),
-    {
-      revalidateOnFocus: true,
-      revalidateOnReconnect: true,
-      revalidateOnMount: true,
-      refreshInterval: 100000,
-    }
-  );
-  return {dataPubliId: data, isLoadGetPubliId: isLoading};
+  const { data, isLoading } = useSWR(token && id ? api : null, (url) => fetchApiSwr(url, option), {
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+    revalidateOnMount: true,
+    refreshInterval: 100000,
+  });
+  return { dataPubliId: data, isLoadGetPubliId: isLoading };
 }
-export function EnviarMessage(datas: any) {
+export async function EnviarMessage(datas: MessageUserChat) {
   const token = getCookie('login');
   const api = '/user/room';
   const option = {
@@ -538,15 +582,9 @@ export function EnviarMessage(datas: any) {
     credentials: 'include',
     body: JSON.stringify(datas),
   };
-  const {data, isLoading} = useSWR(
-    token == 'true' && datas.message ? api : null,
-    (url) => fetchApiSwr(url, option),
-    {
-      revalidateOnReconnect: true,
-      revalidateOnMount: true,
-    }
-  );
-  return {dataMesssage: data, isLoadMessage: isLoading};
+  const data = token == 'true' && datas.message ? await fetchApiSwr(api, option) : null;
+
+  return data;
 }
 export async function generateCode() {
   const api = '/user/generateCode';
@@ -569,7 +607,7 @@ export async function verificateCode(code: string) {
       'Content-Type': 'application/json',
     },
     credentials: 'include',
-    body: JSON.stringify({code}),
+    body: JSON.stringify({ code }),
   };
 
   const data = await fetchApiSwr(api, option);

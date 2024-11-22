@@ -1,10 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
-import {Section, DivSection, DivIcons, DivResponse, DivResult} from './styled';
+import { Section, DivSection, DivIcons, DivResponse, DivResult } from './styled';
 import MyAmigos from '@/ui/icons/myAmigos.svg';
-import {ButtonNoti} from '@/ui/boton';
-import {useState} from 'react';
-import {useRecoilValue} from 'recoil';
+import { ButtonNoti } from '@/ui/boton';
+import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import {
   getAllAmigos,
   getAllSolicitudesRecibidas,
@@ -95,9 +95,7 @@ export default function AmigosComponent() {
       <DivResult>
         {sugerencia && !soliAmis && !allAmig ? (
           <>
-            <h3 className='font-semibold text-xl mb-4'>
-              Sugerencias de amistad
-            </h3>
+            <h3 className='font-semibold text-xl mb-4'>Sugerencias de amistad</h3>
             <DivResponse>
               {dataAllUser?.length > 0
                 ? dataAllUser?.map((user) => (
@@ -116,9 +114,7 @@ export default function AmigosComponent() {
         ) : null}
         {soliAmis ? (
           <>
-            <h3 className='font-semibold text-xl mb-4'>
-              Solicitudes de amistad
-            </h3>
+            <h3 className='font-semibold text-xl mb-4'>Solicitudes de amistad</h3>
             <DivResponse>
               {dataAllSoliReci?.length > 0
                 ? dataAllSoliReci.map((user) => (
@@ -137,12 +133,10 @@ export default function AmigosComponent() {
         ) : null}
         {allAmig ? (
           <>
-            <h3 className='font-semibold text-xl mb-4 mt-0'>
-              Todos tus amigos
-            </h3>
+            <h3 className='font-semibold text-xl mb-4 mt-0'>Todos tus amigos</h3>
             <DivResponse>
-              {dataAllAmigos?.length > 0
-                ? dataAllAmigos.map((user) => (
+              {dataAllAmigos.data?.length > 0
+                ? dataAllAmigos.data.map((user) => (
                     <TemplateFriendRequest
                       key={user.id}
                       id={user.id}
@@ -158,9 +152,7 @@ export default function AmigosComponent() {
         ) : null}
         {soliEnv ? (
           <>
-            <h3 className='font-semibold text-xl mb-4  mt-0'>
-              Solicitud Enviado
-            </h3>
+            <h3 className='font-semibold text-xl mb-4  mt-0'>Solicitud Enviado</h3>
             <DivResponse>
               {dataAllSoliEnv?.length > 0
                 ? dataAllSoliEnv.map((user) => (

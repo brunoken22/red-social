@@ -1,22 +1,15 @@
 'use client';
 import dynamic from 'next/dynamic';
-import {
-  ref,
-  onValue,
-  update,
-  goOffline,
-  goOnline,
-  onDisconnect,
-} from 'firebase/database';
-import {rtdb} from '@/lib/firebase';
+import { ref, onValue, goOffline, goOnline, onDisconnect } from 'firebase/database';
+import { rtdb } from '@/lib/firebase';
 import './style.css';
-import {usePathname} from 'next/navigation';
-import React, {useEffect, useRef, useState} from 'react';
-import {GetUser, NotificacionesUser} from '@/lib/hook';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useRef, useState } from 'react';
+import { GetUser, NotificacionesUser, useConnectionStatus } from '@/lib/hook';
 // import {useGlobalAudioPlayer} from 'react-use-audio-player';
 import Link from 'next/link';
-import {Menu} from '@/components/menu';
-import {useRecoilValue, useRecoilState} from 'recoil';
+import { Menu } from '@/components/menu';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import {
   user,
   getAllSolicitudesRecibidas,
@@ -24,35 +17,38 @@ import {
   isConnect,
   Connect,
   notificacionesUser,
+  Message,
   // getAllUser,
 } from '@/lib/atom';
 import Logo from '@/public/logo.svg';
-import {useDebouncedCallback} from 'use-debounce';
-const SkeletonNav = dynamic(() =>
-  import('@/ui/skeleton').then((mod) => mod.SkeletonNav)
-);
-const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
+import { useDebouncedCallback } from 'use-debounce';
+import { SkeletonNav } from '@/ui/skeleton';
+import { LoaderRequest } from '../loader';
 
-const DivConectados = dynamic(() =>
-  import('./styled').then((mod) => mod.DivConectados)
-);
-const DivConnect = dynamic(() =>
-  import('./styled').then((mod) => mod.DivConnect)
-);
+const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), {
+  loading: () => <LoaderRequest />,
+});
 
-const DivContenedorConnect = dynamic(() =>
-  import('./styled').then((mod) => mod.DivContenedorConnect)
+const DivConectados = dynamic(() => import('./styled').then((mod) => mod.DivConectados), {
+  loading: () => <LoaderRequest />,
+});
+
+const DivConnect = dynamic(() => import('./styled').then((mod) => mod.DivConnect), {
+  loading: () => <LoaderRequest />,
+});
+
+const DivContenedorConnect = dynamic(
+  () => import('./styled').then((mod) => mod.DivContenedorConnect),
+  {
+    loading: () => <LoaderRequest />,
+  }
 );
-const SearchUser = dynamic(() =>
-  import('../searchUsers').then((mod) => mod.SearchUser)
-);
-const SearchBox = dynamic(() =>
-  import('react-instantsearch').then((mod) => mod.SearchBox)
-);
+const SearchUser = dynamic(() => import('../searchUsers').then((mod) => mod.SearchUser));
+const SearchBox = dynamic(() => import('react-instantsearch').then((mod) => mod.SearchBox));
 const ConnectedUsers = dynamic(() => import('./connectedUser'));
 const NavegationUrl = dynamic(() => import('./navHeader'));
 
-export default function Header({themeDate}: {themeDate: string}) {
+export default function Header({ themeDate }: { themeDate: string }) {
   GetUser();
   NotificacionesUser(0);
   // const {load} = useGlobalAudioPlayer();
@@ -73,6 +69,8 @@ export default function Header({themeDate}: {themeDate: string}) {
   const useDebounce = useDebouncedCallback((query, search) => {
     search(query);
   }, 1000);
+  const connectionStatus = useConnectionStatus(dataUser.user);
+
   const handleMenu = (e: any) => {
     e.preventDefault();
     if (menu) {
@@ -81,14 +79,14 @@ export default function Header({themeDate}: {themeDate: string}) {
     }
     setMenu(true);
   };
+
   const handleClick = (data: boolean) => {
     setMenu(data);
   };
+
   useEffect(() => {
     const cookieResponse = async () => {
-      const setCookie = await import('cookies-next').then(
-        (mod) => mod.setCookie
-      );
+      const setCookie = await import('cookies-next').then((mod) => mod.setCookie);
       setCookie('theme', theme);
       if (theme !== 'true') {
         document.documentElement.classList.remove('dark');
@@ -98,6 +96,7 @@ export default function Header({themeDate}: {themeDate: string}) {
     };
     cookieResponse();
   }, [theme]);
+
   // useEffect(() => {
   //   if (notificacionesUserAtom.length) {
   //     const newNotificationSound = notificacionesUserAtom.filter((item) => {
@@ -125,58 +124,45 @@ export default function Header({themeDate}: {themeDate: string}) {
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
-    let count: any = [];
-    goOnline(rtdb);
-    dataUser.user.rtdb?.map((item: string) => {
+    dataUser.user.rtdb.map((item) => {
       const chatrooms = ref(rtdb, '/rooms/' + item + '/messages');
-      return onValue(chatrooms, (snapshot: any) => {
+      return onValue(chatrooms, (snapshot) => {
         const valor = snapshot.val();
         if (valor) {
-          const datas: any = Object?.values(valor);
-          const utlimoMensaje: any = datas[datas.length - 1];
-          datas.reverse().findIndex((object: any, indice: number) => {
-            if (object.id != dataUser.user.id && object.read) {
-              return object;
-            }
-            
-            const reversedDatas = datas.reverse();
-            const lastIndex = reversedDatas.length - indice;
+          const datas: Message[] = Object.values(valor);
+          const utlimoMensaje = datas[datas.length - 1];
+          setDataMessage((prev) => {
+            if (prev.length) {
+              const findMessageRtdbEqual = prev.find((message) => message.rtdb === item);
+              if (findMessageRtdbEqual) {
+                console.log(utlimoMensaje);
+                return prev.map((message) =>
+                  message.rtdb === item
+                    ? {
+                        ...utlimoMensaje,
 
-            if (
-              reversedDatas[lastIndex] &&
-              reversedDatas[lastIndex].read === false
-            ) {
-              return object;
+                        rtdb: item,
+                      }
+                    : message
+                );
+              } else {
+                return [...prev, { ...utlimoMensaje, rtdb: item }];
+              }
+            } else {
+              // Si no hay elementos previos, devuelve un array nuevo con el primer mensaje
+              return [{ ...utlimoMensaje, rtdb: item }];
             }
           });
 
-          if (utlimoMensaje.id != dataUser.user.id) {
-            if (!utlimoMensaje.read) {
-              count.push(utlimoMensaje);
-              setDataMessage([...count]);
-              // play();
-              // load('/messages.mp3', {autoplay: true});
-              return;
-            }
-            if (utlimoMensaje.read) {
-              const filtoMensa = count?.filter(
-                (item: any) => item.id !== utlimoMensaje.id
-              );
-
-              if (filtoMensa) {
-                count = filtoMensa;
-
-                setDataMessage([...filtoMensa]);
-              }
-            }
-          }
+          //   // play();
+          //   // load('/messages.mp3', {autoplay: true});
+          //   return;
+          // }
         }
       });
     });
     return () => {
       if (!dataUser?.user?.id) return;
-      goOffline(rtdb);
-      // userReset();
     };
   }, [dataUser?.user?.rtdb]);
 
@@ -190,9 +176,7 @@ export default function Header({themeDate}: {themeDate: string}) {
         setIsConnect(dataConnect);
         const connecam = dataConnect.filter((e: Connect) => {
           return (
-            e.id != Number(dataUser.user.id) &&
-            e.connect &&
-            dataUser.user.amigos.includes(e.id)
+            e.id != Number(dataUser.user.id) && e.connect && dataUser.user.amigos.includes(e.id)
           );
         });
         setAllConnectAmigos(connecam);
@@ -201,40 +185,40 @@ export default function Header({themeDate}: {themeDate: string}) {
   }, [dataUser?.user?.id]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, {passive: true});
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  useEffect(() => {
-    if (dataUser?.user?.id) {
-      const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
-      update(connectRefData, {
-        ...dataUser.user,
-        connect: true,
-      });
-    }
-    const handleVisibilityChange = async () => {
-      if (!dataUser?.user?.id) return;
-      const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
-      if (document.hidden) {
-        await update(connectRefData, {
-          connect: false,
-        });
-      } else {
-        await update(connectRefData, {
-          ...dataUser.user,
-          connect: true,
-        });
-      }
-    };
+  // useEffect(() => {
+  //   if (dataUser?.user?.id) {
+  //     const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
+  //     update(connectRefData, {
+  //       ...dataUser.user,
+  //       connect: true,
+  //     });
+  //   }
+  //   const handleVisibilityChange = async () => {
+  //     if (!dataUser?.user?.id) return;
+  //     const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
+  //     if (document.hidden) {
+  //       await update(connectRefData, {
+  //         connect: false,
+  //       });
+  //     } else {
+  //       await update(connectRefData, {
+  //         ...dataUser.user,
+  //         connect: true,
+  //       });
+  //     }
+  //   };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, [dataUser?.user?.id]);
+  //   document.addEventListener('visibilitychange', handleVisibilityChange);
+  //   return () => {
+  //     document.removeEventListener('visibilitychange', handleVisibilityChange);
+  //   };
+  // }, [dataUser?.user?.id]);
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
@@ -247,10 +231,6 @@ export default function Header({themeDate}: {themeDate: string}) {
       }
       lastScrollY.current = currentScrollY;
     }
-  };
-  const closeSession = () => {
-    const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
-    return onDisconnect(connectRefData).update({connect: false});
   };
 
   return dataUser?.user?.id ? (
@@ -278,26 +258,23 @@ export default function Header({themeDate}: {themeDate: string}) {
           </div>
           <NavegationUrl
             amigos={dataSoliReci?.length}
-            message={dataMessage.length}
+            message={
+              dataMessage.filter((message) => !message.read && message.id != dataUser.user.id)
+                .length
+            }
             notification={notificacionesUserAtom?.newPubliOPen}
           />
           <div className='relative'>
-            <button
-              onClick={handleMenu}
-              className='m-0 bg-transparent border-none '>
+            <button onClick={handleMenu} className='m-0 bg-transparent border-none '>
               <FotoPerfil
                 className='w-[40px] h-[40px]'
                 img={dataUser.user.img}
-                connect={
-                  dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) &&
-                  true
-                }
+                connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true}
               />
             </button>
             {menu ? (
               <Menu
                 theme={theme}
-                closeSession={closeSession}
                 themebutton={(data: string) => setThemes(data)}
                 click={handleClick}
                 userImg={dataUser.user.img}
@@ -312,10 +289,7 @@ export default function Header({themeDate}: {themeDate: string}) {
           <span>Conectados</span> <DivConnect />
         </DivConectados>
         {connectAmigos ? (
-          <ConnectedUsers
-            allConnectAmigos={allConnectAmigos}
-            dataIsConnect={dataIsConnect}
-          />
+          <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={dataIsConnect} />
         ) : null}
       </DivContenedorConnect>
     </>

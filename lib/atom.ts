@@ -1,4 +1,4 @@
-import {atom} from 'recoil';
+import { atom } from 'recoil';
 
 export type Publicacion = {
   id: number;
@@ -7,15 +7,17 @@ export type Publicacion = {
   createdAt: string;
   updatedAt: string;
   likePublics: [];
-  commentPublis: {user: User}[];
+  commentPublis: { user: User }[];
   userId: number;
   open?: boolean;
   user: User;
 };
 
-type Message = {
+export type Message = {
   read: boolean;
   rtdb: string;
+  message: string;
+  id: number;
 };
 export type Connect = {
   id: number;
@@ -40,7 +42,7 @@ export const user = atom({
       verification: false,
       img: '',
       amigos: [] as number[],
-      rtdb: ([] as string[]) || null,
+      rtdb: [] as string[],
     },
   },
 });
@@ -56,8 +58,12 @@ export const getAllUser = atom({
 });
 export const getAllAmigos = atom({
   key: 'getAllAmigos',
-  default: [] as User[],
+  default: {
+    isLoading: true,
+    data: [] as User[],
+  },
 });
+
 export const getSugerenciaAmigos = atom({
   key: 'getSugerenciaAmigos',
   default: [] as User[],

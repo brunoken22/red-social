@@ -1,12 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
-import {user, publicacionAmigos} from '@/lib/atom';
-import {useRecoilValue} from 'recoil';
-import {GetAllPublicaciones} from '@/lib/hook';
+import { user, publicacionAmigos } from '@/lib/atom';
+import { useRecoilValue } from 'recoil';
+import { GetAllPublicaciones } from '@/lib/hook';
 
-const ButtonMasPubli = dynamic(() =>
-  import('./styled').then((mod) => mod.ButtonMasPubli)
-);
+const ButtonMasPubli = dynamic(() => import('./styled').then((mod) => mod.ButtonMasPubli));
 const ThemplatePubli = dynamic(() =>
   import('../templatePublicate').then((mod) => mod.ThemplatePubli)
 );
@@ -18,18 +16,19 @@ export default function PublicacionesAll() {
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
   const dataUser = useRecoilValue(user);
 
-  const {dataPubliAllAmigosSwr, isLoadingAllAmigos, size, setSize} =
-    GetAllPublicaciones();
+  const { dataPubliAllAmigosSwr, isLoadingAllAmigos, size, setSize } = GetAllPublicaciones();
 
   const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!dataPubliAllAmigosSwr?.length) {
+
+    if (dataPubliAllAmigosSwr?.[dataPubliAllAmigosSwr.length - 1]?.length === 0) {
       return;
     }
     setSize(size + 1);
   };
+
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col gap-4 pb-3'>
       {publicacionesAmigos ? (
         publicacionesAmigos.length ? (
           <>
@@ -58,9 +57,9 @@ export default function PublicacionesAll() {
         )
       ) : null}
       {isLoadingAllAmigos ? <SkeletonPublicacionAll /> : null}
-      {dataPubliAllAmigosSwr?.length ? (
+      {dataPubliAllAmigosSwr?.[dataPubliAllAmigosSwr.length - 1]?.length > 0 ? (
         <div className='text-center m-4'>
-          <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+          <ButtonMasPubli onClick={handleMasPubli}>Ver más</ButtonMasPubli>
         </div>
       ) : null}
     </div>

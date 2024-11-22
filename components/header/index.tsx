@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { ref, onValue, goOffline, goOnline, onDisconnect } from 'firebase/database';
+import { ref, onValue, update } from 'firebase/database';
 import { rtdb } from '@/lib/firebase';
 import './style.css';
 import { usePathname } from 'next/navigation';
@@ -17,13 +17,13 @@ import {
   isConnect,
   Connect,
   notificacionesUser,
-  Message,
   // getAllUser,
 } from '@/lib/atom';
 import Logo from '@/public/logo.svg';
 import { useDebouncedCallback } from 'use-debounce';
 import { SkeletonNav } from '@/ui/skeleton';
 import { LoaderRequest } from '../loader';
+import { MessageUserChat } from '../templateMensaje';
 
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), {
   loading: () => <LoaderRequest />,
@@ -124,43 +124,51 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
+
     dataUser.user.rtdb.map((item) => {
       const chatrooms = ref(rtdb, '/rooms/' + item + '/messages');
+
       return onValue(chatrooms, (snapshot) => {
         const valor = snapshot.val();
         if (valor) {
-          const datas: Message[] = Object.values(valor);
-          const utlimoMensaje = datas[datas.length - 1];
+          const datas = Object.values(valor); // Obtener todos los mensajes
+          const ultimoMensaje: any = datas[datas.length - 1]; // Obtener el último mensaje
+
+          if (
+            ultimoMensaje.status === 'Enviado' &&
+            ultimoMensaje.id !== dataUser.user.id // Asegurarse de que no es del usuario actual
+          ) {
+            const keys = Object.keys(valor);
+            const lastKey = keys[keys.length - 1];
+            const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
+            update(mensajeRef, { status: 'Recibido' });
+          }
+
+          // Actualizar el estado de los mensajes en la aplicación
           setDataMessage((prev) => {
             if (prev.length) {
               const findMessageRtdbEqual = prev.find((message) => message.rtdb === item);
               if (findMessageRtdbEqual) {
-                console.log(utlimoMensaje);
                 return prev.map((message) =>
                   message.rtdb === item
                     ? {
-                        ...utlimoMensaje,
-
+                        ...ultimoMensaje,
                         rtdb: item,
                       }
                     : message
                 );
               } else {
-                return [...prev, { ...utlimoMensaje, rtdb: item }];
+                return [...prev, { ...ultimoMensaje, rtdb: item }];
               }
             } else {
               // Si no hay elementos previos, devuelve un array nuevo con el primer mensaje
-              return [{ ...utlimoMensaje, rtdb: item }];
+              return [{ ...ultimoMensaje, rtdb: item }];
             }
           });
-
-          //   // play();
-          //   // load('/messages.mp3', {autoplay: true});
-          //   return;
-          // }
         }
       });
     });
+
     return () => {
       if (!dataUser?.user?.id) return;
     };
@@ -190,35 +198,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (dataUser?.user?.id) {
-  //     const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
-  //     update(connectRefData, {
-  //       ...dataUser.user,
-  //       connect: true,
-  //     });
-  //   }
-  //   const handleVisibilityChange = async () => {
-  //     if (!dataUser?.user?.id) return;
-  //     const connectRefData = ref(rtdb, '/connect/' + dataUser?.user?.id);
-  //     if (document.hidden) {
-  //       await update(connectRefData, {
-  //         connect: false,
-  //       });
-  //     } else {
-  //       await update(connectRefData, {
-  //         ...dataUser.user,
-  //         connect: true,
-  //       });
-  //     }
-  //   };
-
-  //   document.addEventListener('visibilitychange', handleVisibilityChange);
-  //   return () => {
-  //     document.removeEventListener('visibilitychange', handleVisibilityChange);
-  //   };
-  // }, [dataUser?.user?.id]);
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;

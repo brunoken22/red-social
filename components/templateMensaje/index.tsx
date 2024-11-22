@@ -30,6 +30,7 @@ export type MessageUserChat = {
   read?: boolean;
   fullName: string;
   img: string;
+  status: 'Enviado' | 'Recibido' | 'Leido';
   id: string;
 };
 
@@ -56,6 +57,7 @@ export function TemMensaje() {
         img: imgParams,
         id: idParams,
         rtdb: rtdbId,
+        status: 'Enviado',
       });
     }
   }, [params.get('fullName')]);
@@ -93,6 +95,7 @@ export function TemMensaje() {
                                 img: e.img,
                                 id: e.id.toString(),
                                 rtdb: rtdbId as string,
+                                status: 'Enviado',
                               });
                             }}>
                             <DivAllChat>
@@ -167,6 +170,7 @@ export function TemMensaje() {
                     read: false,
                     fullName: '',
                     img: '',
+                    status: 'Enviado',
                     id: '',
                   })
                 }

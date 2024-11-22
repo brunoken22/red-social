@@ -25,7 +25,7 @@ export default function TemplateChat({
 }) {
   const smsRef: any = useRef(null);
   const [claveMessage, setclaveMessage] = useState('');
-  const [messagesAll, setMessagesAll] = useState([]);
+  const [messagesAll, setMessagesAll] = useState<MessageUserChat[] | []>([]);
 
   useEffect(() => {
     if (dataMensajeUser) {
@@ -60,6 +60,7 @@ export default function TemplateChat({
             if (snap.exists()) {
               update(chatroomData, {
                 read: true,
+                status: 'Leido',
               })
                 .then((snap: any) => {
                   return snap;
@@ -93,6 +94,7 @@ export default function TemplateChat({
       fullName: dataMensajeUser.fullName,
       img: dataMensajeUser.img,
       message: target.message.value,
+      status: 'Enviado',
       read: false,
     };
 
@@ -146,9 +148,15 @@ export default function TemplateChat({
           {messagesAll?.length > 0 && (messagesAll[messagesAll.length - 1] as any).id === id && (
             <p
               className={`text-end  text-[0.8rem] ${
-                (messagesAll[messagesAll.length - 1] as any).read ? 'text-light' : 'text-gray-500'
+                messagesAll[messagesAll.length - 1].status === 'Leido'
+                  ? 'text-light'
+                  : 'text-gray-500'
               } -mt-2`}>
-              ✔✔ {(messagesAll[messagesAll.length - 1] as any).read ? 'Leido' : 'Sin leer'}
+              {messagesAll[messagesAll.length - 1].status === 'Leido'
+                ? ' ✔✔ Leido'
+                : messagesAll[messagesAll.length - 1].status === 'Enviado'
+                ? ' ✔ Enviado'
+                : ' ✔✔ Sin leer'}
             </p>
           )}
         </div>

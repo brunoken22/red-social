@@ -95,8 +95,7 @@ export function PerfilAmigo() {
   return data && data.user ? (
     <>
       <head>
-        <title>{data.user.fullName} | Unired</title>
-
+        <title>{data.user.fullName + ' | Unired'} </title>
         <meta property='og:url' content={`https://unired.vercel.app/amigos/${data.user.id}`} />
         <meta property='og:type' content='website' />
         <meta property='og:title' content={data.user.fullName} />

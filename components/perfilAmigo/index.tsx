@@ -8,11 +8,10 @@ import { useRecoilValue } from 'recoil';
 import { GetAmigo, GetPubliAmigo } from '@/lib/hook';
 import { useParams } from 'next/navigation';
 import { DivAllPublicaciones } from '@/ui/container';
-import { Button, ButtonAgregar } from '@/ui/boton';
+import { ButtonAgregar } from '@/ui/boton';
 import MessageSvg from '@/ui/icons/chat.svg';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Head from 'next/head';
 import { FaSignInAlt } from 'react-icons/fa'; // Icono de entrada
 
 const Verification = dynamic(() => import('@/ui/verification'));
@@ -94,19 +93,6 @@ export function PerfilAmigo() {
   };
   return data && data.user ? (
     <>
-      {/* <title>{data.user.fullName} </title>
-      <meta property='og:url' content={`https://unired.vercel.app/amigos/${data.user.id}`} />
-      <meta property='og:type' content='website' />
-      <meta property='og:title' content={data.user.fullName} />
-      <meta property='og:description' content={`Usuario ${data.user.fullName} de unired`} />
-      <meta property='og:image' content={`https://unired.vercel.app/user.webp`} />
-
-      <meta name='twitter:card' content='summary_large_image' />
-      <meta property='twitter:domain' content='unired.vercel.app' />
-      <meta property='twitter:url' content={`https://unired.vercel.app/amigos/${data.user.id}`} />
-      <meta name='twitter:title' content={data.user.fullName} />
-      <meta name='twitter:description' content={`Usuario ${data.user.fullName} de unired`} />
-      <meta name='twitter:image' content={`https://unired.vercel.app/user.webp`} /> */}
       <DivPerfilUser>
         <DivHeadPerfil>
           <DivFotoNameLink>

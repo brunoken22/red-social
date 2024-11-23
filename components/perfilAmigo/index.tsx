@@ -95,13 +95,21 @@ export function PerfilAmigo() {
   return data && data.user ? (
     <>
       <head>
-        <title>{id + ' | UniRed '}</title>
-        <meta property='og:title' content={data.user.fullName} />
-        <meta property='og:description' content='Una hermosa vista al atardecer en la playa con tonos cálidos en el cielo.' />
-        <meta property='og:image' content={data.user.img || '/user.webp'} />
-        <meta property='og:url' content={`https://unired.vercel.app/amigos/${data.user.id}/${data.user.fullName}`} />
+        <title>Ejemplo</title>
+        <meta name='description' content='dsadasdnsakldnlsakndklasnfdklanfklnasknkldfanasldknfklsadfas' />
+
+        <meta property='og:url' content='https://unired.vercel.app/amigos/60' />
         <meta property='og:type' content='website' />
-        <meta property='og:image:alt' content='imagen de perfil' />
+        <meta property='og:title' content='Ejemplo' />
+        <meta property='og:description' content='dsadasdnsakldnlsakndklasnfdklanfklnasknkldfanasldknfklsadfas' />
+        <meta property='og:image' content='https://opengraph.b-cdn.net/production/images/052c42ff-aa50-4e21-b810-85501b4727c3.png?token=fFw2Vw5RNYj1YcWyciqXcpYPrG0zLAk8BPqt4vil6fM&height=598&width=1200&expires=33268390057' />
+
+        <meta name='twitter:card' content='summary_large_image' />
+        <meta property='twitter:domain' content='unired.vercel.app' />
+        <meta property='twitter:url' content='https://unired.vercel.app/amigos/60' />
+        <meta name='twitter:title' content='Ejemplo' />
+        <meta name='twitter:description' content='dsadasdnsakldnlsakndklasnfdklanfklnasknkldfanasldknfklsadfas' />
+        <meta name='twitter:image' content='https://opengraph.b-cdn.net/production/images/052c42ff-aa50-4e21-b810-85501b4727c3.png?token=fFw2Vw5RNYj1YcWyciqXcpYPrG0zLAk8BPqt4vil6fM&height=598&width=1200&expires=33268390057' />
       </head>
       <DivPerfilUser>
         <DivHeadPerfil>

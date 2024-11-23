@@ -94,14 +94,15 @@ export function PerfilAmigo() {
 
   return data && data.user ? (
     <>
-      {/* <head>
+      <head>
+        <title>{id + ' | UniRed '}</title>
         <meta property='og:title' content={data.user.fullName} />
         <meta property='og:description' content='Una hermosa vista al atardecer en la playa con tonos cálidos en el cielo.' />
         <meta property='og:image' content={data.user.img || '/user.webp'} />
         <meta property='og:url' content={`https://unired.vercel.app/amigos/${data.user.id}/${data.user.fullName}`} />
         <meta property='og:type' content='website' />
         <meta property='og:image:alt' content='imagen de perfil' />
-      </head> */}
+      </head>
       <DivPerfilUser>
         <DivHeadPerfil>
           <DivFotoNameLink>

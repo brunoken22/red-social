@@ -5,12 +5,12 @@ import { cookies } from 'next/headers';
 import Layout from '@/components/layout';
 const poppins = Poppins({ weight: '400', subsets: ['latin'] });
 
-// import { SpeedInsights } from '@vercel/speed-insights/next';
-// export const metadata: Metadata = {
-//   title: 'UniRed',
-//   description: 'Red social',
-//   keywords: 'La red social líder para conectar con amigos, compartir fotos. Únete hoy mismo y forma parte de nuestra comunidad.',
-// };
+import { SpeedInsights } from '@vercel/speed-insights/next';
+export const metadata: Metadata = {
+  title: 'UniRed',
+  description: 'Red social',
+  keywords: 'La red social líder para conectar con amigos, compartir fotos. Únete hoy mismo y forma parte de nuestra comunidad.',
+};
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const theme = cookies().get('theme')?.value || 'false';

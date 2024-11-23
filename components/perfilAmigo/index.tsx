@@ -94,21 +94,19 @@ export function PerfilAmigo() {
   };
   return data && data.user ? (
     <>
-      <head>
-        <title>{data.user.fullName + ' | Unired'} </title>
-        <meta property='og:url' content={`https://unired.vercel.app/amigos/${data.user.id}`} />
-        <meta property='og:type' content='website' />
-        <meta property='og:title' content={data.user.fullName} />
-        <meta property='og:description' content={`Usuario ${data.user.fullName} de unired`} />
-        <meta property='og:image' content={`https://unired.vercel.app/user.webp`} />
+      {/* <title>{data.user.fullName} </title>
+      <meta property='og:url' content={`https://unired.vercel.app/amigos/${data.user.id}`} />
+      <meta property='og:type' content='website' />
+      <meta property='og:title' content={data.user.fullName} />
+      <meta property='og:description' content={`Usuario ${data.user.fullName} de unired`} />
+      <meta property='og:image' content={`https://unired.vercel.app/user.webp`} />
 
-        <meta name='twitter:card' content='summary_large_image' />
-        <meta property='twitter:domain' content='unired.vercel.app' />
-        <meta property='twitter:url' content={`https://unired.vercel.app/amigos/${data.user.id}`} />
-        <meta name='twitter:title' content={data.user.fullName} />
-        <meta name='twitter:description' content={`Usuario ${data.user.fullName} de unired`} />
-        <meta name='twitter:image' content={`https://unired.vercel.app/user.webp`} />
-      </head>
+      <meta name='twitter:card' content='summary_large_image' />
+      <meta property='twitter:domain' content='unired.vercel.app' />
+      <meta property='twitter:url' content={`https://unired.vercel.app/amigos/${data.user.id}`} />
+      <meta name='twitter:title' content={data.user.fullName} />
+      <meta name='twitter:description' content={`Usuario ${data.user.fullName} de unired`} />
+      <meta name='twitter:image' content={`https://unired.vercel.app/user.webp`} /> */}
       <DivPerfilUser>
         <DivHeadPerfil>
           <DivFotoNameLink>

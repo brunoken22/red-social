@@ -23,7 +23,6 @@ import Logo from '@/public/logo.svg';
 import { useDebouncedCallback } from 'use-debounce';
 import { SkeletonNav } from '@/ui/skeleton';
 import { LoaderRequest } from '../loader';
-import { MessageUserChat } from '../templateMensaje';
 
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), {
   loading: () => <LoaderRequest />,
@@ -69,7 +68,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const useDebounce = useDebouncedCallback((query, search) => {
     search(query);
   }, 1000);
-  const connectionStatus = useConnectionStatus(dataUser.user);
+  useConnectionStatus(dataUser.user);
 
   const handleMenu = (e: any) => {
     e.preventDefault();

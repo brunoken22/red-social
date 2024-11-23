@@ -6,7 +6,7 @@ export const DivPerfil = ({
   className?: string;
 }) => <div className={`flex gap-4  ${className}`}>{children}</div>;
 
-export const DivSpan = ({children}: {children: React.ReactNode}) => (
+export const DivSpan = ({ children }: { children: React.ReactNode }) => (
   <span className='block text-[0.7rem] '>{children}</span>
 );
 
@@ -41,19 +41,17 @@ export const ButtonOpenImage = ({
   </button>
 );
 
-export const DivImage = ({children}: {children: React.ReactNode}) => (
-  <div className='flex items-center relative  h-[300px] overflow-hidden	'>
-    {children}
-  </div>
+export const DivImage = ({ children }: { children: React.ReactNode }) => (
+  <div className='flex items-center relative  h-[350px] overflow-hidden	'>{children}</div>
 );
 
-export const DivCantidad = ({children}: {children: React.ReactNode}) => (
+export const DivCantidad = ({ children }: { children: React.ReactNode }) => (
   <div className='items-center grid gap-0 mt-4 justify-center grid-cols-[repeat(2,1fr)] relative'>
     {children}
   </div>
 );
 
-export const DivInteractuar = ({children}: {children: React.ReactNode}) => (
+export const DivInteractuar = ({ children }: { children: React.ReactNode }) => (
   <div className='flex  items-center pt-1 pb-1 justify-around gap-0 border-t-[1px] border-dark '>
     {children}
   </div>
@@ -77,9 +75,7 @@ export const BottonLike = ({
     type={type}
     onClick={onClick}
     className={` border-none  flex items-center gap-2 text-[0.8rem] p-2 hover:backdrop-contrast-50 rounded-md  ${
-      like
-        ? 'dark:text-[#7696fd] text-[#063ef5]'
-        : 'text-secundary dark:text-primary'
+      like ? 'dark:text-[#7696fd] text-[#063ef5]' : 'text-secundary dark:text-primary'
     }`}>
     {children}
   </button>
@@ -120,16 +116,14 @@ export const BottonSendComentario = ({
   </button>
 );
 
-export const DivAñadirComentar = ({children}: {children: React.ReactNode}) => (
+export const DivAñadirComentar = ({ children }: { children: React.ReactNode }) => (
   <div className='rounded-md w-full  p-2 grid items-center text-[0.9rem] grid-cols-[repeat(1,90%_10%)] focus:border-2 focus:border-red-500 gap-2'>
     {children}
   </div>
 );
 
-export const DivPefilDelete = ({children}: {children: React.ReactNode}) => (
-  <div className='flex items-center justify-between p-4 max-md:p-2'>
-    {children}
-  </div>
+export const DivPefilDelete = ({ children }: { children: React.ReactNode }) => (
+  <div className='flex items-center justify-between p-4 max-md:p-2'>{children}</div>
 );
 
 export const ButtonOpenDelete = ({
@@ -179,7 +173,7 @@ export const ButtonMasPubli = ({
   </button>
 );
 
-export const DivUserLikes = ({children}: {children: React.ReactNode}) => (
+export const DivUserLikes = ({ children }: { children: React.ReactNode }) => (
   <div className='absolute bottom-[2rem] left-0 right-0 bg-black text-primary p-4 m-auto text-[0.8rem] font-black rounded-sm '>
     {children}
   </div>

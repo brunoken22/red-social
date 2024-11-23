@@ -184,8 +184,8 @@ export function ThemplatePubli(props: {
               src={props?.img}
               alt='imagen user'
               loading='lazy'
-              height={300}
-              width={500}
+              // height={330}
+              // width={500}
               className='object-cover  w-full h-full hover:scale-[1.1]  transition-all '
             />
           </DivImage>

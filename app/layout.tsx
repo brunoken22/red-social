@@ -5,6 +5,7 @@ import {cookies} from 'next/headers';
 import Layout from '@/components/layout';
 const poppins = Poppins({weight: '400', subsets: ['latin']});
 
+import { SpeedInsights } from '@vercel/speed-insights/next';
 export const metadata: Metadata = {
   title: 'UniRed',
   description: 'Red social',
@@ -33,6 +34,7 @@ export default async function RootLayout({
       <body
         className={`${poppins.className} dark:bg-dark dark:text-white dark:transition-dark`}>
         <Layout themeDate={theme}>{children}</Layout>
+        <SpeedInsights />
       </body>
     </html>
   );

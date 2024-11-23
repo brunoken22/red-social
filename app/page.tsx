@@ -4,8 +4,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Bienvenid@ a UniRed',
-  description:
-    'Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)',
+  description: 'Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)',
 };
 
 export default function Page() {
@@ -33,8 +32,7 @@ export default function Page() {
             Conéctate con tus amigos y descubre nuevas personas
           </h2>
           <p className='text-lg mb-6'>
-            Únete a nuestra red social y comienza a compartir tus momentos con
-            el mundo.
+            Únete a nuestra red social y comienza a compartir tus momentos con el mundo.
           </p>
           <Link
             href='/crearCuenta'
@@ -50,9 +48,7 @@ export default function Page() {
           </div>
           <div className='bg-primary dark:bg-darkComponent p-6 rounded-lg shadow-lg text-center'>
             <h3 className='text-2xl font-bold mb-2'>Descubre</h3>
-            <p>
-              Encuentra nuevas personas y conéctate con intereses similares.
-            </p>
+            <p>Encuentra nuevas personas y conéctate con intereses similares.</p>
           </div>
           <div className='bg-primary dark:bg-darkComponent p-6 rounded-lg shadow-lg text-center'>
             <h3 className='text-2xl font-bold mb-2'>Interactúa</h3>
@@ -63,16 +59,15 @@ export default function Page() {
         <section className='mt-12 text-center max-w-4xl mx-auto px-4'>
           <h3 className='text-2xl font-bold mb-2'>Proyecto Personal</h3>
           <p className='text-lg'>
-            Este es un proyecto personal que construí tanto en el backend como
-            en el frontend. ¡Espero que lo disfrutes!
+            Este es un proyecto personal que construí tanto en el backend como en el frontend.
+            ¡Espero que lo disfrutes!
           </p>
         </section>
       </main>
 
       <footer className='bg-primary dark:bg-darkComponent dark:text-white text-secondary text-center p-4'>
         <p className='flex items-center justify-center max-md:flex-col'>
-          &copy; 2024 UniRed. Todos los derechos reservados. Hecho por Bruno
-          Ken.
+          &copy; 2024 UniRed. Todos los derechos reservados. Hecho por Bruno Ken.
           <Link
             href='https://brunoken.vercel.app/'
             target='_blank'

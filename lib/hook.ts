@@ -406,7 +406,6 @@ export function GetAmigo(id: string, idUser?: number) {
     revalidateOnMount: true,
     refreshInterval: 100000,
   });
-  console.log(data);
 
   return { data, isLoadingDataUserId: isLoading };
 }

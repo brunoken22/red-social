@@ -92,24 +92,23 @@ export function PerfilAmigo() {
     }
     setSize(size + 1);
   };
-
   return data && data.user ? (
     <>
       <head>
-        <title>{data.fullName}</title>
+        <title>{data.user.fullName}</title>
 
-        <meta property='og:url' content={`https://unired.vercel.app/amigos/${data.id}`} />
+        <meta property='og:url' content={`https://unired.vercel.app/amigos/${data.user.id}`} />
         <meta property='og:type' content='website' />
-        <meta property='og:title' content={data.fullName} />
-        <meta property='og:description' content={`Usuario ${data.fullName} de unired`} />
-        <meta property='og:image' content={data.img} />
+        <meta property='og:title' content={data.user.fullName} />
+        <meta property='og:description' content={`Usuario ${data.user.fullName} de unired`} />
+        <meta property='og:image' content={data.user.img} />
 
         <meta name='twitter:card' content='summary_large_image' />
         <meta property='twitter:domain' content='unired.vercel.app' />
-        <meta property='twitter:url' content={`https://unired.vercel.app/amigos/${data.id}`} />
-        <meta name='twitter:title' content={data.fullName} />
-        <meta name='twitter:description' content={`Usuario ${data.fullName} de unired`} />
-        <meta name='twitter:image' content={data.img} />
+        <meta property='twitter:url' content={`https://unired.vercel.app/amigos/${data.user.id}`} />
+        <meta name='twitter:title' content={data.user.fullName} />
+        <meta name='twitter:description' content={`Usuario ${data.user.fullName} de unired`} />
+        <meta name='twitter:image' content={data.user.img} />
       </head>
       <DivPerfilUser>
         <DivHeadPerfil>

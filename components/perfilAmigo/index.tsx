@@ -94,14 +94,14 @@ export function PerfilAmigo() {
 
   return data && data.user ? (
     <>
-      <Head>
-        <meta property='og:title' content='Atardecer en la playa' />
+      <head>
+        <meta property='og:title' content={data.user.fullName} />
         <meta property='og:description' content='Una hermosa vista al atardecer en la playa con tonos cálidos en el cielo.' />
         <meta property='og:image' content='https://example.com/image.jpg' />
         <meta property='og:url' content='https://example.com/tu-pagina' />
         <meta property='og:type' content='website' />
         <meta property='og:image:alt' content='Una hermosa vista al atardecer en la playa' />
-      </Head>
+      </head>
       <DivPerfilUser>
         <DivHeadPerfil>
           <DivFotoNameLink>

@@ -24,8 +24,13 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 
   return {
     title: data.user.fullName + ' | UniRed' || 'Unired',
+    description: `Usuario ${data.user.fullName || 'unired'} de unired`,
     openGraph: {
       images: ['/user.webp', ...previousImages],
+      title: data.user.fullName + ' | UniRed' || 'Unired',
+      description: `Usuario ${data.user.fullName || 'unired'} de unired`,
+      type: 'website',
+      url: `https://unired.vercel.app/amigos/${data.user.id | 0}`,
     },
   };
 }

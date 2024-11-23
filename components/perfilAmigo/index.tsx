@@ -8,11 +8,12 @@ import { useRecoilValue } from 'recoil';
 import { GetAmigo, GetPubliAmigo } from '@/lib/hook';
 import { useParams } from 'next/navigation';
 import { DivAllPublicaciones } from '@/ui/container';
-import { ButtonAgregar } from '@/ui/boton';
+import { Button, ButtonAgregar } from '@/ui/boton';
 import MessageSvg from '@/ui/icons/chat.svg';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Head from 'next/head';
+import { FaSignInAlt } from 'react-icons/fa'; // Icono de entrada
 
 const Verification = dynamic(() => import('@/ui/verification'));
 const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
@@ -30,7 +31,7 @@ export function PerfilAmigo() {
   const dataUser = useRecoilValue(user);
   const [isLoading, setIsLoading] = useState(false);
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
-  const { data } = GetAmigo(id as string);
+  const { data, isLoadingDataUserId } = GetAmigo(id as string, dataUser.user?.id);
   const { dataPubliAmigo, isLoadingGetFriend, size, setSize } = GetPubliAmigo(id as string);
   const [isAmigo, setIsAmigo] = useState<'ACCEPTED' | 'PENDING' | 'REJECTED'>();
 
@@ -95,21 +96,20 @@ export function PerfilAmigo() {
   return data && data.user ? (
     <>
       <head>
-        <title>Ejemplo</title>
-        <meta name='description' content='dsadasdnsakldnlsakndklasnfdklanfklnasknkldfanasldknfklsadfas' />
+        <title>{data.fullName}</title>
 
-        <meta property='og:url' content='https://unired.vercel.app/amigos/60' />
+        <meta property='og:url' content={`https://unired.vercel.app/amigos/${data.id}`} />
         <meta property='og:type' content='website' />
-        <meta property='og:title' content='Ejemplo' />
-        <meta property='og:description' content='dsadasdnsakldnlsakndklasnfdklanfklnasknkldfanasldknfklsadfas' />
-        <meta property='og:image' content='https://opengraph.b-cdn.net/production/images/052c42ff-aa50-4e21-b810-85501b4727c3.png?token=fFw2Vw5RNYj1YcWyciqXcpYPrG0zLAk8BPqt4vil6fM&height=598&width=1200&expires=33268390057' />
+        <meta property='og:title' content={data.fullName} />
+        <meta property='og:description' content={`Usuario ${data.fullName} de unired`} />
+        <meta property='og:image' content={data.img} />
 
         <meta name='twitter:card' content='summary_large_image' />
         <meta property='twitter:domain' content='unired.vercel.app' />
-        <meta property='twitter:url' content='https://unired.vercel.app/amigos/60' />
-        <meta name='twitter:title' content='Ejemplo' />
-        <meta name='twitter:description' content='dsadasdnsakldnlsakndklasnfdklanfklnasknkldfanasldknfklsadfas' />
-        <meta name='twitter:image' content='https://opengraph.b-cdn.net/production/images/052c42ff-aa50-4e21-b810-85501b4727c3.png?token=fFw2Vw5RNYj1YcWyciqXcpYPrG0zLAk8BPqt4vil6fM&height=598&width=1200&expires=33268390057' />
+        <meta property='twitter:url' content={`https://unired.vercel.app/amigos/${data.id}`} />
+        <meta name='twitter:title' content={data.fullName} />
+        <meta name='twitter:description' content={`Usuario ${data.fullName} de unired`} />
+        <meta name='twitter:image' content={data.img} />
       </head>
       <DivPerfilUser>
         <DivHeadPerfil>
@@ -121,36 +121,42 @@ export function PerfilAmigo() {
             </div>
           </DivFotoNameLink>
           <div className='flex gap-2 items-center max-md:flex-col  flex-row'>
-            {isLoading ? (
-              <LoaderRequest />
-            ) : (
-              <>
-                {' '}
-                {isAmigo == 'ACCEPTED' ? (
-                  <Link className=' p-2 rounded-lg text-primary flex items-center gap-1 backdrop-contrast-[0.4] hover:backdrop-contrast-[0.1]' href={'/chat?fullName=' + data.user.fullName + '&rtdb=' + data.user.rtdb + '&id=' + data.user.id + '&img=' + (data.user.img ? data.user.img : '')}>
-                    <MessageSvg className='fill-primary w-[20px] text-nowrap' />
-                    Mensaje
-                  </Link>
-                ) : null}
-                {isAmigo !== 'PENDING' ? (
-                  <ButtonAgregar id={data?.user?.id} onClick={isAmigo == 'ACCEPTED' ? handleEliminarAmigo : handleSolicitudEnv} bg={isAmigo !== 'REJECTED' ? 'red' : 'blue'}>
-                    {isAmigo == 'ACCEPTED' ? 'Eliminar Amigo' : 'Agregar'}
-                  </ButtonAgregar>
-                ) : isAmigo == 'PENDING' && soliReci?.find((user) => user.id == data?.user.id) ? (
-                  <DivButtonEliAcep>
+            {!isLoadingDataUserId && !isLoadingGetFriend ? (
+              dataUser.user.id ? (
+                <>
+                  {isAmigo == 'ACCEPTED' ? (
+                    <Link className=' p-2 rounded-lg text-primary flex items-center gap-1 backdrop-contrast-[0.4] hover:backdrop-contrast-[0.1]' href={'/chat?fullName=' + data.user.fullName + '&rtdb=' + data.user.rtdb + '&id=' + data.user.id + '&img=' + (data.user.img ? data.user.img : '')}>
+                      <MessageSvg className='fill-primary w-[20px] text-nowrap' />
+                      Mensaje
+                    </Link>
+                  ) : null}
+                  {isAmigo !== 'PENDING' ? (
+                    <ButtonAgregar id={data?.user?.id} onClick={isAmigo == 'ACCEPTED' ? handleEliminarAmigo : handleSolicitudEnv} bg={isAmigo !== 'REJECTED' ? 'red' : 'blue'}>
+                      {isAmigo == 'ACCEPTED' ? 'Eliminar Amigo' : 'Agregar'}
+                    </ButtonAgregar>
+                  ) : isAmigo == 'PENDING' && soliReci?.find((user) => user.id == data?.user.id) ? (
+                    <DivButtonEliAcep>
+                      <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudRecha} bg='red'>
+                        Eliminar solicitud
+                      </ButtonAgregar>
+                      <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudAcep}>
+                        Aceptar
+                      </ButtonAgregar>
+                    </DivButtonEliAcep>
+                  ) : (
                     <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudRecha} bg='red'>
                       Eliminar solicitud
                     </ButtonAgregar>
-                    <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudAcep}>
-                      Aceptar
-                    </ButtonAgregar>
-                  </DivButtonEliAcep>
-                ) : (
-                  <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudRecha} bg='red'>
-                    Eliminar solicitud
-                  </ButtonAgregar>
-                )}
-              </>
+                  )}
+                </>
+              ) : (
+                <ButtonAgregar className='flex justify-center gap-3 items-center' bg='blue' id={'Conectar'} onClick={() => push('/iniciarSesion')}>
+                  <FaSignInAlt />
+                  Iniciar sesión para interactuar
+                </ButtonAgregar>
+              )
+            ) : (
+              <LoaderRequest />
             )}
           </div>
         </DivHeadPerfil>

@@ -49,68 +49,34 @@ export function Signup() {
           <label className='block' htmlFor='fullName'>
             Nombre <span className='text-[#f57888]'>*</span>
           </label>
-          <input
-            className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary'
-            type='text'
-            {...register('fullName', { required: true })}
-            id='fullName'
-            placeholder='UniRed'
-            autoComplete='username'
-          />
+          <input className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary' type='text' {...register('fullName', { required: true })} id='fullName' placeholder='UniRed' autoComplete='username' disabled={isLoading} />
           {error.fullName && <span className='text-red-500 text-[0.8rem]'>Se requiere nombre</span>}
         </div>
         <div>
           <label className='block' htmlFor='email'>
             Email <span className='text-[#f57888]'>*</span>
           </label>
-          <input
-            className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary'
-            type='email'
-            {...register('email', { required: true })}
-            id='email'
-            placeholder='Unired@unired.com'
-            autoComplete='email'
-          />
+          <input className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary' type='email' {...register('email', { required: true })} id='email' placeholder='Unired@unired.com' autoComplete='email' disabled={isLoading} />
           {error.email && <span className='text-red-500 text-[0.8rem]'>Se requiere email</span>}
         </div>
         <div>
           <label className='block' htmlFor='password'>
             Contraseña <span className='text-[#f57888]'>*</span>
           </label>
-          <input
-            className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2  dark:text-secundary'
-            type='password'
-            {...register('password', { required: true })}
-            id='password'
-            placeholder='********'
-            autoComplete='new-password'
-          />
-          {error.password && (
-            <span className='text-red-500 text-[0.8rem]'>Se requiere contraseña</span>
-          )}
+          <input className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2  dark:text-secundary' type='password' {...register('password', { required: true })} id='password' placeholder='********' autoComplete='new-password' disabled={isLoading} />
+          {error.password && <span className='text-red-500 text-[0.8rem]'>Se requiere contraseña</span>}
         </div>
         <div>
           {' '}
           <label className='block' htmlFor='repassword'>
             Repetir Contraseña <span className='text-[#f57888]'>*</span>
           </label>
-          <input
-            className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2  dark:text-secundary'
-            type='password'
-            {...register('repassword', { required: true })}
-            id='repassword'
-            placeholder='********'
-            autoComplete='current-password'
-          />
-          {error.repassword && (
-            <span className='text-red-500 text-[0.8rem]'>Se requiere repetir contraseña</span>
-          )}
+          <input className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2  dark:text-secundary' type='password' {...register('repassword', { required: true })} id='repassword' placeholder='********' autoComplete='current-password' disabled={isLoading} />
+          {error.repassword && <span className='text-red-500 text-[0.8rem]'>Se requiere repetir contraseña</span>}
         </div>
         <div className='mt-6'>
           {!isLoading ? (
-            <button
-              type='submit'
-              className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70'>
+            <button type='submit' className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70'>
               Continuar
             </button>
           ) : (
@@ -120,9 +86,7 @@ export function Signup() {
           )}
         </div>
       </form>
-      {isError ? (
-        <NotificationToastStatus close={() => setError('')} message={isError} status='error' />
-      ) : null}
+      {isError ? <NotificationToastStatus close={() => setError('')} message={isError} status='error' /> : null}
     </>
   );
 }

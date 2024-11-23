@@ -21,7 +21,6 @@ import {
 } from '@/lib/atom';
 import Logo from '@/public/logo.svg';
 import { useDebouncedCallback } from 'use-debounce';
-import { SkeletonNav } from '@/ui/skeleton';
 import { LoaderRequest } from '../loader';
 
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), {
@@ -36,12 +35,9 @@ const DivConnect = dynamic(() => import('./styled').then((mod) => mod.DivConnect
   loading: () => <LoaderRequest />,
 });
 
-const DivContenedorConnect = dynamic(
-  () => import('./styled').then((mod) => mod.DivContenedorConnect),
-  {
-    loading: () => <LoaderRequest />,
-  }
-);
+const DivContenedorConnect = dynamic(() => import('./styled').then((mod) => mod.DivContenedorConnect), {
+  loading: () => <LoaderRequest />,
+});
 const SearchUser = dynamic(() => import('../searchUsers').then((mod) => mod.SearchUser));
 const SearchBox = dynamic(() => import('react-instantsearch').then((mod) => mod.SearchBox));
 const ConnectedUsers = dynamic(() => import('./connectedUser'));
@@ -182,9 +178,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
         const dataConnect: any = Object.values(valor);
         setIsConnect(dataConnect);
         const connecam = dataConnect.filter((e: Connect) => {
-          return (
-            e.id != Number(dataUser.user.id) && e.connect && dataUser.user.amigos.includes(e.id)
-          );
+          return e.id != Number(dataUser.user.id) && e.connect && dataUser.user.amigos.includes(e.id);
         });
         setAllConnectAmigos(connecam);
       }
@@ -213,52 +207,23 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
   return dataUser?.user?.id ? (
     <>
-      <header
-        className={`${
-          openNav ? 'translate-y-0' : 'max-md:-translate-y-full'
-        } p-2 sticky top-0 right-0 left-0 z-10 bg-primary transition-transform duration-300 dark:bg-darkComponet`}>
+      <header className={`${openNav ? 'translate-y-0' : 'max-md:-translate-y-full'} p-2 sticky top-0 right-0 left-0 z-10 bg-primary transition-transform duration-300 dark:bg-darkComponet`}>
         <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
           <div className='flex gap-4 items-center '>
             <Link href={'/inicio'} aria-label='home'>
               <Logo className='rounded-md fill-unired transition-dark' />
             </Link>
             <div className='border-none relative max-md:hidden '>
-              {pathname !== '/search' && (
-                <SearchBox
-                  aria-label='searchAlgolia'
-                  id='searchAlgolia'
-                  placeholder='UniRed'
-                  queryHook={useDebounce}
-                />
-              )}
+              {pathname !== '/search' && <SearchBox aria-label='searchAlgolia' id='searchAlgolia' placeholder='UniRed' queryHook={useDebounce} />}
               <SearchUser />
             </div>
           </div>
-          <NavegationUrl
-            amigos={dataSoliReci?.length}
-            message={
-              dataMessage.filter((message) => !message.read && message.id != dataUser.user.id)
-                .length
-            }
-            notification={notificacionesUserAtom?.newPubliOPen}
-          />
+          <NavegationUrl amigos={dataSoliReci?.length} message={dataMessage.filter((message) => !message.read && message.id != dataUser.user.id).length} notification={notificacionesUserAtom?.newPubliOPen} />
           <div className='relative'>
             <button onClick={handleMenu} className='m-0 bg-transparent border-none '>
-              <FotoPerfil
-                className='w-[40px] h-[40px]'
-                img={dataUser.user.img}
-                connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true}
-              />
+              <FotoPerfil className='w-[40px] h-[40px]' img={dataUser.user.img} connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true} />
             </button>
-            {menu ? (
-              <Menu
-                theme={theme}
-                themebutton={(data: string) => setThemes(data)}
-                click={handleClick}
-                userImg={dataUser.user.img}
-                userName={dataUser.user.fullName.split(' ')[0]}
-              />
-            ) : null}
+            {menu ? <Menu theme={theme} themebutton={(data: string) => setThemes(data)} click={handleClick} userImg={dataUser.user.img} userName={dataUser.user.fullName.split(' ')[0]} /> : null}
           </div>
         </nav>
       </header>
@@ -266,12 +231,8 @@ export default function Header({ themeDate }: { themeDate: string }) {
         <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
           <span>Conectados</span> <DivConnect />
         </DivConectados>
-        {connectAmigos ? (
-          <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={dataIsConnect} />
-        ) : null}
+        {connectAmigos ? <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={dataIsConnect} /> : null}
       </DivContenedorConnect>
     </>
-  ) : (
-    <SkeletonNav />
-  );
+  ) : null;
 }

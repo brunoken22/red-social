@@ -3,20 +3,7 @@ import useSWRImmutable from 'swr/immutable';
 import useSWRInfinite from 'swr/infinite';
 import { fetchApiSwr } from './api';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import {
-  user,
-  publicacionUser,
-  getAllUser,
-  getAllSolicitudesRecibidas,
-  getAllAmigos,
-  getAllSolicitudesEnviadas,
-  publicacionAmigos,
-  publicacionSearchUser,
-  notificacionesUser,
-  Publicacion,
-  getSugerenciaAmigos,
-  User,
-} from '@/lib/atom';
+import { user, publicacionUser, getAllUser, getAllSolicitudesRecibidas, getAllAmigos, getAllSolicitudesEnviadas, publicacionAmigos, publicacionSearchUser, notificacionesUser, Publicacion, getSugerenciaAmigos, User } from '@/lib/atom';
 import { useEffect, useState } from 'react';
 import { urltoBlob, filetoDataURL, compressAccurately } from 'image-conversion';
 import { getCookie, setCookie } from 'cookies-next';
@@ -110,10 +97,7 @@ export async function CreateUser(dataUser: DataUser) {
 
     body: JSON.stringify(dataUser),
   };
-  const data =
-    dataUser.email && dataUser.password && dataUser.fullName
-      ? await fetchApiSwr(api, option)
-      : null;
+  const data = dataUser.email && dataUser.password && dataUser.fullName ? await fetchApiSwr(api, option) : null;
 
   if (data?.user?.id) {
     setCookie('login', true);
@@ -147,10 +131,7 @@ export async function modificarUser(dataUser: DataUser) {
     body: JSON.stringify(dataUser),
   };
 
-  const dataMod =
-    dataUser?.fullName || dataUser?.email || dataUser?.password || dataUser?.img
-      ? await fetchApiSwr(api, option)
-      : null;
+  const dataMod = dataUser?.fullName || dataUser?.email || dataUser?.password || dataUser?.img ? await fetchApiSwr(api, option) : null;
 
   if (dataMod) {
     await mutate('/user/token');
@@ -174,7 +155,7 @@ export function GetUser() {
     },
   };
 
-  const { data, isLoading } = useSWR(api, (url) => fetchApiSwr(url, option), {
+  const { data, isLoading } = useSWR(token == 'true' ? api : null, (url) => fetchApiSwr(url, option), {
     refreshInterval: 10000,
   });
   useEffect(() => {
@@ -206,13 +187,9 @@ export function GetAllUserChat() {
     },
   };
 
-  const { data, isLoading } = useSWR(
-    token === 'true' ? api : null,
-    (url) => fetchApiSwr(url, option),
-    {
-      refreshInterval: 10000,
-    }
-  );
+  const { data, isLoading } = useSWR(token === 'true' ? api : null, (url) => fetchApiSwr(url, option), {
+    refreshInterval: 10000,
+  });
 
   return { data, isLoading };
 }
@@ -228,16 +205,12 @@ export function NotificacionesUser(offset: number) {
     credentials: 'include',
   };
   const token = getCookie('login');
-  const { data, isLoading } = useSWR(
-    token == 'true' ? api : null,
-    (api) => fetchApiSwr(api, option),
-    {
-      revalidateOnReconnect: true,
-      revalidateOnMount: true,
-      revalidateOnFocus: true,
-      refreshInterval: 10000,
-    }
-  );
+  const { data, isLoading } = useSWR(token == 'true' ? api : null, (api) => fetchApiSwr(api, option), {
+    revalidateOnReconnect: true,
+    revalidateOnMount: true,
+    revalidateOnFocus: true,
+    refreshInterval: 10000,
+  });
 
   useEffect(() => {
     if (data && data?.publications) {
@@ -273,9 +246,7 @@ export function NotificacionesUserImmutable(offset: number) {
     credentials: 'include',
   };
 
-  const { data, isLoading } = useSWRImmutable(token == 'true' ? api : null, (url) =>
-    fetchApiSwr(url, option)
-  );
+  const { data, isLoading } = useSWRImmutable(token == 'true' ? api : null, (url) => fetchApiSwr(url, option));
 
   useEffect(() => {
     if (data) {
@@ -412,15 +383,14 @@ export function DeletePublic(id: number) {
   const { data, isLoading } = useSWR(id > -1 ? api : null, (url) => fetchApiSwr(url, option));
   useEffect(() => {
     if (data) {
-      const newPublic =
-        publicacionesUser && publicacionesUser.filter((publi: Publicacion) => publi.id != id);
+      const newPublic = publicacionesUser && publicacionesUser.filter((publi: Publicacion) => publi.id != id);
       setPublicacionesUser(newPublic);
     }
   }, [data]);
 
   return { dataDelete: data, isLoadingDeletePubli: isLoading };
 }
-export function GetAmigo(id: string) {
+export function GetAmigo(id: string, idUser?: number) {
   const api = `/user/amigos/${id}`;
 
   const option = {
@@ -430,15 +400,15 @@ export function GetAmigo(id: string) {
     },
     credentials: 'include',
   };
-
   const { data, isLoading } = useSWR(api, (url) => fetchApiSwr(url, option), {
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
     revalidateOnMount: true,
     refreshInterval: 100000,
   });
+  console.log(data);
 
-  return { data, isLoading };
+  return { data, isLoadingDataUserId: isLoading };
 }
 export async function CreatePublicacion(dataPubli: DataPublicacion) {
   const api = '/user/publicacion';

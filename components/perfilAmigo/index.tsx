@@ -31,7 +31,7 @@ export function PerfilAmigo() {
   const dataUser = useRecoilValue(user);
   const [isLoading, setIsLoading] = useState(false);
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
-  const { data, isLoadingDataUserId } = GetAmigo(id as string, dataUser.user?.id);
+  const { data, isLoadingDataUserId } = GetAmigo(id as string);
   const { dataPubliAmigo, isLoadingGetFriend, size, setSize } = GetPubliAmigo(id as string);
   const [isAmigo, setIsAmigo] = useState<'ACCEPTED' | 'PENDING' | 'REJECTED'>();
 

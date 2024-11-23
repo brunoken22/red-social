@@ -19,16 +19,5 @@ export async function middleware(request: NextRequest) {
   }
 }
 export const config = {
-  matcher: [
-    '/inicio',
-    // '/amigos/:path*',
-    '/configuracion',
-    '/chat',
-    '/notificaciones/:path*',
-    '/perfil',
-    '/search',
-    '/iniciarSesion',
-    '/crearCuenta',
-    '/',
-  ],
+  matcher: ['/inicio', '/amigos', '/configuracion', '/chat', '/notificaciones/:path*', '/perfil', '/search', '/iniciarSesion', '/crearCuenta', '/'],
 };

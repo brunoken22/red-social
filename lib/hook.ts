@@ -390,7 +390,7 @@ export function DeletePublic(id: number) {
 
   return { dataDelete: data, isLoadingDeletePubli: isLoading };
 }
-export function GetAmigo(id: string, idUser?: number) {
+export function GetAmigo(id: string) {
   const api = `/user/amigos/${id}`;
 
   const option = {

@@ -1,12 +1,13 @@
 import { PerfilAmigo } from '@/components/perfilAmigo';
 import { Main } from '@/ui/container';
 import type { Metadata, ResolvingMetadata } from 'next';
+
 type Props = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   // read route params
   const id = (await params).id;
 
@@ -23,31 +24,29 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: data.user.fullName + ' | UniRed' || 'Unired',
-    description: `Usuario ${data.user.fullName || 'unired'} de unired`,
+    title: data?.user?.fullName ? data?.user?.fullName + ' | UniRed' : 'Usuario no existe | Unired',
+    description: `Usuario ${data?.user?.fullName || 'unired'} de unired`,
     openGraph: {
-      images: [data.user.img || '/user.webp', ...previousImages],
-      title: data.user.fullName + ' | UniRed' || 'Unired',
-      description: `Usuario ${data.user.fullName || 'unired'} de unired`,
+      images: [data?.user?.img || '/user.webp', ...previousImages],
+      title: data?.user?.fullName ? data?.user?.fullName + ' | UniRed' : 'Unired',
+      description: `Usuario ${data?.user?.fullName || 'no existe'} de unired`,
       type: 'website',
-      url: `https://unired.vercel.app/amigos/${data.user.id | 0}`,
+      url: `https://unired.vercel.app/amigos/${data?.user?.id | 0}`,
     },
     twitter: {
-      images: [data.user.img || '/user.webp', ...previousImages],
-      title: data.user.fullName + ' | UniRed' || 'Unired',
-      description: `Usuario ${data.user.fullName || 'unired'} de unired`,
+      images: [data?.user?.img || '/user.webp', ...previousImages],
+      title: data?.user?.fullName ? data?.user?.fullName + ' | UniRed' : 'Usuario no existe | Unired',
+      description: `Usuario ${data?.user?.fullName || 'no existe'} de unired`,
       creator: 'Bruno Ken',
-      site: `https://unired.vercel.app/amigos/${data.user.id | 0}`,
+      site: `https://unired.vercel.app/amigos/${data?.user?.id | 0}`,
     },
   };
 }
 
 export default function () {
   return (
-    <>
-      <Main>
-        <PerfilAmigo />
-      </Main>
-    </>
+    <Main>
+      <PerfilAmigo />
+    </Main>
   );
 }

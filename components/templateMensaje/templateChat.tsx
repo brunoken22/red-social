@@ -12,17 +12,7 @@ import { ref, onValue, update, get } from 'firebase/database';
 import Linkify from '@/utils/formtText';
 import { MessageUserChat } from '.';
 
-export default function TemplateChat({
-  dataMensajeUser,
-  id,
-  close,
-  connect,
-}: {
-  dataMensajeUser: MessageUserChat;
-  id: number;
-  close: () => any;
-  connect: boolean;
-}) {
+export default function TemplateChat({ dataMensajeUser, id, close, connect }: { dataMensajeUser: MessageUserChat; id: number; close: () => any; connect: boolean }) {
   const smsRef: any = useRef(null);
   const [claveMessage, setclaveMessage] = useState('');
   const [messagesAll, setMessagesAll] = useState<MessageUserChat[] | []>([]);
@@ -52,10 +42,7 @@ export default function TemplateChat({
         const utlimoMensaje: any = messagesAll[messagesAll.length - 1];
 
         if (utlimoMensaje?.read == false && utlimoMensaje.id !== id) {
-          const chatroomData = ref(
-            rtdb,
-            '/rooms/' + dataMensajeUser?.rtdb + '/messages/' + claveMessage
-          );
+          const chatroomData = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/messages/' + claveMessage);
           get(chatroomData).then((snap) => {
             if (snap.exists()) {
               update(chatroomData, {
@@ -109,12 +96,8 @@ export default function TemplateChat({
     <TemplSns>
       <div className=' flex justify-between border-[1px] border-[#3b3b3b] p-2'>
         <div className='flex items-center gap-4 overflow-hidden'>
-          <Link href={'/amigos/' + dataMensajeUser.id + '/' + dataMensajeUser.fullName}>
-            <FotoPerfil
-              className='w-[40px] h-[40px]'
-              img={dataMensajeUser.img || (dataMensajeUser.img == 'null' && '') || ''}
-              connect={connect}
-            />
+          <Link href={'/amigos/' + dataMensajeUser.id}>
+            <FotoPerfil className='w-[40px] h-[40px]' img={dataMensajeUser.img || (dataMensajeUser.img == 'null' && '') || ''} connect={connect} />
           </Link>
           <div className='flex items-center gap-2 overflow-hidden'>
             <h5 className='truncate m-0'>{dataMensajeUser.fullName}</h5>
@@ -125,9 +108,7 @@ export default function TemplateChat({
         </Button>
       </div>
       <div className='flex flex-col gap-4 h-full  border-[1px] border-[#3b3b3b]'>
-        <div
-          className='flex flex-col w-full text-primary gap-2 p-4  overflow-y-auto h-full'
-          ref={smsRef}>
+        <div className='flex flex-col w-full text-primary gap-2 p-4  overflow-y-auto h-full' ref={smsRef}>
           {messagesAll
             ? messagesAll?.map((e: any, p: any) => {
                 return (
@@ -145,32 +126,13 @@ export default function TemplateChat({
                 );
               })
             : null}
-          {messagesAll?.length > 0 && (messagesAll[messagesAll.length - 1] as any).id === id && (
-            <p
-              className={`text-end  text-[0.8rem] ${
-                messagesAll[messagesAll.length - 1].status === 'Leido'
-                  ? 'text-light'
-                  : 'text-gray-500'
-              } -mt-2`}>
-              {messagesAll[messagesAll.length - 1].status === 'Leido'
-                ? ' ✔✔ Leido'
-                : messagesAll[messagesAll.length - 1].status === 'Enviado'
-                ? ' ✔ Enviado'
-                : ' ✔✔ Sin leer'}
-            </p>
-          )}
+          {messagesAll?.length > 0 && (messagesAll[messagesAll.length - 1] as any).id === id && <p className={`text-end  text-[0.8rem] ${messagesAll[messagesAll.length - 1].status === 'Leido' ? 'text-light' : 'text-gray-500'} -mt-2`}>{messagesAll[messagesAll.length - 1].status === 'Leido' ? ' ✔✔ Leido' : messagesAll[messagesAll.length - 1].status === 'Enviado' ? ' ✔ Enviado' : ' ✔✔ Sin leer'}</p>}
         </div>
         <div>
-          <form
-            action=''
-            onSubmit={handleSubmit}
-            className='flex items-center gap-4 p-4 text-secundary max-md:p-2'>
+          <form action='' onSubmit={handleSubmit} className='flex items-center gap-4 p-4 text-secundary max-md:p-2'>
             <Input id='message' type='text' placeholder='Escribe un mensaje' />
 
-            <button
-              type='submit'
-              id={dataMensajeUser.rtdb}
-              className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70 shrink-[5] '>
+            <button type='submit' id={dataMensajeUser.rtdb} className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70 shrink-[5] '>
               Enviar
             </button>
           </form>

@@ -1,20 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { Body } from '@/ui/typography';
-import {
-  DivPerfil,
-  DivSpan,
-  ButtonOpenImage,
-  DivInteractuar,
-  BottonLike,
-  DivCantidad,
-  SpanIco,
-  DivPefilDelete,
-  ContentDelete,
-  ButtonDelete,
-  ButtonOpenDelete,
-  DivUserLikes,
-} from '@/components/publicaciones/styled';
+import { DivPerfil, DivSpan, ButtonOpenImage, DivInteractuar, BottonLike, DivCantidad, SpanIco, DivPefilDelete, ContentDelete, ButtonDelete, ButtonOpenDelete, DivUserLikes } from '@/components/publicaciones/styled';
 import Like from '@/ui/icons/like.svg';
 import CloseWhite from '@/ui/icons/closeWhite.svg';
 import Comentar from '@/ui/icons/comentar.svg';
@@ -40,30 +27,11 @@ const iconConLike = {
 const Verification = dynamic(() => import('@/ui/verification'));
 const Comment = dynamic(() => import('./comment'));
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), { loading: () => <LoaderRequest /> });
-const DivImage = dynamic(
-  () => import('@/components/publicaciones/styled').then((mod) => mod.DivImage),
-  { loading: () => <LoaderRequest /> }
-);
+const DivImage = dynamic(() => import('@/components/publicaciones/styled').then((mod) => mod.DivImage), { loading: () => <LoaderRequest /> });
 
-export function ThemplatePubli(props: {
-  description?: string;
-  vereficationUser: boolean;
-  img?: string;
-  fecha: string;
-  like: any[];
-  comentarios: any[];
-  id: number;
-  imgUserPro?: string;
-  idPublicacion: number;
-  userId: number;
-  user: any;
-}) {
+export function ThemplatePubli(props: { description?: string; vereficationUser: boolean; img?: string; fecha: string; like: any[]; comentarios: any[]; id: number; imgUserPro?: string; idPublicacion: number; userId: number; user: any }) {
   const [like, setLike] = useState<'like' | 'disLike'>();
-  const [comentario, setComentario] = useState(
-    props.comentarios?.length && props.comentarios.length > 0 && props.comentarios.length < 3
-      ? true
-      : false
-  );
+  const [comentario, setComentario] = useState(props.comentarios?.length && props.comentarios.length > 0 && props.comentarios.length < 3 ? true : false);
   const [openImage, setOpenImage] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const dataIsConnect = useRecoilValue(isConnect);
@@ -78,8 +46,7 @@ export function ThemplatePubli(props: {
   const { dataDelete } = DeletePublic(publiId);
 
   useEffect(() => {
-    const isLike =
-      props?.like?.length > 0 ? props.like?.find((e: any) => e.user.id == props.userId) : false;
+    const isLike = props?.like?.length > 0 ? props.like?.find((e: any) => e.user.id == props.userId) : false;
     setLike(!isLike ? 'disLike' : 'like');
 
     setTotalLike(props.like?.length);
@@ -119,32 +86,20 @@ export function ThemplatePubli(props: {
       <DivPefilDelete>
         <DivPerfil>
           {props.user && props.user?.id !== props.userId ? (
-            <Link href={'/amigos/' + props.id + '/' + props.user.fullName}>
-              <FotoPerfil
-                img={props?.user?.img}
-                className='h-[40px] w-[40px]'
-                connect={
-                  dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
-                }></FotoPerfil>
+            <Link href={'/amigos/' + props.id}>
+              <FotoPerfil img={props?.user?.img} className='h-[40px] w-[40px]' connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}></FotoPerfil>
             </Link>
           ) : (
-            <FotoPerfil
-              img={props?.user?.img}
-              className='h-[40px] w-[40px]'
-              connect={
-                dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
-              }></FotoPerfil>
+            <FotoPerfil img={props?.user?.img} className='h-[40px] w-[40px]' connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}></FotoPerfil>
           )}
           <div>
             <div className='flex items-center gap-2'>
               {props.user && props.user?.id !== props.userId ? (
-                <Link href={'/amigos/' + props.id + '/' + props.user.fullName}>
+                <Link href={'/amigos/' + props.id}>
                   <Body>{props.user?.id == props.userId ? 'Tú' : props.user.fullName}</Body>
                 </Link>
               ) : (
-                <Body>
-                  {props.user && props.user?.id == props.userId ? 'Tú' : props.user.fullName}
-                </Body>
+                <Body>{props.user && props.user?.id == props.userId ? 'Tú' : props.user.fullName}</Body>
               )}
 
               {props.user.verification ? <Verification publication={true} /> : null}
@@ -154,9 +109,7 @@ export function ThemplatePubli(props: {
         </DivPerfil>
         {props.id == props.userId ? (
           <div className='relative'>
-            <ButtonOpenDelete
-              onClick={() => setOpenDelete(!openDelete)}
-              aria-label='EliminarContet'>
+            <ButtonOpenDelete onClick={() => setOpenDelete(!openDelete)} aria-label='EliminarContet'>
               <ContentDelete />
               <ContentDelete />
               <ContentDelete />
@@ -201,9 +154,7 @@ export function ThemplatePubli(props: {
             {userLikes ? (
               <DivUserLikes>
                 {props.like.map((e: any) => (
-                  <div
-                    key={e.id}
-                    className='w-full whitespace-nowrap	 overflow-hidden text-ellipsis m-0'>
+                  <div key={e.id} className='w-full whitespace-nowrap	 overflow-hidden text-ellipsis m-0'>
                     {e.user.id !== props.userId ? e.user.fullName : 'Tú'}
                   </div>
                 ))}
@@ -225,43 +176,16 @@ export function ThemplatePubli(props: {
         )}
       </DivCantidad>
       <DivInteractuar>
-        <BottonLike
-          type='button'
-          onClick={handleClickLike}
-          like={like == 'like' ? true : false}
-          id={props.idPublicacion.toString()}>
-          <Like
-            className={`${
-              like == 'like'
-                ? 'fill-[#063ef5] dark:fill-[#7696fd]'
-                : 'dark:fill-[#ddd] fill-[#919191]'
-            }`}
-          />
+        <BottonLike disabled={props.userId ? false : true} type='button' onClick={handleClickLike} like={like == 'like' ? true : false} id={props.idPublicacion.toString()}>
+          <Like className={`${like == 'like' ? 'fill-[#063ef5] dark:fill-[#7696fd]' : 'dark:fill-[#ddd] fill-[#919191]'}`} />
           Me gusta
         </BottonLike>
-        <BottonLike
-          onClick={handleClickOpenComen}
-          type='button'
-          id={'comentario' + Number(props.idPublicacion)}>
-          <Comentar
-            className={`${comentario ? 'fill-[#84e981]' : 'dark:fill-[#ddd] fill-[#919191]'}`}
-          />
+        <BottonLike onClick={handleClickOpenComen} type='button' id={'comentario' + Number(props.idPublicacion)}>
+          <Comentar className={`${comentario ? 'fill-[#84e981]' : 'dark:fill-[#ddd] fill-[#919191]'}`} />
           Comentar
         </BottonLike>
       </DivInteractuar>
-      {comentario ? (
-        <Comment
-          idPublicacion={props.idPublicacion}
-          verification={props.vereficationUser}
-          comentarios={props.comentarios}
-          userName={props?.user.name}
-          name={props?.user.name}
-          imgUserPro={props.imgUserPro}
-          userId={props.userId}
-          id={props.id}
-          connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
-        />
-      ) : null}
+      {comentario ? <Comment idPublicacion={props.idPublicacion} verification={props.vereficationUser} comentarios={props.comentarios} userName={props?.user.name} name={props?.user.name} imgUserPro={props.imgUserPro} userId={props.userId} id={props.id} connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true} /> : null}
       {openImage ? (
         <div
           style={{
@@ -281,12 +205,7 @@ export function ThemplatePubli(props: {
               <CloseWhite />
             </button>
           </div>
-          <img
-            src={props?.img}
-            alt='imagen'
-            className='w-full h-[95vh] object-contain'
-            loading='lazy'
-          />
+          <img src={props?.img} alt='imagen' className='w-full h-[95vh] object-contain' loading='lazy' />
         </div>
       ) : null}
     </div>

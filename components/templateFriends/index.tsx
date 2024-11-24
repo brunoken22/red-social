@@ -44,47 +44,49 @@ export default function TemplateFriendRequest({ id, fullName, img, requestClassD
   };
   return (
     <DivAllAmistades requestClassDuo={requestClassDuo}>
-      <Link href={'/amigos/' + id} className='h-full hover:opacity-60'>
-        <img src={img ? img : '/user.webp'} alt={fullName} className='object-cover w-full h-full' loading='lazy' />
+      <Link href={'/amigos/' + id} className='h-full hover:opacity-60 max-md:m-auto max-sm:h-[120px] max-sm:w-[120px]   max-sm:p-2 '>
+        <img src={img ? img : '/user.webp'} alt={fullName} className='object-cover w-full h-full  max-sm:rounded-full max-sm:overflow-hidden' loading='lazy' />
       </Link>
-      <div className='p-2 h-full w-[inherit]'>
-        <Link href={'/amigos/' + id} className='p-2 font-semibold hover:opacity-60 block whitespace-nowrap	 overflow-hidden text-ellipsis'>
+      <div className='p-2 h-full w-[inherit] max-sm:flex max-sm:flex-col max-sm:gap-2 max-sm:justify-center'>
+        <Link href={'/amigos/' + id} className='p-2 font-semibold hover:opacity-60 block whitespace-nowrap	max-md:text-start overflow-hidden text-ellipsis'>
           {fullName}
         </Link>
-        {!isLoading ? (
-          <>
-            {' '}
-            {typeRequest == 'suggestion' ? (
-              <ButtonAgregar id={id} onClick={handleSolicitudEnv} bg={'blue'}>
-                Añadir amigo
-              </ButtonAgregar>
-            ) : null}
-            {typeRequest == 'requestFriend' ? (
-              <div className='flex items-center flex-col gap-2'>
-                <ButtonAgregar id={id} onClick={handleSolicitudAcep}>
-                  Aceptar{' '}
+        <div className='max-sm:flex max-sm:justify-center gap-2'>
+          {!isLoading ? (
+            <>
+              {' '}
+              {typeRequest == 'suggestion' ? (
+                <ButtonAgregar id={id} onClick={handleSolicitudEnv} bg={'blue'}>
+                  Añadir amigo
                 </ButtonAgregar>
-                <ButtonAgregar id={id} onClick={handleSolicitudRecha} bg='red'>
-                  Rechazar
+              ) : null}
+              {typeRequest == 'requestFriend' ? (
+                <>
+                  <ButtonAgregar id={id} onClick={handleSolicitudAcep}>
+                    Aceptar{' '}
+                  </ButtonAgregar>
+                  <ButtonAgregar id={id} onClick={handleSolicitudRecha} bg='red'>
+                    Rechazar
+                  </ButtonAgregar>
+                </>
+              ) : null}
+              {typeRequest == 'allFriend' ? (
+                <ButtonAgregar id={id} onClick={handleEliminarAmigo} bg={'red'}>
+                  Eliminar amigo
                 </ButtonAgregar>
-              </div>
-            ) : null}
-            {typeRequest == 'allFriend' ? (
-              <ButtonAgregar id={id} onClick={handleEliminarAmigo} bg={'red'}>
-                Eliminar amigo
-              </ButtonAgregar>
-            ) : null}
-            {typeRequest == 'requestSent' ? (
-              <ButtonAgregar id={id} onClick={handleSolicitudRecha} bg={'red'}>
-                Cancelar solicitud
-              </ButtonAgregar>
-            ) : null}
-          </>
-        ) : (
-          <div className='flex items-center justify-center'>
-            <LoaderRequest />
-          </div>
-        )}
+              ) : null}
+              {typeRequest == 'requestSent' ? (
+                <ButtonAgregar id={id} onClick={handleSolicitudRecha} bg={'red'}>
+                  Cancelar solicitud
+                </ButtonAgregar>
+              ) : null}
+            </>
+          ) : (
+            <div className='flex items-center justify-center'>
+              <LoaderRequest />
+            </div>
+          )}
+        </div>
       </div>
     </DivAllAmistades>
   );

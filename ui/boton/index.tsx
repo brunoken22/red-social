@@ -26,7 +26,7 @@ export const ButtonNoti = ({ children, onClick, visto, open, id }: { children: R
 );
 
 export const ButtonAgregar = ({ children, onClick, bg, id, className }: { children: React.ReactNode; onClick: (e: any) => any; bg?: string; id: any; className?: string }) => (
-  <button id={id} onClick={onClick} className={`${bg == 'red' ? 'bg-[#d66161e0] p-2' : '  bg-[#3981ce]  p-2'} w-full border-none text-primary   rounded-lg  hover:opacity-60 text-nowrap ${className ? className : ''}`}>
+  <button id={id} onClick={onClick} className={`${bg == 'red' ? 'bg-[#dfdedec7] p-2  text-secundary dark:bg-[#575757c7] dark:text-primary' : '  bg-[#6ab0fc63] text-[#3359ff] dark:bg-[#27517e] dark:text-[#46a3fa] font-bold p-2'} w-full border-none   rounded-lg  hover:opacity-60 text-nowrap ${className ? className : ''}`}>
     {children}
   </button>
 );

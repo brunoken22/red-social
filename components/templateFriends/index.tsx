@@ -51,7 +51,7 @@ export default function TemplateFriendRequest({ id, fullName, img, requestClassD
         <Link href={'/amigos/' + id} className='p-2 font-semibold hover:opacity-60 block whitespace-nowrap	max-md:text-start overflow-hidden text-ellipsis'>
           {fullName}
         </Link>
-        <div className='max-sm:flex max-sm:justify-center gap-2'>
+        <div className='flex flex-col max-sm:flex-row justify-center gap-2'>
           {!isLoading ? (
             <>
               {' '}

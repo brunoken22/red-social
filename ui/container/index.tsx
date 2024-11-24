@@ -15,7 +15,7 @@ export const DivPublicar = ({ children }: { children: React.ReactNode }) => <div
 
 export const DivAllChat = ({ children, className }: { children: React.ReactNode; className?: string }) => <div className={`${className} relative   flex gap-4 rounded-md flex-row items-center p-4   w-full`}>{children}</div>;
 
-export const DivAllAmistades = ({ children, requestClassDuo }: { children: React.ReactNode; requestClassDuo: boolean }) => <div className={`bg-primary rounded-md shadow-container dark:shadow-dark max-md:mt-4 w-[185px]  max-sm:w-full max-sm:h-[120px] dark:bg-darkComponet grid ${!requestClassDuo ? 'grid-rows-[repeat(1,200px_100px)]' : 'grid-rows-[repeat(1,200px_150px)] max-sm:grid-rows-none max-sm:grid-cols-[repeat(1,140px_1fr)]'}`}>{children}</div>;
+export const DivAllAmistades = ({ children, requestClassDuo }: { children: React.ReactNode; requestClassDuo: boolean }) => <div className={`bg-primary rounded-md shadow-container dark:shadow-dark max-md:mt-4 w-[185px]  max-sm:w-full max-sm:h-[120px] dark:bg-darkComponet grid ${!requestClassDuo ? 'grid-rows-[repeat(1,200px_100px)] max-sm:grid-rows-none max-sm:grid-cols-[repeat(1,140px_1fr)]' : 'grid-rows-[repeat(1,200px_150px)] max-sm:grid-rows-none max-sm:grid-cols-[repeat(1,140px_1fr)]'}`}>{children}</div>;
 
 export const DivAllPublicaciones = ({ children }: { children: React.ReactNode }) => <div className='bg-primary flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-dark'>{children}</div>;
 

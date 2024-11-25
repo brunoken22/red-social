@@ -64,7 +64,7 @@ export default function TemplateFriendRequest({
           loading='lazy'
         />
       </Link>
-      <div className='p-2 h-full w-[inherit] max-sm:flex max-sm:flex-col max-sm:gap-2 max-sm:justify-center max-md:max-w-[320px]'>
+      <div className='p-2 h-full w-[inherit] max-sm:flex max-sm:flex-col max-sm:gap-2 max-sm:justify-center max-md:max-w-[320px] max-md:min-w-full'>
         <Link href={'/amigos/' + id} className='p-2 font-semibold hover:opacity-60 block whitespace-nowrap	max-md:text-start truncate'>
           {fullName}
         </Link>

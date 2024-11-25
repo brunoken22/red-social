@@ -61,28 +61,28 @@ export default function AmigosComponent() {
       <DivSection>
         <div className='sticky top-16 z-[9]'>
           <h2 className='font-semibold text-2xl text-start p-2 pb-3'>Amigos</h2>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col max-md:flex-row gap-2 max-md:flex-wrap'>
             <ButtonNoti onClick={handleClick} id='suge' open={sugerencia}>
-              <DivIcons>
+              <DivIcons className='max-md:hidden'>
                 <MyAmigos /> {'>'}
               </DivIcons>
               Sugerencia de amistad
             </ButtonNoti>
             <ButtonNoti onClick={handleClick} id='soli' open={soliAmis}>
-              <DivIcons>
+              <DivIcons className='max-md:hidden'>
                 <MyAmigos />
                 {'+'}
               </DivIcons>
               Solicitud de amistad
             </ButtonNoti>
             <ButtonNoti onClick={handleClick} id='all' open={allAmig}>
-              <DivIcons>
+              <DivIcons className='max-md:hidden'>
                 <MyAmigos />
               </DivIcons>
               Todos tus amigos
             </ButtonNoti>
             <ButtonNoti onClick={handleClick} id='SoliEnv' open={soliEnv}>
-              <DivIcons>
+              <DivIcons className='max-md:hidden'>
                 <MyAmigos />
               </DivIcons>
               Solicitud Enviado
@@ -94,25 +94,77 @@ export default function AmigosComponent() {
         {sugerencia && !soliAmis && !allAmig ? (
           <>
             <h3 className='font-semibold text-start text-xl mb-4'>Sugerencias de amistad</h3>
-            <DivResponse>{dataAllUser?.length > 0 ? dataAllUser?.map((user) => <TemplateFriendRequest key={user.id} id={user.id} fullName={user.fullName} img={user.img} requestClassDuo={false} typeRequest='suggestion' />) : 'Sin Usuarios'}</DivResponse>
+            <DivResponse>
+              {dataAllUser?.length > 0
+                ? dataAllUser?.map((user) => (
+                    <TemplateFriendRequest
+                      key={user.id}
+                      id={user.id}
+                      fullName={user.fullName}
+                      img={user.img}
+                      requestClassDuo={false}
+                      typeRequest='suggestion'
+                    />
+                  ))
+                : 'Sin Usuarios'}
+            </DivResponse>
           </>
         ) : null}
         {soliAmis ? (
           <>
             <h3 className='font-semibold text-start  text-xl mb-4'>Solicitudes de amistad</h3>
-            <DivResponse>{dataAllSoliReci?.length > 0 ? dataAllSoliReci.map((user) => <TemplateFriendRequest key={user.id} id={user.id} fullName={user.fullName} img={user.img} requestClassDuo={true} typeRequest='requestFriend' />) : 'No hay solicitud de amistad'}</DivResponse>
+            <DivResponse>
+              {dataAllSoliReci?.length > 0
+                ? dataAllSoliReci.map((user) => (
+                    <TemplateFriendRequest
+                      key={user.id}
+                      id={user.id}
+                      fullName={user.fullName}
+                      img={user.img}
+                      requestClassDuo={true}
+                      typeRequest='requestFriend'
+                    />
+                  ))
+                : 'No hay solicitud de amistad'}
+            </DivResponse>
           </>
         ) : null}
         {allAmig ? (
           <>
             <h3 className='font-semibold text-start  text-xl mb-4 mt-0'>Todos tus amigos</h3>
-            <DivResponse>{dataAllAmigos.data?.length > 0 ? dataAllAmigos.data.map((user) => <TemplateFriendRequest key={user.id} id={user.id} fullName={user.fullName} img={user.img} typeRequest={'allFriend'} requestClassDuo={false} />) : 'No tienes amigos'}</DivResponse>
+            <DivResponse>
+              {dataAllAmigos.data?.length > 0
+                ? dataAllAmigos.data.map((user) => (
+                    <TemplateFriendRequest
+                      key={user.id}
+                      id={user.id}
+                      fullName={user.fullName}
+                      img={user.img}
+                      typeRequest={'allFriend'}
+                      requestClassDuo={false}
+                    />
+                  ))
+                : 'No tienes amigos'}
+            </DivResponse>
           </>
         ) : null}
         {soliEnv ? (
           <>
             <h3 className='font-semibold text-start  text-xl mb-4  mt-0'>Solicitud Enviado</h3>
-            <DivResponse>{dataAllSoliEnv?.length > 0 ? dataAllSoliEnv.map((user) => <TemplateFriendRequest key={user.id} id={user.id} fullName={user.fullName} img={user.img} typeRequest={'requestSent'} requestClassDuo={false} />) : 'No enviastes solicitudes'}</DivResponse>
+            <DivResponse>
+              {dataAllSoliEnv?.length > 0
+                ? dataAllSoliEnv.map((user) => (
+                    <TemplateFriendRequest
+                      key={user.id}
+                      id={user.id}
+                      fullName={user.fullName}
+                      img={user.img}
+                      typeRequest={'requestSent'}
+                      requestClassDuo={false}
+                    />
+                  ))
+                : 'No enviastes solicitudes'}
+            </DivResponse>
           </>
         ) : null}
       </DivResult>

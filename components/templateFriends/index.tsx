@@ -8,7 +8,19 @@ const LoaderRequest = dynamic(() => import('../loader').then((mod) => mod.Loader
 
 const DivAllAmistades = dynamic(() => import('@/ui/container').then((mod) => mod.DivAllAmistades));
 
-export default function TemplateFriendRequest({ id, fullName, img, requestClassDuo, typeRequest }: { id: number; fullName: string; img: string; requestClassDuo: boolean; typeRequest: 'suggestion' | 'requestFriend' | 'allFriend' | 'requestSent' }) {
+export default function TemplateFriendRequest({
+  id,
+  fullName,
+  img,
+  requestClassDuo,
+  typeRequest,
+}: {
+  id: number;
+  fullName: string;
+  img: string;
+  requestClassDuo: boolean;
+  typeRequest: 'suggestion' | 'requestFriend' | 'allFriend' | 'requestSent';
+}) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSolicitudEnv = async (e: any) => {
@@ -45,10 +57,15 @@ export default function TemplateFriendRequest({ id, fullName, img, requestClassD
   return (
     <DivAllAmistades requestClassDuo={requestClassDuo}>
       <Link href={'/amigos/' + id} className='h-full hover:opacity-60 max-md:m-auto max-sm:h-[120px] max-sm:w-[120px]   max-sm:p-2 '>
-        <img src={img ? img : '/user.webp'} alt={fullName} className='object-cover w-full h-full  max-sm:rounded-full max-sm:overflow-hidden' loading='lazy' />
+        <img
+          src={img ? img : '/user.webp'}
+          alt={fullName}
+          className='object-cover w-full h-full  max-sm:rounded-full max-sm:overflow-hidden'
+          loading='lazy'
+        />
       </Link>
-      <div className='p-2 h-full w-[inherit] max-sm:flex max-sm:flex-col max-sm:gap-2 max-sm:justify-center'>
-        <Link href={'/amigos/' + id} className='p-2 font-semibold hover:opacity-60 block whitespace-nowrap	max-md:text-start overflow-hidden text-ellipsis'>
+      <div className='p-2 h-full w-[inherit] max-sm:flex max-sm:flex-col max-sm:gap-2 max-sm:justify-center max-md:max-w-[320px]'>
+        <Link href={'/amigos/' + id} className='p-2 font-semibold hover:opacity-60 block whitespace-nowrap	max-md:text-start truncate'>
           {fullName}
         </Link>
         <div className='flex flex-col max-sm:flex-row justify-center gap-2'>

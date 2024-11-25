@@ -3,7 +3,20 @@ import useSWRImmutable from 'swr/immutable';
 import useSWRInfinite from 'swr/infinite';
 import { fetchApiSwr } from './api';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { user, publicacionUser, getAllUser, getAllSolicitudesRecibidas, getAllAmigos, getAllSolicitudesEnviadas, publicacionAmigos, publicacionSearchUser, notificacionesUser, Publicacion, getSugerenciaAmigos, User } from '@/lib/atom';
+import {
+  user,
+  publicacionUser,
+  getAllUser,
+  getAllSolicitudesRecibidas,
+  getAllAmigos,
+  getAllSolicitudesEnviadas,
+  publicacionAmigos,
+  publicacionSearchUser,
+  notificacionesUser,
+  Publicacion,
+  getSugerenciaAmigos,
+  User,
+} from '@/lib/atom';
 import { useEffect, useState } from 'react';
 import { urltoBlob, filetoDataURL, compressAccurately } from 'image-conversion';
 import { getCookie, setCookie } from 'cookies-next';
@@ -422,7 +435,8 @@ export async function CreatePublicacion(dataPubli: DataPublicacion) {
   };
   const dataNotiSwr = await fetchApiSwr(api, option);
   if (dataNotiSwr) {
-    await mutate(`/user/publicacion?offset=0`);
+    await mutate((key: string) => key.startsWith('/user/publicacion'));
+    await mutate((key: string) => key.startsWith('/user/amigos/publicacion'));
   }
 
   return dataNotiSwr;

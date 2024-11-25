@@ -54,7 +54,7 @@ export function ThemplatePubli(props: {
   idPublicacion: number;
   userId: number;
   user: any;
-  mutate: any;
+  mutate?: any;
 }) {
   const [like, setLike] = useState<'like' | 'disLike'>();
   const [comentario, setComentario] = useState(

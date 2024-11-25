@@ -1,25 +1,19 @@
 'use client';
+import { GetAllPublicaciones, GetAllPublicacionesUser } from '@/lib/hook';
 import dynamic from 'next/dynamic';
-import {FormEvent, useState} from 'react';
-
+import { FormEvent, useState } from 'react';
+import { usePathname } from 'next/navigation';
 const Verification = dynamic(() => import('@/ui/verification'));
 const CloseSvg = dynamic(() => import('@/ui/icons/close.svg'));
 const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
 const DivForm = dynamic(() => import('./styled').then((mod) => mod.DivForm));
 const Form = dynamic(() => import('./styled').then((mod) => mod.Form));
 const Button = dynamic(() => import('./styled').then((mod) => mod.Button));
-const DivButton = dynamic(() =>
-  import('./styled').then((mod) => mod.DivButton)
-);
-const ButtonPublicar = dynamic(() =>
-  import('./styled').then((mod) => mod.ButtonPublicar)
-);
+const DivButton = dynamic(() => import('./styled').then((mod) => mod.DivButton));
+const ButtonPublicar = dynamic(() => import('./styled').then((mod) => mod.ButtonPublicar));
 
-const ImageSVG = dynamic(() =>
-  import('@/ui/icons').then((mod) => mod.ImageSVG)
-);
+const ImageSVG = dynamic(() => import('@/ui/icons').then((mod) => mod.ImageSVG));
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
-
 export default function TemplateFormPublicar({
   fullName,
   image,
@@ -34,7 +28,9 @@ export default function TemplateFormPublicar({
   const [dataUrl, setDataUrl] = useState('');
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const { mutate } = GetAllPublicaciones(true);
+  const { mutatePublicacionesUser } = GetAllPublicacionesUser(true);
+  const pathname = usePathname();
   const handleInput = (event: any) => {
     const textContent = event.target.value;
     setText(textContent);
@@ -48,6 +44,11 @@ export default function TemplateFormPublicar({
       description: text,
       img: dataUrl,
     });
+    if (pathname === '/perfil') {
+      await mutatePublicacionesUser();
+    } else {
+      await mutate();
+    }
     setIsLoading(false);
     close();
   };
@@ -81,9 +82,7 @@ export default function TemplateFormPublicar({
               <ImageSVG dataUrl={(data: string) => setDataUrl(data)}></ImageSVG>
             </div>
             <DivButton>
-              <ButtonPublicar
-                color={text || dataUrl}
-                disabled={!text && !dataUrl ? true : false}>
+              <ButtonPublicar color={text || dataUrl} disabled={!text && !dataUrl ? true : false}>
                 Publicar
               </ButtonPublicar>
             </DivButton>

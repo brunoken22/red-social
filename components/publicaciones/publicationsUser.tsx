@@ -10,7 +10,7 @@ export function PublicacionesUser() {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
 
-  const { dataPubliAllAmigosSwr, isLoading, setSize, size } = GetAllPublicacionesUser();
+  const { dataPubliAllAmigosSwr, isLoading, setSize, size, mutatePublicacionesUser } = GetAllPublicacionesUser();
 
   const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -27,6 +27,7 @@ export function PublicacionesUser() {
           publicacionesUser.map((item) => (
             <DivAllPublicaciones key={item.id}>
               <ThemplatePubli
+                mutate={mutatePublicacionesUser}
                 vereficationUser={dataUser.user.verification}
                 description={item.description}
                 img={item.img}

@@ -1,7 +1,20 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { Body } from '@/ui/typography';
-import { DivPerfil, DivSpan, ButtonOpenImage, DivInteractuar, BottonLike, DivCantidad, SpanIco, DivPefilDelete, ContentDelete, ButtonDelete, ButtonOpenDelete, DivUserLikes } from '@/components/publicaciones/styled';
+import {
+  DivPerfil,
+  DivSpan,
+  ButtonOpenImage,
+  DivInteractuar,
+  BottonLike,
+  DivCantidad,
+  SpanIco,
+  DivPefilDelete,
+  ContentDelete,
+  ButtonDelete,
+  ButtonOpenDelete,
+  DivUserLikes,
+} from '@/components/publicaciones/styled';
 import Like from '@/ui/icons/like.svg';
 import CloseWhite from '@/ui/icons/closeWhite.svg';
 import Comentar from '@/ui/icons/comentar.svg';
@@ -29,9 +42,24 @@ const Comment = dynamic(() => import('./comment'));
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), { loading: () => <LoaderRequest /> });
 const DivImage = dynamic(() => import('@/components/publicaciones/styled').then((mod) => mod.DivImage), { loading: () => <LoaderRequest /> });
 
-export function ThemplatePubli(props: { description?: string; vereficationUser: boolean; img?: string; fecha: string; like: any[]; comentarios: any[]; id: number; imgUserPro?: string; idPublicacion: number; userId: number; user: any }) {
+export function ThemplatePubli(props: {
+  description?: string;
+  vereficationUser: boolean;
+  img?: string;
+  fecha: string;
+  like: any[];
+  comentarios: any[];
+  id: number;
+  imgUserPro?: string;
+  idPublicacion: number;
+  userId: number;
+  user: any;
+  mutate: any;
+}) {
   const [like, setLike] = useState<'like' | 'disLike'>();
-  const [comentario, setComentario] = useState(props.comentarios?.length && props.comentarios.length > 0 && props.comentarios.length < 3 ? true : false);
+  const [comentario, setComentario] = useState(
+    props.comentarios?.length && props.comentarios.length > 0 && props.comentarios.length < 3 ? true : false
+  );
   const [openImage, setOpenImage] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const dataIsConnect = useRecoilValue(isConnect);
@@ -54,6 +82,7 @@ export function ThemplatePubli(props: { description?: string; vereficationUser: 
 
   useEffect(() => {
     if (dataDelete) {
+      props.mutate();
       setPubliId(-1);
       return;
     }
@@ -87,10 +116,16 @@ export function ThemplatePubli(props: { description?: string; vereficationUser: 
         <DivPerfil>
           {props.user && props.user?.id !== props.userId ? (
             <Link href={'/amigos/' + props.id}>
-              <FotoPerfil img={props?.user?.img} className='h-[40px] w-[40px]' connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}></FotoPerfil>
+              <FotoPerfil
+                img={props?.user?.img}
+                className='h-[40px] w-[40px]'
+                connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}></FotoPerfil>
             </Link>
           ) : (
-            <FotoPerfil img={props?.user?.img} className='h-[40px] w-[40px]' connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}></FotoPerfil>
+            <FotoPerfil
+              img={props?.user?.img}
+              className='h-[40px] w-[40px]'
+              connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}></FotoPerfil>
           )}
           <div>
             <div className='flex items-center gap-2'>
@@ -176,7 +211,12 @@ export function ThemplatePubli(props: { description?: string; vereficationUser: 
         )}
       </DivCantidad>
       <DivInteractuar>
-        <BottonLike disabled={props.userId ? false : true} type='button' onClick={handleClickLike} like={like == 'like' ? true : false} id={props.idPublicacion.toString()}>
+        <BottonLike
+          disabled={props.userId ? false : true}
+          type='button'
+          onClick={handleClickLike}
+          like={like == 'like' ? true : false}
+          id={props.idPublicacion.toString()}>
           <Like className={`${like == 'like' ? 'fill-[#063ef5] dark:fill-[#7696fd]' : 'dark:fill-[#ddd] fill-[#919191]'}`} />
           Me gusta
         </BottonLike>
@@ -185,7 +225,19 @@ export function ThemplatePubli(props: { description?: string; vereficationUser: 
           Comentar
         </BottonLike>
       </DivInteractuar>
-      {comentario ? <Comment idPublicacion={props.idPublicacion} verification={props.vereficationUser} comentarios={props.comentarios} userName={props?.user.name} name={props?.user.name} imgUserPro={props.imgUserPro} userId={props.userId} id={props.id} connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true} /> : null}
+      {comentario ? (
+        <Comment
+          idPublicacion={props.idPublicacion}
+          verification={props.vereficationUser}
+          comentarios={props.comentarios}
+          userName={props?.user.name}
+          name={props?.user.name}
+          imgUserPro={props.imgUserPro}
+          userId={props.userId}
+          id={props.id}
+          connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
+        />
+      ) : null}
       {openImage ? (
         <div
           style={{

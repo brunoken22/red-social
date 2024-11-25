@@ -5,18 +5,14 @@ import { useRecoilValue } from 'recoil';
 import { GetAllPublicaciones } from '@/lib/hook';
 
 const ButtonMasPubli = dynamic(() => import('./styled').then((mod) => mod.ButtonMasPubli));
-const ThemplatePubli = dynamic(() =>
-  import('../templatePublicate').then((mod) => mod.ThemplatePubli)
-);
-const SkeletonPublicacionAll = dynamic(() =>
-  import('@/ui/skeleton').then((mod) => mod.SkeletonPublicacionAll)
-);
+const ThemplatePubli = dynamic(() => import('../templatePublicate').then((mod) => mod.ThemplatePubli));
+const SkeletonPublicacionAll = dynamic(() => import('@/ui/skeleton').then((mod) => mod.SkeletonPublicacionAll));
 
 export default function PublicacionesAll() {
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
   const dataUser = useRecoilValue(user);
 
-  const { dataPubliAllAmigosSwr, isLoadingAllAmigos, size, setSize } = GetAllPublicaciones();
+  const { dataPubliAllAmigosSwr, isLoadingAllAmigos, size, setSize, mutate } = GetAllPublicaciones();
 
   const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -37,6 +33,7 @@ export default function PublicacionesAll() {
                 key={item.id}
                 className='bg-primary flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-dark'>
                 <ThemplatePubli
+                  mutate={mutate}
                   vereficationUser={dataUser.user.verification}
                   description={item.description}
                   img={item.img}

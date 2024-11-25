@@ -290,7 +290,7 @@ export async function viewNotification(idPublication: string) {
   await mutate('/user/notificaciones?offset=0');
   return data;
 }
-export function GetAllPublicaciones() {
+export function GetAllPublicaciones(isMutate = false) {
   const setPublicacionesAllAmigos = useSetRecoilState(publicacionAmigos);
 
   const option = {
@@ -301,14 +301,13 @@ export function GetAllPublicaciones() {
     credentials: 'include',
   };
 
-  const { data, isLoading, setSize, size } = useSWRInfinite(
+  const { data, isLoading, setSize, size, mutate } = useSWRInfinite(
     (pageIndex, previousPageData) => {
-      if (previousPageData && !previousPageData.length) return null;
+      if (previousPageData && !previousPageData.length && isMutate) return null;
       return `/user/amigos/publicaciones?offset=${pageIndex * 10}`;
     },
     (api) => fetchApiSwr(api, option)
   );
-
   useEffect(() => {
     if (data && data.length) {
       const flatArray = data.flat();
@@ -321,9 +320,10 @@ export function GetAllPublicaciones() {
     isLoadingAllAmigos: isLoading,
     setSize,
     size,
+    mutate,
   };
 }
-export function GetAllPublicacionesUser() {
+export function GetAllPublicacionesUser(isMutate = false) {
   const setPublicacionesUser = useSetRecoilState(publicacionUser);
 
   const option = {
@@ -334,9 +334,9 @@ export function GetAllPublicacionesUser() {
     credentials: 'include',
   };
 
-  const { data, isLoading, setSize, size } = useSWRInfinite(
+  const { data, isLoading, setSize, size, mutate } = useSWRInfinite(
     (pageIndex, previousPageData) => {
-      if (previousPageData && !previousPageData.length) return null;
+      if (previousPageData && !previousPageData.length && isMutate) return null;
       return `/user/publicacion?offset=${pageIndex * 10}`;
     },
     (api) => fetchApiSwr(api, option)
@@ -353,6 +353,7 @@ export function GetAllPublicacionesUser() {
     isLoading,
     setSize,
     size,
+    mutatePublicacionesUser: mutate,
   };
 }
 export function GetPubliAmigo(id: string) {
@@ -434,11 +435,6 @@ export async function CreatePublicacion(dataPubli: DataPublicacion) {
     body: JSON.stringify(dataPubli),
   };
   const dataNotiSwr = await fetchApiSwr(api, option);
-  if (dataNotiSwr) {
-    await mutate((key: string) => key.startsWith('/user/publicacion'));
-    await mutate((key: string) => key.startsWith('/user/amigos/publicacion'));
-  }
-
   return dataNotiSwr;
 }
 export async function createSolicitud(dataSoli: Solicitud) {

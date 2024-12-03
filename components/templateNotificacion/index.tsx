@@ -5,11 +5,10 @@ import { user, isConnect, notificacionesUser } from '@/lib/atom';
 import { NotificacionesUser } from '@/lib/hook';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import MaintenanceMessage from '../MaintenanceMessage';
 
 const SkeletonNoti = dynamic(() => import('@/ui/skeleton').then((mod) => mod.SkeletonNoti));
-const ButtonMasPubli = dynamic(() =>
-  import('../publicaciones/styled').then((mod) => mod.ButtonMasPubli)
-);
+const ButtonMasPubli = dynamic(() => import('../publicaciones/styled').then((mod) => mod.ButtonMasPubli));
 const ButtonNoti = dynamic(() => import('@/ui/boton').then((mod) => mod.ButtonNoti));
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
 const Link = dynamic(() => import('next/link'));
@@ -31,43 +30,46 @@ export function TemNoti() {
   };
   return (
     <DivPublicar>
-      {notificacionesUserAtom && notificacionesUserAtom.publicacion.length
-        ? notificacionesUserAtom.publicacion.map((e) => (
-            <Link href={'/notificaciones/' + e.id} key={e.id}>
-              <ButtonNoti visto={!e.open} id={e.id.toString()}>
-                <FotoPerfil
-                  className='w-[40px] h-[40px]'
-                  img={
-                    e.commentPublis
-                      ?.slice()
-                      .reverse()
-                      .find((e: any) => e.userId !== dataUser.user.id)?.user?.img
-                  }
-                  connect={
-                    dataIsConnect?.find((eConnect: any) => {
-                      const userComment = e.commentPublis
+      {false
+        ? notificacionesUserAtom && notificacionesUserAtom.publicacion.length
+          ? notificacionesUserAtom.publicacion.map((e) => (
+              <Link href={'/notificaciones/' + e.id} key={e.id}>
+                <ButtonNoti visto={!e.open} id={e.id.toString()}>
+                  <FotoPerfil
+                    className='w-[40px] h-[40px]'
+                    img={
+                      e.commentPublis
                         ?.slice()
                         .reverse()
-                        .find((e: any) => e.userId !== dataUser.user.id);
-                      return userComment?.user.id == eConnect.id;
-                    })?.connect && true
-                  }
-                />
-                <p className='w-[90%]'>
-                  Nueva comentario en tu publicacion de{' '}
-                  {
-                    e.commentPublis
-                      ?.slice()
-                      .reverse()
-                      .find((e: any) => e.userId !== dataUser.user.id)?.user?.fullName
-                  }
-                </p>
-              </ButtonNoti>
-            </Link>
-          ))
-        : 'Sin notificaciones'}
+                        .find((e: any) => e.userId !== dataUser.user.id)?.user?.img
+                    }
+                    connect={
+                      dataIsConnect?.find((eConnect: any) => {
+                        const userComment = e.commentPublis
+                          ?.slice()
+                          .reverse()
+                          .find((e: any) => e.userId !== dataUser.user.id);
+                        return userComment?.user.id == eConnect.id;
+                      })?.connect && true
+                    }
+                  />
+                  <p className='w-[90%]'>
+                    Nueva comentario en tu publicacion de{' '}
+                    {
+                      e.commentPublis
+                        ?.slice()
+                        .reverse()
+                        .find((e: any) => e.userId !== dataUser.user.id)?.user?.fullName
+                    }
+                  </p>
+                </ButtonNoti>
+              </Link>
+            ))
+          : 'Sin notificaciones'
+        : null}
+      {true ? <MaintenanceMessage /> : null}
       {isLoadingNotiSwr ? <SkeletonNoti /> : null}
-      {dataNotiSwr?.length ? (
+      {false && dataNotiSwr?.length ? (
         <div className='backdrop-contrast-50'>
           <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
         </div>

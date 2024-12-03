@@ -93,9 +93,12 @@ export const isMenssage = atom({
 export const notificacionesUser = atom<{
   publicacion: Publicacion[];
   newPubliOPen: number;
-} | null>({
+}>({
   key: 'notificacionesUser',
-  default: null,
+  default: {
+    publicacion: [],
+    newPubliOPen: 0,
+  },
 });
 export const isConnect = atom({
   key: 'isConnet',

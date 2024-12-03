@@ -108,7 +108,7 @@ export function PerfilAmigo() {
                     <h2 className='font-semibold text-2xl max-w-[250px] whitespace-nowrap overflow-hidden text-ellipsis'>{data?.user?.fullName}</h2>
                     {data.user.verification ? <Verification publication={false} /> : null}
                   </div>
-                  {data.user.amigos.length ? <div className='max-md:mb-2 mb-0 -mt-1'>{data.user.amigos.length + ' amigos'}</div> : null}
+                  {data.user.amigos && data.user.amigos ? <div className='max-md:mb-2 mb-0 -mt-1'>{data.user.amigos.length + ' amigos'}</div> : <div className='max-md:mb-2 mb-0 -mt-1'>No hay amigos</div>}
                 </div>
               </DivFotoNameLink>
               <div className='flex gap-2 items-center max-md:flex-col  flex-row'>

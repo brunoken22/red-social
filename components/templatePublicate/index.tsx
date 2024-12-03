@@ -128,7 +128,7 @@ export function ThemplatePubli(props: { description?: string; vereficationUser: 
           </div>
         ) : null}
       </DivPefilDelete>
-      <p className='p-6 text-[0.9rem] font-thin'>
+      <p className='p-6 pt-0 pb-1 text-[0.9rem] font-thin'>
         <Linkify text={props.description || ''} />
       </p>
       {props.img ? (

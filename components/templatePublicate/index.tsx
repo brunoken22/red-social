@@ -96,7 +96,7 @@ export function ThemplatePubli(props: { description?: string; vereficationUser: 
           <div>
             <div className='flex items-center gap-2'>
               {props.user && props.user?.id !== props.userId ? (
-                <Link href={'/amigos/' + props.id}>
+                <Link href={'/amigos/' + props.id} className='hover:opacity-70'>
                   <Body>{props.user?.id == props.userId ? 'Tú' : props.user.fullName}</Body>
                 </Link>
               ) : (

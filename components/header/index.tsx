@@ -221,7 +221,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
           <NavegationUrl amigos={dataSoliReci?.length} message={dataMessage.filter((message) => !message.read && message.id != dataUser.user.id).length} notification={notificacionesUserAtom?.newPubliOPen} />
           <div className='relative'>
             <button onClick={handleMenu} className='m-0 bg-transparent border-none '>
-              <FotoPerfil className='w-[40px] h-[40px]' img={dataUser.user.img} connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true} />
+              <FotoPerfil className='w-[40px] h-[40px] hover:border-2 hover:opacity-70' img={dataUser.user.img} connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true} />
             </button>
             {menu ? <Menu theme={theme} themebutton={(data: string) => setThemes(data)} click={handleClick} userImg={dataUser.user.img} userName={dataUser.user.fullName.split(' ')[0]} /> : null}
           </div>

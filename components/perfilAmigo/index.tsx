@@ -96,54 +96,62 @@ export function PerfilAmigo() {
     <>
       {data && data.user ? (
         <DivPerfilUser>
-          <DivHeadPerfil>
-            <DivFotoNameLink>
-              {data?.user?.id && <FotoPerfil className='w-[80px] h-[80px]' img={data?.user?.img} connect={dataIsConnect?.find((e: any) => e.id == data?.user?.id)?.connect && true} />}
-              <div className='flex gap-2 items-center max-md:mb-4'>
-                <h2 className='text-xl max-w-[250px] truncate'>{data.user.fullName}</h2>
-                {data.user.verification ? <Verification publication={false} /> : null}
-              </div>
-            </DivFotoNameLink>
-            <div className='flex gap-2 items-center max-md:flex-col  flex-row'>
-              {!isLoadingDataUserId && !isLoadingGetFriend ? (
-                dataUser.user.id ? (
-                  <>
-                    {isAmigo == 'ACCEPTED' ? (
-                      <Link className=' p-2 rounded-lg text-primary flex items-center gap-1 backdrop-contrast-[0.4] hover:backdrop-contrast-[0.1]' href={'/chat?fullName=' + data.user.fullName + '&rtdb=' + data.user.rtdb + '&id=' + data.user.id + '&img=' + (data.user.img ? data.user.img : '')}>
-                        <MessageSvg className='fill-primary w-[20px] text-nowrap' />
-                        Mensaje
-                      </Link>
-                    ) : null}
-                    {isAmigo !== 'PENDING' ? (
-                      <ButtonAgregar id={data?.user?.id} onClick={isAmigo == 'ACCEPTED' ? handleEliminarAmigo : handleSolicitudEnv} bg={isAmigo !== 'REJECTED' ? 'red' : 'blue'}>
-                        {isAmigo == 'ACCEPTED' ? 'Eliminar Amigo' : 'Agregar'}
-                      </ButtonAgregar>
-                    ) : isAmigo == 'PENDING' && soliReci?.find((user) => user.id == data?.user.id) ? (
-                      <DivButtonEliAcep>
+          <div>
+            <div className='h-[350px] max-md:h-[200px]'>
+              <img src='/portafolio.webp' alt='portada' className='rounded-md w-full h-full object-cover' />
+            </div>
+            <DivHeadPerfil>
+              <DivFotoNameLink>
+                {data?.user?.id && <FotoPerfil className='w-[120px] h-[120px]' img={data?.user?.img} connect={dataIsConnect?.find((e: any) => e.id == data?.user?.id)?.connect && true} isBorder />}
+                <div className='max-md:flex max-md:items-center items-end  max-md:flex-col  '>
+                  <div className='flex gap-2 items-center'>
+                    <h2 className='font-semibold text-2xl max-w-[250px] whitespace-nowrap overflow-hidden text-ellipsis'>{data?.user?.fullName}</h2>
+                    {data.user.verification ? <Verification publication={false} /> : null}
+                  </div>
+                  {data.user.amigos.length ? <div className='max-md:mb-2 mb-0 -mt-1'>{data.user.amigos.length + ' amigos'}</div> : null}
+                </div>
+              </DivFotoNameLink>
+              <div className='flex gap-2 items-center max-md:flex-col  flex-row'>
+                {!isLoadingDataUserId && !isLoadingGetFriend ? (
+                  dataUser.user.id ? (
+                    <>
+                      {isAmigo == 'ACCEPTED' ? (
+                        <Link className=' p-2 rounded-lg text-primary flex items-center gap-1 backdrop-contrast-[0.4] hover:backdrop-contrast-[0.1]' href={'/chat?fullName=' + data.user.fullName + '&rtdb=' + data.user.rtdb + '&id=' + data.user.id + '&img=' + (data.user.img ? data.user.img : '')}>
+                          <MessageSvg className='fill-primary w-[20px] text-nowrap' />
+                          Mensaje
+                        </Link>
+                      ) : null}
+                      {isAmigo !== 'PENDING' ? (
+                        <ButtonAgregar id={data?.user?.id} onClick={isAmigo == 'ACCEPTED' ? handleEliminarAmigo : handleSolicitudEnv} bg={isAmigo !== 'REJECTED' ? 'red' : 'blue'}>
+                          {isAmigo == 'ACCEPTED' ? 'Eliminar Amigo' : 'Agregar'}
+                        </ButtonAgregar>
+                      ) : isAmigo == 'PENDING' && soliReci?.find((user) => user.id == data?.user.id) ? (
+                        <DivButtonEliAcep>
+                          <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudRecha} bg='red'>
+                            Eliminar solicitud
+                          </ButtonAgregar>
+                          <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudAcep}>
+                            Aceptar
+                          </ButtonAgregar>
+                        </DivButtonEliAcep>
+                      ) : (
                         <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudRecha} bg='red'>
                           Eliminar solicitud
                         </ButtonAgregar>
-                        <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudAcep}>
-                          Aceptar
-                        </ButtonAgregar>
-                      </DivButtonEliAcep>
-                    ) : (
-                      <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudRecha} bg='red'>
-                        Eliminar solicitud
-                      </ButtonAgregar>
-                    )}
-                  </>
+                      )}
+                    </>
+                  ) : (
+                    <ButtonAgregar className='flex justify-center gap-3 items-center' bg='blue' id={'Conectar'} onClick={() => push('/iniciarSesion')}>
+                      <FaSignInAlt />
+                      Iniciar sesión para interactuar
+                    </ButtonAgregar>
+                  )
                 ) : (
-                  <ButtonAgregar className='flex justify-center gap-3 items-center' bg='blue' id={'Conectar'} onClick={() => push('/iniciarSesion')}>
-                    <FaSignInAlt />
-                    Iniciar sesión para interactuar
-                  </ButtonAgregar>
-                )
-              ) : (
-                <LoaderRequest />
-              )}
-            </div>
-          </DivHeadPerfil>
+                  <LoaderRequest />
+                )}
+              </div>
+            </DivHeadPerfil>
+          </div>
           <DivPublicaciones>
             {publicacionesAmigo ? (
               publicacionesAmigo.length ? (

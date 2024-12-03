@@ -18,7 +18,7 @@ export const DivImage = ({ children }: { children: React.ReactNode }) => <div cl
 
 export const DivCantidad = ({ children }: { children: React.ReactNode }) => <div className='items-center grid gap-0 mt-4 justify-center grid-cols-[repeat(2,1fr)] relative'>{children}</div>;
 
-export const DivInteractuar = ({ children }: { children: React.ReactNode }) => <div className='flex  items-center pt-1 pb-1 justify-around gap-0 border-t-[1px] border-dark '>{children}</div>;
+export const DivInteractuar = ({ children }: { children: React.ReactNode }) => <div className='flex  items-center pt-1 pb-1 justify-around gap-0 border-t-[1px] border-[#8a8a8aea]  '>{children}</div>;
 
 export const BottonLike = ({ children, type, id, like, onClick, disabled }: { children: React.ReactNode; type: string | any; onClick: (e: any) => any; id: string; like?: boolean; disabled?: boolean }) => (
   <button id={id} type={type} disabled={disabled} onClick={disabled ? () => {} : onClick} className={` border-none  flex items-center gap-2 text-[0.8rem] p-2 hover:backdrop-contrast-50 rounded-md  ${like ? 'dark:text-[#7696fd] text-[#063ef5]' : 'text-secundary dark:text-primary'} ${disabled ? 'opacity-70 hover:backdrop-contrast-100' : ''}`}>

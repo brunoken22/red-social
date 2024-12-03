@@ -29,23 +29,8 @@ export default function PublicacionesAll() {
         publicacionesAmigos.length ? (
           <>
             {publicacionesAmigos.map((item) => (
-              <div
-                key={item.id}
-                className='bg-primary flex flex-col gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-dark'>
-                <ThemplatePubli
-                  mutate={mutate}
-                  vereficationUser={dataUser.user.verification}
-                  description={item.description}
-                  img={item.img}
-                  fecha={item.createdAt}
-                  like={item.likePublics}
-                  comentarios={item.commentPublis}
-                  id={item.userId}
-                  imgUserPro={dataUser?.user?.img}
-                  idPublicacion={item.id}
-                  userId={dataUser?.user?.id}
-                  user={item.user}
-                />
+              <div key={item.id} className='bg-primary flex flex-col gap-4 rounded-md   max-md:w-auto  dark:bg-darkComponet dark:text-primary '>
+                <ThemplatePubli mutate={mutate} vereficationUser={dataUser.user.verification} description={item.description} img={item.img} fecha={item.createdAt} like={item.likePublics} comentarios={item.commentPublis} id={item.userId} imgUserPro={dataUser?.user?.img} idPublicacion={item.id} userId={dataUser?.user?.id} user={item.user} />
               </div>
             ))}
           </>

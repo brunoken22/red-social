@@ -6,7 +6,7 @@ import './style.css';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { GetUser, NotificacionesUser, useConnectionStatus } from '@/lib/hook';
-// import {useGlobalAudioPlayer} from 'react-use-audio-player';
+// import { useGlobalAudioPlayer, useAudioPlayer } from 'react-use-audio-player';
 import Link from 'next/link';
 import { Menu } from '@/components/menu';
 import { useRecoilValue, useRecoilState } from 'recoil';
@@ -47,7 +47,7 @@ const NavegationUrl = dynamic(() => import('./navHeader'));
 export default function Header({ themeDate }: { themeDate: string }) {
   GetUser();
   NotificacionesUser(0);
-  // const {load} = useGlobalAudioPlayer();
+
   const pathname = usePathname();
   const dataUser = useRecoilValue(user);
   // const getAllUserData = useRecoilValue(getAllUser);
@@ -107,24 +107,26 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
-
+    const audio = new Audio('/notification.mp3');
+    audio.load();
     dataUser.user.rtdb.map((item) => {
       const chatrooms = ref(rtdb, '/rooms/' + item + '/messages');
 
       return onValue(chatrooms, (snapshot) => {
         const valor = snapshot.val();
         if (valor) {
-          const datas = Object.values(valor); // Obtener todos los mensajes
-          const ultimoMensaje: any = datas[datas.length - 1]; // Obtener el último mensaje
+          const datas = Object.values(valor);
+          const ultimoMensaje: any = datas[datas.length - 1];
 
-          if (
-            ultimoMensaje.status === 'Enviado' &&
-            ultimoMensaje.id !== dataUser.user.id // Asegurarse de que no es del usuario actual
-          ) {
+          if (ultimoMensaje.status === 'Enviado' && ultimoMensaje.id !== dataUser.user.id) {
             const keys = Object.keys(valor);
             const lastKey = keys[keys.length - 1];
             const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
-            update(mensajeRef, { status: 'Recibido' });
+
+            audio
+              .play()
+              .then(() => update(mensajeRef, { status: 'Recibido' }))
+              .catch(() => update(mensajeRef, { status: 'Recibido' }));
           }
 
           // Actualizar el estado de los mensajes en la aplicación

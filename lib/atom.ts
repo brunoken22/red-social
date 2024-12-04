@@ -3,7 +3,7 @@ import { atom } from 'recoil';
 export type Publicacion = {
   id: number;
   description: string;
-  img: string;
+  img: string[];
   createdAt: string;
   updatedAt: string;
   likePublics: [];

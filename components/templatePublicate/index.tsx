@@ -14,6 +14,7 @@ import diferenteDate from './diferenteDate';
 import { useDebouncedCallback } from 'use-debounce';
 import Linkify from '@/utils/formtText';
 import { LoaderRequest } from '../loader';
+import GalleryServiceId from '../publicar/galleryImage';
 
 const iconConLike = {
   height: ' 20px',
@@ -29,10 +30,9 @@ const Comment = dynamic(() => import('./comment'));
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), { loading: () => <LoaderRequest /> });
 const DivImage = dynamic(() => import('@/components/publicaciones/styled').then((mod) => mod.DivImage), { loading: () => <LoaderRequest /> });
 
-export function ThemplatePubli(props: { description?: string; vereficationUser: boolean; img?: string; fecha: string; like: any[]; comentarios: any[]; id: number; imgUserPro?: string; idPublicacion: number; userId: number; user: any; mutate?: any }) {
+export function ThemplatePubli(props: { description?: string; vereficationUser: boolean; img?: string[]; fecha: string; like: any[]; comentarios: any[]; id: number; imgUserPro?: string; idPublicacion: number; userId: number; user: any; mutate?: any }) {
   const [like, setLike] = useState<'like' | 'disLike'>();
   const [comentario, setComentario] = useState(props.comentarios?.length && props.comentarios.length > 0 && props.comentarios.length < 3 ? true : false);
-  const [openImage, setOpenImage] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const dataIsConnect = useRecoilValue(isConnect);
   const [publiId, setPubliId] = useState<number>(-1);
@@ -128,23 +128,12 @@ export function ThemplatePubli(props: { description?: string; vereficationUser: 
           </div>
         ) : null}
       </DivPefilDelete>
-      <p className='p-6 pt-0 pb-1 text-[0.9rem] font-thin'>
-        <Linkify text={props.description || ''} />
-      </p>
-      {props.img ? (
-        <ButtonOpenImage onClick={() => setOpenImage(true)}>
-          <DivImage>
-            <img
-              src={props?.img}
-              alt='imagen user'
-              loading='lazy'
-              // height={330}
-              // width={500}
-              className='object-cover  w-full h-full hover:scale-[1.1]  transition-all '
-            />
-          </DivImage>
-        </ButtonOpenImage>
+      {props.description?.length ? (
+        <p className='p-6 pt-0 pb-1 text-[0.9rem] font-thin'>
+          <Linkify text={props.description || ''} />
+        </p>
       ) : null}
+      {props.img?.length ? <GalleryServiceId images={props.img} /> : null}
       <DivCantidad>
         {totalLike ? (
           <SpanIco
@@ -187,28 +176,6 @@ export function ThemplatePubli(props: { description?: string; vereficationUser: 
         </BottonLike>
       </DivInteractuar>
       {comentario ? <Comment idPublicacion={props.idPublicacion} verification={props.vereficationUser} comentarios={props.comentarios} userName={props?.user.name} name={props?.user.name} imgUserPro={props.imgUserPro} userId={props.userId} id={props.id} connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true} /> : null}
-      {openImage ? (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 10,
-            backdropFilter: 'brightness(0.3)',
-          }}>
-          <div className='flex justify-end'>
-            <button
-              onClick={() => setOpenImage(false)}
-              style={{
-                backgroundColor: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-              }}>
-              <CloseWhite />
-            </button>
-          </div>
-          <img src={props?.img} alt='imagen' className='w-full h-[95vh] object-contain' loading='lazy' />
-        </div>
-      ) : null}
     </div>
   );
 }

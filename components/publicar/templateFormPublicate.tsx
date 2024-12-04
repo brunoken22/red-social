@@ -14,17 +14,7 @@ const ButtonPublicar = dynamic(() => import('./styled').then((mod) => mod.Button
 
 const ImageSVG = dynamic(() => import('@/ui/icons').then((mod) => mod.ImageSVG));
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
-export default function TemplateFormPublicar({
-  fullName,
-  image,
-  verification,
-  close,
-}: {
-  fullName: string;
-  image: string;
-  verification: boolean;
-  close: () => any;
-}) {
+export default function TemplateFormPublicar({ fullName, image, verification, close }: { fullName: string; image: string; verification: boolean; close: () => any }) {
   const [dataUrl, setDataUrl] = useState('');
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -70,17 +60,11 @@ export default function TemplateFormPublicar({
                 <CloseSvg />
               </Button>
             </div>
-            <textarea
-              id='description'
-              maxLength={1000}
-              placeholder={`En qué estás pensando ${fullName.split(' ')[0]}?`}
-              className='bg-transparent relative z-10 mt-8 mb-8 max-md:mt-4 max-md:mb-4 text-start p-2 outline-none overflow-auto min-h-[150px] resize-none placeholder:text-2xl'
-              required={true}
-              value={text}
-              onChange={handleInput}></textarea>
-            <div>
+            <textarea id='description' maxLength={1000} placeholder={`En qué estás pensando ${fullName.split(' ')[0]}?`} className='bg-transparent relative z-10 mt-8 mb-8 max-md:mt-4 max-md:mb-4 text-start p-2 outline-none overflow-auto min-h-[150px] resize-none placeholder:text-2xl' value={text} onChange={handleInput}></textarea>
+            <div className='bg-hoverPrimary dark:bg-dark rounded-md'>
               <ImageSVG dataUrl={(data: string) => setDataUrl(data)}></ImageSVG>
             </div>
+            <p className='text-xs mb-2 mt-1'>Máximo de 3 imagenes</p>
             <DivButton>
               <ButtonPublicar color={text || dataUrl} disabled={!text && !dataUrl ? true : false}>
                 Publicar

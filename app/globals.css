@@ -26,6 +26,11 @@
   background-color: #568bff;
 }
 
+::selection {
+  background-color: #4f46e5; /* Color de fondo cuando se selecciona el texto */
+  color: white; /* Color del texto seleccionado */
+}
+
 body {
   box-sizing: border-box;
   margin: 0;

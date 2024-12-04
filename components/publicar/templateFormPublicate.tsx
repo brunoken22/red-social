@@ -1,7 +1,7 @@
 'use client';
 import { GetAllPublicaciones, GetAllPublicacionesUser } from '@/lib/hook';
 import dynamic from 'next/dynamic';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 const Verification = dynamic(() => import('@/ui/verification'));
 const CloseSvg = dynamic(() => import('@/ui/icons/close.svg'));
@@ -14,6 +14,7 @@ const ButtonPublicar = dynamic(() => import('./styled').then((mod) => mod.Button
 
 const ImageSVG = dynamic(() => import('@/ui/icons').then((mod) => mod.ImageSVG));
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
+
 export default function TemplateFormPublicar({ fullName, image, verification, close }: { fullName: string; image: string; verification: boolean; close: () => any }) {
   const [dataUrl, setDataUrl] = useState('');
   const [text, setText] = useState('');
@@ -21,6 +22,23 @@ export default function TemplateFormPublicar({ fullName, image, verification, cl
   const { mutate } = GetAllPublicaciones(true);
   const { mutatePublicacionesUser } = GetAllPublicacionesUser(true);
   const pathname = usePathname();
+
+  const modalRef = useRef<HTMLDivElement>(null); // Referencia al modal para saber si el clic ocurrió dentro o fuera
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        close();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleInput = (event: any) => {
     const textContent = event.target.value;
     setText(textContent);
@@ -46,7 +64,7 @@ export default function TemplateFormPublicar({ fullName, image, verification, cl
   return (
     <>
       <DivForm>
-        <div className='max-w-[550px] w-[90%]'>
+        <div className='max-w-[550px] w-[90%]' ref={modalRef}>
           <Form onSubmit={handleClickForm}>
             <div className='flex gap-4 items-start font-bold justify-between w-full'>
               <div className='flex gap-4 items-center'>

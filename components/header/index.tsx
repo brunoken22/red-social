@@ -66,19 +66,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
   }, 1000);
   useConnectionStatus(dataUser.user);
 
-  const handleMenu = (e: any) => {
-    e.preventDefault();
-    if (menu) {
-      setMenu(false);
-      return;
-    }
-    setMenu(true);
-  };
-
-  const handleClick = (data: boolean) => {
-    setMenu(data);
-  };
-
   useEffect(() => {
     const cookieResponse = async () => {
       const setCookie = await import('cookies-next').then((mod) => mod.setCookie);
@@ -204,10 +191,28 @@ export default function Header({ themeDate }: { themeDate: string }) {
       lastScrollY.current = currentScrollY;
     }
   };
+  const modalRef = useRef<HTMLDivElement>(null); // Referencia al modal para saber si el clic ocurrió dentro o fuera
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return dataUser?.user?.id ? (
     <>
-      <header className={`${openNav ? 'translate-y-0' : 'max-md:-translate-y-full'} p-2 sticky top-0 right-0 left-0 z-10 bg-primary transition-transform duration-300 dark:bg-darkComponet`}>
+      <header
+        className={`${
+          openNav ? 'translate-y-0' : 'max-md:-translate-y-full'
+        } p-2 sticky top-0 right-0 left-0 z-10 bg-primary transition-transform duration-300 dark:bg-darkComponet`}>
         <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
           <div className='flex gap-4 items-center '>
             <Link href={'/inicio'} aria-label='home'>
@@ -218,12 +223,28 @@ export default function Header({ themeDate }: { themeDate: string }) {
               <SearchUser />
             </div>
           </div>
-          <NavegationUrl amigos={dataSoliReci?.length} message={dataMessage.filter((message) => !message.read && message.id != dataUser.user.id).length} notification={notificacionesUserAtom?.newPubliOPen} />
-          <div className='relative'>
-            <button onClick={handleMenu} className='m-0 bg-transparent border-none '>
-              <FotoPerfil className='w-[40px] h-[40px] hover:border-2 hover:opacity-70' img={dataUser.user.img} connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true} />
+          <NavegationUrl
+            amigos={dataSoliReci?.length}
+            message={dataMessage.filter((message) => !message.read && message.id != dataUser.user.id).length}
+            notification={notificacionesUserAtom?.newPubliOPen}
+          />
+          <div className='relative ' ref={modalRef}>
+            <button onClick={() => setMenu((isMenu) => !isMenu)} className='m-0 bg-transparent border-none relative z-50'>
+              <FotoPerfil
+                className='w-[40px] h-[40px] hover:border-2 hover:opacity-70'
+                img={dataUser.user.img}
+                connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true}
+              />
             </button>
-            {menu ? <Menu theme={theme} themebutton={(data: string) => setThemes(data)} click={handleClick} userImg={dataUser.user.img} userName={dataUser.user.fullName.split(' ')[0]} /> : null}
+            {menu ? (
+              <Menu
+                theme={theme}
+                themebutton={(data: string) => setThemes(data)}
+                click={(data: boolean) => setMenu(data)}
+                userImg={dataUser.user.img}
+                userName={dataUser.user.fullName.split(' ')[0]}
+              />
+            ) : null}
           </div>
         </nav>
       </header>

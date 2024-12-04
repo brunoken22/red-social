@@ -6,36 +6,20 @@ import SunSvg from '@/ui/icons/sun.svg';
 import CloseDoorSvg from '@/ui/icons/closeDoor.svg';
 import FotoPerfil from '@/ui/FotoPerfil';
 import { logOut } from '@/lib/hook';
-import { useEffect, useRef } from 'react';
 
 const className = 'text-center flex items-center gap-2';
 
 export function Menu(props: any) {
-  const modalRef = useRef<HTMLDivElement>(null); // Referencia al modal para saber si el clic ocurrió dentro o fuera
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        props.click(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   const handleClick = async () => {
     const logoutData = await logOut();
     if (logoutData) {
       window.location.href = window.location.origin + '/iniciarSesion';
     }
   };
+
   return (
     <div className='focus:border-[1px_solid_red] absolute right-0 '>
-      <div ref={modalRef}>
+      <div>
         <DivEnlaces>
           <Link href={'/perfil'} onClick={() => props.click(false)} className={className}>
             <FotoPerfil className='w-[20px] h-[20px]' img={props.userImg} />

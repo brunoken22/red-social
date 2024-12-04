@@ -10,23 +10,26 @@ const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
 
 export default function Comment(props: any) {
   const [content, setContent] = useState('');
-
+  const [isLoading, setLoading] = useState(false);
   const [alert, setAlert] = useState<{ message: string; status: 'success' | 'error' | 'info' | 'warning' } | false>(false);
   const handleInput = (event: any) => {
     const text = event.target.value;
     setContent(text);
   };
   const handleComment = async () => {
+    setLoading(true);
     if (content) {
-      setContent('');
       const comentarPublicacion = (await import('@/lib/hook')).comentarPublicacion;
       await comentarPublicacion({
         id: props.idPublicacion,
         description: content,
       });
+      setContent('');
+      await props.mutate();
+      setLoading(false);
       return;
     }
-
+    setLoading(false);
     setAlert({ message: 'Escribe Algo', status: 'error' });
   };
 
@@ -36,8 +39,20 @@ export default function Comment(props: any) {
         <DivPerfil className='items-center'>
           <FotoPerfil className='h-[30px] w-[30px]' img={props.imgUserPro} connect={props.connect}></FotoPerfil>
           <DivAñadirComentar>
-            <textarea id={`${props.idPublicacion}Description`} name={`${props.idPublicacion}Description`} rows={1} maxLength={1000} disabled={props.userId ? false : true} placeholder={`Añadir un comentario`} className='w-full bg-transparent rounded-md outline outline-1 outline-gray-400 focus:outline-gray-600 dark:focus:outline-gray-100  p-2  overflow-auto  resize-none ' required={true} value={content} onChange={props.userId ? handleInput : () => {}}></textarea>
-            <BottonSendComentario disabled={props.userId ? false : true} onClick={props.userId ? handleComment : () => {}}>
+            <textarea
+              id={`${props.idPublicacion}Description`}
+              name={`${props.idPublicacion}Description`}
+              rows={1}
+              maxLength={1000}
+              disabled={props.userId && !isLoading ? false : true}
+              placeholder={`Añadir un comentario`}
+              className='w-full bg-transparent rounded-md outline outline-1 outline-gray-400 focus:outline-gray-600 dark:focus:outline-gray-100  p-2  overflow-auto  resize-none '
+              required={true}
+              value={content}
+              onChange={props.userId && !isLoading ? handleInput : () => {}}></textarea>
+            <BottonSendComentario
+              disabled={props.userId && !isLoading ? false : true}
+              onClick={props.userId && !isLoading ? handleComment : () => {}}>
               <SendComentPubli />
             </BottonSendComentario>
           </DivAñadirComentar>
@@ -46,7 +61,17 @@ export default function Comment(props: any) {
       <div>
         {props.comentarios.length
           ? props.comentarios.map((e: any) => {
-              return <TemplateComment key={e.id} userId={e.user.id} imgUser={e.user.img} userName={e.user.id == props.userId ? 'Tú' : e.user.fullName} description={e.description} createdAt={e.createdAt} verification={e.user.verification} />;
+              return (
+                <TemplateComment
+                  key={e.id}
+                  userId={e.user.id}
+                  imgUser={e.user.img}
+                  userName={e.user.id == props.userId ? 'Tú' : e.user.fullName}
+                  description={e.description}
+                  createdAt={e.createdAt}
+                  verification={e.user.verification}
+                />
+              );
             })
           : null}
       </div>

@@ -12,7 +12,7 @@ export default function GalleryServiceId({ images = [], isOne = false }: { image
   const firstThreeImages = images.slice(0, 3);
 
   return (
-    <LightGallery plugins={[lgThumbnail, lgZoom, lgFullScreen]} selector='.gallery-item' licenseKey='D4194FDD-48924833-A54AECA3-D6F8E646' zoomFromOrigin={false} exThumbImage='data-external-thumb-image' onInit={() => console.log('LightGallery Initialized')}>
+    <LightGallery plugins={[lgThumbnail, lgZoom, lgFullScreen]} selector='.gallery-item' licenseKey='D4194FDD-48924833-A54AECA3-D6F8E646' zoomFromOrigin={false} exThumbImage='data-external-thumb-image' >
       <div className='grid grid-cols-12 gap-2 pr-1 pl-1'>
         {/* Una sola imagen */}
         {firstThreeImages.length === 1 && (

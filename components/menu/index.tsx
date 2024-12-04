@@ -6,10 +6,27 @@ import SunSvg from '@/ui/icons/sun.svg';
 import CloseDoorSvg from '@/ui/icons/closeDoor.svg';
 import FotoPerfil from '@/ui/FotoPerfil';
 import { logOut } from '@/lib/hook';
+import { useEffect, useRef } from 'react';
 
 const className = 'text-center flex items-center gap-2';
 
 export function Menu(props: any) {
+  const modalRef = useRef<HTMLDivElement>(null); // Referencia al modal para saber si el clic ocurrió dentro o fuera
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        props.click(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleClick = async () => {
     const logoutData = await logOut();
     if (logoutData) {
@@ -17,33 +34,35 @@ export function Menu(props: any) {
     }
   };
   return (
-    <div className='focus:border-[1px_solid_red] absolute right-0 ' tabIndex={0}>
-      <DivEnlaces>
-        <Link href={'/perfil'} onClick={() => props.click(false)} className={className}>
-          <FotoPerfil className='w-[20px] h-[20px]' img={props.userImg} />
-          <Span> {props.userName}</Span>
-        </Link>
-        {props.theme == 'false' ? (
-          <button onClick={() => props.themebutton('true')} className={className}>
-            <NightSvg className='fill-black' />
-            modo oscuro
-          </button>
-        ) : (
-          <button onClick={() => props.themebutton('false')} className={className}>
-            <SunSvg className=' fill-[#ffe289]' />
-            modo claro
-          </button>
-        )}
-        <Link href={'/configuracion'} onClick={() => props.click(false)} className={className}>
-          <ConfigurateSvg className='fill-black dark:fill-white' />
-          <Span> Configuracion</Span>
-        </Link>
+    <div className='focus:border-[1px_solid_red] absolute right-0 '>
+      <div ref={modalRef}>
+        <DivEnlaces>
+          <Link href={'/perfil'} onClick={() => props.click(false)} className={className}>
+            <FotoPerfil className='w-[20px] h-[20px]' img={props.userImg} />
+            <Span> {props.userName}</Span>
+          </Link>
+          {props.theme == 'false' ? (
+            <button onClick={() => props.themebutton('true')} className={className}>
+              <NightSvg className='fill-black' />
+              modo oscuro
+            </button>
+          ) : (
+            <button onClick={() => props.themebutton('false')} className={className}>
+              <SunSvg className=' fill-[#ffe289]' />
+              modo claro
+            </button>
+          )}
+          <Link href={'/configuracion'} onClick={() => props.click(false)} className={className}>
+            <ConfigurateSvg className='fill-black dark:fill-white' />
+            <Span> Configuracion</Span>
+          </Link>
 
-        <Button onClick={handleClick}>
-          <CloseDoorSvg className='fill-black dark:fill-white stroke-black dark:stroke-white' />
-          <Span>Cerrar Sesion </Span>
-        </Button>
-      </DivEnlaces>
+          <Button onClick={handleClick}>
+            <CloseDoorSvg className='fill-black dark:fill-white stroke-black dark:stroke-white' />
+            <Span>Cerrar Sesion </Span>
+          </Button>
+        </DivEnlaces>
+      </div>
     </div>
   );
 }

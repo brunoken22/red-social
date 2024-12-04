@@ -12,16 +12,9 @@ export default function GalleryServiceId({ images = [], isOne = false }: { image
   const firstThreeImages = images.slice(0, 3);
 
   return (
-    <LightGallery
-      plugins={[lgThumbnail, lgZoom, lgFullScreen]}
-      selector='.gallery-item'
-      licenseKey='D4194FDD-48924833-A54AECA3-D6F8E646'
-      zoomFromOrigin={false}
-      exThumbImage='data-external-thumb-image'
-      onInit={() => console.log('LightGallery Initialized')} // Agregado para ver si se inicializa
-    >
+    <LightGallery plugins={[lgThumbnail, lgZoom, lgFullScreen]} selector='.gallery-item' licenseKey='D4194FDD-48924833-A54AECA3-D6F8E646' zoomFromOrigin={false} exThumbImage='data-external-thumb-image' onInit={() => console.log('LightGallery Initialized')}>
       <div className='grid grid-cols-12 gap-2 pr-1 pl-1'>
-        {/* Si hay una sola imagen */}
+        {/* Una sola imagen */}
         {firstThreeImages.length === 1 && (
           <div className='col-span-12 overflow-hidden'>
             <a href={firstThreeImages[0]} data-external-thumb-image={firstThreeImages[0]} data-sub-html={`<h6 class='text-sm text-light'>Imagen única</h6>`} className='gallery-item hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
@@ -30,7 +23,7 @@ export default function GalleryServiceId({ images = [], isOne = false }: { image
           </div>
         )}
 
-        {/* Si hay dos imágenes */}
+        {/* Dos imágenes */}
         {firstThreeImages.length === 2 && (
           <>
             <div className='col-span-12 md:col-span-6 overflow-hidden'>
@@ -38,7 +31,7 @@ export default function GalleryServiceId({ images = [], isOne = false }: { image
                 <img src={firstThreeImages[0]} alt='Image 1' className='rounded-lg object-cover w-full h-full' />
               </a>
             </div>
-            <div className='col-span-12 md:col-span-6 overflow-hidden'>
+            <div className='col-span-12 md:col-span-6 overflow-hidden max-md:h-[150px]'>
               <a href={firstThreeImages[1]} data-external-thumb-image={firstThreeImages[1]} data-sub-html={`<h6 class='text-sm text-light'>Imagen 2</h6>`} className='gallery-item hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
                 <img src={firstThreeImages[1]} alt='Image 2' className='rounded-lg object-cover w-full h-full' />
               </a>
@@ -46,7 +39,7 @@ export default function GalleryServiceId({ images = [], isOne = false }: { image
           </>
         )}
 
-        {/* Si hay tres imágenes */}
+        {/* Tres imágenes */}
         {firstThreeImages.length === 3 && (
           <>
             <div className='col-span-12 md:col-span-8 overflow-hidden'>
@@ -54,11 +47,11 @@ export default function GalleryServiceId({ images = [], isOne = false }: { image
                 <img src={firstThreeImages[0]} alt='Image 1' className='rounded-lg object-cover w-full h-full' />
               </a>
             </div>
-            <div className='col-span-12 md:col-span-4 flex flex-col gap-2 overflow-hidden'>
-              <a href={firstThreeImages[1]} data-external-thumb-image={firstThreeImages[1]} className='gallery-item hover:opacity-70 h-2/4 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
+            <div className='col-span-12 md:col-span-4 flex flex-row gap-2 md:flex-col overflow-hidden max-md:h-[150px]'>
+              <a href={firstThreeImages[1]} data-external-thumb-image={firstThreeImages[1]} className='gallery-item hover:opacity-70 flex-1 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
                 <img src={firstThreeImages[1]} alt='Image 2' className='rounded-lg object-cover w-full h-full' />
               </a>
-              <a href={firstThreeImages[2]} data-external-thumb-image={firstThreeImages[2]} className='gallery-item hover:opacity-70 h-2/4 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
+              <a href={firstThreeImages[2]} data-external-thumb-image={firstThreeImages[2]} className='gallery-item hover:opacity-70 flex-1 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
                 <img src={firstThreeImages[2]} alt='Image 3' className='rounded-lg object-cover w-full h-full' />
               </a>
             </div>

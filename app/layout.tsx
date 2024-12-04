@@ -16,7 +16,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const theme = cookies().get('theme')?.value || 'false';
 
   return (
-    <html lang='es'>
+    <html lang='es' className={`${theme !== 'true' ? '' : 'dark'}`}>
       <head>
         <meta name='google-site-verification' content='CnmK8AWJQTO2MYQ5J7dOu9_dhCFy-ttErrYHDEWbOyw' />
         <link rel='preconnect' href='https://red-social-node.onrender.com' />

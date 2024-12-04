@@ -22,6 +22,7 @@ import {
 import Logo from '@/public/logo.svg';
 import { useDebouncedCallback } from 'use-debounce';
 import { LoaderRequest } from '../loader';
+import { SkeletonNav } from '@/ui/skeleton';
 
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), {
   loading: () => <LoaderRequest />,
@@ -255,5 +256,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
         {connectAmigos ? <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={dataIsConnect} /> : null}
       </DivContenedorConnect>
     </>
-  ) : null;
+  ) : (
+    <SkeletonNav />
+  );
 }

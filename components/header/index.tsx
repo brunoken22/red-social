@@ -6,7 +6,6 @@ import './style.css';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { GetUser, NotificacionesUser, useConnectionStatus } from '@/lib/hook';
-// import { useGlobalAudioPlayer, useAudioPlayer } from 'react-use-audio-player';
 import Link from 'next/link';
 import { Menu } from '@/components/menu';
 import { useRecoilValue, useRecoilState } from 'recoil';

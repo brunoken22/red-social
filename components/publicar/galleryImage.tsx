@@ -18,7 +18,9 @@ export default function GalleryServiceId({ images = [], isOne = false }: { image
         {firstThreeImages.length === 1 && (
           <div className='col-span-12 overflow-hidden'>
             <a href={firstThreeImages[0]} data-external-thumb-image={firstThreeImages[0]} data-sub-html={`<h6 class='text-sm text-light'>Imagen única</h6>`} className='gallery-item hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-              <img src={firstThreeImages[0]} alt='Image 1' className='rounded-lg object-cover w-full h-full' />
+              <div className='aspect-w-16 aspect-h-9'>
+                <img src={firstThreeImages[0]} alt='Image 1' className='rounded-lg object-cover w-full h-full' />
+              </div>
             </a>
           </div>
         )}
@@ -28,12 +30,16 @@ export default function GalleryServiceId({ images = [], isOne = false }: { image
           <>
             <div className='col-span-12 md:col-span-6 overflow-hidden'>
               <a href={firstThreeImages[0]} data-external-thumb-image={firstThreeImages[0]} data-sub-html={`<h6 class='text-sm text-light'>Imagen 1</h6>`} className='gallery-item hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-                <img src={firstThreeImages[0]} alt='Image 1' className='rounded-lg object-cover w-full h-full' />
+                <div className='aspect-w-16 aspect-h-9'>
+                  <img src={firstThreeImages[0]} alt='Image 1' className='rounded-lg object-cover w-full h-full' />
+                </div>
               </a>
             </div>
-            <div className='col-span-12 md:col-span-6 overflow-hidden max-md:h-[150px]'>
-              <a href={firstThreeImages[1]} data-external-thumb-image={firstThreeImages[1]} data-sub-html={`<h6 class='text-sm text-light'>Imagen 2</h6>`} className='gallery-item hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-                <img src={firstThreeImages[1]} alt='Image 2' className='rounded-lg object-cover w-full h-full' />
+            <div className='col-span-12 md:col-span-6 overflow-hidden'>
+              <a href={firstThreeImages[1]} data-external-thumb-image={firstThreeImages[1]} data-sub-html={`<h6 class='text-sm text-light'>Imagen 2</h6>`} className='gallery-item flex w-full h-full hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
+                <div className='aspect-w-16 aspect-h-9'>
+                  <img src={firstThreeImages[1]} alt='Image 2' className='rounded-lg object-cover w-full h-full' />
+                </div>
               </a>
             </div>
           </>
@@ -44,15 +50,21 @@ export default function GalleryServiceId({ images = [], isOne = false }: { image
           <>
             <div className='col-span-12 md:col-span-8 overflow-hidden'>
               <a href={firstThreeImages[0]} data-external-thumb-image={firstThreeImages[0]} data-sub-html={`<h6 class='text-sm text-light'>Imagen 1</h6>`} className='gallery-item hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-                <img src={firstThreeImages[0]} alt='Image 1' className='rounded-lg object-cover w-full h-full' />
+                <div className='aspect-w-16 aspect-h-9'>
+                  <img src={firstThreeImages[0]} alt='Image 1' className='rounded-lg object-cover w-full h-full' />
+                </div>
               </a>
             </div>
-            <div className='col-span-12 md:col-span-4 flex flex-row gap-2 md:flex-col overflow-hidden max-md:h-[150px]'>
-              <a href={firstThreeImages[1]} data-external-thumb-image={firstThreeImages[1]} className='gallery-item hover:opacity-70 flex-1 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-                <img src={firstThreeImages[1]} alt='Image 2' className='rounded-lg object-cover w-full h-full' />
+            <div className='col-span-12 md:col-span-4 flex flex-row gap-2 md:flex-col overflow-hidden'>
+              <a href={firstThreeImages[1]} data-external-thumb-image={firstThreeImages[1]} className='gallery-item flex w-full h-full hover:opacity-70 flex-1 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
+                <div className='aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9'>
+                  <img src={firstThreeImages[1]} alt='Image 2' className='rounded-lg object-cover w-full h-full' />
+                </div>
               </a>
-              <a href={firstThreeImages[2]} data-external-thumb-image={firstThreeImages[2]} className='gallery-item hover:opacity-70 flex-1 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-                <img src={firstThreeImages[2]} alt='Image 3' className='rounded-lg object-cover w-full h-full' />
+              <a href={firstThreeImages[2]} data-external-thumb-image={firstThreeImages[2]} className='gallery-item flex w-full h-full hover:opacity-70 flex-1 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
+                <div className='aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 w-full'>
+                  <img src={firstThreeImages[2]} alt='Image 3' className='rounded-lg object-cover w-full h-full' />
+                </div>
               </a>
             </div>
           </>

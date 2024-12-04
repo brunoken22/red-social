@@ -30,7 +30,6 @@
     "react-instantsearch": "^7.0.3",
     "react-toastify": "^10.0.5",
     "recoil": "^0.7.7",
-    "swiper": "^11.1.15",
     "swr": "^2.2.5",
     "typescript": "5.1.6",
     "use-debounce": "^10.0.1"

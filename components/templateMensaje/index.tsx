@@ -32,6 +32,7 @@ export type MessageUserChat = {
   img: string;
   status: 'Enviado' | 'Recibido' | 'Leido';
   id: string;
+  date?: Date;
 };
 
 export function TemMensaje() {
@@ -68,10 +69,7 @@ export function TemMensaje() {
     <DivTemMensaje>
       {data?.length && !isLoading ? (
         <>
-          <div
-            className={`w-1/4  max-md:w-full ${
-              !dataMensajeUser?.id ? 'block ' : 'max-md:hidden block'
-            } h-[85vh] overflow-auto`}>
+          <div className={`w-1/4  max-md:w-full ${!dataMensajeUser?.id ? 'block ' : 'max-md:hidden block'} h-[85vh] overflow-auto`}>
             {dataUser.user.id ? (
               <TemplMensaje mobile={true}>
                 <h2 className='text-2xl font-bold text-start'>Chats</h2>
@@ -84,9 +82,7 @@ export function TemMensaje() {
                           <button
                             type='submit'
                             className={`w-full  rounded-md dark:text-primary ${
-                              e.id.toString() === dataMensajeUser?.id
-                                ? 'bg-light text-primary'
-                                : 'bg-primary dark:bg-darkComponet hover:opacity-70'
+                              e.id.toString() === dataMensajeUser?.id ? 'bg-light text-primary' : 'bg-primary dark:bg-darkComponet hover:opacity-70'
                             } dark:transition-dark dark:shadow-dark  shadow-container `}
                             key={e.id}
                             onClick={() => {
@@ -102,10 +98,7 @@ export function TemMensaje() {
                               <FotoPerfil
                                 img={e.img}
                                 className='w-[40px] h-[40px]'
-                                connect={
-                                  dataIsConnect?.find((eConnect: any) => e.id == eConnect.id)
-                                    ?.connect && true
-                                }
+                                connect={dataIsConnect?.find((eConnect: any) => e.id == eConnect.id)?.connect && true}
                               />
 
                               <div className='flex flex-col  overflow-hidden'>
@@ -117,8 +110,7 @@ export function TemMensaje() {
 
                                 <p
                                   className={`text-[0.8rem] text-start truncate ${
-                                    !dataMessage?.find((item) => item.id == e.id)?.read &&
-                                    dataMessage?.filter((item) => item.id == e.id)?.length
+                                    !dataMessage?.find((item) => item.id == e.id)?.read && dataMessage?.filter((item) => item.id == e.id)?.length
                                       ? 'font-black'
                                       : Number(dataMensajeUser?.id) === e.id
                                       ? 'text-gray-300 dark:text-gray-300'
@@ -128,11 +120,8 @@ export function TemMensaje() {
                                   {dataMessage?.find((item) => item.rtdb == rtdbId)?.message}
                                 </p>
                               </div>
-                              {!dataMessage?.find((item) => item.id == e.id)?.read &&
-                              dataMessage?.filter((item) => item.id == e.id)?.length ? (
-                                <SpanNoti>
-                                  {dataMessage?.filter((user: any) => user.id == e.id).length}
-                                </SpanNoti>
+                              {!dataMessage?.find((item) => item.id == e.id)?.read && dataMessage?.filter((item) => item.id == e.id)?.length ? (
+                                <SpanNoti>{dataMessage?.filter((user: any) => user.id == e.id).length}</SpanNoti>
                               ) : null}
                             </DivAllChat>
                           </button>
@@ -149,18 +138,10 @@ export function TemMensaje() {
             ) : null}
           </div>
 
-          <div
-            className={`w-3/4  max-md:w-full ${
-              !dataMensajeUser?.id ? 'block max-md:hidden' : ' block'
-            } h-[80vh]`}>
+          <div className={`w-3/4  max-md:w-full ${!dataMensajeUser?.id ? 'block max-md:hidden' : ' block'} h-[80vh]`}>
             {dataMensajeUser?.id ? (
               <TemplateChat
-                connect={
-                  (dataIsConnect?.find((eConnect: any) => dataMensajeUser.id == eConnect.id)
-                    ?.connect &&
-                    true) ||
-                  false
-                }
+                connect={(dataIsConnect?.find((eConnect: any) => dataMensajeUser.id == eConnect.id)?.connect && true) || false}
                 dataMensajeUser={dataMensajeUser}
                 id={dataUser.user.id}
                 close={() =>
@@ -179,12 +160,10 @@ export function TemMensaje() {
               <div className='flex flex-col items-center justify-center h-full'>
                 <div className='text-center p-8 bg-white dark:bg-darkComponet rounded-lg shadow-md max-w-md'>
                   <LuMessageSquare className='w-16 h-16 text-gray-400 dark:text-primary mx-auto mb-4' />
-                  <h2 className='text-2xl font-semibold text-gray-800 dark:text-primary mb-2'>
-                    No hay chat seleccionado
-                  </h2>
+                  <h2 className='text-2xl font-semibold text-gray-800 dark:text-primary mb-2'>No hay chat seleccionado</h2>
                   <p className='text-gray-600 dark:text-gray-300'>
-                    Selecciona una conversación de la lista a la izquierda para comenzar a chatear.
-                    Aquí podrás ver el historial de mensajes y enviar nuevos mensajes.
+                    Selecciona una conversación de la lista a la izquierda para comenzar a chatear. Aquí podrás ver el historial de mensajes y enviar
+                    nuevos mensajes.
                   </p>
                 </div>
               </div>
@@ -196,12 +175,8 @@ export function TemMensaje() {
           <div className='flex flex-col items-center justify-center h-full'>
             <div className='text-center p-8 bg-white dark:bg-darkComponet rounded-lg shadow-md max-w-md'>
               <LuMessageSquare className='w-16 h-16 text-gray-400 dark:text-primary mx-auto mb-4' />
-              <h2 className='text-2xl font-semibold text-gray-800 dark:text-primary mb-2'>
-                ¿Aún no tienes conversaciones?
-              </h2>
-              <p className='text-gray-600 dark:text-gray-300'>
-                Agrega amigos para comenzar a chatear y compartir momentos.
-              </p>
+              <h2 className='text-2xl font-semibold text-gray-800 dark:text-primary mb-2'>¿Aún no tienes conversaciones?</h2>
+              <p className='text-gray-600 dark:text-gray-300'>Agrega amigos para comenzar a chatear y compartir momentos.</p>
               <Link
                 href='/amigos'
                 className='mt-5 inline-flex items-center px-6 py-3 bg-light text-primary font-semibold rounded-full transition-all duration-300 hover:shadow-lg hover:opacity-80'>

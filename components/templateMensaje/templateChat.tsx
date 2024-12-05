@@ -11,28 +11,49 @@ import { rtdb } from '@/lib/firebase';
 import { ref, onValue, update, get } from 'firebase/database';
 import Linkify from '@/utils/formtText';
 import { MessageUserChat } from '.';
+import diferenteDate from '../templatePublicate/diferenteDate';
 
-export default function TemplateChat({ dataMensajeUser, id, close, connect }: { dataMensajeUser: MessageUserChat; id: number; close: () => any; connect: boolean }) {
+export default function TemplateChat({
+  dataMensajeUser,
+  id,
+  close,
+  connect,
+}: {
+  dataMensajeUser: MessageUserChat;
+  id: number;
+  close: () => any;
+  connect: boolean;
+}) {
   const smsRef: any = useRef(null);
   const [claveMessage, setclaveMessage] = useState('');
   const [messagesAll, setMessagesAll] = useState<MessageUserChat[] | []>([]);
 
   useEffect(() => {
     if (dataMensajeUser) {
-      const chatrooms = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/messages');
+      const chatrooms = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}/messages`);
+      const chatRoom = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}/${id}`);
 
-      return onValue(chatrooms, (snapshot) => {
+      let isListenerActive = true;
+
+      const unsubscribe = onValue(chatrooms, (snapshot) => {
         const valor = snapshot.val();
         if (valor) {
           const datas: any = Object.values(valor);
           const claves = Object.keys(valor);
           const ultimoObjeto = claves[claves.length - 1];
+
           setclaveMessage(ultimoObjeto);
           setMessagesAll(datas);
         } else {
           setMessagesAll([]);
         }
       });
+
+      return () => {
+        isListenerActive = false; // Marca como inactivo
+        unsubscribe(); // Detener la escucha
+        update(chatRoom, { isOpen: false, user: Number(id) });
+      };
     }
   }, [dataMensajeUser]);
 
@@ -40,9 +61,13 @@ export default function TemplateChat({ dataMensajeUser, id, close, connect }: { 
     if (claveMessage) {
       if (messagesAll) {
         const utlimoMensaje: any = messagesAll[messagesAll.length - 1];
-
+        const chatroomData = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/messages/' + claveMessage);
+        const chatRoom = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/' + id);
+        update(chatRoom, {
+          isOpen: true,
+          user: Number(id),
+        });
         if (utlimoMensaje?.read == false && utlimoMensaje.id !== id) {
-          const chatroomData = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/messages/' + claveMessage);
           get(chatroomData).then((snap) => {
             if (snap.exists()) {
               update(chatroomData, {
@@ -83,6 +108,7 @@ export default function TemplateChat({ dataMensajeUser, id, close, connect }: { 
       message: target.message.value,
       status: 'Enviado',
       read: false,
+      date: new Date(),
     };
 
     const data = await EnviarMessage(messageUser);
@@ -122,11 +148,20 @@ export default function TemplateChat({ dataMensajeUser, id, close, connect }: { 
                     <Menssage isUser={e.id == id ? true : false}>
                       <Linkify text={e.message || ''} />
                     </Menssage>
+                    <span className={`text-[0.7rem] block  text-hoverPrimary ${e.id == id ? 'pr-2' : 'pl-2'}`}>{diferenteDate(e.date)}</span>
                   </div>
                 );
               })
             : null}
-          {messagesAll?.length > 0 && (messagesAll[messagesAll.length - 1] as any).id === id && <p className={`text-end  text-[0.8rem] ${messagesAll[messagesAll.length - 1].status === 'Leido' ? 'text-light' : 'text-gray-500'} -mt-2`}>{messagesAll[messagesAll.length - 1].status === 'Leido' ? ' ✔✔ Leido' : messagesAll[messagesAll.length - 1].status === 'Enviado' ? ' ✔ Enviado' : ' ✔✔ Sin leer'}</p>}
+          {messagesAll?.length > 0 && (messagesAll[messagesAll.length - 1] as any).id === id && (
+            <p className={`text-end  text-[0.8rem] ${messagesAll[messagesAll.length - 1].status === 'Leido' ? 'text-light' : 'text-gray-500'} -mt-2`}>
+              {messagesAll[messagesAll.length - 1].status === 'Leido'
+                ? ' ✔✔ Leido'
+                : messagesAll[messagesAll.length - 1].status === 'Enviado'
+                ? ' ✔ Enviado'
+                : ' ✔✔ Sin leer'}
+            </p>
+          )}
         </div>
         <div>
           <form action='' onSubmit={handleSubmit} className='flex items-center gap-4 p-4 text-secundary max-md:p-2'>

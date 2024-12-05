@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { ref, onValue, update } from 'firebase/database';
+import { ref, onValue, update, get } from 'firebase/database';
 import { rtdb } from '@/lib/firebase';
 import './style.css';
 import { usePathname } from 'next/navigation';
@@ -108,6 +108,11 @@ export default function Header({ themeDate }: { themeDate: string }) {
     if (!dataUser?.user?.id) return;
 
     const requestNotificationPermission = async () => {
+      if (!('Notification' in window)) {
+        alert('Este navegador no esta disponible las notificaciones');
+        return;
+      }
+
       if (Notification.permission === 'default') {
         try {
           await Notification.requestPermission();
@@ -135,36 +140,41 @@ export default function Header({ themeDate }: { themeDate: string }) {
             const keys = Object.keys(valor);
             const lastKey = keys[keys.length - 1];
             const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
+            const userdataRef = ref(rtdb, '/rooms/' + item);
+            get(userdataRef).then((user) => {
+              const data = user.val();
+              const isOpen = data[dataUser.user.id];
 
-            audio
-              .play()
-              .then(() => {
-                if (Notification.permission === 'granted') {
-                  new Notification('Nuevo mensaje recibido', { body: 'Tienes un nuevo mensaje.' });
-                }
-                update(mensajeRef, { status: 'Recibido' });
-              })
-              .catch(() => {
-                if (Notification.permission === 'granted') {
-                  new Notification('Nuevo mensaje recibido', { body: 'Tienes un nuevo mensaje.' });
-                }
-
-                update(mensajeRef, { status: 'Recibido' });
-              });
-          }
-
-          setDataMessage((prev) => {
-            if (prev.length) {
-              const findMessageRtdbEqual = prev.find((message) => message.rtdb === item);
-              if (findMessageRtdbEqual) {
-                return prev.map((message) => (message.rtdb === item ? { ...ultimoMensaje, rtdb: item } : message));
-              } else {
-                return [...prev, { ...ultimoMensaje, rtdb: item }];
+              if (isOpen.isOpen) {
+                return;
               }
-            } else {
-              return [{ ...ultimoMensaje, rtdb: item }];
-            }
-          });
+              audio.play().catch(() => console.error('Este es un error de no interactuar'));
+              if (Notification.permission === 'granted') {
+                const options = {
+                  body: ultimoMensaje.message,
+                  icon: ultimoMensaje.img, // Icono que se muestra en la notificación
+                  image: '/logo.webp', // Imagen en tamaño completo (puede ser más grande)
+                  title: ultimoMensaje.fullName,
+                  badge: ultimoMensaje.img, // Icono pequeño que aparece en la barra de notificación
+                };
+
+                new Notification(ultimoMensaje.fullName, options);
+              }
+            });
+            update(mensajeRef, { status: 'Recibido' });
+            setDataMessage((prev) => {
+              if (prev.length) {
+                const findMessageRtdbEqual = prev.find((message) => message.rtdb === item);
+                if (findMessageRtdbEqual) {
+                  return prev.map((message) => (message.rtdb === item ? { ...ultimoMensaje, rtdb: item } : message));
+                } else {
+                  return [...prev, { ...ultimoMensaje, rtdb: item }];
+                }
+              } else {
+                return [{ ...ultimoMensaje, rtdb: item }];
+              }
+            });
+          }
         }
       });
     });

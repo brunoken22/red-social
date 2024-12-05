@@ -4,7 +4,6 @@ import { Body } from '@/ui/typography';
 import {
   DivPerfil,
   DivSpan,
-  ButtonOpenImage,
   DivInteractuar,
   BottonLike,
   DivCantidad,
@@ -16,7 +15,6 @@ import {
   DivUserLikes,
 } from '@/components/publicaciones/styled';
 import Like from '@/ui/icons/like.svg';
-import CloseWhite from '@/ui/icons/closeWhite.svg';
 import Comentar from '@/ui/icons/comentar.svg';
 import { isConnect } from '@/lib/atom';
 import { useRecoilValue } from 'recoil';
@@ -41,7 +39,6 @@ const iconConLike = {
 const Verification = dynamic(() => import('@/ui/verification'));
 const Comment = dynamic(() => import('./comment'));
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), { loading: () => <LoaderRequest /> });
-const DivImage = dynamic(() => import('@/components/publicaciones/styled').then((mod) => mod.DivImage), { loading: () => <LoaderRequest /> });
 
 export function ThemplatePubli(props: {
   description?: string;

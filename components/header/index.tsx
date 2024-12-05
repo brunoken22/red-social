@@ -106,9 +106,23 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
+
+    const requestNotificationPermission = async () => {
+      if (Notification.permission === 'default') {
+        try {
+          await Notification.requestPermission();
+        } catch (err) {
+          console.error('Error solicitando permiso de notificaciones:', err);
+        }
+      }
+    };
+
+    requestNotificationPermission();
+
     const audio = new Audio('/notification.mp3');
     audio.load();
-    dataUser.user.rtdb.map((item) => {
+
+    const unsubscribes = dataUser.user.rtdb.map((item) => {
       const chatrooms = ref(rtdb, '/rooms/' + item + '/messages');
 
       return onValue(chatrooms, (snapshot) => {
@@ -125,27 +139,24 @@ export default function Header({ themeDate }: { themeDate: string }) {
             audio
               .play()
               .then(() => update(mensajeRef, { status: 'Recibido' }))
-              .catch(() => update(mensajeRef, { status: 'Recibido' }));
+              .catch(() => {
+                if (Notification.permission === 'granted') {
+                  new Notification('Nuevo mensaje recibido', { body: 'Tienes un nuevo mensaje.' });
+                }
+
+                update(mensajeRef, { status: 'Recibido' });
+              });
           }
 
-          // Actualizar el estado de los mensajes en la aplicación
           setDataMessage((prev) => {
             if (prev.length) {
               const findMessageRtdbEqual = prev.find((message) => message.rtdb === item);
               if (findMessageRtdbEqual) {
-                return prev.map((message) =>
-                  message.rtdb === item
-                    ? {
-                        ...ultimoMensaje,
-                        rtdb: item,
-                      }
-                    : message
-                );
+                return prev.map((message) => (message.rtdb === item ? { ...ultimoMensaje, rtdb: item } : message));
               } else {
                 return [...prev, { ...ultimoMensaje, rtdb: item }];
               }
             } else {
-              // Si no hay elementos previos, devuelve un array nuevo con el primer mensaje
               return [{ ...ultimoMensaje, rtdb: item }];
             }
           });
@@ -153,8 +164,9 @@ export default function Header({ themeDate }: { themeDate: string }) {
       });
     });
 
+    // Limpiar los listeners al desmontar
     return () => {
-      if (!dataUser?.user?.id) return;
+      unsubscribes.forEach((unsubscribe) => unsubscribe());
     };
   }, [dataUser?.user?.rtdb]);
 

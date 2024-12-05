@@ -138,7 +138,12 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
             audio
               .play()
-              .then(() => update(mensajeRef, { status: 'Recibido' }))
+              .then(() => {
+                if (Notification.permission === 'granted') {
+                  new Notification('Nuevo mensaje recibido', { body: 'Tienes un nuevo mensaje.' });
+                }
+                update(mensajeRef, { status: 'Recibido' });
+              })
               .catch(() => {
                 if (Notification.permission === 'granted') {
                   new Notification('Nuevo mensaje recibido', { body: 'Tienes un nuevo mensaje.' });

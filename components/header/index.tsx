@@ -35,9 +35,12 @@ const DivConnect = dynamic(() => import('./styled').then((mod) => mod.DivConnect
   loading: () => <LoaderRequest />,
 });
 
-const DivContenedorConnect = dynamic(() => import('./styled').then((mod) => mod.DivContenedorConnect), {
-  loading: () => <LoaderRequest />,
-});
+const DivContenedorConnect = dynamic(
+  () => import('./styled').then((mod) => mod.DivContenedorConnect),
+  {
+    loading: () => <LoaderRequest />,
+  }
+);
 const SearchUser = dynamic(() => import('../searchUsers').then((mod) => mod.SearchUser));
 const SearchBox = dynamic(() => import('react-instantsearch').then((mod) => mod.SearchBox));
 const ConnectedUsers = dynamic(() => import('./connectedUser'));
@@ -136,7 +139,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
           const datas = Object.values(valor);
           const ultimoMensaje: any = datas[datas.length - 1];
 
-          if (ultimoMensaje.status === 'Enviado' && ultimoMensaje.id !== dataUser.user.id) {
+          if (ultimoMensaje.id !== dataUser.user.id) {
             const keys = Object.keys(valor);
             const lastKey = keys[keys.length - 1];
             const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
@@ -166,7 +169,9 @@ export default function Header({ themeDate }: { themeDate: string }) {
               if (prev.length) {
                 const findMessageRtdbEqual = prev.find((message) => message.rtdb === item);
                 if (findMessageRtdbEqual) {
-                  return prev.map((message) => (message.rtdb === item ? { ...ultimoMensaje, rtdb: item } : message));
+                  return prev.map((message) =>
+                    message.rtdb === item ? { ...ultimoMensaje, rtdb: item } : message
+                  );
                 } else {
                   return [...prev, { ...ultimoMensaje, rtdb: item }];
                 }
@@ -194,7 +199,9 @@ export default function Header({ themeDate }: { themeDate: string }) {
         const dataConnect: any = Object.values(valor);
         setIsConnect(dataConnect);
         const connecam = dataConnect.filter((e: Connect) => {
-          return e.id != Number(dataUser.user.id) && e.connect && dataUser.user.amigos.includes(e.id);
+          return (
+            e.id != Number(dataUser.user.id) && e.connect && dataUser.user.amigos.includes(e.id)
+          );
         });
         setAllConnectAmigos(connecam);
       }
@@ -248,17 +255,29 @@ export default function Header({ themeDate }: { themeDate: string }) {
               <Logo className='rounded-md fill-unired transition-dark' />
             </Link>
             <div className='border-none relative max-md:hidden '>
-              {pathname !== '/search' && <SearchBox aria-label='searchAlgolia' id='searchAlgolia' placeholder='UniRed' queryHook={useDebounce} />}
+              {pathname !== '/search' && (
+                <SearchBox
+                  aria-label='searchAlgolia'
+                  id='searchAlgolia'
+                  placeholder='UniRed'
+                  queryHook={useDebounce}
+                />
+              )}
               <SearchUser />
             </div>
           </div>
           <NavegationUrl
             amigos={dataSoliReci?.length}
-            message={dataMessage.filter((message) => !message.read && message.id != dataUser.user.id).length}
+            message={
+              dataMessage.filter((message) => !message.read && message.id != dataUser.user.id)
+                .length
+            }
             notification={notificacionesUserAtom?.newPubliOPen}
           />
           <div className='relative ' ref={modalRef}>
-            <button onClick={() => setMenu((isMenu) => !isMenu)} className='m-0 bg-transparent border-none relative z-50'>
+            <button
+              onClick={() => setMenu((isMenu) => !isMenu)}
+              className='m-0 bg-transparent border-none relative z-50'>
               <FotoPerfil
                 className='w-[40px] h-[40px] hover:border-2 hover:opacity-70'
                 img={dataUser.user.img}
@@ -281,7 +300,9 @@ export default function Header({ themeDate }: { themeDate: string }) {
         <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
           <span>Conectados</span> <DivConnect />
         </DivConectados>
-        {connectAmigos ? <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={dataIsConnect} /> : null}
+        {connectAmigos ? (
+          <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={dataIsConnect} />
+        ) : null}
       </DivContenedorConnect>
     </>
   ) : (

@@ -139,7 +139,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
           const datas = Object.values(valor);
           const ultimoMensaje: any = datas[datas.length - 1];
 
-          if (ultimoMensaje.id !== dataUser.user.id) {
+          if (ultimoMensaje.id) {
             const keys = Object.keys(valor);
             const lastKey = keys[keys.length - 1];
             const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);

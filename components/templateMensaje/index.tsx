@@ -62,7 +62,7 @@ export function TemMensaje() {
       });
     }
   }, [params.get('fullName')]);
-
+  console.log(dataMessage, dataUser.user.id);
   if (isLoading) return <Loader />;
   return (
     <DivTemMensaje>
@@ -124,6 +124,10 @@ export function TemMensaje() {
                                       ? 'text-gray-300 dark:text-gray-300'
                                       : 'text-gray-600 dark:text-gray-300'
                                   }`}>
+                                  {dataMessage?.find((item) => item.rtdb == rtdbId)?.id ==
+                                  dataUser.user.id
+                                    ? 'Tú: '
+                                    : null}
                                   {dataMessage?.find((item) => item.rtdb == rtdbId)?.message}
                                 </p>
                               </div>

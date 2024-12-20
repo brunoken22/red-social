@@ -142,28 +142,32 @@ export default function Header({ themeDate }: { themeDate: string }) {
           if (ultimoMensaje.id) {
             const keys = Object.keys(valor);
             const lastKey = keys[keys.length - 1];
-            const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
             const userdataRef = ref(rtdb, '/rooms/' + item);
             get(userdataRef).then((user) => {
               const data = user.val();
               const isOpen = data[dataUser.user.id];
-
-              if (isOpen.isOpen) {
+              if (
+                (isOpen && isOpen.isOpen) ||
+                ultimoMensaje.id == dataUser.user.id ||
+                ultimoMensaje.status == 'Recibido'
+              ) {
                 return;
-              }
-              audio.play().catch(() => console.error('Este es un error de no interactuar'));
-              if (Notification.permission === 'granted') {
-                const options = {
-                  body: ultimoMensaje.message,
-                  icon: ultimoMensaje.img, // Icono que se muestra en la notificación
-                  image: '/logo.webp', // Imagen en tamaño completo (puede ser más grande)
-                  title: ultimoMensaje.fullName,
-                  badge: ultimoMensaje.img, // Icono pequeño que aparece en la barra de notificación
-                };
+              } else {
+                audio.play().catch(() => {});
+                if (Notification.permission === 'granted') {
+                  const options = {
+                    body: ultimoMensaje.message,
+                    icon: ultimoMensaje.img, // Icono que se muestra en la notificación
+                    image: '/logo.webp', // Imagen en tamaño completo (puede ser más grande)
+                    title: ultimoMensaje.fullName,
+                    badge: ultimoMensaje.img, // Icono pequeño que aparece en la barra de notificación
+                  };
 
-                new Notification(ultimoMensaje.fullName, options);
+                  new Notification(ultimoMensaje.fullName, options);
+                }
               }
             });
+            const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
             update(mensajeRef, { status: 'Recibido' });
             setDataMessage((prev) => {
               if (prev.length) {

@@ -62,7 +62,6 @@ export function TemMensaje() {
       });
     }
   }, [params.get('fullName')]);
-  console.log(dataMessage, dataUser.user.id);
   if (isLoading) return <Loader />;
   return (
     <DivTemMensaje>

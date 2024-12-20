@@ -61,7 +61,10 @@ export default function TemplateChat({
     if (claveMessage) {
       if (messagesAll) {
         const utlimoMensaje: any = messagesAll[messagesAll.length - 1];
-        const chatroomData = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/messages/' + claveMessage);
+        const chatroomData = ref(
+          rtdb,
+          '/rooms/' + dataMensajeUser?.rtdb + '/messages/' + claveMessage
+        );
         const chatRoom = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/' + id);
         update(chatRoom, {
           isOpen: true,
@@ -117,13 +120,16 @@ export default function TemplateChat({
     }
     alert('Error al mandar mensaje');
   };
-
   return (
     <TemplSns>
       <div className=' flex justify-between border-[1px] border-[#3b3b3b] p-2'>
         <div className='flex items-center gap-4 overflow-hidden'>
           <Link href={'/amigos/' + dataMensajeUser.id}>
-            <FotoPerfil className='w-[40px] h-[40px]' img={dataMensajeUser.img || (dataMensajeUser.img == 'null' && '') || ''} connect={connect} />
+            <FotoPerfil
+              className='w-[40px] h-[40px]'
+              img={dataMensajeUser.img || (dataMensajeUser.img == 'null' && '') || ''}
+              connect={connect}
+            />
           </Link>
           <div className='flex items-center gap-2 overflow-hidden'>
             <h5 className='truncate m-0'>{dataMensajeUser.fullName}</h5>
@@ -134,7 +140,9 @@ export default function TemplateChat({
         </Button>
       </div>
       <div className='flex flex-col gap-4 h-full  border-[1px] border-[#3b3b3b]'>
-        <div className='flex flex-col w-full text-primary gap-2 p-4  overflow-y-auto h-full' ref={smsRef}>
+        <div
+          className='flex flex-col w-full text-primary gap-2 p-4  overflow-y-auto h-full'
+          ref={smsRef}>
           {messagesAll
             ? messagesAll?.map((e: any, p: any) => {
                 return (
@@ -148,13 +156,21 @@ export default function TemplateChat({
                     <Menssage isUser={e.id == id ? true : false}>
                       <Linkify text={e.message || ''} />
                     </Menssage>
-                    <span className={`text-[0.7rem] block  text-hoverPrimary ${e.id == id ? 'pr-2' : 'pl-2'}`}>{diferenteDate(e.date)}</span>
+                    <span
+                      className={`text-[0.7rem] block  text-hoverPrimary ${
+                        e.id == id ? 'pr-2' : 'pl-2'
+                      }`}>
+                      {diferenteDate(e.date)}
+                    </span>
                   </div>
                 );
               })
             : null}
           {messagesAll?.length > 0 && (messagesAll[messagesAll.length - 1] as any).id === id && (
-            <p className={`text-end  text-[0.8rem] ${messagesAll[messagesAll.length - 1].status === 'Leido' ? 'text-light' : 'text-gray-500'} -mt-2`}>
+            <p
+              className={`text-end  text-[0.8rem] ${
+                messagesAll[messagesAll.length - 1].read ? 'text-light' : 'text-gray-500'
+              } -mt-2`}>
               {messagesAll[messagesAll.length - 1].status === 'Leido'
                 ? ' ✔✔ Leido'
                 : messagesAll[messagesAll.length - 1].status === 'Enviado'
@@ -164,10 +180,16 @@ export default function TemplateChat({
           )}
         </div>
         <div>
-          <form action='' onSubmit={handleSubmit} className='flex items-center gap-4 p-4 text-secundary max-md:p-2'>
+          <form
+            action=''
+            onSubmit={handleSubmit}
+            className='flex items-center gap-4 p-4 text-secundary max-md:p-2'>
             <Input id='message' type='text' placeholder='Escribe un mensaje' />
 
-            <button type='submit' id={dataMensajeUser.rtdb} className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70 shrink-[5] '>
+            <button
+              type='submit'
+              id={dataMensajeUser.rtdb}
+              className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70 shrink-[5] '>
               Enviar
             </button>
           </form>

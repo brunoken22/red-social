@@ -19,6 +19,12 @@ export type Message = {
   message: string;
   id: number;
 };
+
+export type MessageWriting = {
+  id: number;
+  writing: boolean;
+};
+
 export type Connect = {
   id: number;
   connect: boolean;
@@ -89,6 +95,10 @@ export const publicacionSearchUser = atom<Publicacion[] | null>({
 export const isMenssage = atom({
   key: 'isMenssage',
   default: [] as Message[],
+});
+export const messagesWriting = atom({
+  key: 'isMenssage',
+  default: [] as MessageWriting[],
 });
 export const notificacionesUser = atom<{
   publicacion: Publicacion[];

@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { DivAllChat } from '@/ui/container';
 import { DivTemMensaje, TemplMensaje, TemplChat, SpanNoti } from './styled';
 import { useRecoilValue } from 'recoil';
-import { user, isMenssage, isConnect, User } from '@/lib/atom';
+import { user, isMenssage, isConnect, User, messagesWriting } from '@/lib/atom';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { LuMessageSquare, LuUsers } from 'react-icons/lu';
@@ -40,6 +40,7 @@ export function TemMensaje() {
   const dataUser = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);
   const dataMessage = useRecoilValue(isMenssage);
+  const dataMessagesWriting = useRecoilValue(messagesWriting);
   const [dataMensajeUser, setDataMensajeUser] = useState<MessageUserChat>();
   const { data, isLoading } = GetAllUserChat();
 
@@ -62,6 +63,7 @@ export function TemMensaje() {
       });
     }
   }, [params.get('fullName')]);
+
   if (isLoading) return <Loader />;
   return (
     <DivTemMensaje>
@@ -114,21 +116,27 @@ export function TemMensaje() {
                                   {e.verification && <Verification publication={false} />}
                                 </div>
 
-                                <p
-                                  className={`text-[0.8rem] text-start truncate ${
-                                    !dataMessage?.find((item) => item.id == e.id)?.read &&
-                                    dataMessage?.filter((item) => item.id == e.id)?.length
-                                      ? 'font-black'
-                                      : Number(dataMensajeUser?.id) === e.id
-                                      ? 'text-gray-300 dark:text-gray-300'
-                                      : 'text-gray-600 dark:text-gray-300'
-                                  }`}>
-                                  {dataMessage?.find((item) => item.rtdb == rtdbId)?.id ==
-                                  dataUser.user.id
-                                    ? 'Tú: '
-                                    : null}
-                                  {dataMessage?.find((item) => item.rtdb == rtdbId)?.message}
-                                </p>
+                                {dataMessagesWriting?.find((item) => item.id == e.id)?.writing ? (
+                                  <p className='text-[0.8rem] text-start text-green-400 m-0 p-0 animate-pulse '>
+                                    Escribiendo...
+                                  </p>
+                                ) : (
+                                  <p
+                                    className={`text-[0.8rem] text-start truncate ${
+                                      !dataMessage?.find((item) => item.id == e.id)?.read &&
+                                      dataMessage?.filter((item) => item.id == e.id)?.length
+                                        ? 'font-black'
+                                        : Number(dataMensajeUser?.id) === e.id
+                                        ? 'text-gray-300 dark:text-gray-300'
+                                        : 'text-gray-600 dark:text-gray-300'
+                                    }`}>
+                                    {dataMessage?.find((item) => item.rtdb == rtdbId)?.id ==
+                                    dataUser.user.id
+                                      ? 'Tú: '
+                                      : null}
+                                    {dataMessage?.find((item) => item.id == e.id)?.message}
+                                  </p>
+                                )}
                               </div>
                               {!dataMessage?.find((item) => item.id == e.id)?.read &&
                               dataMessage?.filter((item) => item.id == e.id)?.length ? (

@@ -12,6 +12,7 @@ import { ref, onValue, update, get } from 'firebase/database';
 import Linkify from '@/utils/formtText';
 import { MessageUserChat } from '.';
 import diferenteDate from '../templatePublicate/diferenteDate';
+import { write } from 'fs';
 
 export default function TemplateChat({
   dataMensajeUser,
@@ -29,33 +30,36 @@ export default function TemplateChat({
   const [messagesAll, setMessagesAll] = useState<MessageUserChat[] | []>([]);
 
   useEffect(() => {
-    if (dataMensajeUser) {
-      const chatrooms = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}/messages`);
-      const chatRoom = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}/${id}`);
+    const chatrooms = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}/messages`);
+    const chatRoom = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}/${id}`);
 
-      let isListenerActive = true;
+    const unsubscribe = onValue(chatrooms, (snapshot) => {
+      const valor = snapshot.val();
+      if (valor) {
+        const datas: any = Object.values(valor);
+        const claves = Object.keys(valor);
+        const ultimoObjeto = claves[claves.length - 1];
 
-      const unsubscribe = onValue(chatrooms, (snapshot) => {
-        const valor = snapshot.val();
-        if (valor) {
-          const datas: any = Object.values(valor);
-          const claves = Object.keys(valor);
-          const ultimoObjeto = claves[claves.length - 1];
+        setclaveMessage(ultimoObjeto);
+        setMessagesAll(datas);
+      } else {
+        setMessagesAll([]);
+      }
+    });
 
-          setclaveMessage(ultimoObjeto);
-          setMessagesAll(datas);
-        } else {
-          setMessagesAll([]);
-        }
-      });
+    const handleUnload = () => {
+      update(chatRoom, { isOpen: false, user: Number(id), writing: false });
+    };
 
-      return () => {
-        isListenerActive = false; // Marca como inactivo
-        unsubscribe(); // Detener la escucha
-        update(chatRoom, { isOpen: false, user: Number(id) });
-      };
-    }
-  }, [dataMensajeUser]);
+    // Listener para cerrar el navegador o recargar
+    window.addEventListener('beforeunload', handleUnload);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener('beforeunload', handleUnload);
+      update(chatRoom, { isOpen: false, user: Number(id), writing: false });
+    };
+  }, []);
 
   useEffect(() => {
     if (claveMessage) {
@@ -100,9 +104,7 @@ export default function TemplateChat({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const target = e.currentTarget;
-
     const messageUser: MessageUserChat = {
       rtdb: dataMensajeUser.rtdb,
       id: dataMensajeUser.id,
@@ -120,6 +122,17 @@ export default function TemplateChat({
     }
     alert('Error al mandar mensaje');
   };
+  const handleChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const target = e.currentTarget;
+    const chatRoom = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}/${id}`);
+    if (target.value.length > 0) {
+      update(chatRoom, { writing: true });
+      return;
+    }
+    update(chatRoom, { writing: false });
+  };
+
   return (
     <TemplSns>
       <div className=' flex justify-between border-[1px] border-[#3b3b3b] p-2'>
@@ -181,10 +194,14 @@ export default function TemplateChat({
         </div>
         <div>
           <form
-            action=''
             onSubmit={handleSubmit}
             className='flex items-center gap-4 p-4 text-secundary max-md:p-2'>
-            <Input id='message' type='text' placeholder='Escribe un mensaje' />
+            <Input
+              id='message'
+              type='text'
+              placeholder='Escribe un mensaje'
+              onChange={handleChangeInput}
+            />
 
             <button
               type='submit'

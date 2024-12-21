@@ -16,6 +16,7 @@ import {
   isConnect,
   Connect,
   notificacionesUser,
+  messagesWriting,
   // getAllUser,
 } from '@/lib/atom';
 import Logo from '@/public/logo.svg';
@@ -55,6 +56,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   // const getAllUserData = useRecoilValue(getAllUser);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
+  const [dataMessagesWriting, setMessagesWriting] = useRecoilState(messagesWriting);
   const notificacionesUserAtom = useRecoilValue(notificacionesUser);
   // const [notificationSound, setNotificationSound] = useState<any[]>([]);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
@@ -64,6 +66,8 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const [theme, setThemes] = useState<string>(themeDate);
   const [openNav, setOpenNav] = useState(true);
   const lastScrollY = useRef(0);
+  const modalRef = useRef<HTMLDivElement>(null);
+
   const useDebounce = useDebouncedCallback((query, search) => {
     search(query);
   }, 1000);
@@ -146,6 +150,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
             get(userdataRef).then((user) => {
               const data = user.val();
               const isOpen = data[dataUser.user.id];
+
               if (
                 (isOpen && isOpen.isOpen) ||
                 ultimoMensaje.id == dataUser.user.id ||
@@ -196,6 +201,33 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
+    const unsubscribes = dataUser.user.rtdb.map((item) => {
+      const chatrooms = ref(rtdb, '/rooms/' + item);
+
+      return onValue(chatrooms, (snapshot) => {
+        const valor = snapshot.val();
+        if (valor) {
+          const valores = Object.keys(valor) // Obtener todas las claves
+            .filter((key: any) => !isNaN(key) && Number(key) !== dataUser.user.id) // Filtrar las numéricas que no coincidan con el ID
+            .map((key) => valor[key]);
+          if (valores[0]) {
+            setMessagesWriting([
+              ...dataMessagesWriting,
+              { id: valores[0].user, writing: valores[0].writing },
+            ]);
+          }
+        }
+      });
+    });
+
+    // Limpiar los listeners al desmontar
+    return () => {
+      unsubscribes.forEach((unsubscribe) => unsubscribe());
+    };
+  }, [dataUser?.user?.rtdb]);
+
+  useEffect(() => {
+    if (!dataUser?.user?.id) return;
     const connectRef = ref(rtdb, '/connect');
     onValue(connectRef, async (snapshot: any) => {
       const valor = snapshot.val();
@@ -231,7 +263,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
       lastScrollY.current = currentScrollY;
     }
   };
-  const modalRef = useRef<HTMLDivElement>(null); // Referencia al modal para saber si el clic ocurrió dentro o fuera
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

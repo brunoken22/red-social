@@ -117,7 +117,7 @@ export function TemMensaje() {
                                 </div>
 
                                 {dataMessagesWriting?.find((item) => item.id == e.id)?.writing ? (
-                                  <p className='text-[0.8rem] text-start text-green-400 m-0 p-0 animate-pulse '>
+                                  <p className='text-[0.8rem] text-start text-green-600 m-0 p-0 animate-pulse '>
                                     Escribiendo...
                                   </p>
                                 ) : (

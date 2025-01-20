@@ -124,7 +124,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
         try {
           await Notification.requestPermission();
         } catch (err) {
-          console.error('Error solicitando permiso de notificaciones:', err);
+          // console.error('Error solicitando permiso de notificaciones:', err);
         }
       }
     };

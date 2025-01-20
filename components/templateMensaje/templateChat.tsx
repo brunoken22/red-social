@@ -12,7 +12,6 @@ import { ref, onValue, update, get } from 'firebase/database';
 import Linkify from '@/utils/formtText';
 import { MessageUserChat } from '.';
 import diferenteDate from '../templatePublicate/diferenteDate';
-import { write } from 'fs';
 
 export default function TemplateChat({
   dataMensajeUser,
@@ -118,6 +117,8 @@ export default function TemplateChat({
 
     const data = await EnviarMessage(messageUser);
     if (data) {
+      const chatRoom = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}/${id}`);
+      update(chatRoom, { writing: false });
       return (target.message.value = '');
     }
     alert('Error al mandar mensaje');

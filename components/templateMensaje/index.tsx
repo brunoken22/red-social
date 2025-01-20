@@ -81,6 +81,7 @@ export function TemMensaje() {
                     data.length ? (
                       data.map((e: User) => {
                         const rtdbId = existenElementosSimilares(e.rtdb, dataUser.user.rtdb as []);
+                        const dataMessageUser = dataMessage?.find((item) => item.rtdb == rtdbId);
                         return (
                           <button
                             type='submit'
@@ -123,8 +124,9 @@ export function TemMensaje() {
                                 ) : (
                                   <p
                                     className={`text-[0.8rem] text-start truncate ${
-                                      !dataMessage?.find((item) => item.id == e.id)?.read &&
-                                      dataMessage?.filter((item) => item.id == e.id)?.length
+                                      dataMessageUser?.id != dataUser.user.id &&
+                                      dataMessageUser?.id == e.id &&
+                                      !dataMessageUser?.read
                                         ? 'font-black'
                                         : Number(dataMensajeUser?.id) === e.id
                                         ? 'text-gray-300 dark:text-gray-300'
@@ -134,15 +136,17 @@ export function TemMensaje() {
                                     dataUser.user.id
                                       ? 'Tú: '
                                       : null}
-                                    {dataMessage?.find((item) => item.id == e.id)?.message}
+                                    {dataMessageUser?.message}
                                   </p>
                                 )}
                               </div>
-                              {!dataMessage?.find((item) => item.id == e.id)?.read &&
-                              dataMessage?.filter((item) => item.id == e.id)?.length ? (
-                                <SpanNoti>
-                                  {dataMessage?.filter((user: any) => user.id == e.id).length}
-                                </SpanNoti>
+                              {dataMessageUser?.id != dataUser.user.id &&
+                              dataMessageUser?.id == e.id ? (
+                                !dataMessageUser?.read ? (
+                                  <SpanNoti>
+                                    {dataMessage?.filter((user) => user.id == e.id).length}
+                                  </SpanNoti>
+                                ) : null
                               ) : null}
                             </DivAllChat>
                           </button>

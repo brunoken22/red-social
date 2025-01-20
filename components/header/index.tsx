@@ -142,7 +142,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
         if (valor) {
           const datas = Object.values(valor);
           const ultimoMensaje: any = datas[datas.length - 1];
-
           if (ultimoMensaje.id) {
             const keys = Object.keys(valor);
             const lastKey = keys[keys.length - 1];

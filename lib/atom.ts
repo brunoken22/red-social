@@ -97,7 +97,7 @@ export const isMenssage = atom({
   default: [] as Message[],
 });
 export const messagesWriting = atom({
-  key: 'isMenssage',
+  key: 'isMenssageWriting',
   default: [] as MessageWriting[],
 });
 export const notificacionesUser = atom<{

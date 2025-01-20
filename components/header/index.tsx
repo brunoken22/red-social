@@ -171,8 +171,10 @@ export default function Header({ themeDate }: { themeDate: string }) {
                 }
               }
             });
-            const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
-            update(mensajeRef, { status: 'Recibido' });
+            if (ultimoMensaje.id !== dataUser.user.id) {
+              const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
+              update(mensajeRef, { status: 'Recibido' });
+            }
             setDataMessage((prev) => {
               if (prev.length) {
                 const findMessageRtdbEqual = prev.find((message) => message.rtdb === item);

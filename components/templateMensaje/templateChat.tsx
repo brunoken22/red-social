@@ -35,7 +35,6 @@ export default function TemplateChat({
     const unsubscribe = onValue(chatrooms, (snapshot) => {
       const valor = snapshot.val();
       if (valor) {
-        console.log(valor);
         const datas: any = Object.values(valor);
         const claves = Object.keys(valor);
         const ultimoObjeto = claves[claves.length - 1];
@@ -74,7 +73,7 @@ export default function TemplateChat({
           isOpen: true,
           user: Number(id),
         });
-        if (utlimoMensaje?.read == false && utlimoMensaje.id !== id) {
+        if (utlimoMensaje?.read == false && utlimoMensaje.id != id) {
           get(chatroomData).then((snap) => {
             if (snap.exists()) {
               update(chatroomData, {
@@ -134,7 +133,8 @@ export default function TemplateChat({
     }
     update(chatRoom, { writing: false });
   };
-
+  console.log(messagesAll[messagesAll.length - 1]);
+  console.log(dataMensajeUser);
   return (
     <TemplSns>
       <div className=' flex justify-between border-[1px] border-[#3b3b3b] p-2'>
@@ -181,12 +181,12 @@ export default function TemplateChat({
                 );
               })
             : null}
-          {messagesAll?.length > 0 && (messagesAll[messagesAll.length - 1] as any).id === id && (
+          {messagesAll?.length > 0 && (messagesAll[messagesAll.length - 1] as any).id == id && (
             <p
               className={`text-end  text-[0.8rem] ${
                 messagesAll[messagesAll.length - 1].read ? 'text-light' : 'text-gray-500'
               } -mt-2`}>
-              {messagesAll[messagesAll.length - 1].status === 'Leido'
+              {messagesAll[messagesAll.length - 1].read
                 ? ' ✔✔ Leido'
                 : messagesAll[messagesAll.length - 1].status === 'Enviado'
                 ? ' ✔ Enviado'

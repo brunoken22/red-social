@@ -133,8 +133,7 @@ export default function TemplateChat({
     }
     update(chatRoom, { writing: false });
   };
-  console.log(messagesAll[messagesAll.length - 1]);
-  console.log(dataMensajeUser);
+
   return (
     <TemplSns>
       <div className=' flex justify-between border-[1px] border-[#3b3b3b] p-2'>

@@ -63,7 +63,6 @@ export function TemMensaje() {
       });
     }
   }, [params.get('fullName')]);
-
   if (isLoading) return <Loader />;
   return (
     <DivTemMensaje>
@@ -84,7 +83,6 @@ export function TemMensaje() {
                         const dataMessageUser = dataMessage?.find((item) => item.rtdb == rtdbId);
                         return (
                           <button
-                            type='submit'
                             className={`w-full  rounded-md dark:text-primary ${
                               e.id.toString() === dataMensajeUser?.id
                                 ? 'bg-light text-primary'

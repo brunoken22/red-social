@@ -35,6 +35,7 @@ export default function TemplateChat({
     const unsubscribe = onValue(chatrooms, (snapshot) => {
       const valor = snapshot.val();
       if (valor) {
+        console.log(valor);
         const datas: any = Object.values(valor);
         const claves = Object.keys(valor);
         const ultimoObjeto = claves[claves.length - 1];
@@ -58,7 +59,7 @@ export default function TemplateChat({
       window.removeEventListener('beforeunload', handleUnload);
       update(chatRoom, { isOpen: false, user: Number(id), writing: false });
     };
-  }, []);
+  }, [dataMensajeUser]);
 
   useEffect(() => {
     if (claveMessage) {

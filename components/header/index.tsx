@@ -23,7 +23,6 @@ import Logo from '@/public/logo.svg';
 import { useDebouncedCallback } from 'use-debounce';
 import { LoaderRequest } from '../loader';
 import { SkeletonNav } from '@/ui/skeleton';
-
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), {
   loading: () => <LoaderRequest />,
 });
@@ -52,7 +51,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   NotificacionesUser(0);
 
   const pathname = usePathname();
-  const dataUser = useRecoilValue(user);
+  const [dataUser, setDataUser] = useRecoilState(user);
   // const getAllUserData = useRecoilValue(getAllUser);
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
@@ -266,6 +265,20 @@ export default function Header({ themeDate }: { themeDate: string }) {
   };
 
   useEffect(() => {
+    function getCookieValue(name: string) {
+      const cookies = document.cookie.split('; ').map((cookie) => cookie.split('='));
+      const found = cookies.find(([key]) => key === name);
+      return found ? decodeURIComponent(found[1]) : null;
+    }
+
+    const login = getCookieValue('login'); // Busca la cookie 'login'
+    if (login === 'false' || login === null || login === undefined) {
+      console.log(login);
+      setDataUser((prev) => ({
+        isLoading: false,
+        user: prev.user,
+      }));
+    }
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         setMenu(false);
@@ -279,68 +292,90 @@ export default function Header({ themeDate }: { themeDate: string }) {
     };
   }, []);
 
-  return dataUser?.user?.id ? (
-    <>
-      <header
-        className={`${
-          openNav ? 'translate-y-0' : 'max-md:-translate-y-full'
-        } p-2 sticky top-0 right-0 left-0 z-10 bg-primary transition-transform duration-300 dark:bg-darkComponet`}>
-        <nav className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
-          <div className='flex gap-4 items-center '>
-            <Link href={'/inicio'} aria-label='home'>
-              <Logo className='rounded-md fill-unired transition-dark' />
-            </Link>
-            <div className='border-none relative max-md:hidden '>
-              {pathname !== '/search' && (
-                <SearchBox
-                  aria-label='searchAlgolia'
-                  id='searchAlgolia'
-                  placeholder='UniRed'
-                  queryHook={useDebounce}
-                />
-              )}
-              <SearchUser />
+  return !dataUser?.isLoading ? (
+    dataUser?.user?.id ? (
+      <>
+        <header
+          className={`${
+            openNav ? 'translate-y-0' : 'max-md:-translate-y-full'
+          } p-2 sticky top-0 right-0 left-0 z-10 bg-primary transition-transform duration-300 dark:bg-darkComponet`}>
+          <nav className='flex justify-between items-center max-md:justify-between max-w-screen-lg m-auto'>
+            <div className='flex gap-4 items-center '>
+              <Link href={'/inicio'} aria-label='home'>
+                <Logo className='rounded-md fill-unired transition-dark' />
+              </Link>
+              <div className='border-none relative max-md:hidden '>
+                {pathname !== '/search' && (
+                  <SearchBox
+                    aria-label='searchAlgolia'
+                    id='searchAlgolia'
+                    placeholder='UniRed'
+                    queryHook={useDebounce}
+                  />
+                )}
+                <SearchUser />
+              </div>
             </div>
-          </div>
-          <NavegationUrl
-            amigos={dataSoliReci?.length}
-            message={
-              dataMessage.filter((message) => !message.read && message.id != dataUser.user.id)
-                .length
-            }
-            notification={notificacionesUserAtom?.newPubliOPen}
-          />
-          <div className='relative ' ref={modalRef}>
-            <button
-              onClick={() => setMenu((isMenu) => !isMenu)}
-              className='m-0 bg-transparent border-none relative z-50'>
-              <FotoPerfil
-                className='w-[40px] h-[40px] hover:border-2 hover:opacity-70'
-                img={dataUser.user.img}
-                connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true}
-              />
-            </button>
-            {menu ? (
-              <Menu
-                theme={theme}
-                themebutton={(data: string) => setThemes(data)}
-                click={(data: boolean) => setMenu(data)}
-                userImg={dataUser.user.img}
-                userName={dataUser.user.fullName.split(' ')[0]}
-              />
-            ) : null}
-          </div>
-        </nav>
+            <NavegationUrl
+              amigos={dataSoliReci?.length}
+              message={
+                dataMessage.filter((message) => !message.read && message.id != dataUser.user.id)
+                  .length
+              }
+              notification={notificacionesUserAtom?.newPubliOPen}
+            />
+            <div className='relative ' ref={modalRef}>
+              <button
+                onClick={() => setMenu((isMenu) => !isMenu)}
+                className='m-0 bg-transparent border-none relative z-50'>
+                <FotoPerfil
+                  className='w-[40px] h-[40px] hover:border-2 hover:opacity-70'
+                  img={dataUser.user.img}
+                  connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true}
+                />
+              </button>
+              {menu ? (
+                <Menu
+                  pathname={pathname}
+                  theme={theme}
+                  themebutton={(data: string) => setThemes(data)}
+                  click={(data: boolean) => setMenu(data)}
+                  userImg={dataUser.user.img}
+                  userName={dataUser.user.fullName.split(' ')[0]}
+                />
+              ) : null}
+            </div>
+          </nav>
+        </header>
+        <DivContenedorConnect>
+          <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
+            <span>Conectados</span> <DivConnect />
+          </DivConectados>
+          {connectAmigos ? (
+            <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={dataIsConnect} />
+          ) : null}
+        </DivContenedorConnect>
+      </>
+    ) : (
+      <header className='bg-primary dark:bg-darkComponet dark:text-white text-secondary p-4 '>
+        <div className='container mx-auto flex justify-between items-center '>
+          <Link href={'/'}>
+            <Logo className='rounded-md fill-unired transition-dark' />
+          </Link>
+          <nav>
+            <ul className='flex space-x-4'>
+              <li>
+                <Link
+                  href='/iniciarSesion'
+                  className='cursor-pointer transition-all bg-light text-white px-6 py-2 rounded-lg border-light border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:shadow-xl hover:shadow-light shadow-light active:shadow-none '>
+                  Iniciar Sesión
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </header>
-      <DivContenedorConnect>
-        <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
-          <span>Conectados</span> <DivConnect />
-        </DivConectados>
-        {connectAmigos ? (
-          <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={dataIsConnect} />
-        ) : null}
-      </DivContenedorConnect>
-    </>
+    )
   ) : (
     <SkeletonNav />
   );

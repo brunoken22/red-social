@@ -1,13 +1,9 @@
 import React from 'react';
-import {DivSkeleton, PhotoSkeleton, SpanLuz, TextSkeleton} from './styled';
-import {
-  DivHeadPerfil,
-  DivFotoName,
-  DivPublicaciones,
-} from '@/components/perfilUser/styled';
-import {DivSubir, DivText} from '@/components/publicar/styled';
-import {DivAllChat, DivPublicar} from '../container';
-import {TemplChat} from '@/components/templateMensaje/styled';
+import { DivSkeleton, PhotoSkeleton, SpanLuz, TextSkeleton } from './styled';
+import { DivHeadPerfil, DivFotoName, DivPublicaciones } from '@/components/perfilUser/styled';
+import { DivSubir, DivText } from '@/components/publicar/styled';
+import { DivAllChat, DivPublicar } from '../container';
+import { TemplChat } from '@/components/templateMensaje/styled';
 
 export function SkeletonNoti(props: React.ComponentProps<any>) {
   return (
@@ -215,7 +211,7 @@ export function SkeletonMenssage() {
 export function SkeletonNav() {
   return (
     <div className='p-2 sticky top-0 right-0 left-0 z-10 bg-primary dark:bg-darkComponet dark:transition-dark'>
-      <div className='flex justify-between items-center max-md:justify-between max-w-[850px] m-auto'>
+      <div className='flex justify-between items-center max-md:justify-between max-w-screen-lg m-auto'>
         <TextSkeleton className='w-[40px] h-[40px]'></TextSkeleton>
         <div className='flex max-md:gap-2 gap-4'>
           <TextSkeleton className='w-[35px] h-[35px]'></TextSkeleton>

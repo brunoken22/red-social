@@ -47,7 +47,7 @@ export const useConnectionStatus = (user: User) => {
   const [status, setStatus] = useState(false);
 
   useEffect(() => {
-    if (!user.id) return;
+    if (!user?.id) return;
 
     const db = getDatabase();
     const userStatusRef = ref(db, `/connect/${user.id}`);
@@ -110,7 +110,10 @@ export async function CreateUser(dataUser: DataUser) {
 
     body: JSON.stringify(dataUser),
   };
-  const data = dataUser.email && dataUser.password && dataUser.fullName ? await fetchApiSwr(api, option) : null;
+  const data =
+    dataUser.email && dataUser.password && dataUser.fullName
+      ? await fetchApiSwr(api, option)
+      : null;
 
   if (data?.user?.id) {
     setCookie('login', true);
@@ -144,7 +147,10 @@ export async function modificarUser(dataUser: DataUser) {
     body: JSON.stringify(dataUser),
   };
 
-  const dataMod = dataUser?.fullName || dataUser?.email || dataUser?.password || dataUser?.img ? await fetchApiSwr(api, option) : null;
+  const dataMod =
+    dataUser?.fullName || dataUser?.email || dataUser?.password || dataUser?.img
+      ? await fetchApiSwr(api, option)
+      : null;
 
   if (dataMod) {
     await mutate('/user/token');
@@ -168,12 +174,17 @@ export function GetUser() {
     },
   };
 
-  const { data, isLoading } = useSWR(token == 'true' ? api : null, (url) => fetchApiSwr(url, option), {
-    refreshInterval: 10000,
-  });
+  const { data, isLoading } = useSWR(
+    token == 'true' ? api : null,
+    (url) => fetchApiSwr(url, option),
+    {
+      refreshInterval: 10000,
+    }
+  );
   useEffect(() => {
     if (data?.getUserRes?.id) {
       setUserData({
+        isLoading: false,
         user: {
           ...data.getUserRes,
         },
@@ -185,6 +196,7 @@ export function GetUser() {
       setGetSugerenciaAmigosData(data.getAllUserSugeridos);
       setSoliAllEnv(data.friendEnv);
       setSoliAllReci(data.friendReci);
+      return;
     }
   }, [data]);
   return { data, isLoading };
@@ -200,9 +212,13 @@ export function GetAllUserChat() {
     },
   };
 
-  const { data, isLoading } = useSWR(token === 'true' ? api : null, (url) => fetchApiSwr(url, option), {
-    refreshInterval: 10000,
-  });
+  const { data, isLoading } = useSWR(
+    token === 'true' ? api : null,
+    (url) => fetchApiSwr(url, option),
+    {
+      refreshInterval: 10000,
+    }
+  );
 
   return { data, isLoading };
 }
@@ -218,12 +234,16 @@ export function NotificacionesUser(offset: number) {
     credentials: 'include',
   };
   const token = getCookie('login');
-  const { data, isLoading } = useSWR(token == 'true' ? api : null, (api) => fetchApiSwr(api, option), {
-    revalidateOnReconnect: true,
-    revalidateOnMount: true,
-    revalidateOnFocus: true,
-    refreshInterval: 10000,
-  });
+  const { data, isLoading } = useSWR(
+    token == 'true' ? api : null,
+    (api) => fetchApiSwr(api, option),
+    {
+      revalidateOnReconnect: true,
+      revalidateOnMount: true,
+      revalidateOnFocus: true,
+      refreshInterval: 10000,
+    }
+  );
 
   useEffect(() => {
     if (data && data?.publications) {
@@ -259,7 +279,9 @@ export function NotificacionesUserImmutable(offset: number) {
     credentials: 'include',
   };
 
-  const { data, isLoading } = useSWRImmutable(token == 'true' ? api : null, (url) => fetchApiSwr(url, option));
+  const { data, isLoading } = useSWRImmutable(token == 'true' ? api : null, (url) =>
+    fetchApiSwr(url, option)
+  );
 
   useEffect(() => {
     if (data) {
@@ -397,7 +419,8 @@ export function DeletePublic(id: number) {
   const { data, isLoading } = useSWR(id > -1 ? api : null, (url) => fetchApiSwr(url, option));
   useEffect(() => {
     if (data) {
-      const newPublic = publicacionesUser && publicacionesUser.filter((publi: Publicacion) => publi.id != id);
+      const newPublic =
+        publicacionesUser && publicacionesUser.filter((publi: Publicacion) => publi.id != id);
       setPublicacionesUser(newPublic);
     }
   }, [data]);

@@ -41,6 +41,7 @@ export type User = {
 export const user = atom({
   key: 'user',
   default: {
+    isLoading: true,
     user: {
       id: 0,
       email: '',

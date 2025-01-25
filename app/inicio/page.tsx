@@ -7,7 +7,20 @@ const PublicacionesAll = dynamic(() => import('@/components/publicaciones/public
 
 export const metadata: Metadata = {
   title: 'Inicio | UniRed',
-  description: 'Inicio de unired',
+  description: 'Explora las publicaciones de tus amig@s y descubre contenido nuevo en UniRed.',
+  openGraph: {
+    title: 'Inicio | UniRed',
+    description: 'Explora las publicaciones de tus amig@s y descubre contenido nuevo en UniRed.',
+    images: '/logo.webp',
+    url: 'https://unired.vercel.app/inicio',
+    type: 'website',
+  },
+  twitter: {
+    title: 'Inicio | UniRed',
+    description: 'Explora las publicaciones de tus amig@s y descubre contenido nuevo en UniRed.',
+    creator: '@brunoken',
+    images: '/logo.webp',
+  },
 };
 export default function Home() {
   return (

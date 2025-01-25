@@ -1,11 +1,23 @@
-import {Span} from '@/components/span';
-import {ContainerMain, DivMain} from '@/ui/container';
-import {Metadata} from 'next';
-import {ConfigPerfil} from '@/components/configuracionPerfil';
-
+import { Span } from '@/components/span';
+import { ContainerMain, DivMain } from '@/ui/container';
+import { Metadata } from 'next';
+import { ConfigPerfil } from '@/components/configuracionPerfil';
 export const metadata: Metadata = {
-  title: 'Configuracion | UniRed',
-  description: 'Configuracion',
+  title: 'Configuración | UniRed',
+  description: 'Administra tu cuenta, privacidad y preferencias en UniRed.',
+  openGraph: {
+    title: 'Configuración | UniRed',
+    description: 'Administra tu cuenta, privacidad y preferencias en UniRed.',
+    images: '/logo.webp',
+    url: 'https://unired.vercel.app/configuracion',
+    type: 'website',
+  },
+  twitter: {
+    title: 'Configuración | UniRed',
+    description: 'Administra tu cuenta, privacidad y preferencias en UniRed.',
+    creator: '@brunoken',
+    images: '/logo.webp',
+  },
 };
 
 export default function Configuracion() {

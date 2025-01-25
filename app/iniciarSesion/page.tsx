@@ -1,13 +1,30 @@
 import LogoPage from '@/ui/logo';
 import Link from 'next/link';
-import {Metadata} from 'next';
+import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import {Title} from '@/ui/typography';
+import { Title } from '@/ui/typography';
 export const metadata: Metadata = {
   title: 'Inicia sesión | UniRed',
-  description: 'Inicia sesión',
+  description:
+    'Accede a tu cuenta de UniRed para conectarte con amig@s y descubrir contenido nuevo.',
+  openGraph: {
+    title: 'Inicia sesión | UniRed',
+    description:
+      'Accede a tu cuenta de UniRed para conectarte con amig@s y descubrir contenido nuevo.',
+    images: '/logo.webp',
+    url: 'https://unired.vercel.app/iniciarSesion',
+    type: 'website',
+  },
+  twitter: {
+    title: 'Inicia sesión | UniRed',
+    description:
+      'Accede a tu cuenta de UniRed para conectarte con amig@s y descubrir contenido nuevo.',
+    creator: '@brunoken',
+    images: '/logo.webp',
+  },
 };
-const Signin = dynamic(() => import('@/components/inicioSesion'), {ssr: false});
+
+const Signin = dynamic(() => import('@/components/inicioSesion'), { ssr: false });
 
 export default function Page() {
   return (
@@ -24,9 +41,7 @@ export default function Page() {
           <Signin />
           <p className='mt-8'>
             No ténes cuenta?{' '}
-            <Link
-              href='/crearCuenta'
-              className='font-semibold hover:opacity-70'>
+            <Link href='/crearCuenta' className='font-semibold hover:opacity-70'>
               Registrate
             </Link>
           </p>

@@ -1,13 +1,27 @@
-import {Title} from '@/ui/typography';
+import { Title } from '@/ui/typography';
 import LogoPage from '@/ui/logo';
 import Link from 'next/link';
-import {Signup} from '@/components/crearSesion';
-import {Metadata} from 'next';
+import { Signup } from '@/components/crearSesion';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Crear cuenta | UniRed',
-  description: 'Crear cuenta',
+  description: 'Únete a UniRed y comienza a conectarte con amig@s y descubrir contenido nuevo.',
+  openGraph: {
+    title: 'Crear cuenta | UniRed',
+    description: 'Únete a UniRed y comienza a conectarte con amig@s y descubrir contenido nuevo.',
+    images: '/logo.webp',
+    url: 'https://unired.vercel.app/crearCuenta',
+    type: 'website',
+  },
+  twitter: {
+    title: 'Crear cuenta | UniRed',
+    description: 'Únete a UniRed y comienza a conectarte con amig@s y descubrir contenido nuevo.',
+    creator: '@brunoken',
+    images: '/logo.webp',
+  },
 };
+
 export default function Home() {
   return (
     <div className='min-h-screen flex items-center justify-between'>
@@ -23,9 +37,7 @@ export default function Home() {
           <Signup />
           <p className='mt-8'>
             Ya ténes una cuenta?{' '}
-            <Link
-              href='/iniciarSesion'
-              className=' font-semibold hover:opacity-70'>
+            <Link href='/iniciarSesion' className=' font-semibold hover:opacity-70'>
               Inicia sesión
             </Link>
           </p>

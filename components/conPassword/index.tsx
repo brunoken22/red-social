@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {Form} from '@/ui/container';
-import {Input, Label} from '@/ui/input';
-import {useState} from 'react';
-import {modificarUser} from '@/lib/hook';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Form } from '@/ui/container';
+import { Input, Label } from '@/ui/input';
+import { useState } from 'react';
+import { modificarUser } from '@/lib/hook';
 
 type Inputs = {
   password: string;
@@ -23,17 +23,18 @@ const NotificationToastStatus = dynamic(() =>
 export function Password() {
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<
-    {message: string; status: 'success' | 'error' | 'info' | 'warning'} | false
+    { message: string; status: 'success' | 'error' | 'info' | 'warning' } | false
   >(false);
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: {errors: error1},
+    formState: { errors: error1 },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (dataInputs) => {
+    console.log(dataInputs);
     setIsLoading(true);
     const validar = validarPassword(dataInputs.password, dataInputs.repassword);
     if (validar) {
@@ -43,7 +44,7 @@ export function Password() {
       setIsLoading(false);
       if (dataMod) {
         reset();
-        setAlert({message: 'Se modifico correctamente', status: 'success'});
+        setAlert({ message: 'Se modifico correctamente', status: 'success' });
         return;
       }
       setAlert({
@@ -64,7 +65,7 @@ export function Password() {
   if (isLoading) {
     return <Loader />;
   }
-
+  console.log(error1);
   return (
     <div>
       <div>
@@ -73,30 +74,28 @@ export function Password() {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Label htmlFor='password'>Nueva contraseña</Label>
-          <Input
+          <input
+            className='w-full h-[2.5rem] rounded-md border-[1px] text-black border-gray-700 indent-3 p-0'
             type='password'
             id='password'
-            {...register('password', {required: true})}
+            {...register('password', { required: true })}
             autoComplete='new-password'
           />
           {error1.password && (
-            <span className='text-red-500 text-[0.8rem]'>
-              Se requiere constraseña
-            </span>
+            <span className='text-red-500 text-[0.8rem]'>Se requiere constraseña</span>
           )}
         </div>
         <div>
           <Label htmlFor='repassword'>Repetir contraseña</Label>
-          <Input
+          <input
+            className='w-full h-[2.5rem] rounded-md border-[1px] text-black border-gray-700 indent-3 p-0'
             type='password'
-            {...register('repassword', {required: true})}
             id='repassword'
+            {...register('repassword', { required: true })}
             autoComplete='current-password'
           />
           {error1.repassword && (
-            <span className='text-red-500 text-[0.8rem]'>
-              Se requiere repetir contraseña
-            </span>
+            <span className='text-red-500 text-[0.8rem]'>Se requiere repetir contraseña</span>
           )}
         </div>
 

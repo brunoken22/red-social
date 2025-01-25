@@ -1,10 +1,4 @@
-export const Label = ({
-  htmlFor,
-  children,
-}: {
-  htmlFor: string;
-  children: React.ReactNode;
-}) => (
+export const Label = ({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) => (
   <label htmlFor={htmlFor} className='block text-[0.9rem]'>
     {children}
   </label>
@@ -16,8 +10,11 @@ export const Input = ({
   autoComplete,
   value,
   onChange,
+  name,
+  ...props
 }: {
   id?: string;
+  name?: string;
   type?: string;
   placeholder?: string;
   autoComplete?: string;
@@ -25,7 +22,9 @@ export const Input = ({
   onChange?: (e: any) => any;
 }) => (
   <input
+    {...props}
     onChange={onChange}
+    name={name}
     defaultValue={value}
     autoComplete={autoComplete}
     id={id}

@@ -7,7 +7,10 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   // read route params
   const id = (await params).id;
 
@@ -35,9 +38,12 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     },
     twitter: {
       images: [data?.user?.img || '/user.webp', ...previousImages],
-      title: data?.user?.fullName ? data?.user?.fullName + ' | UniRed' : 'Usuario no existe | Unired',
+      title: data?.user?.fullName
+        ? data?.user?.fullName + ' | UniRed'
+        : 'Usuario no existe | Unired',
       description: `Usuario ${data?.user?.fullName || 'no existe'} de unired`,
       creator: 'Bruno Ken',
+      card: 'summary_large_image',
       site: `https://unired.vercel.app/amigos/${data?.user?.id | 0}`,
     },
   };

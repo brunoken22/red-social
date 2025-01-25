@@ -5,7 +5,9 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Bienvenid@ a UniRed',
   description: 'Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)',
-  facebook: 501335862562150,
+  facebook: {
+    appId: '501335862562150',
+  },
 
   openGraph: {
     title: 'Bienvenid@ a UniRed',

@@ -5,6 +5,18 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Bienvenid@ a UniRed',
   description: 'Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)',
+  openGraph: {
+    title: 'Bienvenid@ a UniRed',
+    description: 'Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)',
+    images: '/logo.webp',
+    authors: ['Bruno Ken'],
+  },
+  twitter: {
+    title: 'Bienvenid@ a UniRed',
+    description: 'Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)',
+    creator: '@brunoken',
+    images: '/logo.webp',
+  },
 };
 
 export default function Page() {

@@ -23,7 +23,7 @@ export default function FotoPerfil({
       />
       {connect ? (
         <div
-          className={` bg-green-500 w-[11px] h-[11px] rounded-full absolute bottom-[10%] right-0`}></div>
+          className={` bg-green-500 w-[11px] h-[11px] rounded-full absolute bottom-[10%] right-0 border-2 border-zinc-900`}></div>
       ) : null}
     </div>
   );

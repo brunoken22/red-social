@@ -25,10 +25,18 @@ export const DivPublicaciones = ({ children }: { children: React.ReactNode }) =>
   </div>
 );
 
-export const DivPublicar = ({ children }: { children: React.ReactNode }) => (
+export const DivPublicar = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
   <div
     className={` bg-primary  
-   max-w-xl h-max  p-4 max-md:p-2 pb-2 flex flex-col justify-evenly gap-4 rounded-md shadow-container  max-md:w-auto  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center`}>
+   h-max  p-4 max-md:p-2 pb-2 flex flex-col justify-evenly gap-4 rounded-md shadow-container w-full  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center ${
+     className ? className : ' max-w-xl'
+   }`}>
     {children}
   </div>
 );

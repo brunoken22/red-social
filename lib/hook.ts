@@ -389,7 +389,7 @@ export function GetPubliAmigo(id: string) {
     credentials: 'include',
   };
 
-  const { data, isLoading, setSize, size } = useSWRInfinite(
+  const { data, isLoading, setSize, size, mutate } = useSWRInfinite(
     (pageIndex, previousPageData) => {
       if (previousPageData && !previousPageData.length) return null;
       return `/user/amigos/publicaciones/${id}?offset=${pageIndex * 10}`;
@@ -404,7 +404,13 @@ export function GetPubliAmigo(id: string) {
     }
   }, [data]);
 
-  return { dataPubliAmigo: data, isLoadingGetFriend: isLoading, setSize, size };
+  return {
+    dataPubliAmigo: data,
+    isLoadingGetFriend: isLoading,
+    setSize,
+    size,
+    mutatePublicacionesUser: mutate,
+  };
 }
 export function DeletePublic(id: number) {
   const [publicacionesUser, setPublicacionesUser] = useRecoilState(publicacionUser);

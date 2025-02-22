@@ -1,7 +1,13 @@
 'use client';
 import dynamic from 'next/dynamic';
 import FotoPerfil from '@/ui/FotoPerfil';
-import { DivPerfilUser, DivHeadPerfil, DivFotoNameLink, DivPublicaciones, DivButtonEliAcep } from '../perfilUser/styled';
+import {
+  DivPerfilUser,
+  DivHeadPerfil,
+  DivFotoNameLink,
+  DivPublicaciones,
+  DivButtonEliAcep,
+} from '../perfilUser/styled';
 import { useEffect, useState } from 'react';
 import { user, isConnect, getAllSolicitudesRecibidas, publicacionSearchUser } from '@/lib/atom';
 import { useRecoilValue } from 'recoil';
@@ -19,9 +25,15 @@ const Verification = dynamic(() => import('@/ui/verification'));
 const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
 const LoaderRequest = dynamic(() => import('../loader').then((mod) => mod.LoaderRequest));
 
-const ButtonMasPubli = dynamic(() => import('../publicaciones/styled').then((mod) => mod.ButtonMasPubli));
-const SkeletonPerfilAmigo = dynamic(() => import('@/ui/skeleton').then((mod) => mod.SkeletonPerfilAmigo));
-const ThemplatePubli = dynamic(() => import('../templatePublicate').then((mod) => mod.ThemplatePubli));
+const ButtonMasPubli = dynamic(() =>
+  import('../publicaciones/styled').then((mod) => mod.ButtonMasPubli)
+);
+const SkeletonPerfilAmigo = dynamic(() =>
+  import('@/ui/skeleton').then((mod) => mod.SkeletonPerfilAmigo)
+);
+const ThemplatePubli = dynamic(() =>
+  import('../templatePublicate').then((mod) => mod.ThemplatePubli)
+);
 
 export function PerfilAmigo() {
   const { id } = useParams();
@@ -32,7 +44,8 @@ export function PerfilAmigo() {
   const [isLoading, setIsLoading] = useState(false);
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
   const { data, isLoadingDataUserId } = GetAmigo(id as string);
-  const { dataPubliAmigo, isLoadingGetFriend, size, setSize } = GetPubliAmigo(id as string);
+  const { dataPubliAmigo, isLoadingGetFriend, size, setSize, mutatePublicacionesUser } =
+    GetPubliAmigo(id as string);
   const [isAmigo, setIsAmigo] = useState<'ACCEPTED' | 'PENDING' | 'REJECTED'>();
 
   useEffect(() => {
@@ -98,7 +111,11 @@ export function PerfilAmigo() {
         <DivPerfilUser>
           <div>
             <div className='w-full aspect-[16/9] max-h-[350px] max-md:aspect-[4/3] max-md:max-h-[200px]'>
-              <img src='/portafolio.webp' alt='portada' className='rounded-md w-full h-full object-cover' />
+              <img
+                src='/portafolio.webp'
+                alt='portada'
+                className='rounded-md w-full h-full object-cover'
+              />
             </div>
             <DivHeadPerfil>
               <DivFotoNameLink>
@@ -106,17 +123,23 @@ export function PerfilAmigo() {
                   <FotoPerfil
                     className='w-[120px] h-[120px]'
                     img={data?.user?.img}
-                    connect={dataIsConnect?.find((e: any) => e.id == data?.user?.id)?.connect && true}
+                    connect={
+                      dataIsConnect?.find((e: any) => e.id == data?.user?.id)?.connect && true
+                    }
                     isBorder
                   />
                 )}
                 <div className='max-md:flex max-md:items-center items-end  max-md:flex-col  '>
                   <div className='flex gap-2 items-center'>
-                    <h2 className='font-semibold text-2xl max-w-[250px] whitespace-nowrap overflow-hidden text-ellipsis'>{data?.user?.fullName}</h2>
+                    <h2 className='font-semibold text-2xl max-w-[250px] whitespace-nowrap overflow-hidden text-ellipsis'>
+                      {data?.user?.fullName}
+                    </h2>
                     {data.user.verification ? <Verification publication={false} /> : null}
                   </div>
                   {data.user.amigos && data.user.amigos ? (
-                    <div className='max-md:mb-2 mb-0 -mt-1'>{data.user.amigos.length + ' amigos'}</div>
+                    <div className='max-md:mb-2 mb-0 -mt-1'>
+                      {data.user.amigos.length + ' amigos'}
+                    </div>
                   ) : (
                     <div className='max-md:mb-2 mb-0 -mt-1'>No hay amigos</div>
                   )}
@@ -150,9 +173,13 @@ export function PerfilAmigo() {
                           bg={isAmigo !== 'REJECTED' ? 'red' : 'blue'}>
                           {isAmigo == 'ACCEPTED' ? 'Eliminar Amigo' : 'Agregar'}
                         </ButtonAgregar>
-                      ) : isAmigo == 'PENDING' && soliReci?.find((user) => user.id == data?.user.id) ? (
+                      ) : isAmigo == 'PENDING' &&
+                        soliReci?.find((user) => user.id == data?.user.id) ? (
                         <DivButtonEliAcep>
-                          <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudRecha} bg='red'>
+                          <ButtonAgregar
+                            id={data?.user?.id}
+                            onClick={handleSolicitudRecha}
+                            bg='red'>
                             Eliminar solicitud
                           </ButtonAgregar>
                           <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudAcep}>
@@ -187,6 +214,7 @@ export function PerfilAmigo() {
                 publicacionesAmigo.map((item) => (
                   <DivAllPublicaciones key={item.id}>
                     <ThemplatePubli
+                      mutate={mutatePublicacionesUser}
                       vereficationUser={dataUser.user?.verification}
                       description={item.description}
                       img={item.img}
@@ -216,9 +244,12 @@ export function PerfilAmigo() {
         <div className='flex items-center justify-center  bg-gray-100 dark:bg-gray-900 m-auto'>
           <div className='p-8 bg-white dark:bg-gray-800 rounded-lg shadow-md max-w-md w-full'>
             <FiUser className='w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-6' />
-            <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-4 text-center'>No se encontró usuario</h2>
+            <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-4 text-center'>
+              No se encontró usuario
+            </h2>
             <p className='text-gray-600 dark:text-gray-300 mb-6 text-center'>
-              Lo sentimos, no pudimos encontrar el usuario que estás buscando. Por favor, verifica la información e intenta nuevamente.
+              Lo sentimos, no pudimos encontrar el usuario que estás buscando. Por favor, verifica
+              la información e intenta nuevamente.
             </p>
             <div className='flex justify-center'>
               <button

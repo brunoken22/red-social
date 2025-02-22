@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { ref, onValue, update, get } from 'firebase/database';
+import { ref, onValue, update, get, query, orderByChild, limitToLast } from 'firebase/database';
 import { rtdb } from '@/lib/firebase';
 import './style.css';
 import { usePathname } from 'next/navigation';
@@ -48,7 +48,7 @@ const NavegationUrl = dynamic(() => import('./navHeader'));
 
 export default function Header({ themeDate }: { themeDate: string }) {
   GetUser();
-  NotificacionesUser(0);
+  // NotificacionesUser(0);
 
   const pathname = usePathname();
   const [dataUser, setDataUser] = useRecoilState(user);
@@ -56,7 +56,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const [dataMessagesWriting, setMessagesWriting] = useRecoilState(messagesWriting);
-  const notificacionesUserAtom = useRecoilValue(notificacionesUser);
+  const [notificacionesUserAtom, setNotificacionesUserAtom] = useRecoilState(notificacionesUser);
   // const [notificationSound, setNotificationSound] = useState<any[]>([]);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const [allConnectAmigos, setAllConnectAmigos] = useState([]);
@@ -84,6 +84,8 @@ export default function Header({ themeDate }: { themeDate: string }) {
     };
     cookieResponse();
   }, [theme]);
+
+  //----------------------- MENSAJES POR RTDB
 
   // useEffect(() => {
   //   if (notificacionesUserAtom.length) {
@@ -242,6 +244,29 @@ export default function Header({ themeDate }: { themeDate: string }) {
         setAllConnectAmigos(connecam);
       }
     });
+  }, [dataUser?.user?.id]);
+
+  //----------------------- NOTIFICACIONES POR RTDB
+  useEffect(() => {
+    if (dataUser.user.id) {
+      const notificationRef = query(
+        ref(rtdb, `/notifications/${dataUser.user.id}`),
+        orderByChild('timestamp'),
+        limitToLast(20)
+      );
+      onValue(notificationRef, (snapshot) => {
+        const valor = snapshot.val();
+        if (valor) {
+          const data = Object.values(valor);
+          // const newPubliOPen = data.filter((item: any) => !item.read).length;
+          // notificacionesUserAtom.newPubliOPen = newPubliOPen;
+          setNotificacionesUserAtom({
+            newPubliOPen: data.filter((noti: any) => !noti.read).length || 0,
+            publicacion: data as any,
+          });
+        }
+      });
+    }
   }, [dataUser?.user?.id]);
 
   useEffect(() => {

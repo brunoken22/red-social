@@ -25,6 +25,17 @@ export type MessageWriting = {
   writing: boolean;
 };
 
+export type NotificationPublication = {
+  type: 'like' | 'comment';
+  user_id: Number;
+  publicacionId: Number;
+  fromUser: Number;
+  img: string;
+  fullName: string;
+  read: boolean;
+  descriptionReduce?: string;
+};
+
 export type Connect = {
   id: number;
   connect: boolean;
@@ -102,7 +113,7 @@ export const messagesWriting = atom({
   default: [] as MessageWriting[],
 });
 export const notificacionesUser = atom<{
-  publicacion: Publicacion[];
+  publicacion: NotificationPublication[];
   newPubliOPen: number;
 }>({
   key: 'notificacionesUser',

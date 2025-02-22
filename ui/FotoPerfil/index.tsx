@@ -10,7 +10,7 @@ export default function FotoPerfil({
   isBorder?: boolean;
 }) {
   return (
-    <div className={` relative shrink-0`}>
+    <div className={` relative shrink-0 ${className ? className : 'w-[40px] h-[40px]'} `}>
       <img
         src={(img == 'false' && '/user.webp') || img || '/user.webp'}
         height={40}
@@ -23,7 +23,7 @@ export default function FotoPerfil({
       />
       {connect ? (
         <div
-          className={` bg-green-500 w-[11px] h-[11px] rounded-full absolute bottom-[10%] right-0 border-2 border-zinc-900`}></div>
+          className={` bg-green-500 w-[14px] h-[14px] rounded-full absolute bottom-[10%] right-[-5%] border-2 border-zinc-900`}></div>
       ) : null}
     </div>
   );

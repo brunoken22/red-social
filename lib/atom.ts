@@ -26,7 +26,7 @@ export type MessageWriting = {
 };
 
 export type NotificationPublication = {
-  type: 'like' | 'comment';
+  type: 'like' | 'comment' | 'reply';
   user_id: Number;
   publicacionId: Number;
   fromUser: Number;

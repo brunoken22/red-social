@@ -5,6 +5,7 @@ import { user, isConnect, notificacionesUser } from '@/lib/atom';
 import { NotificacionesUser } from '@/lib/hook';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import { FaComment, FaHeart, FaReply } from 'react-icons/fa';
 // import MaintenanceMessage from '../MaintenanceMessage';
 
 const SkeletonNoti = dynamic(() => import('@/ui/skeleton').then((mod) => mod.SkeletonNoti));
@@ -29,6 +30,7 @@ export function TemNoti() {
     }
     setOffset((prevPagePubli) => prevPagePubli + 10);
   };
+  console.log(notificacionesUserAtom.publicacion);
   return (
     <DivPublicar>
       {notificacionesUserAtom && notificacionesUserAtom.publicacion.length
@@ -52,19 +54,51 @@ export function TemNoti() {
                 />
 
                 {/* Mensaje según el tipo de notificación */}
-                <p className='w-[90%] truncate'>
-                  {notification.type === 'like' ? (
+                <p className='w-[90%] truncate flex items-center gap-2'>
+                  {notification.type === 'like' && (
+                    <span className='p-1 bg-red-100 text-red-500 rounded-full'>
+                      <FaHeart />
+                    </span>
+                  )}
+
+                  {notification.type === 'comment' && (
+                    <span className='p-1 bg-green-100 text-green-600 rounded-full'>
+                      <FaComment />
+                    </span>
+                  )}
+
+                  {notification.type === 'reply' && (
+                    <span className='p-1 bg-purple-100 text-purple-600 rounded-full'>
+                      <FaReply />
+                    </span>
+                  )}
+
+                  {/* Texto de la notificación */}
+                  {notification.type === 'like' && (
                     <>
-                      <b>{notification.fullName}</b> le dio{' '}
-                      <span className='text-red-500'>like ❤️</span> a tu publicación.
+                      <b className='text-blue-600'>{notification.fullName}</b> le dio{' '}
+                      <span className='text-red-500'>❤️ Me gusta</span> a tu publicación.
                     </>
-                  ) : notification.type === 'comment' ? (
+                  )}
+
+                  {notification.type === 'comment' && (
                     <>
-                      <b>{notification.fullName}</b> comentó en tu publicación:{' '}
-                      <i className=''>{notification.descriptionReduce || 'Ver más...'}</i>
+                      <b className='text-green-600'>{notification.fullName}</b> comentó en tu
+                      publicación:{' '}
+                      <i className='text-gray-500'>
+                        {notification.descriptionReduce || 'Ver más...'}
+                      </i>
                     </>
-                  ) : (
-                    'Nueva notificación'
+                  )}
+
+                  {notification.type === 'reply' && (
+                    <>
+                      <b className='text-purple-600'>{notification.fullName}</b> respondió en una
+                      publicación que sigues:{' '}
+                      <i className='text-gray-500'>
+                        {notification.descriptionReduce || 'Ver más...'}
+                      </i>
+                    </>
                   )}
                 </p>
               </ButtonNoti>

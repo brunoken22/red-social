@@ -571,13 +571,13 @@ export function GetPublicacionId(id: string) {
     },
     credentials: 'include',
   };
-  const { data, isLoading } = useSWR(token && id ? api : null, (url) => fetchApiSwr(url, option), {
+  const { data, isLoading,mutate } = useSWR(token && id ? api : null, (url) => fetchApiSwr(url, option), {
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
     revalidateOnMount: true,
     refreshInterval: 100000,
   });
-  return { dataPubliId: data, isLoadGetPubliId: isLoading };
+  return { dataPubliId: data, isLoadGetPubliId: isLoading,mutatePublicacionesUser:mutate };
 }
 export async function EnviarMessage(datas: MessageUserChat) {
   const token = getCookie('login');

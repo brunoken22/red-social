@@ -16,7 +16,7 @@ const ThemplatePubli = dynamic(
 );
 export default function NotificationId() {
   const { id } = useParams();
-  const { dataPubliId } = GetPublicacionId(id as string);
+  const { dataPubliId, mutatePublicacionesUser } = GetPublicacionId(id as string);
   const dataUser = useRecoilValue(user);
 
   useEffect(() => {
@@ -31,6 +31,7 @@ export default function NotificationId() {
       <DivAllPublicaciones>
         {dataPubliId && (
           <ThemplatePubli
+            mutate={mutatePublicacionesUser}
             vereficationUser={dataUser.user?.verification}
             description={dataPubliId.description}
             img={dataPubliId.img}

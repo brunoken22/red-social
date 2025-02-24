@@ -353,7 +353,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
                 onClick={() => setMenu((isMenu) => !isMenu)}
                 className='m-0 bg-transparent border-none relative z-50'>
                 <FotoPerfil
-                  className='w-[40px] h-[40px] hover:border-2 hover:opacity-70'
+                  className='w-[40px] h-[40px] hover:opacity-70'
                   img={dataUser.user.img}
                   connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true}
                 />

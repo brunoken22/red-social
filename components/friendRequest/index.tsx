@@ -5,7 +5,12 @@ import MyAmigos from '@/ui/icons/myAmigos.svg';
 import { ButtonNoti } from '@/ui/boton';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { getAllAmigos, getAllSolicitudesRecibidas, getAllSolicitudesEnviadas, getSugerenciaAmigos } from '@/lib/atom';
+import {
+  getAllAmigos,
+  getAllSolicitudesRecibidas,
+  getAllSolicitudesEnviadas,
+  getSugerenciaAmigos,
+} from '@/lib/atom';
 import { LoaderRequest } from '../loader';
 
 const TemplateFriendRequest = dynamic(() => import('../templateFriends'), {
@@ -62,26 +67,50 @@ export default function AmigosComponent() {
         <div className='sticky top-16 z-[9]'>
           <h2 className='font-semibold text-2xl text-start p-2 pb-3'>Amigos</h2>
           <div className='flex flex-col max-md:flex-row gap-2 max-md:flex-wrap'>
-            <ButtonNoti onClick={handleClick} id='suge' open={sugerencia}>
+            <ButtonNoti
+              onClick={handleClick}
+              id='suge'
+              open={sugerencia}
+              className={`w-auto ${
+                sugerencia ? 'bg-light dark:text-primary text-secundary ' : ''
+              } ${sugerencia ? 'text-primary opacity-100' : ''}`}>
               <DivIcons className='max-md:hidden'>
                 <MyAmigos /> {'>'}
               </DivIcons>
               Sugerencia de amistad
             </ButtonNoti>
-            <ButtonNoti onClick={handleClick} id='soli' open={soliAmis}>
+            <ButtonNoti
+              onClick={handleClick}
+              id='soli'
+              open={soliAmis}
+              className={`w-auto ${soliAmis ? 'bg-light dark:text-primary text-secundary ' : ''} ${
+                soliAmis ? 'text-primary opacity-100' : ''
+              }`}>
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />
                 {'+'}
               </DivIcons>
               Solicitud de amistad
             </ButtonNoti>
-            <ButtonNoti onClick={handleClick} id='all' open={allAmig}>
+            <ButtonNoti
+              onClick={handleClick}
+              id='all'
+              open={allAmig}
+              className={`w-auto ${allAmig ? 'bg-light dark:text-primary text-secundary ' : ''} ${
+                allAmig ? 'text-primary opacity-100' : ''
+              }`}>
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />
               </DivIcons>
               Todos tus amigos
             </ButtonNoti>
-            <ButtonNoti onClick={handleClick} id='SoliEnv' open={soliEnv}>
+            <ButtonNoti
+              onClick={handleClick}
+              id='SoliEnv'
+              open={soliEnv}
+              className={`w-auto ${soliEnv ? 'bg-light dark:text-primary text-secundary ' : ''} ${
+                soliEnv ? 'text-primary opacity-100' : ''
+              }`}>
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />
               </DivIcons>

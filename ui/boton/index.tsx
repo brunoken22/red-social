@@ -71,7 +71,7 @@ export const ButtonNoti = ({
       visto ? 'dark:bg-[#1c1c1c] bg-hoverPrimary' : ''
     } ${
       open ? 'opacity-70 dark:fill-white fill-black' : 'dark:fill-[#e5e7eb] fill-gray-800'
-    } hover:opacity-60 max-md:text-nowrap  max-md:text-primary max-md:fill-primary  max-md:text-sm	 max-md:h-auto ${
+    } hover:opacity-60 max-md:text-nowrap   max-md:fill-primary  max-md:text-sm	 max-md:h-auto ${
       className ? className : ''
     }`}>
     {children}

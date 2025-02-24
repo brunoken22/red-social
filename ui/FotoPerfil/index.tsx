@@ -10,14 +10,17 @@ export default function FotoPerfil({
   isBorder?: boolean;
 }) {
   return (
-    <div className={` relative shrink-0 ${className ? className : 'w-[40px] h-[40px]'} `}>
+    <div
+      className={` relative shrink-0 ${
+        className ? className : 'w-[40px] h-[40px]'
+      }  hover:opacity-70`}>
       <img
         src={(img == 'false' && '/user.webp') || img || '/user.webp'}
         height={40}
         width={40}
-        className={`${className ? className : 'w-[40px] h-[40px]'} rounded-full object-cover ${
-          isBorder ? 'border-4' : ''
-        } dark:border-darkComponet border-inherit`}
+        className={`${
+          className ? className : 'w-[40px] h-[40px]'
+        } rounded-full border-2 border-zinc-700 object-cover  `}
         alt='perfil'
         loading='lazy'
       />

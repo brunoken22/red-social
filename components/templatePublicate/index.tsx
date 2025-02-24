@@ -56,7 +56,9 @@ export function ThemplatePubli(props: {
 }) {
   const [like, setLike] = useState<'like' | 'disLike'>();
   const [comentario, setComentario] = useState(
-    props.comentarios?.length && props.comentarios.length > 0 && props.comentarios.length < 3 ? true : false
+    props.comentarios?.length && props.comentarios.length > 0 && props.comentarios.length < 3
+      ? true
+      : false
   );
   const [openDelete, setOpenDelete] = useState(false);
   const dataIsConnect = useRecoilValue(isConnect);
@@ -71,7 +73,8 @@ export function ThemplatePubli(props: {
   const { dataDelete } = DeletePublic(publiId);
 
   useEffect(() => {
-    const isLike = props?.like?.length > 0 ? props.like?.find((e: any) => e.user.id == props.userId) : false;
+    const isLike =
+      props?.like?.length > 0 ? props.like?.find((e: any) => e.user.id == props.userId) : false;
     setLike(!isLike ? 'disLike' : 'like');
 
     setTotalLike(props.like?.length);
@@ -115,14 +118,18 @@ export function ThemplatePubli(props: {
             <Link href={'/amigos/' + props.id}>
               <FotoPerfil
                 img={props?.user?.img}
-                className='h-[40px] w-[40px]  hover:border-2 hover:opacity-70'
-                connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}></FotoPerfil>
+                className='h-[40px] w-[40px]  '
+                connect={
+                  dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
+                }></FotoPerfil>
             </Link>
           ) : (
             <FotoPerfil
               img={props?.user?.img}
               className='h-[40px] w-[40px]'
-              connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}></FotoPerfil>
+              connect={
+                dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
+              }></FotoPerfil>
           )}
           <div>
             <div className='flex items-center gap-2'>
@@ -131,7 +138,9 @@ export function ThemplatePubli(props: {
                   <Body>{props.user?.id == props.userId ? 'Tú' : props.user.fullName}</Body>
                 </Link>
               ) : (
-                <Body>{props.user && props.user?.id == props.userId ? 'Tú' : props.user.fullName}</Body>
+                <Body>
+                  {props.user && props.user?.id == props.userId ? 'Tú' : props.user.fullName}
+                </Body>
               )}
 
               {props.user.verification ? <Verification publication={true} /> : null}
@@ -141,7 +150,9 @@ export function ThemplatePubli(props: {
         </DivPerfil>
         {props.id == props.userId ? (
           <div className='relative'>
-            <ButtonOpenDelete onClick={() => setOpenDelete(!openDelete)} aria-label='EliminarContet'>
+            <ButtonOpenDelete
+              onClick={() => setOpenDelete(!openDelete)}
+              aria-label='EliminarContet'>
               <ContentDelete />
               <ContentDelete />
               <ContentDelete />
@@ -175,7 +186,9 @@ export function ThemplatePubli(props: {
             {userLikes ? (
               <DivUserLikes>
                 {props.like.map((e: any) => (
-                  <div key={e.id} className='w-full whitespace-nowrap	 overflow-hidden text-ellipsis m-0'>
+                  <div
+                    key={e.id}
+                    className='w-full whitespace-nowrap	 overflow-hidden text-ellipsis m-0'>
                     {e.user.id !== props.userId ? e.user.fullName : 'Tú'}
                   </div>
                 ))}
@@ -203,11 +216,22 @@ export function ThemplatePubli(props: {
           onClick={handleClickLike}
           like={like == 'like' ? true : false}
           id={props.idPublicacion.toString()}>
-          <Like className={`${like == 'like' ? 'fill-[#063ef5] dark:fill-[#7696fd]' : 'dark:fill-[#ddd] fill-[#919191]'}`} />
+          <Like
+            className={`${
+              like == 'like'
+                ? 'fill-[#063ef5] dark:fill-[#7696fd]'
+                : 'dark:fill-[#ddd] fill-[#919191]'
+            }`}
+          />
           Me gusta
         </BottonLike>
-        <BottonLike onClick={handleClickOpenComen} type='button' id={'comentario' + Number(props.idPublicacion)}>
-          <Comentar className={`${comentario ? 'fill-[#84e981]' : 'dark:fill-[#ddd] fill-[#919191]'}`} />
+        <BottonLike
+          onClick={handleClickOpenComen}
+          type='button'
+          id={'comentario' + Number(props.idPublicacion)}>
+          <Comentar
+            className={`${comentario ? 'fill-[#84e981]' : 'dark:fill-[#ddd] fill-[#919191]'}`}
+          />
           Comentar
         </BottonLike>
       </DivInteractuar>

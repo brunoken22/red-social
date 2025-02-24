@@ -30,7 +30,6 @@ export function TemNoti() {
     }
     setOffset((prevPagePubli) => prevPagePubli + 10);
   };
-  console.log(notificacionesUserAtom.publicacion);
   return (
     <DivPublicar>
       {notificacionesUserAtom && notificacionesUserAtom.publicacion.length
@@ -39,7 +38,10 @@ export function TemNoti() {
               href={`/notificaciones/${notification.publicacionId}`}
               key={index}
               className='truncate'>
-              <ButtonNoti visto={!notification.read} id={notification.publicacionId.toString()}>
+              <ButtonNoti
+                visto={!notification.read}
+                id={notification.publicacionId.toString()}
+                className='w-full max-md:w-full'>
                 {/* Imagen del usuario que generó la notificación */}
                 <FotoPerfil
                   className='w-[40px] h-[40px]'
@@ -54,21 +56,21 @@ export function TemNoti() {
                 />
 
                 {/* Mensaje según el tipo de notificación */}
-                <p className='w-[90%] truncate flex items-center gap-2'>
+                <p className='text-sm dark:text-gray-400 text-gray-700 leading-tight line-clamp-2 text-wrap w-full inline text-start'>
                   {notification.type === 'like' && (
-                    <span className='p-1 bg-red-100 text-red-500 rounded-full'>
+                    <span className='p-1 bg-red-100 text-red-500 rounded-full inline-block mr-2 float-left'>
                       <FaHeart />
                     </span>
                   )}
 
                   {notification.type === 'comment' && (
-                    <span className='p-1 bg-green-100 text-green-600 rounded-full'>
+                    <span className='p-1 bg-green-100 text-green-600 rounded-full inline-block mr-2 float-left'>
                       <FaComment />
                     </span>
                   )}
 
                   {notification.type === 'reply' && (
-                    <span className='p-1 bg-purple-100 text-purple-600 rounded-full'>
+                    <span className='p-1 bg-purple-100 text-purple-600 rounded-full inline-block mr-2 float-left'>
                       <FaReply />
                     </span>
                   )}
@@ -85,7 +87,7 @@ export function TemNoti() {
                     <>
                       <b className='text-green-600'>{notification.fullName}</b> comentó en tu
                       publicación:{' '}
-                      <i className='text-gray-500'>
+                      <i className='text-gray-500 ml-1'>
                         {notification.descriptionReduce || 'Ver más...'}
                       </i>
                     </>
@@ -95,7 +97,7 @@ export function TemNoti() {
                     <>
                       <b className='text-purple-600'>{notification.fullName}</b> respondió en una
                       publicación que sigues:{' '}
-                      <i className='text-gray-500'>
+                      <i className='text-gray-500 ml-1'>
                         {notification.descriptionReduce || 'Ver más...'}
                       </i>
                     </>

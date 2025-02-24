@@ -24,7 +24,7 @@ export default function NotificationId() {
       const data = await viewNotification(id as string);
       return data;
     })();
-  }, []);
+  }, [dataPubliId]);
 
   return (
     <div className='max-w-[600px] w-full'>

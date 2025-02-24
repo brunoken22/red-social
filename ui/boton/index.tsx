@@ -1,18 +1,46 @@
-export const Button = ({ children, onClick, active }: { children: React.ReactNode; onClick: () => any; active: boolean }) => (
-  <button onClick={onClick} className={`${active ? 'bg-black' : 'bg-inherit'} border-none text-xl h-16 text-primary rounded-md`}>
-    {children}
-  </button>
-);
-
-export const ButtonSms = ({ children, onClick, active }: { children: React.ReactNode; onClick: () => any; active: boolean }) => (
+export const Button = ({
+  children,
+  onClick,
+  active,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+  active: boolean;
+}) => (
   <button
     onClick={onClick}
-    className={`${active ? 'bg-black' : 'bg-inherit'} border-none text-xl  text-primary rounded-md relative max-w-[350px] h-full`}>
+    className={`${
+      active ? 'bg-black' : 'bg-inherit'
+    } border-none text-xl h-16 text-primary rounded-md`}>
     {children}
   </button>
 );
 
-export const ButtonSmsConnect = ({ children, onClick }: { children: React.ReactNode; onClick: () => any }) => (
+export const ButtonSms = ({
+  children,
+  onClick,
+  active,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+  active: boolean;
+}) => (
+  <button
+    onClick={onClick}
+    className={`${
+      active ? 'bg-black' : 'bg-inherit'
+    } border-none text-xl  text-primary rounded-md relative max-w-[350px] h-full`}>
+    {children}
+  </button>
+);
+
+export const ButtonSmsConnect = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => any;
+}) => (
   <button
     onClick={onClick}
     className={` flex items-center gap-2
@@ -39,9 +67,11 @@ export const ButtonNoti = ({
   <button
     id={id}
     onClick={onClick}
-    className={`flex items-center text-start   gap-4 w-full border-none h-16 rounded-md p-2 ${visto ? 'dark:bg-[#1c1c1c] bg-hoverPrimary' : ''} ${
+    className={`flex items-center text-start   gap-4 w-full border-none h-16 rounded-md p-2 ${
+      visto ? 'dark:bg-[#1c1c1c] bg-hoverPrimary' : ''
+    } ${
       open ? 'opacity-70 dark:fill-white fill-black' : 'dark:fill-[#e5e7eb] fill-gray-800'
-    } hover:opacity-60 max-md:w-max max-md:text-nowrap max-md:bg-light dark:max-md:bg-darkComponet max-md:text-primary max-md:fill-primary  max-md:text-sm	 max-md:h-auto ${
+    } hover:opacity-60 max-md:text-nowrap  max-md:text-primary max-md:fill-primary  max-md:text-sm	 max-md:h-auto ${
       className ? className : ''
     }`}>
     {children}

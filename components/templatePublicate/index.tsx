@@ -26,6 +26,9 @@ import { useDebouncedCallback } from 'use-debounce';
 import Linkify from '@/utils/formtText';
 import { LoaderRequest } from '../loader';
 import GalleryServiceId from '../publicar/galleryImage';
+import { IoMdShare } from 'react-icons/io';
+import { FaMessage } from 'react-icons/fa6';
+import { AiFillLike } from 'react-icons/ai';
 
 const iconConLike = {
   height: ' 20px',
@@ -109,7 +112,23 @@ export function ThemplatePubli(props: {
     setComentario(false);
     e.target.style.fill = '#ddd';
   };
-
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Publicación',
+          text: 'Mira esta publicación',
+          url: '/notificaciones/' + props.id || window.location.href,
+        });
+      } catch (error) {
+        console.error('Error al compartir:', error);
+      }
+    } else {
+      // Lógica alternativa (copiar enlace al portapapeles)
+      navigator.clipboard.writeText('/notificaciones/' + props.id || window.location.href);
+      alert('Enlace copiado al portapapeles');
+    }
+  };
   return (
     <div className='w-full '>
       <DivPefilDelete>
@@ -131,7 +150,7 @@ export function ThemplatePubli(props: {
                 dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
               }></FotoPerfil>
           )}
-          <div>
+          <div className='flex flex-col '>
             <div className='flex items-center gap-2'>
               {props.user && props.user?.id !== props.userId ? (
                 <Link href={'/amigos/' + props.id} className='hover:opacity-70'>
@@ -176,65 +195,123 @@ export function ThemplatePubli(props: {
         </p>
       ) : null}
       {props.img?.length ? <GalleryServiceId images={props.img} /> : null}
-      <DivCantidad>
-        {totalLike ? (
-          <SpanIco
-            onMouseEnter={() => setUserLikes(true)}
-            onMouseLeave={() => {
-              setUserLikes(false);
-            }}>
-            {userLikes ? (
+      {/* <DivCantidad>
+        {totalLike > 0 && (
+          <SpanIco onMouseEnter={() => setUserLikes(true)} onMouseLeave={() => setUserLikes(false)}>
+            <DivSpan>{totalLike} Me gusta</DivSpan>
+            {userLikes && (
               <DivUserLikes>
                 {props.like.map((e: any) => (
                   <div
                     key={e.id}
-                    className='w-full whitespace-nowrap	 overflow-hidden text-ellipsis m-0'>
+                    className='w-full whitespace-nowrap overflow-hidden text-ellipsis m-0'>
                     {e.user.id !== props.userId ? e.user.fullName : 'Tú'}
                   </div>
                 ))}
               </DivUserLikes>
-            ) : null}
+            )}
+            <Like className='fill-[#fff]' style={iconConLike} />
+          </SpanIco>
+        )}
 
-            <Like className={`fill-[#fff]`} style={iconConLike} />
-            {totalLike}
-          </SpanIco>
-        ) : (
-          <div></div>
-        )}
-        {props.comentarios?.length ? (
+        {props.comentarios?.length > 0 && (
           <SpanIco>
-            <DivSpan>Comentarios {props.comentarios?.length} </DivSpan>
+            <DivSpan>{props.comentarios.length} Comentarios</DivSpan>
           </SpanIco>
-        ) : (
-          <div></div>
         )}
-      </DivCantidad>
+      </DivCantidad> */}
+
       <DivInteractuar>
-        <BottonLike
-          disabled={props.userId ? false : true}
-          type='button'
-          onClick={handleClickLike}
-          like={like == 'like' ? true : false}
-          id={props.idPublicacion.toString()}>
-          <Like
-            className={`${
-              like == 'like'
-                ? 'fill-[#063ef5] dark:fill-[#7696fd]'
-                : 'dark:fill-[#ddd] fill-[#919191]'
-            }`}
-          />
-          Me gusta
-        </BottonLike>
-        <BottonLike
-          onClick={handleClickOpenComen}
-          type='button'
-          id={'comentario' + Number(props.idPublicacion)}>
-          <Comentar
-            className={`${comentario ? 'fill-[#84e981]' : 'dark:fill-[#ddd] fill-[#919191]'}`}
-          />
-          Comentar
-        </BottonLike>
+        {/* Sección Me gusta */}
+        <div className='flex flex-col items-center w-full '>
+          <div className=' w-full pt-1 pb-1 justify-around gap-0 border-b-[1px] border-[#8a8a8aea]'>
+            {totalLike > 0 ? (
+              <SpanIco
+                onMouseEnter={() => setUserLikes(true)}
+                onMouseLeave={() => setUserLikes(false)}>
+                <DivSpan>{totalLike} Me gusta</DivSpan>
+                {userLikes && (
+                  <DivUserLikes>
+                    {props.like.map((e: any) => (
+                      <div
+                        key={e.id}
+                        className='w-full whitespace-nowrap overflow-hidden text-ellipsis m-0'>
+                        {e.user.id !== props.userId ? e.user.fullName : 'Tú'}
+                      </div>
+                    ))}
+                  </DivUserLikes>
+                )}
+                <Like className='fill-[#fff]' style={iconConLike} />
+              </SpanIco>
+            ) : props?.comentarios.length ? (
+              <SpanIco>
+                <hr />
+              </SpanIco>
+            ) : null}
+          </div>
+          <BottonLike
+            disabled={!props.userId}
+            type='button'
+            onClick={handleClickLike}
+            like={like === 'like'}
+            id={props.idPublicacion.toString()}>
+            <AiFillLike
+              className={`text-base ${
+                like === 'like'
+                  ? 'fill-[#063ef5] dark:fill-[#7696fd]'
+                  : 'dark:fill-[#ddd] fill-[#919191]'
+              }`}
+            />
+            Me gusta
+          </BottonLike>
+        </div>
+
+        {/* Sección Comentarios */}
+        <div className='flex flex-col items-center w-full'>
+          <div className=' w-full pt-1 pb-1 justify-around gap-0 border-b-[1px] border-[#8a8a8aea]'>
+            {props.comentarios?.length > 0 ? (
+              <SpanIco>
+                <DivSpan>{props.comentarios.length} Comentarios</DivSpan>
+              </SpanIco>
+            ) : totalLike > 0 ? (
+              <SpanIco>
+                <hr />
+              </SpanIco>
+            ) : null}
+          </div>
+          <BottonLike
+            onClick={handleClickOpenComen}
+            type='button'
+            id={'comentario' + Number(props.idPublicacion)}>
+            <FaMessage
+              className={`text-base ${
+                comentario ? 'fill-[#84e981]' : 'dark:fill-[#ddd] fill-[#919191]'
+              }`}
+            />
+            Comentar
+          </BottonLike>
+        </div>
+
+        {/* Sección Compartir */}
+        <div className='flex flex-col items-center w-full'>
+          <div className=' w-full pt-1 pb-1 justify-around gap-0 border-b-[1px] border-[#8a8a8aea]'>
+            {totalLike || props.comentarios.length ? (
+              <SpanIco>
+                <hr />
+              </SpanIco>
+            ) : null}
+          </div>
+          <button
+            onClick={handleShare}
+            type='button'
+            id={'comentario' + Number(props.idPublicacion)}
+            className='border-none flex items-center gap-2 text-[0.8rem] p-2 hover:backdrop-contrast-50 rounded-md'>
+            <IoMdShare className='text-base' />
+            Compartir
+          </button>
+        </div>
       </DivInteractuar>
+
       {comentario ? (
         <Comment
           mutate={props.mutate}

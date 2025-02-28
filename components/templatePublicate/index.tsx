@@ -118,14 +118,14 @@ export function ThemplatePubli(props: {
         await navigator.share({
           title: 'Publicación',
           text: 'Mira esta publicación',
-          url: '/notificaciones/' + props.id || window.location.href,
+          url: '/notificaciones/' + props.idPublicacion || window.location.href,
         });
       } catch (error) {
         console.error('Error al compartir:', error);
       }
     } else {
       // Lógica alternativa (copiar enlace al portapapeles)
-      navigator.clipboard.writeText('/notificaciones/' + props.id || window.location.href);
+      navigator.clipboard.writeText('/notificaciones/' + props.idPublicacion || window.location.href);
       alert('Enlace copiado al portapapeles');
     }
   };

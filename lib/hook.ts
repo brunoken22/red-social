@@ -30,7 +30,7 @@ type DataUser = {
 };
 type DataPublicacion = {
   description: string;
-  img: string;
+  img: File[];
   openSwr?: boolean;
 };
 type DataSingin = {
@@ -452,20 +452,28 @@ export function GetAmigo(id: string) {
 
   return { data, isLoadingDataUserId: isLoading };
 }
-export async function CreatePublicacion(dataPubli: DataPublicacion) {
+export async function CreatePublicacion(dataPubli: { description: string; img: File[] }) {
   const api = '/user/publicacion';
+  const formData = new FormData();
+
+  // Agregamos la descripción
+  formData.append('description', dataPubli.description);
+
+  // Agregamos las imágenes (pueden ser múltiples)
+  dataPubli.img.forEach((file) => {
+    formData.append('images', file); // 'images' debe coincidir con el nombre que espera Multer en el backend
+  });
+
   const option = {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     credentials: 'include',
-
-    body: JSON.stringify(dataPubli),
+    body: formData,
   };
+
   const dataNotiSwr = await fetchApiSwr(api, option);
   return dataNotiSwr;
 }
+
 export async function createSolicitud(dataSoli: Solicitud) {
   const api = '/user/solicitudAmistad/' + dataSoli.amigoId;
   const option = {

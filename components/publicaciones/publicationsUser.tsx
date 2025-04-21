@@ -10,7 +10,8 @@ export function PublicacionesUser() {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
 
-  const { dataPubliAllAmigosSwr, isLoading, setSize, size, mutatePublicacionesUser } = GetAllPublicacionesUser();
+  const { dataPubliAllAmigosSwr, isLoading, setSize, size, mutatePublicacionesUser } =
+    GetAllPublicacionesUser();
 
   const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

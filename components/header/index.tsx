@@ -172,7 +172,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
                 }
               }
             });
-            if (ultimoMensaje.id !== dataUser.user.id) {
+            if (ultimoMensaje.id !== dataUser.user.id && ultimoMensaje.status === 'Enviado') {
               const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
               update(mensajeRef, { status: 'Recibido' });
             }

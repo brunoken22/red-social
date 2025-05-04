@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   facebook: {
     appId: '501335862562150',
   },
+  manifest: '/manifest.json',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

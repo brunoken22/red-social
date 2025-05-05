@@ -5,7 +5,7 @@ import { rtdb } from '@/lib/firebase';
 import './style.css';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import { GetUser, NotificacionesUser, useConnectionStatus } from '@/lib/hook';
+import { GetUser, useConnectionStatus } from '@/lib/hook';
 import Link from 'next/link';
 import { Menu } from '@/components/menu';
 import { useRecoilValue, useRecoilState } from 'recoil';
@@ -46,14 +46,44 @@ const SearchBox = dynamic(() => import('react-instantsearch').then((mod) => mod.
 const ConnectedUsers = dynamic(() => import('./connectedUser'));
 const NavegationUrl = dynamic(() => import('./navHeader'));
 
+function urlBase64ToUint8Array(base64String: string) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+async function subscribeToPush() {
+  console.log('entrado en el sub');
+  const registration = await navigator.serviceWorker.ready;
+  console.log('registration', registration);
+
+  const sub = await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!),
+  });
+  console.log('sub', sub);
+
+  const serializedSub = JSON.parse(JSON.stringify(sub));
+  console.log('serializedSub', serializedSub);
+
+  return serializedSub;
+}
+
 export default function Header({ themeDate }: { themeDate: string }) {
+  const [firstConect, setFirstConnect] = useState(false);
   GetUser();
   // NotificacionesUser(0);
 
   const pathname = usePathname();
+  const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataUser, setDataUser] = useRecoilState(user);
   // const getAllUserData = useRecoilValue(getAllUser);
-  const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const [dataMessagesWriting, setMessagesWriting] = useRecoilState(messagesWriting);
   const [notificacionesUserAtom, setNotificacionesUserAtom] = useRecoilState(notificacionesUser);
@@ -66,7 +96,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const [openNav, setOpenNav] = useState(true);
   const lastScrollY = useRef(0);
   const modalRef = useRef<HTMLDivElement>(null);
-
   const useDebounce = useDebouncedCallback((query, search) => {
     search(query);
   }, 1000);
@@ -249,6 +278,17 @@ export default function Header({ themeDate }: { themeDate: string }) {
   //----------------------- NOTIFICACIONES POR RTDB
   useEffect(() => {
     if (dataUser.user.id) {
+      if (!firstConect) {
+        console.log('estees elprmiero', firstConect);
+
+        subscribeToPush().then(async (data) => {
+          console.log('estees elprmiero 2', data);
+          const userConnectPushPWA = (await import('@/lib/hook')).userConnectPushPWA;
+          const subscribe = await userConnectPushPWA({ subscription: data, id: dataUser.user.id });
+          console.log('CONECTANDO', subscribe);
+          setFirstConnect(true);
+        });
+      }
       const notificationRef = query(
         ref(rtdb, `/notifications/${dataUser.user.id}`),
         orderByChild('timestamp'),
@@ -371,6 +411,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
             </div>
           </nav>
         </header>
+
         <DivContenedorConnect>
           <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
             <span>Conectados</span> <DivConnect />

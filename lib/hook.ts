@@ -43,6 +43,19 @@ type Solicitud = {
 };
 import { getDatabase, ref, onValue, onDisconnect, set } from 'firebase/database';
 
+export async function userConnectPushPWA(userConnect: any) {
+  const option = {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(userConnect),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const subscribe = await fetchApiSwr('/subscribe', option);
+  return subscribe;
+}
+export async function userDisconnectPushPWA(userConnect: any) {}
 export const useConnectionStatus = (user: User) => {
   const [status, setStatus] = useState(false);
 
@@ -579,13 +592,17 @@ export function GetPublicacionId(id: string) {
     },
     credentials: 'include',
   };
-  const { data, isLoading,mutate } = useSWR(token && id ? api : null, (url) => fetchApiSwr(url, option), {
-    revalidateOnFocus: true,
-    revalidateOnReconnect: true,
-    revalidateOnMount: true,
-    refreshInterval: 100000,
-  });
-  return { dataPubliId: data, isLoadGetPubliId: isLoading,mutatePublicacionesUser:mutate };
+  const { data, isLoading, mutate } = useSWR(
+    token && id ? api : null,
+    (url) => fetchApiSwr(url, option),
+    {
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+      revalidateOnMount: true,
+      refreshInterval: 100000,
+    }
+  );
+  return { dataPubliId: data, isLoadGetPubliId: isLoading, mutatePublicacionesUser: mutate };
 }
 export async function EnviarMessage(datas: MessageUserChat) {
   const token = getCookie('login');

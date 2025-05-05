@@ -14,26 +14,18 @@ export default function Layout({
   themeDate: string;
 }) {
   useEffect(() => {
-    const firstConnect = async () => {
-      const apiUrl = process.env.NEXT_PUBLIC_PORT;
-      if (apiUrl) {
-        try {
-          const response = await fetch(apiUrl, {
-            method: 'GET',
-            credentials: 'include',
-          });
-          if (!response.ok) {
-            console.error('Error en la respuesta del servidor:', response.statusText);
-          }
-        } catch (error) {
-          console.error('Error en la solicitud fetch:', error);
-        }
-      }
-      {
-      }
-    };
-    firstConnect();
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      registerServiceWorker();
+    }
   }, []);
+
+  async function registerServiceWorker() {
+    const registration = await navigator.serviceWorker.register('/sw.js', {
+      scope: '/',
+      updateViaCache: 'none',
+    });
+    const sub = await registration.pushManager.getSubscription();
+  }
 
   return (
     <InstantSearch

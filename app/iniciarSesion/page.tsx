@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
 };
 
-const Signin = dynamic(() => import('@/components/inicioSesion'), { ssr: false });
+const Signin = dynamic(() => import('@/components/inicioSesion'));
 
 export default function Page() {
   return (

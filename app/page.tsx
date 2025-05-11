@@ -26,7 +26,7 @@ export default function Page() {
     <div className='flex flex-col min-h-screen'>
       <header className='bg-primary dark:bg-darkComponet dark:text-white text-secondary p-4 '>
         <div className='container mx-auto flex justify-between items-center '>
-          <Link href={'/'}>
+          <Link href={'/'} title='logo unired'>
             <Logo className='rounded-md fill-unired transition-dark' />
           </Link>
           <nav>

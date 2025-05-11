@@ -35,3 +35,17 @@ yarn-error.log*
 next-env.d.ts
 
 certificates
+
+.gradle
+/gradle
+/build.gradle
+/gradle.properties
+/gradlew
+/gradlew.bat
+/manifest-checksum.txt
+/settings.gradle
+/store_icon.png
+/app/build
+/app/build.gradle
+
+

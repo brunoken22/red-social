@@ -443,7 +443,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
     ) : (
       <header className='bg-primary dark:bg-darkComponet dark:text-white text-secondary p-4 '>
         <div className='container mx-auto flex justify-between items-center '>
-          <Link href={'/'}>
+          <Link href={'/'} aria-label='logo unired' title='logo unired'>
             <Logo className='rounded-md fill-unired transition-dark' />
           </Link>
           <nav>

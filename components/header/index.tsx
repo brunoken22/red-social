@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { ref, onValue, update, get, query, orderByChild, limitToLast } from 'firebase/database';
-import { rtdb } from '@/lib/firebase';
+import { messaging, obtenerTokenFCM, rtdb } from '@/lib/firebase';
 import './style.css';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
@@ -23,6 +23,7 @@ import Logo from '@/public/logo.svg';
 import { useDebouncedCallback } from 'use-debounce';
 import { LoaderRequest } from '../loader';
 import { SkeletonNav } from '@/ui/skeleton';
+import { NotificationPayload, onMessage } from 'firebase/messaging';
 const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), {
   loading: () => <LoaderRequest />,
 });
@@ -46,35 +47,42 @@ const SearchBox = dynamic(() => import('react-instantsearch').then((mod) => mod.
 const ConnectedUsers = dynamic(() => import('./connectedUser'));
 const NavegationUrl = dynamic(() => import('./navHeader'));
 
-function urlBase64ToUint8Array(base64String: string) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+// function urlBase64ToUint8Array(base64String: string) {
+//   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+//   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
 
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
+//   const rawData = window.atob(base64);
+//   const outputArray = new Uint8Array(rawData.length);
 
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
+//   for (let i = 0; i < rawData.length; ++i) {
+//     outputArray[i] = rawData.charCodeAt(i);
+//   }
+//   return outputArray;
+// }
+// async function subscribeToPush() {
+//   console.log('entrado en el sub');
+//   const registration = await navigator.serviceWorker.ready;
+//   console.log('registration', registration);
+
+//   const sub = await registration.pushManager.subscribe({
+//     userVisibleOnly: true,
+//     applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!),
+//   });
+//   console.log('sub', sub);
+
+//   const serializedSub = JSON.parse(JSON.stringify(sub));
+//   console.log('serializedSub', serializedSub);
+
+//   return serializedSub;
+// }
+
+export async function subscribeToPush() {
+  if (!('serviceWorker' in navigator)) throw new Error('No service worker support');
+  const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+  const permiso = await Notification.requestPermission();
+  if (permiso !== 'granted') throw new Error('Permiso de notificaciones denegado');
+  return registration;
 }
-async function subscribeToPush() {
-  console.log('entrado en el sub');
-  const registration = await navigator.serviceWorker.ready;
-  console.log('registration', registration);
-
-  const sub = await registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!),
-  });
-  console.log('sub', sub);
-
-  const serializedSub = JSON.parse(JSON.stringify(sub));
-  console.log('serializedSub', serializedSub);
-
-  return serializedSub;
-}
-
 export default function Header({ themeDate }: { themeDate: string }) {
   const [firstConect, setFirstConnect] = useState(false);
   GetUser();
@@ -187,18 +195,17 @@ export default function Header({ themeDate }: { themeDate: string }) {
               ) {
                 return;
               } else {
-                audio.play().catch(() => {});
-                if (Notification.permission === 'granted') {
-                  const options = {
-                    body: ultimoMensaje.message,
-                    icon: ultimoMensaje.img, // Icono que se muestra en la notificación
-                    image: '/logo.webp', // Imagen en tamaño completo (puede ser más grande)
-                    title: ultimoMensaje.fullName,
-                    badge: ultimoMensaje.img, // Icono pequeño que aparece en la barra de notificación
-                  };
-
-                  new Notification(ultimoMensaje.fullName, options);
-                }
+                // audio.play().catch(() => {});
+                // if (Notification.permission === 'granted') {
+                //   const options = {
+                //     body: ultimoMensaje.message,
+                //     icon: ultimoMensaje.img, // Icono que se muestra en la notificación
+                //     image: '/logo.webp', // Imagen en tamaño completo (puede ser más grande)
+                //     title: ultimoMensaje.fullName,
+                //     badge: ultimoMensaje.img, // Icono pequeño que aparece en la barra de notificación
+                //   };
+                //   new Notification(ultimoMensaje.fullName, options);
+                // }
               }
             });
             if (ultimoMensaje.id !== dataUser.user.id && ultimoMensaje.status === 'Enviado') {
@@ -279,21 +286,33 @@ export default function Header({ themeDate }: { themeDate: string }) {
   useEffect(() => {
     if (dataUser.user.id) {
       if (!firstConect) {
-        console.log('estees elprmiero', firstConect);
+        const useConnectUser = async () => {
+          const registration = await subscribeToPush();
+          const tokenFCM = await obtenerTokenFCM(registration);
+          console.log(dataUser.user.id, tokenFCM);
 
-        subscribeToPush().then(async (data) => {
-          console.log('estees elprmiero 2', data);
+          if (!tokenFCM) return;
           const userConnectPushPWA = (await import('@/lib/hook')).userConnectPushPWA;
-          const subscribe = await userConnectPushPWA({ subscription: data, id: dataUser.user.id });
+          const subscribe = await userConnectPushPWA({
+            userId: dataUser.user.id,
+            tokenFCM,
+          });
           console.log('CONECTANDO', subscribe);
           setFirstConnect(true);
-        });
+        };
+        useConnectUser();
       }
       const notificationRef = query(
         ref(rtdb, `/notifications/${dataUser.user.id}`),
         orderByChild('timestamp'),
         limitToLast(20)
       );
+      onMessage(messaging, (payload) => {
+        console.log('Mensaje recibido en foreground:', payload);
+        const { title, body } = payload.notification as NotificationPayload;
+        if (!title || !body) return;
+        new Notification(title, { body });
+      });
       onValue(notificationRef, (snapshot) => {
         const valor = snapshot.val();
         if (valor) {

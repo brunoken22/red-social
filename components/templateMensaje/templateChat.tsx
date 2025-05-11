@@ -113,6 +113,7 @@ export default function TemplateChat({
       status: 'Enviado',
       read: false,
       date: new Date(),
+      receip_id: Number(dataMensajeUser.id),
     };
 
     const data = await EnviarMessage(messageUser);

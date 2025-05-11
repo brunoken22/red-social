@@ -33,6 +33,7 @@ export type MessageUserChat = {
   status: 'Enviado' | 'Recibido' | 'Leido';
   id: string;
   date?: Date;
+  receip_id?: number;
 };
 
 export function TemMensaje() {

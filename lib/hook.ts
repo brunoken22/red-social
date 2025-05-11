@@ -191,7 +191,7 @@ export function GetUser() {
     token == 'true' ? api : null,
     (url) => fetchApiSwr(url, option),
     {
-      refreshInterval: 10000,
+      refreshInterval: 100000,
     }
   );
   useEffect(() => {

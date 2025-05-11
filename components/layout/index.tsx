@@ -13,20 +13,6 @@ export default function Layout({
   children: React.ReactNode;
   themeDate: string;
 }) {
-  useEffect(() => {
-    if ('serviceWorker' in navigator && 'PushManager' in window) {
-      registerServiceWorker();
-    }
-  }, []);
-
-  async function registerServiceWorker() {
-    const registration = await navigator.serviceWorker.register('/sw.js', {
-      scope: '/',
-      updateViaCache: 'none',
-    });
-    const sub = await registration.pushManager.getSubscription();
-  }
-
   return (
     <InstantSearch
       indexName='users'

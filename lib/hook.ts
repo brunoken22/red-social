@@ -27,6 +27,7 @@ type DataUser = {
   email?: string;
   password?: string;
   img?: string;
+  token?: JWT;
 };
 type DataPublicacion = {
   description: string;
@@ -42,6 +43,7 @@ type Solicitud = {
   userId?: number;
 };
 import { getDatabase, ref, onValue, onDisconnect, set } from 'firebase/database';
+import { JWT } from 'next-auth/jwt';
 
 export async function userConnectPushPWA(userConnect: any) {
   const option = {
@@ -109,6 +111,26 @@ export async function logOut() {
   const data = await fetchApiSwr(api, option);
   if (data) {
     setCookie('login', false);
+  }
+  return data;
+}
+export async function CreateOrLoginGoogle(dataUser: DataUser) {
+  const api = '/auth-google';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(dataUser),
+  };
+  const data =
+    dataUser.email && dataUser.fullName
+      ? await fetchApiSwr(api, option)
+      : null;
+
+  if (data?.user?.id) {
+    setCookie('login', true);
   }
   return data;
 }

@@ -1,92 +1,148 @@
 'use client';
+
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { CreateUser } from '@/lib/hook';
 import { useState } from 'react';
+import { CreateUser } from '@/lib/hook';
 import { NotificationToastStatus } from '@/ui/toast';
 
-type FormSignup = { fullName: string; email: string; password: string; repassword: string };
+type FormSignup = {
+  fullName: string;
+  email: string;
+  password: string;
+  repassword: string;
+};
 
 export function Signup() {
   const router = useRouter();
-
-  const [isError, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setError] = useState('');
 
   const {
     register,
     handleSubmit,
-    formState: { errors: error },
+    formState: { errors },
   } = useForm<FormSignup>();
 
   const onSubmit: SubmitHandler<FormSignup> = async (data) => {
     setIsLoading(true);
-    if (data) {
-      if (data.repassword === data.password) {
-        const newDataUser = {
-          fullName: data.fullName,
-          email: data.email,
-          password: data.password,
-        };
-        const dataResponse = await CreateUser(newDataUser);
-        if (dataResponse === 'Usuario Registrado') {
-          setIsLoading(false);
-          setError('Este usuario ya existe');
-        } else if (dataResponse?.user?.id) {
-          router.push('/inicio');
-        }
-        return;
-      }
+    if (data.repassword !== data.password) {
       setIsLoading(false);
-      setError('La contraseña no coinciden');
+      setError('Las contraseñas no coinciden');
+      return;
+    }
+
+    const { fullName, email, password } = data;
+    const response = await CreateUser({ fullName, email, password });
+
+    if (response === 'Usuario Registrado') {
+      setIsLoading(false);
+      setError('Este usuario ya existe');
+    } else if (response?.user?.id) {
+      router.push('/inicio');
+    } else {
+      setIsLoading(false);
+      setError('Error inesperado al registrar');
     }
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 w-full mt-4 mb-4'>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='w-full max-w-md mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg space-y-6'>
         <div>
-          <label className='block' htmlFor='fullName'>
-            Nombre <span className='text-[#f57888]'>*</span>
+          <label
+            htmlFor='fullName'
+            className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
+            Nombre <span className='text-red-500'>*</span>
           </label>
-          <input className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary' type='text' {...register('fullName', { required: true })} id='fullName' placeholder='UniRed' autoComplete='username' disabled={isLoading} />
-          {error.fullName && <span className='text-red-500 text-[0.8rem]'>Se requiere nombre</span>}
+          <input
+            id='fullName'
+            type='text'
+            autoComplete='name'
+            disabled={isLoading}
+            placeholder='Juan Pérez'
+            {...register('fullName', { required: true })}
+            className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
+          />
+          {errors.fullName && <p className='text-sm text-red-500 mt-1'>Se requiere nombre</p>}
         </div>
+
         <div>
-          <label className='block' htmlFor='email'>
-            Email <span className='text-[#f57888]'>*</span>
+          <label
+            htmlFor='email'
+            className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
+            Email <span className='text-red-500'>*</span>
           </label>
-          <input className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary' type='email' {...register('email', { required: true })} id='email' placeholder='Unired@unired.com' autoComplete='email' disabled={isLoading} />
-          {error.email && <span className='text-red-500 text-[0.8rem]'>Se requiere email</span>}
+          <input
+            id='email'
+            type='email'
+            autoComplete='email'
+            disabled={isLoading}
+            placeholder='usuario@ejemplo.com'
+            {...register('email', { required: true })}
+            className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
+          />
+          {errors.email && <p className='text-sm text-red-500 mt-1'>Se requiere email</p>}
         </div>
+
         <div>
-          <label className='block' htmlFor='password'>
-            Contraseña <span className='text-[#f57888]'>*</span>
+          <label
+            htmlFor='password'
+            className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
+            Contraseña <span className='text-red-500'>*</span>
           </label>
-          <input className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2  dark:text-secundary' type='password' {...register('password', { required: true })} id='password' placeholder='********' autoComplete='new-password' disabled={isLoading} />
-          {error.password && <span className='text-red-500 text-[0.8rem]'>Se requiere contraseña</span>}
+          <input
+            id='password'
+            type='password'
+            autoComplete='new-password'
+            disabled={isLoading}
+            placeholder='••••••••'
+            {...register('password', { required: true })}
+            className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
+          />
+          {errors.password && <p className='text-sm text-red-500 mt-1'>Se requiere contraseña</p>}
         </div>
+
         <div>
-          {' '}
-          <label className='block' htmlFor='repassword'>
-            Repetir Contraseña <span className='text-[#f57888]'>*</span>
+          <label
+            htmlFor='repassword'
+            className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
+            Repetir Contraseña <span className='text-red-500'>*</span>
           </label>
-          <input className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2  dark:text-secundary' type='password' {...register('repassword', { required: true })} id='repassword' placeholder='********' autoComplete='current-password' disabled={isLoading} />
-          {error.repassword && <span className='text-red-500 text-[0.8rem]'>Se requiere repetir contraseña</span>}
+          <input
+            id='repassword'
+            type='password'
+            autoComplete='new-password'
+            disabled={isLoading}
+            placeholder='••••••••'
+            {...register('repassword', { required: true })}
+            className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
+          />
+          {errors.repassword && <p className='text-sm text-red-500 mt-1'>Repite la contraseña</p>}
         </div>
-        <div className='mt-6'>
-          {!isLoading ? (
-            <button type='submit' className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70'>
-              Continuar
-            </button>
-          ) : (
-            <button type='button' disabled className='w-full p-2 bg-light text-primary opacity-70'>
-              Cargando ...
-            </button>
-          )}
+
+        <div>
+          <button
+            type='submit'
+            disabled={isLoading}
+            className='w-full flex justify-center items-center gap-2 py-3 rounded-xl bg-light text-white hover:opacity-90 transition disabled:opacity-60'>
+            {isLoading ? (
+              <>
+                <span className='h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin'></span>
+                Registrando...
+              </>
+            ) : (
+              'Registrarse'
+            )}
+          </button>
         </div>
       </form>
-      {isError ? <NotificationToastStatus close={() => setError('')} message={isError} status='error' /> : null}
+
+      {isError && (
+        <NotificationToastStatus close={() => setError('')} message={isError} status='error' />
+      )}
     </>
   );
 }

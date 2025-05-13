@@ -6,12 +6,14 @@ import { IoMdInformationCircle } from 'react-icons/io';
 import { MdLogout, MdOutlineNightlight } from 'react-icons/md';
 import { GrConfigure } from 'react-icons/gr';
 import { GoSun } from 'react-icons/go';
+import { signOut } from 'next-auth/react';
 
 const className = 'text-center flex items-center gap-2 hover:opacity-70 py-2 px-1';
 
 export function Menu(props: any) {
   const handleClick = async () => {
     const logoutData = await logOut();
+    await signOut({ redirect: false });
     if (logoutData) {
       window.location.href = window.location.origin + '/iniciarSesion';
     }

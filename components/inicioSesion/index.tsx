@@ -1,74 +1,151 @@
 'use client';
+
 import dynamic from 'next/dynamic';
-import { signinUser } from '@/lib/hook';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-type typeForm = {
+import { useSession, signIn } from 'next-auth/react';
+import { FcGoogle } from 'react-icons/fc';
+
+type FormData = {
   email: string;
   password: string;
 };
 
-const NotificationToastStatus = dynamic(() => import('@/ui/toast').then((mod) => mod.NotificationToastStatus));
+const NotificationToastStatus = dynamic(() =>
+  import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
+);
 
 export default function Signin() {
-  const { push } = useRouter();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [isError, setError] = useState(false);
+  const { data: session } = useSession();
 
   const {
     register,
     handleSubmit,
-    formState: { errors: error1 },
-  } = useForm<typeForm>();
+    formState: { errors },
+  } = useForm<FormData>();
 
-  const onSubmit: SubmitHandler<typeForm> = async (dataForm) => {
+  const onSubmit: SubmitHandler<FormData> = async (formData) => {
     setIsLoading(true);
+    const { signinUser } = await import('@/lib/hook');
 
-    if (dataForm) {
-      const data = await signinUser({
-        email: dataForm.email,
-        password: dataForm.password,
-      });
-      if (data) {
-        push('/inicio');
-        return;
-      }
-      setIsLoading(false);
+    const result = await signinUser(formData);
+    if (result) {
+      router.push('/inicio');
+    } else {
       setError(true);
+      setIsLoading(false);
     }
   };
 
+  const handleGoogleLogin = () => {
+    setGoogleLoading(true);
+    signIn('google');
+  };
+
+  const handleGoogleSession = useCallback(async () => {
+    if (session?.user?.email && session?.user?.name) {
+      const { CreateOrLoginGoogle } = await import('@/lib/hook');
+      const result = await CreateOrLoginGoogle({
+        email: session.user.email,
+        fullName: session.user.name,
+      });
+      if (result) router.push('/inicio');
+      else setGoogleLoading(false);
+    }
+  }, [session, router]);
+
+  useEffect(() => {
+    handleGoogleSession();
+  }, [handleGoogleSession]);
+
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 w-full mt-4 mb-4'>
-        <div>
-          <label className='block' htmlFor='email'>
-            Email <span className='text-[#f57888]'>*</span>
-          </label>
-          <input className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary' type='email' id='email' {...register('email', { required: true })} placeholder='UniRed@gmail.com' autoComplete='email ' disabled={isLoading} />
-          {error1.email && <span className='text-red-500 text-[0.8rem]'>Se requiere Email</span>}
-        </div>
-        <div>
-          <label className='block' htmlFor='password'>
-            Contraseña <span className='text-[#f57888]'>*</span>
-          </label>
-          <input className='w-full h-12 rounded-xl border-[1px] border-[#ddd] indent-2 p-2 dark:text-secundary' type='password' id='password' {...register('password', { required: true })} placeholder='**********' autoComplete='one-time-code' disabled={isLoading} />
-          {error1.password && <span className='text-red-500 text-[0.8rem]'>Se requiere constraseña</span>}
-        </div>
-        <div className='mt-6'>
-          {!isLoading ? (
-            <button type='submit' className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70'>
-              Continuar
-            </button>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='w-full max-w-md mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg space-y-6'>
+        <button
+          type='button'
+          onClick={handleGoogleLogin}
+          disabled={googleLoading}
+          className='w-full flex items-center justify-center gap-3 bg-white text-black border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-100 transition disabled:opacity-60'>
+          {googleLoading ? (
+            <>
+              <span className='h-5 w-5 border-2 border-black border-t-transparent rounded-full animate-spin'></span>
+              Conectando...
+            </>
           ) : (
-            <button type='button' disabled className='w-full p-2 bg-light text-primary rounded-md opacity-70'>
-              Cargando...
-            </button>
+            <>
+              <FcGoogle className='text-2xl' />
+              Iniciar sesión con Google
+            </>
           )}
+        </button>
+
+        <div>
+          <label
+            htmlFor='email'
+            className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
+            Email <span className='text-red-500'>*</span>
+          </label>
+          <input
+            id='email'
+            type='email'
+            placeholder='ejemplo@correo.com'
+            autoComplete='email'
+            disabled={isLoading || googleLoading}
+            {...register('email', { required: true })}
+            className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
+          />
+          {errors.email && <p className='text-sm text-red-500 mt-1'>Se requiere Email</p>}
+        </div>
+
+        <div>
+          <label
+            htmlFor='password'
+            className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
+            Contraseña <span className='text-red-500'>*</span>
+          </label>
+          <input
+            id='password'
+            type='password'
+            placeholder='••••••••'
+            autoComplete='current-password'
+            disabled={isLoading || googleLoading}
+            {...register('password', { required: true })}
+            className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
+          />
+          {errors.password && <p className='text-sm text-red-500 mt-1'>Se requiere contraseña</p>}
+        </div>
+
+        <div>
+          <button
+            type='submit'
+            disabled={isLoading || googleLoading}
+            className='w-full flex justify-center items-center gap-2 py-3 rounded-xl bg-light text-white hover:opacity-90 transition disabled:opacity-60'>
+            {isLoading ? (
+              <>
+                <span className='h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin'></span>
+                Cargando...
+              </>
+            ) : (
+              'Continuar'
+            )}
+          </button>
         </div>
       </form>
-      {isError ? <NotificationToastStatus close={() => setError(false)} message='Contraseña o email incorrecto' status='error' /> : null}
+
+      {isError && (
+        <NotificationToastStatus
+          close={() => setError(false)}
+          message='Email o contraseña incorrectos'
+          status='error'
+        />
+      )}
     </>
   );
 }

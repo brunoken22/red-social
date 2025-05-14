@@ -42,6 +42,7 @@ export default function ContactForm() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          // 'x-api-key': process.env.NEXT_PUBLIC_SECRECT as string,
         },
         body: JSON.stringify(data),
         credentials: 'include',

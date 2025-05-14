@@ -27,12 +27,7 @@ type DataUser = {
   email?: string;
   password?: string;
   img?: string;
-  token?: JWT;
-};
-type DataPublicacion = {
-  description: string;
-  img: File[];
-  openSwr?: boolean;
+  accessToken?: JWT;
 };
 type DataSingin = {
   email: string;
@@ -124,10 +119,7 @@ export async function CreateOrLoginGoogle(dataUser: DataUser) {
     credentials: 'include',
     body: JSON.stringify(dataUser),
   };
-  const data =
-    dataUser.email && dataUser.fullName
-      ? await fetchApiSwr(api, option)
-      : null;
+  const data = dataUser.email && dataUser.fullName ? await fetchApiSwr(api, option) : null;
 
   if (data?.user?.id) {
     setCookie('login', true);

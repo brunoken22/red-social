@@ -48,12 +48,15 @@ export default function Signin() {
   };
 
   const handleGoogleSession = useCallback(async () => {
-    if (session?.user?.email && session?.user?.name) {
+    if (session?.user?.email && session?.user?.name && !googleLoading) {
+      setGoogleLoading(true);
       const { CreateOrLoginGoogle } = await import('@/lib/hook');
       const result = await CreateOrLoginGoogle({
         email: session.user.email,
         fullName: session.user.name,
+        accessToken: session.accessToken,
       });
+
       if (result) router.push('/inicio');
       else setGoogleLoading(false);
     }

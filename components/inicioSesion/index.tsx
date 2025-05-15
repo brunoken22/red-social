@@ -6,6 +6,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession, signIn } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
+import Link from 'next/link';
+import { JWT } from 'next-auth/jwt';
 
 type FormData = {
   email: string;
@@ -54,7 +56,8 @@ export default function Signin() {
       const result = await CreateOrLoginGoogle({
         email: session.user.email,
         fullName: session.user.name,
-        accessToken: session.accessToken,
+        img: session.user.image || '',
+        accessToken: session.accessToken as JWT,
       });
 
       if (result) router.push('/inicio');
@@ -70,7 +73,7 @@ export default function Signin() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='w-full max-w-md mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg space-y-6'>
+        className='w-full max-w-md mx-auto mt-10 p-6 bg-white dark:bg-darkComponet rounded-2xl shadow-lg space-y-6'>
         <button
           type='button'
           onClick={handleGoogleLogin}
@@ -120,9 +123,12 @@ export default function Signin() {
             autoComplete='current-password'
             disabled={isLoading || googleLoading}
             {...register('password', { required: true })}
-            className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
+            className='mt-1 mb-2 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
           />
           {errors.password && <p className='text-sm text-red-500 mt-1'>Se requiere contraseña</p>}
+          <Link href={'/restablecer-cuenta'} className='text-sm hover:opacity-80 opacity-50'>
+            Olvidaste contraseña?
+          </Link>
         </div>
 
         <div>

@@ -28,6 +28,7 @@ type DataUser = {
   password?: string;
   img?: string;
   accessToken?: JWT;
+  code?: string;
 };
 type DataSingin = {
   email: string;
@@ -182,6 +183,45 @@ export async function modificarUser(dataUser: DataUser) {
   if (dataMod) {
     await mutate('/user/token');
   }
+  return dataMod;
+}
+export async function sendResetPassword(dataUser: DataUser) {
+  const api = '/user/send-reset-password';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(dataUser),
+  };
+  const dataMod = dataUser?.email ? await fetchApiSwr(api, option) : null;
+  return dataMod;
+}
+export async function validationResetPassword(dataUser: DataUser) {
+  const api = '/user/validation-reset-password';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(dataUser),
+  };
+  const dataMod = dataUser?.email && dataUser.code ? await fetchApiSwr(api, option) : null;
+  return dataMod;
+}
+export async function resetPassword(dataUser: DataUser) {
+  const api = '/user/reset-password';
+  const option = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(dataUser),
+  };
+  const dataMod = dataUser?.email && dataUser.password ? await fetchApiSwr(api, option) : null;
   return dataMod;
 }
 export function GetUser() {
@@ -500,7 +540,6 @@ export async function CreatePublicacion(dataPubli: { description: string; img: F
   const dataNotiSwr = await fetchApiSwr(api, option);
   return dataNotiSwr;
 }
-
 export async function createSolicitud(dataSoli: Solicitud) {
   const api = '/user/solicitudAmistad/' + dataSoli.amigoId;
   const option = {

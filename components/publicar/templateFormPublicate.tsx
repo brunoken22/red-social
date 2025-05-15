@@ -74,7 +74,7 @@ export default function TemplateFormPublicar({
   return (
     <>
       <DivForm>
-        <div className='max-w-[550px] w-[90%]' ref={modalRef}>
+        <div className='lg:max-w-[550px]  w-full max-lg:h-full' ref={modalRef}>
           <Form onSubmit={handleClickForm}>
             <div className='flex gap-4 items-start font-bold justify-between w-full'>
               <div className='flex gap-4 items-center'>
@@ -92,13 +92,15 @@ export default function TemplateFormPublicar({
               id='description'
               maxLength={1000}
               placeholder={`En qué estás pensando ${fullName.split(' ')[0]}?`}
-              className='bg-transparent relative z-10 mt-8 mb-8 max-md:mt-4 max-md:mb-4 text-start p-2 outline-none overflow-auto min-h-[150px] resize-none placeholder:text-2xl'
+              className='flex-1 bg-transparent relative z-10 mt-8 mb-8 max-md:mt-4 max-md:mb-4 text-start p-2 outline-none overflow-auto min-h-[150px] resize-none placeholder:text-2xl'
               value={text}
               onChange={handleInput}></textarea>
-            <div className='bg-hoverPrimary dark:bg-dark rounded-md'>
-              <ImageSVG setDataUrl={setDataUrl} dataUrl={dataUrl}></ImageSVG>
+            <div>
+              <div className='bg-hoverPrimary dark:bg-dark rounded-md p-4'>
+                <ImageSVG setDataUrl={setDataUrl} dataUrl={dataUrl}></ImageSVG>
+              </div>
+              <p className='text-xs mb-2 mt-1'>Máximo de 3 imagenes</p>
             </div>
-            <p className='text-xs mb-2 mt-1'>Máximo de 3 imagenes</p>
             <DivButton>
               <ButtonPublicar
                 color={text || dataUrl.length.toString()}

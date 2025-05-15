@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { DivPublicar } from '@/ui/container';
 import { useRecoilValue } from 'recoil';
 import { DivSubir, DivASubir, DivText, DivCrear } from './styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { user, isConnect } from '@/lib/atom';
 
 const ImageSubir = dynamic(() => import('@/ui/icons/image.svg'));
@@ -25,6 +25,13 @@ export default function Publicar() {
     { message: string; status: 'success' | 'error' | 'info' | 'warning' } | false
   >(false);
 
+  useEffect(() => {
+    if (formClick) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [formClick]);
   return dataValor.user.id ? (
     <>
       <DivPublicar className='w-full max-w-full'>

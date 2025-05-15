@@ -1,14 +1,13 @@
+// app/api/auth/[...nextauth]/route.ts
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
-// types/next-auth.d.ts
 
 declare module 'next-auth' {
   interface Session {
-    accessToken: JWT; // Extiende la sesión para incluir accessToken
+    accessToken?: JWT;
   }
 }
-
 const handler = NextAuth({
   providers: [
     GoogleProvider({
@@ -20,39 +19,38 @@ const handler = NextAuth({
           name: profile.name,
           email: profile.email,
           image: profile.picture,
-          role: 'user', // Campo personalizado
+          role: 'user', // Campo personalizado opcional
         };
       },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET!,
   session: {
-    strategy: 'jwt', // ¡Obligatorio para token!
+    strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 días
   },
   callbacks: {
     async jwt({ token, user, account }) {
-      // Paso 1: Guardar datos iniciales del usuario
-      if (user) {
-        token.id = user.id;
+      // Guardar el token de acceso de Google
+      if (account) {
+        token.accessToken = account.access_token;
       }
 
-      // Paso 2: Guardar el access_token de Google
-      if (account) {
-        token.accessToken = account.access_token; // Guardar el token de acceso de Google
+      if (user) {
+        token.id = user.id;
       }
 
       return token;
     },
     async session({ session, token }) {
-      // Paso 3: Enviar datos al cliente
+      // Pasar el accessToken a la sesión del cliente
       if (session.user) {
-        session.accessToken = token.accessToken as JWT; // Añadir accessToken a la sesión
+        session.accessToken = token.accessToken as JWT;
       }
       return session;
     },
   },
-  debug: true, // Ver logs en consola
+  debug: true, // Muestra logs en consola para depurar
 });
 
 export { handler as GET, handler as POST };

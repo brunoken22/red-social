@@ -15,6 +15,11 @@ export async function middleware(request: NextRequest) {
       }
       return NextResponse.next();
     } else {
+      const response = NextResponse.next();
+      response.cookies.delete('__Host-next-auth.csrf-token');
+      response.cookies.delete('__Secure-next-auth.callback-url');
+      response.cookies.delete('__Secure-next-auth.session-token');
+
       if (
         request.nextUrl.pathname === '/iniciarSesion' ||
         request.nextUrl.pathname === '/crearCuenta' ||

@@ -19,7 +19,6 @@ export async function generateMetadata(
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      // 'x-api-key': process.env.NEXT_PUBLIC_SECRECT as string,
     },
     credentials: 'include',
   });

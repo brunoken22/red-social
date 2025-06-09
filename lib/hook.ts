@@ -159,17 +159,19 @@ export async function signinUser(dataUser: DataSingin) {
     body: JSON.stringify(dataUser),
   };
   const data = dataUser.email ? await fetchApiSwr(api, option) : null;
-  if (data?.id) {
+  if (data?.user?.id) {
     setCookie('token', data.token);
   }
   return data;
 }
 export async function modificarUser(dataUser: DataUser) {
   const api = '/user/token';
+  const token = getCookie('token');
   const option = {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
     body: JSON.stringify(dataUser),
@@ -187,10 +189,12 @@ export async function modificarUser(dataUser: DataUser) {
 }
 export async function sendResetPassword(dataUser: DataUser) {
   const api = '/user/send-reset-password';
+  const token = getCookie('token');
   const option = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
     body: JSON.stringify(dataUser),
@@ -231,23 +235,20 @@ export function GetUser() {
   const setGetSugerenciaAmigosData = useSetRecoilState(getSugerenciaAmigos);
   const setSoliAllEnv = useSetRecoilState(getAllSolicitudesEnviadas);
   const setSoliAllReci = useSetRecoilState(getAllSolicitudesRecibidas);
-  const token = getCookie('login');
+  const token = getCookie('token');
   const api = '/user/token';
   const option = {
     method: 'GET',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
   };
 
-  const { data, isLoading } = useSWR(
-    token == 'true' ? api : null,
-    (url) => fetchApiSwr(url, option),
-    {
-      refreshInterval: 100000,
-    }
-  );
+  const { data, isLoading } = useSWR(token ? api : null, (url) => fetchApiSwr(url, option), {
+    refreshInterval: 100000,
+  });
   useEffect(() => {
     if (data?.getUserRes?.id) {
       setUserData({
@@ -269,23 +270,20 @@ export function GetUser() {
   return { data, isLoading };
 }
 export function GetAllUserChat() {
-  const token = getCookie('login');
+  const token = getCookie('token');
   const api = '/user/chat-users';
   const option = {
     method: 'GET',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
   };
 
-  const { data, isLoading } = useSWR(
-    token === 'true' ? api : null,
-    (url) => fetchApiSwr(url, option),
-    {
-      refreshInterval: 10000,
-    }
-  );
+  const { data, isLoading } = useSWR(token ? api : null, (url) => fetchApiSwr(url, option), {
+    refreshInterval: 10000,
+  });
 
   return { data, isLoading };
 }
@@ -300,17 +298,13 @@ export function NotificacionesUser(offset: number) {
     },
     credentials: 'include',
   };
-  const token = getCookie('login');
-  const { data, isLoading } = useSWR(
-    token == 'true' ? api : null,
-    (api) => fetchApiSwr(api, option),
-    {
-      revalidateOnReconnect: true,
-      revalidateOnMount: true,
-      revalidateOnFocus: true,
-      refreshInterval: 10000,
-    }
-  );
+  const token = getCookie('token');
+  const { data, isLoading } = useSWR(token ? api : null, (api) => fetchApiSwr(api, option), {
+    revalidateOnReconnect: true,
+    revalidateOnMount: true,
+    revalidateOnFocus: true,
+    refreshInterval: 10000,
+  });
 
   useEffect(() => {
     if (data && data?.publications) {
@@ -335,18 +329,19 @@ export function NotificacionesUser(offset: number) {
 }
 export function NotificacionesUserImmutable(offset: number) {
   const setNotificacionesUserAtom = useSetRecoilState(notificacionesUser);
-  const token = getCookie('login');
+  const token = getCookie('token');
   const api = `/user/notificaciones?offset=${offset}`;
 
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
 
-  const { data, isLoading } = useSWRImmutable(token == 'true' ? api : null, (url) =>
+  const { data, isLoading } = useSWRImmutable(token ? api : null, (url) =>
     fetchApiSwr(url, option)
   );
 
@@ -381,11 +376,13 @@ export async function viewNotification(idPublication: string) {
 }
 export function GetAllPublicaciones(isMutate = false) {
   const setPublicacionesAllAmigos = useSetRecoilState(publicacionAmigos);
+  const token = getCookie('token');
 
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -414,11 +411,13 @@ export function GetAllPublicaciones(isMutate = false) {
 }
 export function GetAllPublicacionesUser(isMutate = false) {
   const setPublicacionesUser = useSetRecoilState(publicacionUser);
+  const token = getCookie('token');
 
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -447,11 +446,13 @@ export function GetAllPublicacionesUser(isMutate = false) {
 }
 export function GetPubliAmigo(id: string) {
   const setPublicacionesAmigo = useSetRecoilState(publicacionSearchUser);
+  const token = getCookie('token');
 
   const option = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -482,10 +483,13 @@ export function GetPubliAmigo(id: string) {
 export function DeletePublic(id: number) {
   const [publicacionesUser, setPublicacionesUser] = useRecoilState(publicacionUser);
   const api = '/user/publicacion/' + id;
+  const token = getCookie('token');
+
   const option = {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -522,6 +526,7 @@ export function GetAmigo(id: string) {
 export async function CreatePublicacion(dataPubli: { description: string; img: File[] }) {
   const api = '/user/publicacion';
   const formData = new FormData();
+  const token = getCookie('token');
 
   // Agregamos la descripción
   formData.append('description', dataPubli.description);
@@ -533,6 +538,9 @@ export async function CreatePublicacion(dataPubli: { description: string; img: F
 
   const option = {
     method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     credentials: 'include',
     body: formData,
   };
@@ -542,10 +550,13 @@ export async function CreatePublicacion(dataPubli: { description: string; img: F
 }
 export async function createSolicitud(dataSoli: Solicitud) {
   const api = '/user/solicitudAmistad/' + dataSoli.amigoId;
+  const token = getCookie('token');
+
   const option = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   };
@@ -636,7 +647,7 @@ export async function comentarPublicacion(datas: any) {
   return data;
 }
 export function GetPublicacionId(id: string) {
-  const token = getCookie('login');
+  const token = getCookie('token');
   const api = '/user/publicacion/' + id;
   const option = {
     method: 'GET',
@@ -658,7 +669,7 @@ export function GetPublicacionId(id: string) {
   return { dataPubliId: data, isLoadGetPubliId: isLoading, mutatePublicacionesUser: mutate };
 }
 export async function EnviarMessage(datas: MessageUserChat) {
-  const token = getCookie('login');
+  const token = getCookie('token');
   const api = '/user/room';
   const option = {
     method: 'POST',
@@ -668,7 +679,7 @@ export async function EnviarMessage(datas: MessageUserChat) {
     credentials: 'include',
     body: JSON.stringify(datas),
   };
-  const data = token == 'true' && datas.message ? await fetchApiSwr(api, option) : null;
+  const data = token && datas.message ? await fetchApiSwr(api, option) : null;
 
   return data;
 }

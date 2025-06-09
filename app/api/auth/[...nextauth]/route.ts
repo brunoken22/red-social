@@ -49,7 +49,7 @@ const handler = NextAuth({
       return session;
     },
   },
-  debug: true, // Muestra logs en consola para depurar
+  // debug: true, // Muestra logs en consola para depurar
 });
 
 export { handler as GET, handler as POST };

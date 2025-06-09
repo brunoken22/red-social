@@ -355,8 +355,8 @@ export default function Header({ themeDate }: { themeDate: string }) {
       return found ? decodeURIComponent(found[1]) : null;
     }
 
-    const login = getCookieValue('login'); // Busca la cookie 'login'
-    if (login === 'false' || login === null || login === undefined) {
+    const login = getCookieValue('token'); // Busca la cookie 'login'
+    if (login || login === null || login === undefined) {
       setDataUser((prev) => ({
         isLoading: false,
         user: prev.user,

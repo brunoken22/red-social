@@ -5,12 +5,9 @@ export async function middleware(request: NextRequest) {
   try {
     // Si el usuario está autenticado, inserta la cookie
     const token = request.cookies.get('token')?.value;
+    const pathname = request.nextUrl.pathname;
     if (!token) {
-      if (
-        request.nextUrl.pathname !== '/iniciarSesion' &&
-        request.nextUrl.pathname !== '/' &&
-        request.nextUrl.pathname !== '/crearCuenta'
-      ) {
+      if (pathname !== '/iniciarSesion' && pathname !== '/' && pathname !== '/crearCuenta') {
         return NextResponse.redirect(new URL('/', request.url));
       }
       return NextResponse.next();
@@ -19,25 +16,23 @@ export async function middleware(request: NextRequest) {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         credentials: 'include',
       });
-      console.log('ESTO ES LA RESPUESTA ', DATA);
       if (!DATA.success) {
+        if (pathname !== '/iniciarSesion') return NextResponse.next();
         const response = NextResponse.next();
         response.cookies.delete('token');
         return NextResponse.redirect(new URL('/iniciarSesion', request.url));
       }
-      if (
-        request.nextUrl.pathname === '/iniciarSesion' ||
-        request.nextUrl.pathname === '/crearCuenta' ||
-        request.nextUrl.pathname === '/'
-      ) {
+      if (pathname === '/iniciarSesion' || pathname === '/crearCuenta' || pathname === '/') {
         return NextResponse.redirect(new URL('/inicio', request.url));
       }
       return NextResponse.next();
     }
-  } catch (e: any) {
+  } catch (error: any) {
+    console.error('ESTE ES UN ERROR EN EL MIDDLEWARE', error);
     return NextResponse.redirect(new URL('/', request.url));
   }
 }

@@ -106,7 +106,7 @@ export async function logOut() {
   };
   const data = await fetchApiSwr(api, option);
   if (data) {
-    setCookie('login', false);
+    setCookie('token', '');
   }
   return data;
 }
@@ -123,7 +123,7 @@ export async function CreateOrLoginGoogle(dataUser: DataUser) {
   const data = dataUser.email && dataUser.fullName ? await fetchApiSwr(api, option) : null;
 
   if (data?.user?.id) {
-    setCookie('login', true);
+    setCookie('token', data.token);
   }
   return data;
 }
@@ -144,7 +144,7 @@ export async function CreateUser(dataUser: DataUser) {
       : null;
 
   if (data?.user?.id) {
-    setCookie('login', true);
+    setCookie('token', data.token);
   }
   return data;
 }
@@ -160,7 +160,7 @@ export async function signinUser(dataUser: DataSingin) {
   };
   const data = dataUser.email ? await fetchApiSwr(api, option) : null;
   if (data?.id) {
-    setCookie('login', true);
+    setCookie('token', data.token);
   }
   return data;
 }

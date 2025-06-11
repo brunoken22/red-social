@@ -13,6 +13,11 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: 'consent', // Esto fuerza el login en cada signIn
+        },
+      },
       profile(profile) {
         return {
           id: profile.sub,

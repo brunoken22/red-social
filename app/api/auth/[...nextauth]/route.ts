@@ -48,6 +48,10 @@ const handler = NextAuth({
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Siempre redirige a una ruta específica
+      return '/inicio';
+    },
   },
   // debug: true, // Muestra logs en consola para depurar
 });

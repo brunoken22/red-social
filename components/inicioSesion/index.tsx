@@ -46,7 +46,9 @@ export default function Signin() {
 
   const handleGoogleLogin = () => {
     setGoogleLoading(true);
-    signIn('google');
+    signIn('google', {
+      callbackUrl:"/inicio"
+    });
   };
 
   const handleGoogleSession = useCallback(async () => {

@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
-import {useForm, SubmitHandler} from 'react-hook-form';
-import {Form} from '@/ui/container';
-import {Label} from '@/ui/input';
-import {modificarUser} from '@/lib/hook';
-import {useState} from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { Form } from '@/ui/container';
+import { Label } from '@/ui/input';
+import { modificarUser } from '@/lib/hook';
+import { useState } from 'react';
 
 type Inputs = {
   fullName: string;
@@ -15,34 +15,28 @@ const NotificationToastStatus = dynamic(() =>
   import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
 );
 
-export function EmailYName({
-  fullName,
-  email,
-}: {
-  fullName: string;
-  email: string;
-}) {
+export function EmailYName({ fullName, email }: { fullName: string; email: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<
-    {message: string; status: 'success' | 'error' | 'info' | 'warning'} | false
+    { message: string; status: 'success' | 'error' | 'info' | 'warning' } | false
   >(false);
 
   const {
     register,
     handleSubmit,
-    formState: {errors: error1},
+    formState: { errors: error1 },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (dataInputs) => {
     setIsLoading(true);
     const dataMod = await modificarUser({
       fullName: dataInputs.fullName || fullName,
-      email: dataInputs.email || email,
+      email: email,
     });
     setIsLoading(false);
 
     if (dataMod) {
-      setAlert({message: 'Se modifico correctamente', status: 'success'});
+      setAlert({ message: 'Se modifico correctamente', status: 'success' });
       return;
     }
     setAlert({
@@ -65,31 +59,26 @@ export function EmailYName({
           <div>
             <Label htmlFor='fullName'>Nombre</Label>
             <input
-              {...register('fullName', {required: true})}
+              {...register('fullName', { required: true })}
               defaultValue={fullName}
               className='w-full h-[2.5rem] rounded-md border-[1px] text-black border-gray-700 indent-3 p-0'
               autoComplete='current-password'
             />
             {error1.fullName && (
-              <span className='text-red-500 text-[0.8rem]'>
-                Se requiere Nombre
-              </span>
+              <span className='text-red-500 text-[0.8rem]'>Se requiere Nombre</span>
             )}
           </div>
           <div>
             <Label htmlFor='email'>Email</Label>
             <input
-              {...register('email', {required: true})}
+              {...register('email', { required: true })}
               type='email'
               defaultValue={email}
-              className='w-full h-[2.5rem] rounded-md border-[1px] text-black border-gray-700 indent-3 p-0'
+              className='w-full h-[2.5rem] rounded-md border-[1px] text-black bg-gray-400 border-gray-700 indent-3 p-0'
               autoComplete='current-password'
+              disabled
             />
-            {error1.email && (
-              <span className='text-red-500 text-[0.8rem]'>
-                Se requiere email
-              </span>
-            )}
+            {error1.email && <span className='text-red-500 text-[0.8rem]'>Se requiere email</span>}
           </div>
           <button
             type='submit'

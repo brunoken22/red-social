@@ -58,6 +58,7 @@ export const user = atom({
       email: '',
       fullName: '',
       verification: false,
+      google: false,
       img: '',
       amigos: [] as number[],
       rtdb: [] as string[],

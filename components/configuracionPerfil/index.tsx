@@ -26,20 +26,22 @@ export function ConfigPerfil() {
         max-md:gap-2'>
           <ButtonNoti
             onClick={handleClick}
-            className={conEmailName == 'ue' ? 'w-auto bg-light' : 'w-auto'}
+            className={conEmailName == 'ue' ? 'w-auto bg-light text-primary' : 'w-auto'}
             id='ue'>
             Cambiar nombre usuario y email
           </ButtonNoti>
-          <ButtonNoti
-            onClick={handleClick}
-            id='co'
-            className={conEmailName == 'co' ? 'w-auto bg-light' : 'w-auto'}>
-            Cambiar contraseña
-          </ButtonNoti>
+          {!userData.user.google && (
+            <ButtonNoti
+              onClick={handleClick}
+              id='co'
+              className={conEmailName == 'co' ? 'w-auto bg-light text-primary' : 'w-auto'}>
+              Cambiar contraseña
+            </ButtonNoti>
+          )}
           <ButtonNoti
             onClick={handleClick}
             id='sv'
-            className={conEmailName == 'sv' ? 'w-auto bg-light' : 'w-auto'}>
+            className={conEmailName == 'sv' ? 'w-auto bg-light text-primary' : 'w-auto'}>
             Solicitar Verificación
           </ButtonNoti>
         </div>

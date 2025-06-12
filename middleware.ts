@@ -6,6 +6,7 @@ export async function middleware(request: NextRequest) {
     // Si el usuario está autenticado, inserta la cookie
     const token = request.cookies.get('token')?.value;
     const pathname = request.nextUrl.pathname;
+    console.log('ESTE ES EL TOKEN', token);
     if (!token) {
       if (pathname !== '/iniciarSesion' && pathname !== '/' && pathname !== '/crearCuenta') {
         return NextResponse.redirect(new URL('/', request.url));
@@ -20,11 +21,13 @@ export async function middleware(request: NextRequest) {
         },
         credentials: 'include',
       });
-      if (!DATA.success) {
-        if (pathname !== '/iniciarSesion') return NextResponse.next();
+      console.log(DATA);
+      if (!DATA.success || DATA.error) {
+        // if (pathname !== '/iniciarSesion') return NextResponse.next();
         const response = NextResponse.next();
         response.cookies.delete('token');
-        return NextResponse.redirect(new URL('/iniciarSesion', request.url));
+        return NextResponse.next();
+        // return NextResponse.redirect(new URL('/iniciarSesion', request.url));
       }
       if (pathname === '/iniciarSesion' || pathname === '/crearCuenta' || pathname === '/') {
         return NextResponse.redirect(new URL('/inicio', request.url));

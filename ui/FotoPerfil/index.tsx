@@ -13,14 +13,14 @@ export default function FotoPerfil({
     <div
       className={` relative shrink-0 ${
         className ? className : 'w-[40px] h-[40px]'
-      }  hover:opacity-70`}>
+      }  bg-primary  rounded-full`}>
       <img
         src={(img == 'false' && '/user.webp') || img || '/user.webp'}
         height={40}
         width={40}
         className={`${
           className ? className : 'w-[40px] h-[40px]'
-        } rounded-full border-2 border-zinc-700 object-cover  `}
+        }  rounded-full border-2 border-zinc-700 object-cover  hover:opacity-80 `}
         alt='perfil'
         loading='lazy'
       />

@@ -21,8 +21,10 @@ export default function RecoilRootLayout({
       {comparationPathname ? <Header themeDate={dateTheme} /> : null}
       <div
         className={` ${
-          comparationPathname ? 'mt-8  max-lg:ml-2 max-lg:mr-2 max-md:mt-4' : ''
-        } max-w-screen-lg m-auto`}>
+          comparationPathname
+            ? 'mt-8  max-lg:ml-2 max-lg:mr-2 max-md:mt-4 max-w-screen-lg m-auto'
+            : ' w-full'
+        } `}>
         {children}
       </div>
     </RecoilRoot>

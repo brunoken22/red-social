@@ -39,11 +39,10 @@ const handler = NextAuth({
     async jwt({ token, user, account }) {
       if (account) {
         token.accessToken = account.access_token;
-        console.log('account', account);
         // Llamar a tu API backend solo durante el primer login
         if (account.provider === 'google' && !token.backendToken) {
           try {
-            const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/google`, {
+            const response = await fetch(`${process.env.PORT}/api/auth/google`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -54,8 +53,9 @@ const handler = NextAuth({
                 img: user.image,
                 accessToken: account.access_token,
               }),
+              credentials: 'include',
             });
-
+            console.log('response', response);
             const data = await response.json();
             console.log('PROBANDO RESPUESTA Y TOKEN DE GOOGLE ', data, account.access_token);
             if (data.token) {

@@ -6,7 +6,6 @@ export async function middleware(request: NextRequest) {
     // Si el usuario está autenticado, inserta la cookie
     const token = request.cookies.get('token')?.value;
     const pathname = request.nextUrl.pathname;
-    console.log('ESTE ES EL TOKEN', token);
     if (!token) {
       if (pathname !== '/iniciarSesion' && pathname !== '/' && pathname !== '/crearCuenta') {
         return NextResponse.redirect(new URL('/', request.url));

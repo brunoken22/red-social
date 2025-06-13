@@ -72,8 +72,8 @@ export default function AmigosComponent() {
               id='suge'
               open={sugerencia}
               className={`w-auto ${
-                sugerencia ? 'bg-light dark:text-primary text-secundary ' : ''
-              } ${sugerencia ? 'text-primary opacity-100' : ''}`}>
+                sugerencia ? 'bg-light text-primary  !opacity-100 !cursor-default' : ''
+              } `}>
               <DivIcons className='max-md:hidden'>
                 <MyAmigos /> {'>'}
               </DivIcons>
@@ -83,9 +83,9 @@ export default function AmigosComponent() {
               onClick={handleClick}
               id='soli'
               open={soliAmis}
-              className={`w-auto ${soliAmis ? 'bg-light dark:text-primary text-secundary ' : ''} ${
-                soliAmis ? 'text-primary opacity-100' : ''
-              }`}>
+              className={`w-auto  !opacity-100 ${
+                soliAmis ? 'bg-light text-primary  !opacity-100 !cursor-default ' : ''
+              }  `}>
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />
                 {'+'}
@@ -96,8 +96,8 @@ export default function AmigosComponent() {
               onClick={handleClick}
               id='all'
               open={allAmig}
-              className={`w-auto ${allAmig ? 'bg-light dark:text-primary text-secundary ' : ''} ${
-                allAmig ? 'text-primary opacity-100' : ''
+              className={`w-auto ${
+                allAmig ? 'bg-light text-primary !opacity-100 !cursor-default' : ''
               }`}>
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />
@@ -108,9 +108,9 @@ export default function AmigosComponent() {
               onClick={handleClick}
               id='SoliEnv'
               open={soliEnv}
-              className={`w-auto ${soliEnv ? 'bg-light dark:text-primary text-secundary ' : ''} ${
-                soliEnv ? 'text-primary opacity-100' : ''
-              }`}>
+              className={`w-auto ${
+                soliEnv ? 'bg-light text-primary !opacity-100 !cursor-default' : ''
+              } `}>
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />
               </DivIcons>

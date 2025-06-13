@@ -27,7 +27,7 @@ type DataUser = {
   email?: string;
   password?: string;
   img?: string;
-  accessToken?: JWT;
+  accessToken?: string;
   code?: string;
 };
 type DataSingin = {
@@ -39,7 +39,6 @@ type Solicitud = {
   userId?: number;
 };
 import { getDatabase, ref, onValue, onDisconnect, set } from 'firebase/database';
-import { JWT } from 'next-auth/jwt';
 
 export async function userConnectPushPWA(userConnect: any) {
   const option = {
@@ -250,6 +249,7 @@ export function GetUser() {
     refreshInterval: 100000,
   });
   useEffect(() => {
+    if (!token) return;
     if (data?.getUserRes?.id) {
       setUserData({
         isLoading: false,
@@ -265,6 +265,11 @@ export function GetUser() {
       setSoliAllEnv(data.friendEnv);
       setSoliAllReci(data.friendReci);
       return;
+    } else {
+      setUserData((prev) => ({
+        ...prev,
+        isLoading: false,
+      }));
     }
   }, [data]);
   return { data, isLoading };

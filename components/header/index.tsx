@@ -358,7 +358,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
     const login = getCookieValue('token'); // Busca la cookie 'login'
     if (login || login === null || login === undefined) {
       setDataUser((prev) => ({
-        isLoading: false,
+        isLoading: prev.isLoading,
         user: prev.user,
       }));
     }

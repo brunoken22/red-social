@@ -1,11 +1,10 @@
-import { getCookie } from 'cookies-next';
-
+'use server';
+import { cookies } from 'next/headers';
 const Api_url = process.env.NEXT_PUBLIC_PORT;
 
 export async function fetchApiSwr(api: string, option: any) {
+  const token = cookies().get('token')?.value;
   try {
-    const token = getCookie('token');
-
     const newOption = {
       ...option,
       headers: {

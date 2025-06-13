@@ -21,7 +21,6 @@ export async function middleware(request: NextRequest) {
         },
         credentials: 'include',
       });
-      console.log(DATA);
       if (!DATA.success || DATA.error) {
         // if (pathname !== '/iniciarSesion') return NextResponse.next();
         const response = NextResponse.next();
@@ -39,6 +38,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 }
+
+// export { default } from 'next-auth/middleware';
 export const config = {
   matcher: [
     '/inicio',

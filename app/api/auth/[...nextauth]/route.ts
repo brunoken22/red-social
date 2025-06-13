@@ -5,9 +5,11 @@ import GoogleProvider from 'next-auth/providers/google';
 
 declare module 'next-auth' {
   interface Session {
-    accessToken?: JWT;
+    accessToken?: string;
+    backendToken?: string; // Token de tu backend
   }
 }
+
 const handler = NextAuth({
   providers: [
     GoogleProvider({
@@ -15,7 +17,7 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          prompt: 'consent', // Esto fuerza el login en cada signIn
+          prompt: 'consent',
         },
       },
       profile(profile) {
@@ -24,7 +26,7 @@ const handler = NextAuth({
           name: profile.name,
           email: profile.email,
           image: profile.picture,
-          role: 'user', // Campo personalizado opcional
+          role: 'user',
         };
       },
     }),
@@ -35,9 +37,34 @@ const handler = NextAuth({
   },
   callbacks: {
     async jwt({ token, user, account }) {
-      // Guardar el token de acceso de Google
       if (account) {
         token.accessToken = account.access_token;
+        console.log('account', account);
+        // Llamar a tu API backend solo durante el primer login
+        if (account.provider === 'google' && !token.backendToken) {
+          try {
+            const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/google`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: user.email,
+                fullName: user.name,
+                img: user.image,
+                accessToken: account.access_token,
+              }),
+            });
+
+            const data = await response.json();
+            console.log('PROBANDO RESPUESTA Y TOKEN DE GOOGLE ', data, account.access_token);
+            if (data.token) {
+              token.backendToken = data.token;
+            }
+          } catch (error) {
+            console.error('Error calling backend API:', error);
+          }
+        }
       }
 
       if (user) {
@@ -47,14 +74,14 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      // Pasar el accessToken a la sesión del cliente
       if (session.user) {
-        session.accessToken = token.accessToken as JWT;
+        session.accessToken = token.accessToken as string;
+        session.backendToken = token.backendToken as string;
       }
+      // console.log('SESSION: ', session);
       return session;
     },
   },
-  // debug: true, // Muestra logs en consola para depurar
 });
 
 export { handler as GET, handler as POST };

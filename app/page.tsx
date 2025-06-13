@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Logo from '@/public/logo.svg';
 import { Metadata } from 'next';
+import { getSession } from 'next-auth/react';
 
 export const metadata: Metadata = {
   title: 'Bienvenid@ a UniRed',
@@ -21,7 +22,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
+export default async function Page() {
+  const session = await getSession();
+  console.log('ESTA ES LA SESSION', session?.backendToken); // ← Este es tu token del backend
   return (
     <div className='flex flex-col min-h-screen'>
       <header className='bg-primary dark:bg-darkComponet dark:text-white text-secondary p-4 '>

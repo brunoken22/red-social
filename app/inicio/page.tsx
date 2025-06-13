@@ -1,11 +1,8 @@
-import dynamic from 'next/dynamic';
 import { DivPublicaciones } from '@/ui/container';
 import { Span } from '@/components/span';
 import { Metadata } from 'next';
 import Publicar from '@/components/publicar';
-
-// const Publicar = dynamic(() => import('@/components/publicar'));
-const PublicacionesAll = dynamic(() => import('@/components/publicaciones/publicationsAll'));
+import PublicacionesAll from '@/components/publicaciones/publicationsAll';
 
 export const metadata: Metadata = {
   title: 'Inicio | UniRed',

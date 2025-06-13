@@ -2,9 +2,9 @@
 
 import dynamic from 'next/dynamic';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useEffect, useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession, signIn } from 'next-auth/react';
+import { signIn, getSession } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
 import { JWT } from 'next-auth/jwt';
@@ -23,7 +23,6 @@ export default function Signin() {
   const [isLoading, setIsLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [isError, setError] = useState(false);
-  const { data: session } = useSession();
 
   const {
     register,
@@ -44,33 +43,48 @@ export default function Signin() {
     }
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     setGoogleLoading(true);
-    signIn('google', {
-      callbackUrl:"/inicio"
-    });
-  };
+    try {
+      // Primero autenticar con Google via NextAuth
+      const result = await signIn('google', { redirect: false });
 
-  const handleGoogleSession = useCallback(async () => {
-    if (session?.user?.email && session?.user?.name && !googleLoading) {
-      setGoogleLoading(true);
+      if (result?.error) {
+        setError(true);
+        throw new Error(result.error);
+      }
+
+      // Obtener la sesión de NextAuth
+      const session = await getSession();
+
+      if (!session?.user) {
+        setError(true);
+        throw new Error('No se pudo obtener la sesión');
+      }
+
+      // Llamar a tu backend para crear/validar el usuario
       const { CreateOrLoginGoogle } = await import('@/lib/hook');
-      const result = await CreateOrLoginGoogle({
-        email: session.user.email,
-        fullName: session.user.name,
+      const backendResponse = await CreateOrLoginGoogle({
+        email: session.user.email!,
+        fullName: session.user.name!,
         img: session.user.image || '',
-        accessToken: session.accessToken as JWT,
+        accessToken: session.accessToken,
       });
 
-      if (result) router.push('/inicio');
-      else setGoogleLoading(false);
+      if (!backendResponse) {
+        setError(true);
+        throw new Error('Error al crear usuario en el backend');
+      }
+
+      // Redirigir al usuario
+      router.push('/inicio');
+    } catch (error) {
+      console.error('Error en login con Google:', error);
+      setError(true);
+    } finally {
+      setGoogleLoading(false);
     }
-  }, [session, router]);
-
-  useEffect(() => {
-    handleGoogleSession();
-  }, [handleGoogleSession]);
-
+  };
   return (
     <>
       <form

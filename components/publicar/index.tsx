@@ -5,11 +5,11 @@ import { useRecoilValue } from 'recoil';
 import { DivSubir, DivASubir, DivText, DivCrear } from './styled';
 import { useEffect, useState } from 'react';
 import { user, isConnect } from '@/lib/atom';
+import { SkeletonPlicate } from '@/ui/skeleton';
 
 const ImageSubir = dynamic(() => import('@/ui/icons/image.svg'));
 const VideoSubir = dynamic(() => import('@/ui/icons/video.svg'));
 
-const SkeletonPlicate = dynamic(() => import('@/ui/skeleton').then((mod) => mod.SkeletonPlicate));
 const NotificationToastStatus = dynamic(() =>
   import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
 );
@@ -32,6 +32,7 @@ export default function Publicar() {
       document.body.style.overflow = 'auto';
     }
   }, [formClick]);
+
   return dataValor.user.id ? (
     <>
       <DivPublicar className='w-full max-w-full'>

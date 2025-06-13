@@ -123,7 +123,7 @@ export function SkeletonPublicacionAll(props: React.ComponentProps<any>) {
               <SpanLuz></SpanLuz>
             </TextSkeleton>
           </DivText>
-          <TextSkeleton className='w-full h-[300px]'>
+          <TextSkeleton className='w-full !h-[300px]'>
             <SpanLuz></SpanLuz>
           </TextSkeleton>
           <TextSkeleton className='w-full h-[30px] m-[0_0_1rem_0]'>

@@ -125,7 +125,9 @@ export function ThemplatePubli(props: {
       }
     } else {
       // Lógica alternativa (copiar enlace al portapapeles)
-      navigator.clipboard.writeText('/notificaciones/' + props.idPublicacion || window.location.href);
+      navigator.clipboard.writeText(
+        '/notificaciones/' + props.idPublicacion || window.location.href
+      );
       alert('Enlace copiado al portapapeles');
     }
   };

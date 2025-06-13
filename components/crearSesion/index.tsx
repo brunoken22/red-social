@@ -50,7 +50,7 @@ export function Signup() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='w-full max-w-md mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg space-y-6'>
+        className='w-full max-w-md mx-auto mt-10 p-6 bg-white dark:bg-darkComponet rounded-2xl shadow-lg space-y-6'>
         <div>
           <label
             htmlFor='fullName'
@@ -64,7 +64,7 @@ export function Signup() {
             disabled={isLoading}
             placeholder='Juan Pérez'
             {...register('fullName', { required: true })}
-            className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
+            className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-darkComponet dark:text-white'
           />
           {errors.fullName && <p className='text-sm text-red-500 mt-1'>Se requiere nombre</p>}
         </div>

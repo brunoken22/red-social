@@ -20,9 +20,7 @@ export const ContainerMain = ({ children }: { children: React.ReactNode }) => (
 );
 
 export const DivPublicaciones = ({ children }: { children: React.ReactNode }) => (
-  <div className='max-w-[650px] w-full max-md:w-full flex flex-col gap-8 max-md:gap-4'>
-    {children}
-  </div>
+  <div className='w-full max-md:w-full flex flex-col gap-8 max-md:gap-4'>{children}</div>
 );
 
 export const DivPublicar = ({
@@ -35,7 +33,7 @@ export const DivPublicar = ({
   <div
     className={` bg-primary  
    h-max  p-4 max-md:p-2 pb-2 flex flex-col justify-evenly gap-4 rounded-md shadow-container w-full  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center ${
-     className ? className : ' max-w-xl'
+     className ? className : ' w-full'
    }`}>
     {children}
   </div>

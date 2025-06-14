@@ -4,6 +4,8 @@ import RestablecerCuenta from '@/components/Restablecer-cuenta';
 export const metadata: Metadata = {
   title: 'Restablecer contraseña | UniRed',
   description: 'Restablece tu contraseña olvidada',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+
   openGraph: {
     title: 'Restablecer contraseña | UniRed',
     description: 'Restablece tu contraseña olvidada',

@@ -5,6 +5,8 @@ import { ConfigPerfil } from '@/components/configuracionPerfil';
 export const metadata: Metadata = {
   title: 'Configuración | UniRed',
   description: 'Administra tu cuenta, privacidad y preferencias en UniRed.',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+
   openGraph: {
     title: 'Configuración | UniRed',
     description: 'Administra tu cuenta, privacidad y preferencias en UniRed.',

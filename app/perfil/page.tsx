@@ -5,6 +5,8 @@ import { Main } from '@/ui/container';
 export const metadata: Metadata = {
   title: 'Perfil | UniRed',
   description: 'Perfil',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+
   openGraph: {
     title: 'Perfil | UniRed',
     description:

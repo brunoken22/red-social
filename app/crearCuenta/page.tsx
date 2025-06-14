@@ -7,6 +7,8 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Crear cuenta | UniRed',
   description: 'Únete a UniRed y comienza a conectarte con amig@s y descubrir contenido nuevo.',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+
   openGraph: {
     title: 'Crear cuenta | UniRed',
     description: 'Únete a UniRed y comienza a conectarte con amig@s y descubrir contenido nuevo.',

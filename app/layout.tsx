@@ -7,6 +7,7 @@ const poppins = Poppins({ weight: '400', subsets: ['latin'] });
 
 // import { SpeedInsights } from '@vercel/speed-insights/next';
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
   title: 'UniRed',
   description: 'Red social',
   keywords:
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const theme = ( cookies()).get('theme')?.value || 'false';
+  const theme = cookies().get('theme')?.value || 'false';
 
   return (
     <html lang='es' className={`${theme !== 'true' ? '' : 'dark'}`}>

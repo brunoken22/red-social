@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import Logo from '@/public/logo.svg';
 import { Metadata } from 'next';
-import { getSession } from 'next-auth/react';
 
 export const metadata: Metadata = {
   title: 'Bienvenid@ a UniRed',
   description: 'Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
 
   openGraph: {
     title: 'Bienvenid@ a UniRed',
@@ -23,8 +23,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const session = await getSession();
-  console.log('ESTA ES LA SESSION', session?.backendToken); // ← Este es tu token del backend
   return (
     <div className='flex flex-col min-h-screen'>
       <header className='bg-primary dark:bg-darkComponet dark:text-white text-secondary p-4 '>

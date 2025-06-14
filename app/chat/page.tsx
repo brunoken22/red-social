@@ -5,6 +5,8 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Chat | UniRed',
   description: 'Conversa con tus amig@s en tiempo real a través del chat de UniRed.',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+
   openGraph: {
     title: 'Chat | UniRed',
     description: 'Conversa con tus amig@s en tiempo real a través del chat de UniRed.',

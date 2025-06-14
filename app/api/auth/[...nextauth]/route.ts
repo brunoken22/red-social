@@ -1,6 +1,4 @@
-// app/api/auth/[...nextauth]/route.ts
 import NextAuth from 'next-auth';
-import { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
 
 declare module 'next-auth' {
@@ -42,7 +40,7 @@ const handler = NextAuth({
         // Llamar a tu API backend solo durante el primer login
         if (account.provider === 'google' && !token.backendToken) {
           try {
-            const response = await fetch(`${process.env.PORT_BACKEND}/api/auth/google`, {
+            const response = await fetch(`${process.env.PORT_BACKEND}/api/auth-google`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

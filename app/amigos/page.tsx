@@ -5,6 +5,8 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Amigos | UniRed',
   description: 'Encuentra y conecta con nuevos amig@s en UniRed.',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+
   openGraph: {
     title: 'Amigos | UniRed',
     description: 'Encuentra y conecta con nuevos amig@s en UniRed.',

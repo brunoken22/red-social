@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   title: 'Inicia sesión | UniRed',
   description:
     'Accede a tu cuenta de UniRed para conectarte con amig@s y descubrir contenido nuevo.',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+
   openGraph: {
     title: 'Inicia sesión | UniRed',
     description:

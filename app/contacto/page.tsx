@@ -4,6 +4,8 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Contacto | UniRed',
   description: 'Contacto',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+
   openGraph: {
     title: 'Contacto | UniRed',
     description:

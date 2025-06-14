@@ -7,6 +7,8 @@ import PublicacionesAll from '@/components/publicaciones/publicationsAll';
 export const metadata: Metadata = {
   title: 'Inicio | UniRed',
   description: 'Explora las publicaciones de tus amig@s y descubre contenido nuevo en UniRed.',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+
   openGraph: {
     title: 'Inicio | UniRed',
     description: 'Explora las publicaciones de tus amig@s y descubre contenido nuevo en UniRed.',

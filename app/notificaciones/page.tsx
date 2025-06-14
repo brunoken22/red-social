@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: 'Notificaciones | UniRed',
   description:
     'Consulta tus notificaciones en UniRed y mantente al día con las actividades de tus amig@s.',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+
   openGraph: {
     title: 'Notificaciones | UniRed',
     description:

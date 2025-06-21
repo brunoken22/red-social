@@ -11,12 +11,9 @@ import { signOut } from 'next-auth/react';
 const className = 'text-center flex items-center gap-2 hover:opacity-70 py-2 px-1';
 
 export function Menu(props: any) {
-  const handleClick = async () => {
-    const logoutData = await logOut();
-    await signOut({ redirect: false });
-    if (logoutData) {
-      window.location.href = window.location.origin + '/iniciarSesion';
-    }
+  const handleSignOut = async () => {
+    await logOut();
+    await signOut();
   };
 
   return (
@@ -61,7 +58,7 @@ export function Menu(props: any) {
             <IoMdInformationCircle className='fill-black text-xl dark:fill-white' />
             <Span> Contacto</Span>
           </Link>
-          <Button onClick={handleClick} className={className}>
+          <Button onClick={handleSignOut} className={className}>
             <MdLogout className='fill-black dark:fill-white  text-xl' />
             <Span>Cerrar Sesion </Span>
           </Button>

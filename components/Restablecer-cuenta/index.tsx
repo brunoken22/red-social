@@ -133,7 +133,7 @@ export default function RestablecerCuenta() {
               type='email'
               {...register('email', { required: true })}
               className='mt-1 w-full text-secundary border rounded-xl px-4 py-2'
-              placeholder='ejemplo@correo.com'
+              placeholder='bruno_am_22@hotmail.com'
             />
           </div>
           <button

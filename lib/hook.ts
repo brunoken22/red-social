@@ -103,7 +103,10 @@ export async function logOut() {
       'Content-Type': 'application/json',
     },
   };
+  console.log(option);
+
   const data = await fetchApiSwr(api, option);
+  console.log(data);
   if (data) {
     setCookie('token', '');
   }
@@ -249,7 +252,12 @@ export function GetUser() {
     refreshInterval: 100000,
   });
   useEffect(() => {
-    if (!token) return;
+    if (isLoading) return;
+    if (!token && !isLoading)
+      setUserData((prev) => ({
+        ...prev,
+        isLoading: false,
+      }));
     if (data?.getUserRes?.id) {
       setUserData({
         isLoading: false,

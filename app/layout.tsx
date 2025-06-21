@@ -4,8 +4,8 @@ import { Poppins } from 'next/font/google';
 import { cookies } from 'next/headers';
 import Layout from '@/components/layout';
 const poppins = Poppins({ weight: '400', subsets: ['latin'] });
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
-// import { SpeedInsights } from '@vercel/speed-insights/next';
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
   title: 'UniRed',
@@ -34,7 +34,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className={`${poppins.className} dark:bg-dark dark:text-white dark:transition-dark`}>
         <Layout themeDate={theme}>{children}</Layout>
-        {/* <SpeedInsights /> */}
+        <SpeedInsights />
       </body>
     </html>
   );

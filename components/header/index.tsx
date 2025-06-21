@@ -86,7 +86,6 @@ export async function subscribeToPush() {
 export default function Header({ themeDate }: { themeDate: string }) {
   const [firstConect, setFirstConnect] = useState(false);
   GetUser();
-  // NotificacionesUser(0);
 
   const pathname = usePathname();
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
@@ -289,15 +288,13 @@ export default function Header({ themeDate }: { themeDate: string }) {
         const useConnectUser = async () => {
           const registration = await subscribeToPush();
           const tokenFCM = await obtenerTokenFCM(registration);
-          console.log(dataUser.user.id, tokenFCM);
 
           if (!tokenFCM) return;
           const userConnectPushPWA = (await import('@/lib/hook')).userConnectPushPWA;
-          const subscribe = await userConnectPushPWA({
+          await userConnectPushPWA({
             userId: dataUser.user.id,
             tokenFCM,
           });
-          console.log('CONECTANDO', subscribe);
           setFirstConnect(true);
         };
         useConnectUser();
@@ -308,7 +305,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
         limitToLast(20)
       );
       onMessage(messaging, (payload) => {
-        console.log('Mensaje recibido en foreground:', payload);
+        // console.log('Mensaje recibido en foreground:', payload);
         const { title, body } = payload.notification as NotificationPayload;
         if (!title || !body) return;
         new Notification(title, { body });
@@ -442,7 +439,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
       </>
     ) : (
       <header className='bg-primary dark:bg-darkComponet dark:text-white text-secondary p-4 '>
-        <div className='container mx-auto flex justify-between items-center '>
+        <div className='flex justify-between items-center max-md:justify-between max-w-screen-lg m-auto'>
           <Link href={'/'} aria-label='logo unired' title='logo unired'>
             <Logo className='rounded-md fill-unired transition-dark' />
           </Link>

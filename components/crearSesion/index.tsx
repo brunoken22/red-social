@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { CreateUser } from '@/lib/hook';
 import { NotificationToastStatus } from '@/ui/toast';
+import { signIn } from 'next-auth/react';
 
 type FormSignup = {
   fullName: string;
@@ -24,25 +25,27 @@ export function Signup() {
     formState: { errors },
   } = useForm<FormSignup>();
 
-  const onSubmit: SubmitHandler<FormSignup> = async (data) => {
+  const onSubmit: SubmitHandler<FormSignup> = async (FormData) => {
     setIsLoading(true);
-    if (data.repassword !== data.password) {
+    if (FormData.repassword !== FormData.password) {
       setIsLoading(false);
       setError('Las contraseñas no coinciden');
       return;
     }
 
-    const { fullName, email, password } = data;
-    const response = await CreateUser({ fullName, email, password });
-
-    if (response === 'Usuario Registrado') {
+    const { fullName, email, password } = FormData;
+    const response = await signIn('credentials', {
+      email,
+      password,
+      fullName,
+      signup: 'true',
+      redirect: false,
+    });
+    if (response.error) {
       setIsLoading(false);
-      setError('Este usuario ya existe');
-    } else if (response?.user?.id) {
-      router.push('/inicio');
+      setError(response.code || 'Error al registrarse');
     } else {
-      setIsLoading(false);
-      setError('Error inesperado al registrar');
+      router.push('/inicio');
     }
   };
 
@@ -62,7 +65,7 @@ export function Signup() {
             type='text'
             autoComplete='name'
             disabled={isLoading}
-            placeholder='Juan Pérez'
+            placeholder='Bruno Ken'
             {...register('fullName', { required: true })}
             className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-darkComponet dark:text-white'
           />
@@ -80,7 +83,7 @@ export function Signup() {
             type='email'
             autoComplete='email'
             disabled={isLoading}
-            placeholder='usuario@ejemplo.com'
+            placeholder='bruno_am_22@hotmail.com'
             {...register('email', { required: true })}
             className='mt-1 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
           />

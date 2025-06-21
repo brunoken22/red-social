@@ -4,10 +4,9 @@ import dynamic from 'next/dynamic';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { signIn, getSession } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
-import { JWT } from 'next-auth/jwt';
+import { signIn } from 'next-auth/react';
 
 type FormData = {
   email: string;
@@ -32,52 +31,22 @@ export default function Signin() {
 
   const onSubmit: SubmitHandler<FormData> = async (formData) => {
     setIsLoading(true);
-    const { signinUser } = await import('@/lib/hook');
-
-    const result = await signinUser(formData);
-    if (result) {
-      router.push('/inicio');
-    } else {
-      setError(true);
-      setIsLoading(false);
-    }
+    // const { signinUser } = await import('@/lib/hook');
+    const nextAuthSignin = await signIn('credentials', formData);
+    return nextAuthSignin;
+    // const result = await signinUser(formData);
+    // if (result) {
+    //   router.push('/inicio');
+    // } else {
+    //   setError(true);
+    //   setIsLoading(false);
+    // }
   };
 
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
     try {
-      // Primero autenticar con Google via NextAuth
-      const result = await signIn('google', { redirect: false });
-
-      if (result?.error) {
-        setError(true);
-        throw new Error(result.error);
-      }
-
-      // Obtener la sesión de NextAuth
-      const session = await getSession();
-
-      if (!session?.user) {
-        setError(true);
-        throw new Error('No se pudo obtener la sesión');
-      }
-
-      // Llamar a tu backend para crear/validar el usuario
-      const { CreateOrLoginGoogle } = await import('@/lib/hook');
-      const backendResponse = await CreateOrLoginGoogle({
-        email: session.user.email!,
-        fullName: session.user.name!,
-        img: session.user.image || '',
-        accessToken: session.accessToken,
-      });
-
-      if (!backendResponse) {
-        setError(true);
-        throw new Error('Error al crear usuario en el backend');
-      }
-
-      // Redirigir al usuario
-      router.push('/inicio');
+      await signIn('google');
     } catch (error) {
       console.error('Error en login con Google:', error);
       setError(true);
@@ -142,7 +111,7 @@ export default function Signin() {
             className='mt-1 mb-2 w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white'
           />
           {errors.password && <p className='text-sm text-red-500 mt-1'>Se requiere contraseña</p>}
-          <Link href={'/restablecer-cuenta'} className='text-sm hover:opacity-80 opacity-50'>
+          <Link href={'/restablecer-cuenta'} className='text-sm hover:opacity-80 opacity-90'>
             Olvidaste contraseña?
           </Link>
         </div>

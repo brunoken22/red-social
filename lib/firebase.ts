@@ -16,9 +16,6 @@ const app = initializeApp({
 const rtdb = getDatabase(app);
 const messaging = getMessaging(app);
 export async function obtenerTokenFCM(registration: any): Promise<string | null> {
-  // console.log('ESTA ES LA KEY DEK TOKEN', process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY);
-  console.log('🔍 Service worker registration:', registration);
-
   const vapid_key =
     'BBH1PK-gbIo_gq8Hk_E2xs1XWJZyFrUMepYSPIuAbGuffy_EshYcDTNJ511zK5em9FMfaUq7GJfAUwWr_2Q261U';
   try {
@@ -28,14 +25,11 @@ export async function obtenerTokenFCM(registration: any): Promise<string | null>
     });
 
     if (token) {
-      console.log('✅ Token FCM obtenido:', token);
       return token;
     } else {
-      console.warn('⚠️ No se obtuvo token. El usuario podría haber bloqueado las notificaciones.');
       return null;
     }
   } catch (error) {
-    console.error('❌ Error al obtener token:', error);
     return null;
   }
 }

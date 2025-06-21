@@ -1,6 +1,6 @@
 'use server';
 import { cookies } from 'next/headers';
-const Api_url = process.env.NEXT_PUBLIC_PORT;
+const Api_url = process.env.NEXT_PUBLIC_PORT || 'https://red-social-node-production.up.railway.app';
 
 export async function fetchApiSwr(api: string, option: any) {
   const token = cookies().get('token')?.value;

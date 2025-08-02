@@ -71,10 +71,6 @@ export const publicacionUser = atom<Publicacion[] | null>({
   default: null,
 });
 
-export const getAllUser = atom({
-  key: 'geAllUser',
-  default: [] as User[],
-});
 export const getAllAmigos = atom({
   key: 'getAllAmigos',
   default: {

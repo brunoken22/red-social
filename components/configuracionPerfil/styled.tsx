@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const DivConfiguracionPerfil = ({ children }: { children: React.ReactNode }) => (
-  <div className='w-3/5 max-md:w-full flex justify-evenly gap-4 max-md:flex-col max-md:items-center'>
+  <div className='w-full flex justify-evenly gap-4 max-md:flex-col max-md:items-center'>
     {children}
   </div>
 );

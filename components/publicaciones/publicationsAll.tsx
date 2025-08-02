@@ -4,15 +4,19 @@ import { user, publicacionAmigos } from '@/lib/atom';
 import { useRecoilValue } from 'recoil';
 import { GetAllPublicaciones } from '@/lib/hook';
 import { SkeletonPublicacionAll } from '@/ui/skeleton';
+import { useCallback, useEffect, useRef } from 'react';
 
-const ButtonMasPubli = dynamic(() => import('./styled').then((mod) => mod.ButtonMasPubli));
-const ThemplatePubli = dynamic(() =>
-  import('../templatePublicate').then((mod) => mod.ThemplatePubli)
+const ThemplatePubli = dynamic(
+  () => import('../templatePublicate').then((mod) => mod.ThemplatePubli),
+  { loading: () => <SkeletonPublicacionAll /> }
 );
 
 export default function PublicacionesAll() {
   const publicacionesAmigos = useRecoilValue(publicacionAmigos);
   const dataUser = useRecoilValue(user);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  const observer = useRef<IntersectionObserver | null>(null);
 
   const { dataPubliAllAmigosSwr, isLoadingAllAmigos, size, setSize, mutate } =
     GetAllPublicaciones();
@@ -25,6 +29,33 @@ export default function PublicacionesAll() {
     }
     setSize(size + 1);
   };
+
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target.isIntersecting) {
+        if (dataPubliAllAmigosSwr?.[dataPubliAllAmigosSwr.length - 1]?.length === 0) return;
+        setSize((prev) => prev + 1);
+      }
+    },
+    [dataPubliAllAmigosSwr, setSize]
+  );
+
+  useEffect(() => {
+    if (observer.current) observer.current.disconnect();
+
+    observer.current = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.7,
+    });
+
+    if (loadMoreRef.current) observer.current.observe(loadMoreRef.current);
+
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, [handleObserver]);
 
   return (
     <div className='flex flex-col gap-4 pb-3'>
@@ -55,16 +86,15 @@ export default function PublicacionesAll() {
                     />
                   </div>
                 ))}
+                {dataPubliAllAmigosSwr?.[dataPubliAllAmigosSwr.length - 1]?.length > 0 ? (
+                  <div ref={loadMoreRef} className='text-center m-4'>
+                    <p className='text-gray-400'>Cargando más publicaciones...</p>{' '}
+                  </div>
+                ) : null}
               </>
             ) : (
               <p className='text-center'>No hay publicaciones</p>
             )
-          ) : null}
-
-          {dataPubliAllAmigosSwr?.[dataPubliAllAmigosSwr.length - 1]?.length > 0 ? (
-            <div className='text-center m-4'>
-              <ButtonMasPubli onClick={handleMasPubli}>Ver más</ButtonMasPubli>
-            </div>
           ) : null}
         </>
       )}

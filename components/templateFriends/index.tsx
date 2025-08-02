@@ -56,7 +56,9 @@ export default function TemplateFriendRequest({
   };
   return (
     <DivAllAmistades requestClassDuo={requestClassDuo}>
-      <Link href={'/amigos/' + id} className='h-full hover:opacity-60 max-md:m-auto max-sm:h-[120px] max-sm:w-[120px]   max-sm:p-2 '>
+      <Link
+        href={'/amigos/' + id}
+        className='h-full hover:opacity-60 max-md:m-auto max-sm:h-[120px] max-sm:w-[120px]   max-sm:p-2 '>
         <img
           src={img ? img : '/user.webp'}
           alt={fullName}
@@ -65,7 +67,9 @@ export default function TemplateFriendRequest({
         />
       </Link>
       <div className='p-2 h-full w-[inherit] max-sm:flex max-sm:flex-col max-sm:gap-2 max-sm:justify-center max-md:max-w-[320px] max-md:min-w-full'>
-        <Link href={'/amigos/' + id} className='p-2 font-semibold hover:opacity-60 block whitespace-nowrap	max-md:text-start truncate'>
+        <Link
+          href={'/amigos/' + id}
+          className='p-2 font-semibold hover:opacity-60 block whitespace-nowrap	max-md:text-start truncate'>
           {fullName}
         </Link>
         <div className='flex flex-col max-sm:flex-row justify-center gap-2'>

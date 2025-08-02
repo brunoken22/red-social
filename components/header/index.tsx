@@ -17,7 +17,6 @@ import {
   Connect,
   notificacionesUser,
   messagesWriting,
-  // getAllUser,
 } from '@/lib/atom';
 import Logo from '@/public/logo.svg';
 import { useDebouncedCallback } from 'use-debounce';
@@ -90,7 +89,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const pathname = usePathname();
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataUser, setDataUser] = useRecoilState(user);
-  // const getAllUserData = useRecoilValue(getAllUser);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const [dataMessagesWriting, setMessagesWriting] = useRecoilState(messagesWriting);
   const [notificacionesUserAtom, setNotificacionesUserAtom] = useRecoilState(notificacionesUser);

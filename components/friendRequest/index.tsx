@@ -12,6 +12,7 @@ import {
   getSugerenciaAmigos,
 } from '@/lib/atom';
 import { LoaderRequest } from '../loader';
+import { GetFriendAccepted, GetFriendEnv, GetFriendPending, GetFriendReci } from '@/lib/hook';
 
 const TemplateFriendRequest = dynamic(() => import('../templateFriends'), {
   loading: () => <LoaderRequest />,
@@ -26,7 +27,10 @@ export default function AmigosComponent() {
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);
   const [soliEnv, setSoliEnv] = useState(false);
-
+  GetFriendAccepted();
+  GetFriendPending();
+  GetFriendEnv();
+  GetFriendReci();
   const handleClick = (e: any) => {
     e.preventDefault();
     if (e.target.id == 'suge') {

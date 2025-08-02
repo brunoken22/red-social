@@ -31,16 +31,8 @@ export default function Signin() {
 
   const onSubmit: SubmitHandler<FormData> = async (formData) => {
     setIsLoading(true);
-    // const { signinUser } = await import('@/lib/hook');
     const nextAuthSignin = await signIn('credentials', formData);
     return nextAuthSignin;
-    // const result = await signinUser(formData);
-    // if (result) {
-    //   router.push('/inicio');
-    // } else {
-    //   setError(true);
-    //   setIsLoading(false);
-    // }
   };
 
   const handleGoogleLogin = async () => {

@@ -6,7 +6,6 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
   user,
   publicacionUser,
-  getAllUser,
   getAllSolicitudesRecibidas,
   getAllAmigos,
   getAllSolicitudesEnviadas,
@@ -30,10 +29,6 @@ type DataUser = {
   accessToken?: string;
   code?: string;
 };
-type DataSingin = {
-  email: string;
-  password: string;
-};
 type Solicitud = {
   amigoId?: number;
   userId?: number;
@@ -52,7 +47,6 @@ export async function userConnectPushPWA(userConnect: any) {
   const subscribe = await fetchApiSwr('/subscribe', option);
   return subscribe;
 }
-export async function userDisconnectPushPWA(userConnect: any) {}
 export const useConnectionStatus = (user: User) => {
   const [status, setStatus] = useState(false);
 
@@ -109,60 +103,6 @@ export async function logOut() {
   console.log(data);
   if (data) {
     setCookie('token', '');
-  }
-  return data;
-}
-export async function CreateOrLoginGoogle(dataUser: DataUser) {
-  const api = '/auth-google';
-  const option = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(dataUser),
-  };
-  const data = dataUser.email && dataUser.fullName ? await fetchApiSwr(api, option) : null;
-
-  if (data?.user?.id) {
-    setCookie('token', data.token);
-  }
-  return data;
-}
-export async function CreateUser(dataUser: DataUser) {
-  const api = '/auth';
-  const option = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-
-    body: JSON.stringify(dataUser),
-  };
-  const data =
-    dataUser.email && dataUser.password && dataUser.fullName
-      ? await fetchApiSwr(api, option)
-      : null;
-
-  if (data?.user?.id) {
-    setCookie('token', data.token);
-  }
-  return data;
-}
-export async function signinUser(dataUser: DataSingin) {
-  const api = '/signin';
-  const option = {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(dataUser),
-  };
-  const data = dataUser.email ? await fetchApiSwr(api, option) : null;
-  if (data?.user?.id) {
-    setCookie('token', data.token);
   }
   return data;
 }
@@ -232,13 +172,9 @@ export async function resetPassword(dataUser: DataUser) {
 }
 export function GetUser() {
   const setUserData = useSetRecoilState(user);
-  const setGetAllUserData = useSetRecoilState(getAllUser);
-  const setAmigosAllData = useSetRecoilState(getAllAmigos);
-  const setGetSugerenciaAmigosData = useSetRecoilState(getSugerenciaAmigos);
-  const setSoliAllEnv = useSetRecoilState(getAllSolicitudesEnviadas);
-  const setSoliAllReci = useSetRecoilState(getAllSolicitudesRecibidas);
   const token = getCookie('token');
-  const api = '/user/token';
+  const user_info = '/user/info';
+
   const option = {
     method: 'GET',
     credentials: 'include',
@@ -248,30 +184,25 @@ export function GetUser() {
     },
   };
 
-  const { data, isLoading } = useSWR(token ? api : null, (url) => fetchApiSwr(url, option), {
-    refreshInterval: 100000,
-  });
+  const { data: dataUser, isLoading } = useSWR(
+    token ? user_info : null,
+    (url) => fetchApiSwr(url, option),
+    {
+      refreshInterval: 100000,
+    }
+  );
   useEffect(() => {
     if (isLoading) return;
-    if (!token && !isLoading)
+    if (!token)
       setUserData((prev) => ({
         ...prev,
         isLoading: false,
       }));
-    if (data?.getUserRes?.id) {
+    if (dataUser?.id) {
       setUserData({
         isLoading: false,
-        user: {
-          ...data.getUserRes,
-        },
+        user: dataUser,
       });
-
-      // setPublicacionesUser([...data.getUserRes.publicacions]);
-      setAmigosAllData({ isLoading: false, data: data.friendsAccepted });
-      setGetAllUserData(data.getAllUserRes);
-      setGetSugerenciaAmigosData(data.getAllUserSugeridos);
-      setSoliAllEnv(data.friendEnv);
-      setSoliAllReci(data.friendReci);
       return;
     } else {
       setUserData((prev) => ({
@@ -279,6 +210,98 @@ export function GetUser() {
         isLoading: false,
       }));
     }
+  }, [dataUser]);
+  return { dataUser, isLoading };
+}
+export function GetFriendAccepted() {
+  const setAmigosAllData = useSetRecoilState(getAllAmigos);
+  const token = getCookie('token');
+  if (!token) return;
+  const friend_accepted = '/user/friendAccepted';
+
+  const option = {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data, isLoading } = useSWR(friend_accepted, (url) => fetchApiSwr(url, option));
+
+  useEffect(() => {
+    if (isLoading) return;
+    setAmigosAllData({ isLoading: false, data: data });
+  }, [data]);
+  return { data, isLoading };
+}
+export function GetFriendPending() {
+  const setGetSugerenciaAmigosData = useSetRecoilState(getSugerenciaAmigos);
+  const token = getCookie('token');
+  if (!token) return;
+  const friend_accepted = '/user/friendPending';
+
+  const option = {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data, isLoading } = useSWR(friend_accepted, (url) => fetchApiSwr(url, option));
+
+  useEffect(() => {
+    if (isLoading) return;
+    setGetSugerenciaAmigosData(data);
+  }, [data]);
+  return { data, isLoading };
+}
+export function GetFriendEnv() {
+  const setSoliAllEnv = useSetRecoilState(getAllSolicitudesEnviadas);
+  const token = getCookie('token');
+  if (!token) return;
+  const friend_accepted = '/user/friendEnv';
+
+  const option = {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data, isLoading } = useSWR(friend_accepted, (url) => fetchApiSwr(url, option));
+
+  useEffect(() => {
+    if (isLoading) return;
+    setSoliAllEnv(data);
+  }, [data]);
+  return { data, isLoading };
+}
+export function GetFriendReci() {
+  const setSoliAllReci = useSetRecoilState(getAllSolicitudesRecibidas);
+  const token = getCookie('token');
+  if (!token) return;
+  const friend_accepted = '/user/friendReci';
+
+  const option = {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data, isLoading } = useSWR(friend_accepted, (url) => fetchApiSwr(url, option));
+
+  useEffect(() => {
+    if (isLoading) return;
+    setSoliAllReci(data);
   }, [data]);
   return { data, isLoading };
 }

@@ -20,9 +20,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FaSignInAlt } from 'react-icons/fa'; // Icono de entrada
 import { FiUser, FiSearch } from 'react-icons/fi';
+import { SkeletonPublicacionAll } from '@/ui/skeleton';
 
 const Verification = dynamic(() => import('@/ui/verification'));
-const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader));
 const LoaderRequest = dynamic(() => import('../loader').then((mod) => mod.LoaderRequest));
 
 const ButtonMasPubli = dynamic(() =>
@@ -31,8 +31,9 @@ const ButtonMasPubli = dynamic(() =>
 const SkeletonPerfilAmigo = dynamic(() =>
   import('@/ui/skeleton').then((mod) => mod.SkeletonPerfilAmigo)
 );
-const ThemplatePubli = dynamic(() =>
-  import('../templatePublicate').then((mod) => mod.ThemplatePubli)
+const ThemplatePubli = dynamic(
+  () => import('../templatePublicate').then((mod) => mod.ThemplatePubli),
+  { loading: () => <SkeletonPublicacionAll /> }
 );
 
 export function PerfilAmigo() {

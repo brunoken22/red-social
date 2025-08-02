@@ -6,14 +6,22 @@ export default function DiferenteDate(date: string) {
   const differenceInMilliseconds = Math.abs(targetDate.diff(currentDate));
 
   const yearsDifference = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24 * 365));
-  const monthsDifference = Math.floor((differenceInMilliseconds % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-  const weeksDifference = Math.floor((differenceInMilliseconds % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24 * 7));
-  const daysDifference = Math.floor((differenceInMilliseconds % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24));
-  const hoursDifference = Math.floor((differenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const monthsDifference = Math.floor(
+    (differenceInMilliseconds % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30)
+  );
+  const weeksDifference = Math.floor(
+    (differenceInMilliseconds % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24 * 7)
+  );
+  const daysDifference = Math.floor(
+    (differenceInMilliseconds % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24)
+  );
+  const hoursDifference = Math.floor(
+    (differenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
   const minutesDifference = Math.floor((differenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
   const secondsDifference = Math.floor((differenceInMilliseconds % (1000 * 60)) / 1000);
 
-  if (yearsDifference) return 'Hace ' + yearsDifference + ' años';
+  if (yearsDifference) return 'Hace ' + yearsDifference + (yearsDifference < 2 ? ' año' : ' año');
   if (monthsDifference) return 'Hace ' + monthsDifference + ' meses';
   if (weeksDifference) return 'Hace ' + weeksDifference + ' sem';
   if (daysDifference) return 'Hace ' + daysDifference + ' d';

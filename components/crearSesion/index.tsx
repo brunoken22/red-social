@@ -3,7 +3,6 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { CreateUser } from '@/lib/hook';
 import { NotificationToastStatus } from '@/ui/toast';
 import { signIn } from 'next-auth/react';
 

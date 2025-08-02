@@ -65,7 +65,6 @@ export function Password() {
   if (isLoading) {
     return <Loader />;
   }
-  console.log(error1);
   return (
     <div>
       <div>

@@ -183,7 +183,6 @@ export function GetUser() {
       Authorization: `Bearer ${token}`,
     },
   };
-
   const { data: dataUser, isLoading } = useSWR(
     token ? user_info : null,
     (url) => fetchApiSwr(url, option),
@@ -191,6 +190,7 @@ export function GetUser() {
       refreshInterval: 100000,
     }
   );
+
   useEffect(() => {
     if (isLoading) return;
     if (!token)
@@ -211,6 +211,7 @@ export function GetUser() {
       }));
     }
   }, [dataUser]);
+
   return { dataUser, isLoading };
 }
 export function GetFriendAccepted() {
@@ -396,7 +397,6 @@ export function NotificacionesUserImmutable(offset: number) {
     isLoadingNotiSwr: isLoading,
   };
 }
-
 export function GetAllPublicaciones(isMutate = false) {
   const setPublicacionesAllAmigos = useSetRecoilState(publicacionAmigos);
   const token = getCookie("token");
@@ -668,28 +668,6 @@ export async function comentarPublicacion(datas: any) {
   };
   const data = await fetchApiSwr(api, option);
   return data;
-}
-export function GetPublicacionId(id: string) {
-  const token = getCookie("token");
-  const api = "/user/publicacion/" + id;
-  const option = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  };
-  const { data, isLoading, mutate } = useSWR(
-    token && id ? api : null,
-    (url) => fetchApiSwr(url, option),
-    {
-      revalidateOnFocus: true,
-      revalidateOnReconnect: true,
-      revalidateOnMount: true,
-      refreshInterval: 100000,
-    }
-  );
-  return { dataPubliId: data, isLoadGetPubliId: isLoading, mutatePublicacionesUser: mutate };
 }
 export async function EnviarMessage(datas: MessageUserChat) {
   const token = getCookie("token");

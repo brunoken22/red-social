@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { DivPublicar } from "@/ui/container";
-import { user, isConnect, notificacionesUser } from "@/lib/atom";
+import { isConnect, notificacionesUser } from "@/lib/atom";
 import { NotificacionesUser } from "@/lib/hook";
 import { useRecoilValue } from "recoil";
 import { useState } from "react";

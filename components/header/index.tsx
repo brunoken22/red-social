@@ -1,14 +1,14 @@
-'use client';
-import dynamic from 'next/dynamic';
-import { ref, onValue, update, get, query, orderByChild, limitToLast } from 'firebase/database';
-import { messaging, obtenerTokenFCM, rtdb } from '@/lib/firebase';
-import './style.css';
-import { usePathname } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
-import { GetUser, useConnectionStatus } from '@/lib/hook';
-import Link from 'next/link';
-import { Menu } from '@/components/menu';
-import { useRecoilValue, useRecoilState } from 'recoil';
+"use client";
+import dynamic from "next/dynamic";
+import { ref, onValue, update, get, query, orderByChild, limitToLast } from "firebase/database";
+import { messaging, obtenerTokenFCM, rtdb } from "@/lib/firebase";
+import "./style.css";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import { GetUser, useConnectionStatus } from "@/lib/hook";
+import Link from "next/link";
+import { Menu } from "@/components/menu";
+import { useRecoilValue, useRecoilState } from "recoil";
 import {
   user,
   getAllSolicitudesRecibidas,
@@ -17,69 +17,40 @@ import {
   Connect,
   notificacionesUser,
   messagesWriting,
-} from '@/lib/atom';
-import Logo from '@/public/logo.svg';
-import { useDebouncedCallback } from 'use-debounce';
-import { LoaderRequest } from '../loader';
-import { SkeletonNav } from '@/ui/skeleton';
-import { NotificationPayload, onMessage } from 'firebase/messaging';
-const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), {
+} from "@/lib/atom";
+import Logo from "@/public/logo.svg";
+import { useDebouncedCallback } from "use-debounce";
+import { LoaderRequest } from "../loader";
+import { SkeletonNav } from "@/ui/skeleton";
+import { NotificationPayload, onMessage } from "firebase/messaging";
+const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"), {
   loading: () => <LoaderRequest />,
 });
 
-const DivConectados = dynamic(() => import('./styled').then((mod) => mod.DivConectados), {
+const DivConectados = dynamic(() => import("./styled").then((mod) => mod.DivConectados), {
   loading: () => <LoaderRequest />,
 });
 
-const DivConnect = dynamic(() => import('./styled').then((mod) => mod.DivConnect), {
+const DivConnect = dynamic(() => import("./styled").then((mod) => mod.DivConnect), {
   loading: () => <LoaderRequest />,
 });
 
 const DivContenedorConnect = dynamic(
-  () => import('./styled').then((mod) => mod.DivContenedorConnect),
+  () => import("./styled").then((mod) => mod.DivContenedorConnect),
   {
     loading: () => <LoaderRequest />,
   }
 );
-const SearchUser = dynamic(() => import('../searchUsers').then((mod) => mod.SearchUser));
-const SearchBox = dynamic(() => import('react-instantsearch').then((mod) => mod.SearchBox));
-const ConnectedUsers = dynamic(() => import('./connectedUser'));
-const NavegationUrl = dynamic(() => import('./navHeader'));
-
-// function urlBase64ToUint8Array(base64String: string) {
-//   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-//   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-
-//   const rawData = window.atob(base64);
-//   const outputArray = new Uint8Array(rawData.length);
-
-//   for (let i = 0; i < rawData.length; ++i) {
-//     outputArray[i] = rawData.charCodeAt(i);
-//   }
-//   return outputArray;
-// }
-// async function subscribeToPush() {
-//   console.log('entrado en el sub');
-//   const registration = await navigator.serviceWorker.ready;
-//   console.log('registration', registration);
-
-//   const sub = await registration.pushManager.subscribe({
-//     userVisibleOnly: true,
-//     applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!),
-//   });
-//   console.log('sub', sub);
-
-//   const serializedSub = JSON.parse(JSON.stringify(sub));
-//   console.log('serializedSub', serializedSub);
-
-//   return serializedSub;
-// }
+const SearchUser = dynamic(() => import("../searchUsers").then((mod) => mod.SearchUser));
+const SearchBox = dynamic(() => import("react-instantsearch").then((mod) => mod.SearchBox));
+const ConnectedUsers = dynamic(() => import("./connectedUser"));
+const NavegationUrl = dynamic(() => import("./navHeader"));
 
 export async function subscribeToPush() {
-  if (!('serviceWorker' in navigator)) throw new Error('No service worker support');
-  const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+  if (!("serviceWorker" in navigator)) throw new Error("No service worker support");
+  const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
   const permiso = await Notification.requestPermission();
-  if (permiso !== 'granted') throw new Error('Permiso de notificaciones denegado');
+  if (permiso !== "granted") throw new Error("Permiso de notificaciones denegado");
   return registration;
 }
 export default function Header({ themeDate }: { themeDate: string }) {
@@ -108,12 +79,12 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
   useEffect(() => {
     const cookieResponse = async () => {
-      const setCookie = await import('cookies-next').then((mod) => mod.setCookie);
-      setCookie('theme', theme);
-      if (theme !== 'true') {
-        document.documentElement.classList.remove('dark');
+      const setCookie = await import("cookies-next").then((mod) => mod.setCookie);
+      setCookie("theme", theme);
+      if (theme !== "true") {
+        document.documentElement.classList.remove("dark");
       } else {
-        document.documentElement.classList.add('dark');
+        document.documentElement.classList.add("dark");
       }
     };
     cookieResponse();
@@ -150,12 +121,12 @@ export default function Header({ themeDate }: { themeDate: string }) {
     if (!dataUser?.user?.id) return;
 
     const requestNotificationPermission = async () => {
-      if (!('Notification' in window)) {
-        alert('Este navegador no esta disponible las notificaciones');
+      if (!("Notification" in window)) {
+        alert("Este navegador no esta disponible las notificaciones");
         return;
       }
 
-      if (Notification.permission === 'default') {
+      if (Notification.permission === "default") {
         try {
           await Notification.requestPermission();
         } catch (err) {
@@ -166,11 +137,11 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
     requestNotificationPermission();
 
-    const audio = new Audio('/notification.mp3');
+    const audio = new Audio("/notification.mp3");
     audio.load();
 
     const unsubscribes = dataUser.user.rtdb.map((item) => {
-      const chatrooms = ref(rtdb, '/rooms/' + item + '/messages');
+      const chatrooms = ref(rtdb, "/rooms/" + item + "/messages");
 
       return onValue(chatrooms, (snapshot) => {
         const valor = snapshot.val();
@@ -180,7 +151,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
           if (ultimoMensaje.id) {
             const keys = Object.keys(valor);
             const lastKey = keys[keys.length - 1];
-            const userdataRef = ref(rtdb, '/rooms/' + item);
+            const userdataRef = ref(rtdb, "/rooms/" + item);
             get(userdataRef).then((user) => {
               const data = user.val();
               const isOpen = data[dataUser.user.id];
@@ -188,7 +159,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
               if (
                 (isOpen && isOpen.isOpen) ||
                 ultimoMensaje.id == dataUser.user.id ||
-                ultimoMensaje.status == 'Recibido'
+                ultimoMensaje.status == "Recibido"
               ) {
                 return;
               } else {
@@ -205,9 +176,9 @@ export default function Header({ themeDate }: { themeDate: string }) {
                 // }
               }
             });
-            if (ultimoMensaje.id !== dataUser.user.id && ultimoMensaje.status === 'Enviado') {
+            if (ultimoMensaje.id !== dataUser.user.id && ultimoMensaje.status === "Enviado") {
               const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
-              update(mensajeRef, { status: 'Recibido' });
+              update(mensajeRef, { status: "Recibido" });
             }
             setDataMessage((prev) => {
               if (prev.length) {
@@ -237,7 +208,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   useEffect(() => {
     if (!dataUser?.user?.id) return;
     const unsubscribes = dataUser.user.rtdb.map((item) => {
-      const chatrooms = ref(rtdb, '/rooms/' + item);
+      const chatrooms = ref(rtdb, "/rooms/" + item);
 
       return onValue(chatrooms, (snapshot) => {
         const valor = snapshot.val();
@@ -263,7 +234,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
-    const connectRef = ref(rtdb, '/connect');
+    const connectRef = ref(rtdb, "/connect");
     onValue(connectRef, async (snapshot: any) => {
       const valor = snapshot.val();
       if (valor) {
@@ -271,7 +242,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
         setIsConnect(dataConnect);
         const connecam = dataConnect.filter((e: Connect) => {
           return (
-            e.id != Number(dataUser.user.id) && e.connect && dataUser.user.amigos.includes(e.id)
+            e.id != Number(dataUser.user.id) && e.connect && dataUser.user.amigos?.includes(e.id)
           );
         });
         setAllConnectAmigos(connecam);
@@ -288,7 +259,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
           const tokenFCM = await obtenerTokenFCM(registration);
 
           if (!tokenFCM) return;
-          const userConnectPushPWA = (await import('@/lib/hook')).userConnectPushPWA;
+          const userConnectPushPWA = (await import("@/lib/hook")).userConnectPushPWA;
           await userConnectPushPWA({
             userId: dataUser.user.id,
             tokenFCM,
@@ -299,7 +270,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
       }
       const notificationRef = query(
         ref(rtdb, `/notifications/${dataUser.user.id}`),
-        orderByChild('timestamp'),
+        orderByChild("timestamp"),
         limitToLast(20)
       );
       onMessage(messaging, (payload) => {
@@ -324,9 +295,9 @@ export default function Header({ themeDate }: { themeDate: string }) {
   }, [dataUser?.user?.id]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -345,12 +316,12 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
   useEffect(() => {
     function getCookieValue(name: string) {
-      const cookies = document.cookie.split('; ').map((cookie) => cookie.split('='));
+      const cookies = document.cookie.split("; ").map((cookie) => cookie.split("="));
       const found = cookies.find(([key]) => key === name);
       return found ? decodeURIComponent(found[1]) : null;
     }
 
-    const login = getCookieValue('token'); // Busca la cookie 'login'
+    const login = getCookieValue("token"); // Busca la cookie 'login'
     if (login || login === null || login === undefined) {
       setDataUser((prev) => ({
         isLoading: prev.isLoading,
@@ -363,10 +334,10 @@ export default function Header({ themeDate }: { themeDate: string }) {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -375,15 +346,16 @@ export default function Header({ themeDate }: { themeDate: string }) {
       <>
         <header
           className={`${
-            openNav ? 'translate-y-0' : 'max-md:-translate-y-full'
-          } p-2 sticky top-0 right-0 left-0 z-10 bg-primary transition-transform duration-300 dark:bg-darkComponet`}>
+            openNav ? "translate-y-0" : "max-md:-translate-y-full"
+          } p-2 sticky top-0 right-0 left-0 z-10 bg-primary transition-transform duration-300 dark:bg-darkComponet`}
+        >
           <nav className='flex justify-between items-center max-md:justify-between max-w-screen-lg m-auto'>
             <div className='flex gap-4 items-center '>
-              <Link href={'/inicio'} aria-label='home'>
+              <Link href={"/inicio"} aria-label='home'>
                 <Logo className='rounded-md fill-unired transition-dark' />
               </Link>
               <div className='border-none relative max-md:hidden '>
-                {pathname !== '/search' && (
+                {pathname !== "/search" && (
                   <SearchBox
                     aria-label='searchAlgolia'
                     id='searchAlgolia'
@@ -405,7 +377,8 @@ export default function Header({ themeDate }: { themeDate: string }) {
             <div className='relative ' ref={modalRef}>
               <button
                 onClick={() => setMenu((isMenu) => !isMenu)}
-                className='m-0 bg-transparent border-none relative z-50'>
+                className='m-0 bg-transparent border-none relative z-50'
+              >
                 <FotoPerfil
                   className='w-[40px] h-[40px] hover:opacity-70'
                   img={dataUser.user.img}
@@ -419,7 +392,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
                   themebutton={(data: string) => setThemes(data)}
                   click={(data: boolean) => setMenu(data)}
                   userImg={dataUser.user.img}
-                  userName={dataUser.user.fullName.split(' ')[0]}
+                  userName={dataUser.user.fullName.split(" ")[0]}
                 />
               ) : null}
             </div>
@@ -438,7 +411,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
     ) : (
       <header className='bg-primary dark:bg-darkComponet dark:text-white text-secondary p-4 '>
         <div className='flex justify-between items-center max-md:justify-between max-w-screen-lg m-auto'>
-          <Link href={'/'} aria-label='logo unired' title='logo unired'>
+          <Link href={"/"} aria-label='logo unired' title='logo unired'>
             <Logo className='rounded-md fill-unired transition-dark' />
           </Link>
           <nav>
@@ -446,7 +419,8 @@ export default function Header({ themeDate }: { themeDate: string }) {
               <li>
                 <Link
                   href='/iniciarSesion'
-                  className='cursor-pointer transition-all bg-light text-white px-6 py-2 rounded-lg border-light border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:shadow-xl hover:shadow-light shadow-light active:shadow-none '>
+                  className='cursor-pointer transition-all bg-light text-white px-6 py-2 rounded-lg border-light border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:shadow-xl hover:shadow-light shadow-light active:shadow-none '
+                >
                   Iniciar Sesión
                 </Link>
               </li>

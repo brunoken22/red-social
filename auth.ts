@@ -1,8 +1,22 @@
-import NextAuth, { AuthError, CredentialsSignin } from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import Credentials from 'next-auth/providers/credentials';
-import { fetchApiSwr } from './lib/api';
-import { cookies } from 'next/headers';
+import NextAuth, { CredentialsSignin, DefaultSession } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import Credentials from "next-auth/providers/credentials";
+import { fetchApiSwr } from "./lib/api";
+import { cookies } from "next/headers";
+
+declare module "next-auth" {
+  interface Session {
+    accessToken?: string;
+    user: {
+      id: string;
+    } & DefaultSession["user"];
+  }
+
+  interface JWT {
+    id?: string;
+    accessToken?: string;
+  }
+}
 
 class CustomAuthError extends CredentialsSignin {
   constructor(code: string) {
@@ -19,30 +33,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
-        params: { prompt: 'consent' },
+        params: { prompt: "consent" },
       },
       profile(profile) {
         return profile;
       },
     }),
     Credentials({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'bruno_am_22@hotmail.com' },
-        password: { label: 'Contraseña', type: 'password', placeholder: '••••••' },
-        fullName: { label: 'Nombre Completo', type: 'text', placeholder: 'Bruno ken' },
-        signup: { label: 'Crear cuenta', type: 'hidden', value: 'false' },
+        email: { label: "Email", type: "email", placeholder: "bruno_am_22@hotmail.com" },
+        password: { label: "Contraseña", type: "password", placeholder: "••••••" },
+        fullName: { label: "Nombre Completo", type: "text", placeholder: "Bruno ken" },
+        signup: { label: "Crear cuenta", type: "hidden", value: "false" },
       },
       async authorize(credentials) {
         try {
-          if (credentials.email === '' || credentials.password === '') return null;
-          if (credentials.signup && credentials.signup === 'true') {
-            const api = '/auth';
+          if (credentials?.email === "" || credentials?.password === "") return null;
+
+          if (credentials?.signup && credentials.signup === "true") {
+            const api = "/auth";
             const option = {
-              method: 'POST',
-              credentials: 'include',
+              method: "POST",
+              credentials: "include",
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
               body: JSON.stringify({
                 fullName: credentials.fullName,
@@ -51,26 +66,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               }),
             };
             const data = await fetchApiSwr(api, option);
-            if (data === 'Usuario Registrado') {
-              throw new CustomAuthError(data || 'Credenciales incorrectas');
+
+            if (data === "Usuario Registrado") {
+              throw new CustomAuthError(data || "Credenciales incorrectas");
             }
+
             if (data?.user?.id) {
-              cookies().set('token', data.token);
+              cookies().set("token", data.token);
             }
             return data;
           } else {
-            const api = '/signin';
+            const api = "/signin";
             const option = {
-              method: 'POST',
-              credentials: 'include',
+              method: "POST",
+              credentials: "include",
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
               body: JSON.stringify(credentials),
             };
-            const data = credentials.email ? await fetchApiSwr(api, option) : null;
+            const data = credentials?.email ? await fetchApiSwr(api, option) : null;
+
             if (data?.user?.id) {
-              cookies().set('token', data.token);
+              cookies().set("token", data.token);
             }
             return data;
           }
@@ -82,7 +100,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET!,
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   callbacks: {
     authorized: async ({ auth }) => {
@@ -91,12 +109,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user, account }) {
       if (account && user) {
         token.accessToken = account.access_token;
+
         if (!token.backendToken) {
           try {
-            const response = await fetch(`${process.env.PORT_BACKEND}/api/auth-google`, {
-              method: 'POST',
+            // URL corregida - usando solo BACKEND_URL
+            const backendUrl = process.env.BACKEND_URL || "http://localhost:3001";
+            const response = await fetch(`${backendUrl}/api/auth-google`, {
+              method: "POST",
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
               body: JSON.stringify({
                 email: user.email,
@@ -106,12 +127,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               }),
             });
 
-            const data = await response.json();
-            if (data.token) {
-              cookies().set('token', data.token);
+            if (!response.ok) {
+              console.error("Error del backend:", response.status);
+            } else {
+              const data = await response.json();
+              if (data.token) {
+                cookies().set("token", data.token);
+                token.backendToken = data.token;
+              }
             }
           } catch (error) {
-            console.error('Error al obtener backendToken:', error);
+            console.error("Error al obtener backendToken:", error);
           }
         }
       }
@@ -119,9 +145,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user?.id) {
         token.id = user.id;
       }
-      const token_auth = cookies().get('token')?.value;
+
+      const token_auth = cookies().get("token")?.value;
       if (!token_auth) return null;
+
       return token;
     },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.accessToken = token.accessToken as string;
+      }
+      return session;
+    },
   },
+  // debug: process.env.NODE_ENV === "development",
 });

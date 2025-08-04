@@ -1,47 +1,45 @@
-'use client';
-import dynamic from 'next/dynamic';
-import { Body } from '@/ui/typography';
+"use client";
+import dynamic from "next/dynamic";
+import { Body } from "@/ui/typography";
 import {
   DivPerfil,
   DivSpan,
   DivInteractuar,
   BottonLike,
-  DivCantidad,
   SpanIco,
   DivPefilDelete,
   ContentDelete,
   ButtonDelete,
   ButtonOpenDelete,
   DivUserLikes,
-} from '@/components/publicaciones/styled';
-import Like from '@/ui/icons/like.svg';
-import Comentar from '@/ui/icons/comentar.svg';
-import { isConnect } from '@/lib/atom';
-import { useRecoilValue } from 'recoil';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { DeletePublic } from '@/lib/hook';
-import diferenteDate from './diferenteDate';
-import { useDebouncedCallback } from 'use-debounce';
-import Linkify from '@/utils/formtText';
-import { LoaderRequest } from '../loader';
-import GalleryServiceId from '../publicar/galleryImage';
-import { IoMdShare } from 'react-icons/io';
-import { FaMessage } from 'react-icons/fa6';
-import { AiFillLike } from 'react-icons/ai';
+} from "@/components/publicaciones/styled";
+import Like from "@/ui/icons/like.svg";
+import { isConnect } from "@/lib/atom";
+import { useRecoilValue } from "recoil";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { DeletePublic } from "@/lib/hook";
+import diferenteDate from "./diferenteDate";
+import { useDebouncedCallback } from "use-debounce";
+import Linkify from "@/utils/formtText";
+import { LoaderRequest } from "../loader";
+import GalleryServiceId from "../publicar/galleryImage";
+import { IoMdShare } from "react-icons/io";
+import { FaMessage } from "react-icons/fa6";
+import { AiFillLike } from "react-icons/ai";
 
 const iconConLike = {
-  height: ' 20px',
-  width: ' 20px',
-  border: '1px solid #ddd',
-  borderRadius: '50%',
-  padding: '2px',
-  backgroundColor: '#5a81ff',
+  height: " 20px",
+  width: " 20px",
+  border: "1px solid #ddd",
+  borderRadius: "50%",
+  padding: "2px",
+  backgroundColor: "#5a81ff",
 };
 
-const Verification = dynamic(() => import('@/ui/verification'));
-const Comment = dynamic(() => import('./comment'));
-const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), { loading: () => <LoaderRequest /> });
+const Verification = dynamic(() => import("@/ui/verification"));
+const Comment = dynamic(() => import("./comment"));
+const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"), { loading: () => <LoaderRequest /> });
 
 export function ThemplatePubli(props: {
   description?: string;
@@ -57,7 +55,7 @@ export function ThemplatePubli(props: {
   user: any;
   mutate?: any;
 }) {
-  const [like, setLike] = useState<'like' | 'disLike'>();
+  const [like, setLike] = useState<"like" | "disLike">();
   const [comentario, setComentario] = useState(
     props.comentarios?.length && props.comentarios.length > 0 && props.comentarios.length < 3
       ? true
@@ -70,7 +68,7 @@ export function ThemplatePubli(props: {
   const [userLikes, setUserLikes] = useState<boolean>(false);
 
   const debounced = useDebouncedCallback(async () => {
-    const likeODisLike = (await import('@/lib/hook')).likeODisLike;
+    const likeODisLike = (await import("@/lib/hook")).likeODisLike;
     await likeODisLike(props.idPublicacion.toString());
   }, 500);
   const { dataDelete } = DeletePublic(publiId);
@@ -78,7 +76,7 @@ export function ThemplatePubli(props: {
   useEffect(() => {
     const isLike =
       props?.like?.length > 0 ? props.like?.find((e: any) => e.user.id == props.userId) : false;
-    setLike(!isLike ? 'disLike' : 'like');
+    setLike(!isLike ? "disLike" : "like");
 
     setTotalLike(props.like?.length);
   }, [props.like, props.userId]);
@@ -93,12 +91,12 @@ export function ThemplatePubli(props: {
 
   const handleClickLike = async (e: any) => {
     e.preventDefault();
-    if (like == 'like') {
-      setLike('disLike');
+    if (like == "like") {
+      setLike("disLike");
       setTotalLike(totalLike - 1);
     } else {
       setTotalLike(totalLike + 1);
-      setLike('like');
+      setLike("like");
     }
     await debounced();
   };
@@ -106,29 +104,29 @@ export function ThemplatePubli(props: {
     e.preventDefault();
     if (!comentario) {
       setComentario(true);
-      e.target.style.fill = '#84e981';
+      e.target.style.fill = "#84e981";
       return;
     }
     setComentario(false);
-    e.target.style.fill = '#ddd';
+    e.target.style.fill = "#ddd";
   };
   const handleShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Publicación',
-          text: 'Mira esta publicación',
-          url: '/notificaciones/' + props.idPublicacion || window.location.href,
+          title: "Publicación",
+          text: "Mira esta publicación",
+          url: "/notificaciones/" + props.idPublicacion || window.location.href,
         });
       } catch (error) {
-        console.error('Error al compartir:', error);
+        console.error("Error al compartir:", error);
       }
     } else {
       // Lógica alternativa (copiar enlace al portapapeles)
       navigator.clipboard.writeText(
-        '/notificaciones/' + props.idPublicacion || window.location.href
+        "/notificaciones/" + props.idPublicacion || window.location.href
       );
-      alert('Enlace copiado al portapapeles');
+      alert("Enlace copiado al portapapeles");
     }
   };
   return (
@@ -136,31 +134,29 @@ export function ThemplatePubli(props: {
       <DivPefilDelete>
         <DivPerfil>
           {props.user && props.user?.id !== props.userId ? (
-            <Link href={'/amigos/' + props.id}>
+            <Link href={"/amigos/" + props.id}>
               <FotoPerfil
                 img={props?.user?.img}
                 className='h-[40px] w-[40px]  '
-                connect={
-                  dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
-                }></FotoPerfil>
+                connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
+              ></FotoPerfil>
             </Link>
           ) : (
             <FotoPerfil
               img={props?.user?.img}
               className='h-[40px] w-[40px]'
-              connect={
-                dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true
-              }></FotoPerfil>
+              connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
+            ></FotoPerfil>
           )}
           <div className='flex flex-col '>
             <div className='flex items-center gap-2'>
               {props.user && props.user?.id !== props.userId ? (
-                <Link href={'/amigos/' + props.id} className='hover:opacity-70'>
-                  <Body>{props.user?.id == props.userId ? 'Tú' : props.user.fullName}</Body>
+                <Link href={"/amigos/" + props.id} className='hover:opacity-70'>
+                  <Body>{props.user?.id == props.userId ? "Tú" : props.user.fullName}</Body>
                 </Link>
               ) : (
                 <Body>
-                  {props.user && props.user?.id == props.userId ? 'Tú' : props.user.fullName}
+                  {props.user && props.user?.id == props.userId ? "Tú" : props.user.fullName}
                 </Body>
               )}
 
@@ -173,7 +169,8 @@ export function ThemplatePubli(props: {
           <div className='relative'>
             <ButtonOpenDelete
               onClick={() => setOpenDelete(!openDelete)}
-              aria-label='EliminarContet'>
+              aria-label='EliminarContet'
+            >
               <ContentDelete />
               <ContentDelete />
               <ContentDelete />
@@ -184,7 +181,8 @@ export function ThemplatePubli(props: {
                 onClick={() => {
                   setPubliId(props.idPublicacion);
                   setOpenDelete(false);
-                }}>
+                }}
+              >
                 Eliminar
               </ButtonDelete>
             )}
@@ -193,7 +191,7 @@ export function ThemplatePubli(props: {
       </DivPefilDelete>
       {props.description?.length ? (
         <p className='p-6 pt-0 pb-1 text-[0.9rem] font-thin'>
-          <Linkify text={props.description || ''} />
+          <Linkify text={props.description || ""} />
         </p>
       ) : null}
       {props.img?.length ? <GalleryServiceId images={props.img} /> : null}
@@ -230,15 +228,17 @@ export function ThemplatePubli(props: {
             {totalLike > 0 ? (
               <SpanIco
                 onMouseEnter={() => setUserLikes(true)}
-                onMouseLeave={() => setUserLikes(false)}>
+                onMouseLeave={() => setUserLikes(false)}
+              >
                 <DivSpan>{totalLike} Me gusta</DivSpan>
                 {userLikes && (
                   <DivUserLikes>
                     {props.like.map((e: any) => (
                       <div
                         key={e.id}
-                        className='w-full whitespace-nowrap overflow-hidden text-ellipsis m-0'>
-                        {e.user.id !== props.userId ? e.user.fullName : 'Tú'}
+                        className='w-full whitespace-nowrap overflow-hidden text-ellipsis m-0'
+                      >
+                        {e.user.id !== props.userId ? e.user.fullName : "Tú"}
                       </div>
                     ))}
                   </DivUserLikes>
@@ -255,13 +255,14 @@ export function ThemplatePubli(props: {
             disabled={!props.userId}
             type='button'
             onClick={handleClickLike}
-            like={like === 'like'}
-            id={props.idPublicacion.toString()}>
+            like={like === "like"}
+            id={props.idPublicacion.toString()}
+          >
             <AiFillLike
               className={`text-base ${
-                like === 'like'
-                  ? 'fill-[#063ef5] dark:fill-[#7696fd]'
-                  : 'dark:fill-[#ddd] fill-[#919191]'
+                like === "like"
+                  ? "fill-[#063ef5] dark:fill-[#7696fd]"
+                  : "dark:fill-[#ddd] fill-[#919191]"
               }`}
             />
             Me gusta
@@ -284,10 +285,11 @@ export function ThemplatePubli(props: {
           <BottonLike
             onClick={handleClickOpenComen}
             type='button'
-            id={'comentario' + Number(props.idPublicacion)}>
+            id={"comentario" + Number(props.idPublicacion)}
+          >
             <FaMessage
               className={`text-base ${
-                comentario ? 'fill-[#84e981]' : 'dark:fill-[#ddd] fill-[#919191]'
+                comentario ? "fill-[#84e981]" : "dark:fill-[#ddd] fill-[#919191]"
               }`}
             />
             Comentar
@@ -306,8 +308,9 @@ export function ThemplatePubli(props: {
           <button
             onClick={handleShare}
             type='button'
-            id={'comentario' + Number(props.idPublicacion)}
-            className='border-none flex items-center gap-2 text-[0.8rem] p-2 hover:backdrop-contrast-50 rounded-md'>
+            id={"comentario" + Number(props.idPublicacion)}
+            className='border-none flex items-center gap-2 text-[0.8rem] p-2 hover:backdrop-contrast-50 rounded-md'
+          >
             <IoMdShare className='text-base' />
             Compartir
           </button>

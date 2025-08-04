@@ -1,49 +1,37 @@
-'use client';
-import dynamic from 'next/dynamic';
-import { DivAllPublicaciones } from '@/ui/container';
-import { user } from '@/lib/atom';
-import { GetPublicacionId, viewNotification } from '@/lib/hook';
-import { useRecoilValue } from 'recoil';
-import { useParams } from 'next/navigation';
-import { useEffect } from 'react';
-import { LoaderRequest } from '../loader';
-import Link from 'next/link';
+"use client";
+import dynamic from "next/dynamic";
+import { DivAllPublicaciones } from "@/ui/container";
+import { Publicacion, user } from "@/lib/atom";
+import { useRecoilValue } from "recoil";
+import { LoaderRequest } from "../loader";
+import Link from "next/link";
 
 const ThemplatePubli = dynamic(
-  () => import('../templatePublicate').then((mod) => mod.ThemplatePubli),
+  () => import("../templatePublicate").then((mod) => mod.ThemplatePubli),
   {
     loading: () => <LoaderRequest />,
   }
 );
-export default function NotificationId() {
-  const { id } = useParams();
-  const { dataPubliId, mutatePublicacionesUser } = GetPublicacionId(id as string);
+export default function NotificationId({ notification }: { notification: Publicacion }) {
   const dataUser = useRecoilValue(user);
-
-  useEffect(() => {
-    (async () => {
-      const data = await viewNotification(id as string);
-      return data;
-    })();
-  }, [dataPubliId]);
 
   return (
     <div className='max-w-[600px] w-full'>
-      {dataPubliId ? (
+      {notification ? (
         <DivAllPublicaciones>
           <ThemplatePubli
-            mutate={mutatePublicacionesUser}
             vereficationUser={dataUser.user?.verification}
-            description={dataPubliId.description}
-            img={dataPubliId.img}
-            fecha={dataPubliId.createdAt}
-            like={dataPubliId.likePublics}
-            comentarios={dataPubliId.commentPublis}
+            description={notification.description}
+            img={notification.img}
+            fecha={notification.createdAt}
+            like={notification.likePublics}
+            comentarios={notification.commentPublis}
             imgUserPro={dataUser.user.img}
-            id={dataPubliId.userId}
-            idPublicacion={dataPubliId.id}
+            id={notification.userId}
+            idPublicacion={notification.id}
             userId={dataUser.user.id}
-            user={dataPubliId.user}></ThemplatePubli>
+            user={notification.user}
+          ></ThemplatePubli>
         </DivAllPublicaciones>
       ) : (
         <div className='dark:bg-darkComponet  shadow-lg rounded-2xl p-8 max-w-md'>
@@ -55,7 +43,8 @@ export default function NotificationId() {
           </p>
           <Link
             href='/notificaciones'
-            className='bg-light  text-primary px-4 py-2 rounded-lg hover:bg-blue-600 transition'>
+            className='bg-light  text-primary px-4 py-2 rounded-lg hover:bg-blue-600 transition'
+          >
             Volver a tus notificaciones
           </Link>
         </div>

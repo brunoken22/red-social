@@ -6,13 +6,11 @@ import { NotificacionesUser } from "@/lib/hook";
 import { useRecoilValue } from "recoil";
 import { useState } from "react";
 import { FaComment, FaHeart, FaReply } from "react-icons/fa";
-// import MaintenanceMessage from '../MaintenanceMessage';
 
 const SkeletonNoti = dynamic(() => import("@/ui/skeleton").then((mod) => mod.SkeletonNoti));
 const ButtonMasPubli = dynamic(() =>
   import("../publicaciones/styled").then((mod) => mod.ButtonMasPubli)
 );
-const ButtonNoti = dynamic(() => import("@/ui/boton").then((mod) => mod.ButtonNoti));
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));
 const Link = dynamic(() => import("next/link"));
 
@@ -31,7 +29,6 @@ export function TemNoti() {
     setOffset((prevPagePubli) => prevPagePubli + 10);
   };
 
-  console.log("ESTAS SON LAS NOTIFICACIONES: ", notificacionesUserAtom);
   return (
     <DivPublicar>
       {notificacionesUserAtom && notificacionesUserAtom.publicacion.length

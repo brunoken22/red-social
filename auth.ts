@@ -113,7 +113,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!token.backendToken) {
           try {
             // URL corregida - usando solo BACKEND_URL
-            const backendUrl = process.env.BACKEND_URL || "http://localhost:3001";
+            const backendUrl = process.env.NEXTAUTH_URL || "http://localhost:3001";
             const response = await fetch(`${backendUrl}/api/auth-google`, {
               method: "POST",
               headers: {
@@ -128,7 +128,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             });
 
             if (!response.ok) {
-              console.error("Error del backend:", response.status);
+              console.error("Error del backend:", response);
             } else {
               const data = await response.json();
               if (data.token) {

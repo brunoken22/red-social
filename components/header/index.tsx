@@ -5,7 +5,7 @@ import { messaging, obtenerTokenFCM, rtdb } from "@/lib/firebase";
 import "./style.css";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { GetUser, useConnectionStatus } from "@/lib/hook";
+import { GetFriendAccepted, GetUser, useConnectionStatus } from "@/lib/hook";
 import Link from "next/link";
 import { Menu } from "@/components/menu";
 import { useRecoilValue, useRecoilState } from "recoil";
@@ -17,6 +17,7 @@ import {
   Connect,
   notificacionesUser,
   messagesWriting,
+  getAllAmigos,
 } from "@/lib/atom";
 import Logo from "@/public/logo.svg";
 import { useDebouncedCallback } from "use-debounce";
@@ -53,17 +54,17 @@ export async function subscribeToPush() {
   if (permiso !== "granted") throw new Error("Permiso de notificaciones denegado");
   return registration;
 }
+
 export default function Header({ themeDate }: { themeDate: string }) {
   const [firstConect, setFirstConnect] = useState(false);
   GetUser();
-
+  GetFriendAccepted();
   const pathname = usePathname();
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataUser, setDataUser] = useRecoilState(user);
   const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
   const [dataMessagesWriting, setMessagesWriting] = useRecoilState(messagesWriting);
   const [notificacionesUserAtom, setNotificacionesUserAtom] = useRecoilState(notificacionesUser);
-  // const [notificationSound, setNotificationSound] = useState<any[]>([]);
   const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const [allConnectAmigos, setAllConnectAmigos] = useState([]);
   const [connectAmigos, setConnectAmigos] = useState(false);
@@ -71,6 +72,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const [theme, setThemes] = useState<string>(themeDate);
   const [openNav, setOpenNav] = useState(true);
   const lastScrollY = useRef(0);
+  const useAmigosAll = useRecoilValue(getAllAmigos);
   const modalRef = useRef<HTMLDivElement>(null);
   const useDebounce = useDebouncedCallback((query, search) => {
     search(query);
@@ -89,33 +91,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
     };
     cookieResponse();
   }, [theme]);
-
-  //----------------------- MENSAJES POR RTDB
-
-  // useEffect(() => {
-  //   if (notificacionesUserAtom.length) {
-  //     const newNotificationSound = notificacionesUserAtom.filter((item) => {
-  //       load('/notification.mp3', {autoplay: true});
-  //       return {
-  //         ...item,
-  //         notification: false,
-  //       };
-  //     });
-  //     setNotificationSound(newNotificationSound);
-  //   }
-  // }, [notificacionesUserAtom]);
-  // useEffect(() => {
-  //   if (notificationSound.length) {
-  //     const newNoti = notificationSound.map((item) => {
-  //       load('/notification.mp3', {autoplay: true});
-  //       return {
-  //         ...item,
-  //         notification: true,
-  //       };
-  //     });
-  //     setNotificationSound(newNoti);
-  //   }
-  // }, [notificationSound]);
 
   useEffect(() => {
     if (!dataUser?.user?.id) return;
@@ -242,7 +217,9 @@ export default function Header({ themeDate }: { themeDate: string }) {
         setIsConnect(dataConnect);
         const connecam = dataConnect.filter((e: Connect) => {
           return (
-            e.id != Number(dataUser.user.id) && e.connect && dataUser.user.amigos?.includes(e.id)
+            e.id != Number(dataUser.user.id) &&
+            e.connect &&
+            useAmigosAll.data.find((user) => user.id === e.id)
           );
         });
         setAllConnectAmigos(connecam);

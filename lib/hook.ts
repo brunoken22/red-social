@@ -527,25 +527,7 @@ export function DeletePublic(id: number) {
 
   return { dataDelete: data, isLoadingDeletePubli: isLoading };
 }
-export function GetAmigo(id: string) {
-  const api = `/user/amigos/${id}`;
 
-  const option = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  };
-  const { data, isLoading } = useSWR(api, (url) => fetchApiSwr(url, option), {
-    revalidateOnFocus: true,
-    revalidateOnReconnect: true,
-    revalidateOnMount: true,
-    refreshInterval: 100000,
-  });
-
-  return { data, isLoadingDataUserId: isLoading };
-}
 export async function CreatePublicacion(dataPubli: { description: string; img: File[] }) {
   const api = "/user/publicacion";
   const formData = new FormData();

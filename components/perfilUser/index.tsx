@@ -5,7 +5,7 @@ import { DivPerfilUser, DivHeadPerfil, DivFotoName, DivButton, DivPublicaciones 
 import Publicar from "../publicar";
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import { user } from "@/lib/atom";
+import { getAllAmigos, user } from "@/lib/atom";
 import { useRecoilValue } from "recoil";
 import { modificarUser, optimizarImage } from "@/lib/hook";
 import Dropzone from "react-dropzone";
@@ -21,6 +21,7 @@ const PublicacionesUser = dynamic(() =>
 export default function PerfilUser() {
   const dataValor = useRecoilValue(user);
   const [isLoading, setIsLoading] = useState(false);
+  const useAmigosAll = useRecoilValue(getAllAmigos);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -85,10 +86,8 @@ export default function PerfilUser() {
                 </h2>
                 {dataValor.user.verification ? <Verification publication={false} /> : null}
               </div>
-              {dataValor.user?.amigos?.length ? (
-                <div className='max-md:mb-2 mb-0 -mt-1'>
-                  {dataValor.user.amigos.length + " amigos"}
-                </div>
+              {useAmigosAll.data.length ? (
+                <div className='max-md:mb-2 mb-0 -mt-1'>{useAmigosAll.data.length + " amigos"}</div>
               ) : null}
             </div>
           </DivFotoName>

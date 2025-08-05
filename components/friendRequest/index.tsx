@@ -1,20 +1,20 @@
-'use client';
-import dynamic from 'next/dynamic';
-import { Section, DivSection, DivIcons, DivResponse, DivResult } from './styled';
-import MyAmigos from '@/ui/icons/myAmigos.svg';
-import { ButtonNoti } from '@/ui/boton';
-import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+"use client";
+import dynamic from "next/dynamic";
+import { Section, DivSection, DivIcons, DivResponse, DivResult } from "./styled";
+import MyAmigos from "@/ui/icons/myAmigos.svg";
+import { ButtonNoti } from "@/ui/boton";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import {
   getAllAmigos,
   getAllSolicitudesRecibidas,
   getAllSolicitudesEnviadas,
   getSugerenciaAmigos,
-} from '@/lib/atom';
-import { LoaderRequest } from '../loader';
-import { GetFriendAccepted, GetFriendEnv, GetFriendPending, GetFriendReci } from '@/lib/hook';
+} from "@/lib/atom";
+import { LoaderRequest } from "../loader";
+import { GetFriendAccepted, GetFriendEnv, GetFriendPending, GetFriendReci } from "@/lib/hook";
 
-const TemplateFriendRequest = dynamic(() => import('../templateFriends'), {
+const TemplateFriendRequest = dynamic(() => import("../templateFriends"), {
   loading: () => <LoaderRequest />,
 });
 
@@ -33,14 +33,14 @@ export default function AmigosComponent() {
   GetFriendReci();
   const handleClick = (e: any) => {
     e.preventDefault();
-    if (e.target.id == 'suge') {
+    if (e.target.id == "suge") {
       setSugerencia(true);
       setSoliAmis(false);
       setAllAmig(false);
       setSoliEnv(false);
       return;
     }
-    if (e.target.id == 'soli') {
+    if (e.target.id == "soli") {
       setSoliAmis(true);
       setSugerencia(false);
       setAllAmig(false);
@@ -48,7 +48,7 @@ export default function AmigosComponent() {
 
       return;
     }
-    if (e.target.id == 'all') {
+    if (e.target.id == "all") {
       setAllAmig(true);
       setSugerencia(false);
       setSoliAmis(false);
@@ -56,7 +56,7 @@ export default function AmigosComponent() {
 
       return;
     }
-    if (e.target.id == 'SoliEnv') {
+    if (e.target.id == "SoliEnv") {
       setAllAmig(false);
       setSugerencia(false);
       setSoliEnv(true);
@@ -69,17 +69,18 @@ export default function AmigosComponent() {
     <Section>
       <DivSection>
         <div className='sticky top-16 z-[9]'>
-          <h2 className='font-semibold text-2xl text-start p-2 pb-3'>Amigos</h2>
+          <h2 className='font-semibold text-2xl text-start p-2 pb-3 pt-0'>Amigos</h2>
           <div className='flex flex-col max-md:flex-row gap-2 max-md:flex-wrap'>
             <ButtonNoti
               onClick={handleClick}
               id='suge'
               open={sugerencia}
               className={`w-auto ${
-                sugerencia ? 'bg-light text-primary  !opacity-100 !cursor-default' : ''
-              } `}>
+                sugerencia ? "bg-light text-primary  !opacity-100 !cursor-default" : ""
+              } `}
+            >
               <DivIcons className='max-md:hidden'>
-                <MyAmigos /> {'>'}
+                <MyAmigos /> {">"}
               </DivIcons>
               Sugerencia de amistad
             </ButtonNoti>
@@ -88,11 +89,12 @@ export default function AmigosComponent() {
               id='soli'
               open={soliAmis}
               className={`w-auto  !opacity-100 ${
-                soliAmis ? 'bg-light text-primary  !opacity-100 !cursor-default ' : ''
-              }  `}>
+                soliAmis ? "bg-light text-primary  !opacity-100 !cursor-default " : ""
+              }  `}
+            >
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />
-                {'+'}
+                {"+"}
               </DivIcons>
               Solicitud de amistad
             </ButtonNoti>
@@ -101,8 +103,9 @@ export default function AmigosComponent() {
               id='all'
               open={allAmig}
               className={`w-auto ${
-                allAmig ? 'bg-light text-primary !opacity-100 !cursor-default' : ''
-              }`}>
+                allAmig ? "bg-light text-primary !opacity-100 !cursor-default" : ""
+              }`}
+            >
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />
               </DivIcons>
@@ -113,8 +116,9 @@ export default function AmigosComponent() {
               id='SoliEnv'
               open={soliEnv}
               className={`w-auto ${
-                soliEnv ? 'bg-light text-primary !opacity-100 !cursor-default' : ''
-              } `}>
+                soliEnv ? "bg-light text-primary !opacity-100 !cursor-default" : ""
+              } `}
+            >
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />
               </DivIcons>
@@ -139,7 +143,7 @@ export default function AmigosComponent() {
                       typeRequest='suggestion'
                     />
                   ))
-                : 'Sin Usuarios'}
+                : "Sin Usuarios"}
             </DivResponse>
           </>
         ) : null}
@@ -158,7 +162,7 @@ export default function AmigosComponent() {
                       typeRequest='requestFriend'
                     />
                   ))
-                : 'No hay solicitud de amistad'}
+                : "No hay solicitud de amistad"}
             </DivResponse>
           </>
         ) : null}
@@ -173,11 +177,11 @@ export default function AmigosComponent() {
                       id={user.id}
                       fullName={user.fullName}
                       img={user.img}
-                      typeRequest={'allFriend'}
+                      typeRequest={"allFriend"}
                       requestClassDuo={false}
                     />
                   ))
-                : 'No tienes amigos'}
+                : "No tienes amigos"}
             </DivResponse>
           </>
         ) : null}
@@ -192,11 +196,11 @@ export default function AmigosComponent() {
                       id={user.id}
                       fullName={user.fullName}
                       img={user.img}
-                      typeRequest={'requestSent'}
+                      typeRequest={"requestSent"}
                       requestClassDuo={false}
                     />
                   ))
-                : 'No enviastes solicitudes'}
+                : "No enviastes solicitudes"}
             </DivResponse>
           </>
         ) : null}

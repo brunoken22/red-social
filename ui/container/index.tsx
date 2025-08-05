@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 export const Main = ({ children }: { children: React.ReactNode }) => (
   <main className=' flex gap-12 flex-wrap h-full '>{children}</main>
 );
@@ -33,8 +33,9 @@ export const DivPublicar = ({
   <div
     className={` bg-primary  
    h-max  p-4 max-md:p-2 pb-2 flex flex-col justify-evenly gap-4 rounded-md shadow-container w-full  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center ${
-     className ? className : ' w-full'
-   }`}>
+     className ? className : " w-full"
+   }`}
+  >
     {children}
   </div>
 );
@@ -47,7 +48,8 @@ export const DivAllChat = ({
   className?: string;
 }) => (
   <div
-    className={`${className} relative   flex gap-4 rounded-md flex-row items-center p-4   w-full`}>
+    className={`${className} relative   flex gap-4 rounded-md flex-row items-center p-4   w-full`}
+  >
     {children}
   </div>
 );
@@ -60,11 +62,12 @@ export const DivAllAmistades = ({
   requestClassDuo: boolean;
 }) => (
   <div
-    className={`bg-primary rounded-md shadow-container dark:shadow-dark max-md:mt-4 w-[185px]  max-sm:w-full max-sm:h-[120px] dark:bg-darkComponet grid ${
+    className={`max-sm:p-2 bg-primary rounded-md overflow-hidden shadow-container dark:shadow-dark max-md:mt-4 w-[200px]  max-sm:w-full max-sm:h-[150px] dark:bg-darkComponet grid ${
       !requestClassDuo
-        ? 'grid-rows-[repeat(1,200px_100px)] max-sm:grid-rows-none max-sm:grid-cols-[repeat(1,140px_1fr)]'
-        : 'grid-rows-[repeat(1,200px_150px)] max-sm:grid-rows-none max-sm:grid-cols-[repeat(1,140px_1fr)]'
-    }`}>
+        ? "grid-rows-[repeat(1,200px_100px)] max-sm:grid-rows-none max-sm:grid-cols-[repeat(1,140px_1fr)]"
+        : "grid-rows-[repeat(1,200px_150px)] max-sm:grid-rows-none max-sm:grid-cols-[repeat(1,140px_1fr)]"
+    }`}
+  >
     {children}
   </div>
 );
@@ -84,7 +87,8 @@ export const Form = ({
 }) => (
   <form
     onSubmit={onSubmit}
-    className='flex flex-col gap-4 max-w-[500px] w-[90%] pt-4 pb-4 max-md:m-auto'>
+    className='flex flex-col gap-4 max-w-[500px] w-[90%] pt-4 pb-4 max-md:m-auto'
+  >
     {children}
   </form>
 );

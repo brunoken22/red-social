@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom } from "recoil";
 
 export type Publicacion = {
   id: number;
@@ -26,7 +26,7 @@ export type MessageWriting = {
 };
 
 export type NotificationPublication = {
-  type: 'like' | 'comment' | 'reply';
+  type: "like" | "comment" | "reply";
   user_id: Number;
   publicacionId: Number;
   fromUser: Number;
@@ -45,34 +45,32 @@ export type User = {
   fullName: string;
   email: string;
   img: string;
-  amigos: number[];
   verification: boolean;
   rtdb: string[];
 };
 export const user = atom({
-  key: 'user',
+  key: "user",
   default: {
     isLoading: true,
     user: {
       id: 0,
-      email: '',
-      fullName: '',
+      email: "",
+      fullName: "",
       verification: false,
       google: false,
-      img: '',
-      amigos: [] as number[],
+      img: "",
       rtdb: [] as string[],
     },
   },
 });
 
 export const publicacionUser = atom<Publicacion[] | null>({
-  key: 'publicacionUser',
+  key: "publicacionUser",
   default: null,
 });
 
 export const getAllAmigos = atom({
-  key: 'getAllAmigos',
+  key: "getAllAmigos",
   default: {
     isLoading: true,
     data: [] as User[],
@@ -80,46 +78,46 @@ export const getAllAmigos = atom({
 });
 
 export const getSugerenciaAmigos = atom({
-  key: 'getSugerenciaAmigos',
+  key: "getSugerenciaAmigos",
   default: [] as User[],
 });
 export const getAllSolicitudesRecibidas = atom({
-  key: 'getAllSolicitudesRecibidas',
+  key: "getAllSolicitudesRecibidas",
   default: [] as User[],
 });
 
 export const getAllSolicitudesEnviadas = atom({
-  key: 'getAllSolicitudesEnviadas',
+  key: "getAllSolicitudesEnviadas",
   default: [] as User[],
 });
 
 export const publicacionAmigos = atom<Publicacion[] | null>({
-  key: 'publicacionAmigos',
+  key: "publicacionAmigos",
   default: null,
 });
 export const publicacionSearchUser = atom<Publicacion[] | null>({
-  key: 'publicacionSearchUser',
+  key: "publicacionSearchUser",
   default: null,
 });
 export const isMenssage = atom({
-  key: 'isMenssage',
+  key: "isMenssage",
   default: [] as Message[],
 });
 export const messagesWriting = atom({
-  key: 'isMenssageWriting',
+  key: "isMenssageWriting",
   default: [] as MessageWriting[],
 });
 export const notificacionesUser = atom<{
   publicacion: NotificationPublication[];
   newPubliOPen: number;
 }>({
-  key: 'notificacionesUser',
+  key: "notificacionesUser",
   default: {
     publicacion: [],
     newPubliOPen: 0,
   },
 });
 export const isConnect = atom({
-  key: 'isConnet',
+  key: "isConnet",
   default: [] as Connect[],
 });

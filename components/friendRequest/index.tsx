@@ -12,7 +12,7 @@ import {
   getSugerenciaAmigos,
 } from "@/lib/atom";
 import { LoaderRequest } from "../loader";
-import { GetFriendAccepted, GetFriendEnv, GetFriendPending, GetFriendReci } from "@/lib/hook";
+import { GetFriendAccepted, GetFriendSend, GetFriendPending, GetFriendReceived } from "@/lib/hook";
 
 const TemplateFriendRequest = dynamic(() => import("../templateFriends"), {
   loading: () => <LoaderRequest />,
@@ -27,20 +27,23 @@ export default function AmigosComponent() {
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);
   const [soliEnv, setSoliEnv] = useState(false);
-  GetFriendAccepted();
-  GetFriendPending();
-  GetFriendEnv();
-  GetFriendReci();
-  const handleClick = (e: any) => {
+  const [isLoading, setIsLoading] = useState<string | false>(false);
+
+  const { mutateAccepted } = GetFriendAccepted();
+  const { mutatePending } = GetFriendPending();
+  const { mutateSend } = GetFriendSend();
+  const { mutateReceived } = GetFriendReceived();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (e.target.id == "suge") {
+    if (e.currentTarget.id == "suge") {
       setSugerencia(true);
       setSoliAmis(false);
       setAllAmig(false);
       setSoliEnv(false);
       return;
     }
-    if (e.target.id == "soli") {
+    if (e.currentTarget.id == "soli") {
       setSoliAmis(true);
       setSugerencia(false);
       setAllAmig(false);
@@ -48,7 +51,7 @@ export default function AmigosComponent() {
 
       return;
     }
-    if (e.target.id == "all") {
+    if (e.currentTarget.id == "all") {
       setAllAmig(true);
       setSugerencia(false);
       setSoliAmis(false);
@@ -56,13 +59,66 @@ export default function AmigosComponent() {
 
       return;
     }
-    if (e.target.id == "SoliEnv") {
+    if (e.currentTarget.id == "SoliEnv") {
       setAllAmig(false);
       setSugerencia(false);
       setSoliEnv(true);
       setSoliAmis(false);
       return;
     }
+  };
+
+  const handleSolicitudEnv = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const id = e.currentTarget.id;
+    setIsLoading(id);
+    const createSolicitud = await import("@/lib/hook").then((mod) => mod.createSolicitud);
+    await createSolicitud({
+      amigoId: Number(id),
+    });
+    await mutateSend();
+    await mutateReceived();
+    await mutateAccepted();
+    await mutatePending();
+
+    setIsLoading(false);
+  };
+  const handleSolicitudAcep = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const id = e.currentTarget.id;
+    setIsLoading(id);
+
+    const aceptarSolicitud = await import("@/lib/hook").then((mod) => mod.aceptarSolicitud);
+    await aceptarSolicitud(Number(id));
+    await mutateSend();
+    await mutateReceived();
+    await mutateAccepted();
+    await mutatePending();
+
+    setIsLoading(false);
+  };
+  const handleSolicitudRecha = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const id = e.currentTarget.id;
+    setIsLoading(id);
+    const rechazarSolicitud = await import("@/lib/hook").then((mod) => mod.rechazarSolicitud);
+    await rechazarSolicitud({
+      userId: Number(id),
+    });
+    await mutateSend();
+    await mutateReceived();
+    await mutateAccepted();
+    await mutatePending();
+
+    setIsLoading(false);
+  };
+  const handleEliminarAmigo = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const id = e.currentTarget.id;
+    setIsLoading(id);
+    const eliminarAmigo = await import("@/lib/hook").then((mod) => mod.eliminarAmigo);
+    await eliminarAmigo(Number(id));
+    await mutateSend();
+    await mutateReceived();
+    await mutateAccepted();
+    await mutatePending();
+    setIsLoading(false);
   };
 
   return (
@@ -141,6 +197,13 @@ export default function AmigosComponent() {
                       img={user.img}
                       requestClassDuo={false}
                       typeRequest='suggestion'
+                      handleSolicitudEnv={handleSolicitudEnv}
+                      handleSolicitudAcep={handleSolicitudAcep}
+                      handleSolicitudRecha={handleSolicitudRecha}
+                      handleEliminarAmigo={handleEliminarAmigo}
+                      isLoading={
+                        typeof isLoading == "string" && Number(isLoading) == user.id ? true : false
+                      }
                     />
                   ))
                 : "Sin Usuarios"}
@@ -160,6 +223,13 @@ export default function AmigosComponent() {
                       img={user.img}
                       requestClassDuo={true}
                       typeRequest='requestFriend'
+                      handleSolicitudEnv={handleSolicitudEnv}
+                      handleSolicitudAcep={handleSolicitudAcep}
+                      handleSolicitudRecha={handleSolicitudRecha}
+                      handleEliminarAmigo={handleEliminarAmigo}
+                      isLoading={
+                        typeof isLoading == "string" && Number(isLoading) == user.id ? true : false
+                      }
                     />
                   ))
                 : "No hay solicitud de amistad"}
@@ -179,6 +249,13 @@ export default function AmigosComponent() {
                       img={user.img}
                       typeRequest={"allFriend"}
                       requestClassDuo={false}
+                      handleSolicitudEnv={handleSolicitudEnv}
+                      handleSolicitudAcep={handleSolicitudAcep}
+                      handleSolicitudRecha={handleSolicitudRecha}
+                      handleEliminarAmigo={handleEliminarAmigo}
+                      isLoading={
+                        typeof isLoading == "string" && Number(isLoading) == user.id ? true : false
+                      }
                     />
                   ))
                 : "No tienes amigos"}
@@ -198,6 +275,13 @@ export default function AmigosComponent() {
                       img={user.img}
                       typeRequest={"requestSent"}
                       requestClassDuo={false}
+                      handleSolicitudEnv={handleSolicitudEnv}
+                      handleSolicitudAcep={handleSolicitudAcep}
+                      handleSolicitudRecha={handleSolicitudRecha}
+                      handleEliminarAmigo={handleEliminarAmigo}
+                      isLoading={
+                        typeof isLoading == "string" && Number(isLoading) == user.id ? true : false
+                      }
                     />
                   ))
                 : "No enviastes solicitudes"}

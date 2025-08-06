@@ -217,7 +217,7 @@ export function GetUser() {
 export function GetFriendAccepted() {
   const setAmigosAllData = useSetRecoilState(getAllAmigos);
   const token = getCookie("token");
-  if (!token) return;
+  // if (!token) return;
   const friend_accepted = "/user/friendAccepted";
 
   const option = {
@@ -229,18 +229,20 @@ export function GetFriendAccepted() {
     },
   };
 
-  const { data, isLoading } = useSWR(friend_accepted, (url) => fetchApiSwr(url, option));
+  const { data, isLoading, mutate } = useSWR(token ? friend_accepted : null, (url) =>
+    fetchApiSwr(url, option)
+  );
 
   useEffect(() => {
     if (isLoading) return;
     setAmigosAllData({ isLoading: false, data: data });
   }, [data]);
-  return { data, isLoading };
+  return { data, isLoading, mutateAccepted: mutate };
 }
 export function GetFriendPending() {
   const setGetSugerenciaAmigosData = useSetRecoilState(getSugerenciaAmigos);
   const token = getCookie("token");
-  if (!token) return;
+  // if (!token) return;
   const friend_accepted = "/user/friendPending";
 
   const option = {
@@ -252,18 +254,21 @@ export function GetFriendPending() {
     },
   };
 
-  const { data, isLoading } = useSWR(friend_accepted, (url) => fetchApiSwr(url, option));
+  const { data, isLoading, mutate } = useSWR(token ? friend_accepted : null, (url) =>
+    fetchApiSwr(url, option)
+  );
 
   useEffect(() => {
     if (isLoading) return;
     setGetSugerenciaAmigosData(data);
   }, [data]);
-  return { data, isLoading };
+  return { data, isLoading, mutatePending: mutate };
 }
-export function GetFriendEnv() {
+export function GetFriendSend() {
   const setSoliAllEnv = useSetRecoilState(getAllSolicitudesEnviadas);
   const token = getCookie("token");
-  if (!token) return;
+  // if (!token) return
+
   const friend_accepted = "/user/friendEnv";
 
   const option = {
@@ -275,18 +280,21 @@ export function GetFriendEnv() {
     },
   };
 
-  const { data, isLoading } = useSWR(friend_accepted, (url) => fetchApiSwr(url, option));
+  const { data, isLoading, mutate } = useSWR(token ? friend_accepted : null, (url) =>
+    fetchApiSwr(url, option)
+  );
 
   useEffect(() => {
     if (isLoading) return;
     setSoliAllEnv(data);
   }, [data]);
-  return { data, isLoading };
+
+  return { data, isLoading, mutateSend: mutate };
 }
-export function GetFriendReci() {
+export function GetFriendReceived() {
   const setSoliAllReci = useSetRecoilState(getAllSolicitudesRecibidas);
   const token = getCookie("token");
-  if (!token) return;
+  // if (!token) return;
   const friend_accepted = "/user/friendReci";
 
   const option = {
@@ -298,13 +306,15 @@ export function GetFriendReci() {
     },
   };
 
-  const { data, isLoading } = useSWR(friend_accepted, (url) => fetchApiSwr(url, option));
+  const { data, isLoading, mutate } = useSWR(token ? friend_accepted : null, (url) =>
+    fetchApiSwr(url, option)
+  );
 
   useEffect(() => {
     if (isLoading) return;
     setSoliAllReci(data);
   }, [data]);
-  return { data, isLoading };
+  return { data, isLoading, mutateReceived: mutate };
 }
 export function GetAllUserChat() {
   const token = getCookie("token");

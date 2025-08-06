@@ -2,7 +2,6 @@
 import dynamic from "next/dynamic";
 import { ButtonAgregar } from "@/ui/boton";
 import Link from "next/link";
-import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 
 const LoaderRequest = dynamic(() => import("../loader").then((mod) => mod.LoaderRequest));
@@ -15,46 +14,23 @@ export default function TemplateFriendRequest({
   img,
   requestClassDuo,
   typeRequest,
+  handleSolicitudEnv,
+  handleSolicitudAcep,
+  handleSolicitudRecha,
+  handleEliminarAmigo,
+  isLoading,
 }: {
   id: number;
   fullName: string;
   img: string;
   requestClassDuo: boolean;
   typeRequest: "suggestion" | "requestFriend" | "allFriend" | "requestSent";
+  handleSolicitudEnv: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleSolicitudAcep: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleSolicitudRecha: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleEliminarAmigo: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  isLoading: true | false;
 }) {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSolicitudEnv = async (e: any) => {
-    setIsLoading(true);
-    const id = e.target.id;
-    const createSolicitud = await import("@/lib/hook").then((mod) => mod.createSolicitud);
-    await createSolicitud({
-      amigoId: Number(id),
-    });
-    setIsLoading(false);
-  };
-  const handleSolicitudAcep = async (e: any) => {
-    const id = e.target.id;
-    setIsLoading(true);
-
-    const aceptarSolicitud = await import("@/lib/hook").then((mod) => mod.aceptarSolicitud);
-    await aceptarSolicitud(Number(id));
-    setIsLoading(false);
-  };
-  const handleSolicitudRecha = async (e: any) => {
-    const id = e.target.id;
-    setIsLoading(true);
-    const rechazarSolicitud = await import("@/lib/hook").then((mod) => mod.rechazarSolicitud);
-    await rechazarSolicitud({
-      userId: Number(id),
-    });
-    setIsLoading(false);
-  };
-  const handleEliminarAmigo = async (e: any) => {
-    const id = e.target.id;
-    const eliminarAmigo = await import("@/lib/hook").then((mod) => mod.eliminarAmigo);
-    await eliminarAmigo(Number(id));
-  };
   return (
     <DivAllAmistades requestClassDuo={requestClassDuo}>
       <Link
@@ -84,7 +60,6 @@ export default function TemplateFriendRequest({
         <div className='flex flex-col max-sm:flex-row justify-center gap-2'>
           {!isLoading ? (
             <>
-              {" "}
               {typeRequest == "suggestion" ? (
                 <ButtonAgregar id={id} onClick={handleSolicitudEnv} bg={"blue"}>
                   Añadir amigo

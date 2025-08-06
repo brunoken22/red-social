@@ -1,5 +1,5 @@
 export const DivPerfilUser = ({ children }: { children: React.ReactNode }) => (
-  <div className='w-full '>{children}</div>
+  <div className='w-full pb-5'>{children}</div>
 );
 
 export const DivHeadPerfil = ({ children }: { children: React.ReactNode }) => (

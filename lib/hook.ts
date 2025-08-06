@@ -445,8 +445,9 @@ export function GetAllPublicaciones(isMutate = false) {
 export function GetAllPublicacionesUser(isMutate = false) {
   const setPublicacionesUser = useSetRecoilState(publicacionUser);
   const token = getCookie("token");
+  const PAGE_SIZE = 10; // Tamaño de página constante
 
-  const option = {
+  const options = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -455,24 +456,43 @@ export function GetAllPublicacionesUser(isMutate = false) {
     credentials: "include",
   };
 
-  const { data, isLoading, setSize, size, mutate } = useSWRInfinite(
+  const { data, isLoading, setSize, size, mutate, isValidating } = useSWRInfinite(
     (pageIndex, previousPageData) => {
-      if (previousPageData && !previousPageData.length && isMutate) return null;
-      return `/user/publicacion?offset=${pageIndex * 10}`;
+      // Cuando llegamos al final (no hay más datos)
+      if (previousPageData && !previousPageData.length) return null;
+
+      return `/user/publicacion?offset=${pageIndex * PAGE_SIZE}&limit=${PAGE_SIZE}`;
     },
-    (api) => fetchApiSwr(api, option)
+    (api) => fetchApiSwr(api, options),
+    {
+      revalidateFirstPage: false, // Opcional: mejora rendimiento
+      initialSize: 1, // Número inicial de páginas a cargar
+    }
   );
+
   useEffect(() => {
-    if (data?.length) {
+    if (data) {
       const flatArray = data.flat();
       setPublicacionesUser(flatArray);
     }
   }, [data]);
 
+  // Función para cargar más datos
+  const loadMore = () => {
+    setSize(size + 1);
+  };
+
+  // Verificar si hay más datos para cargar
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd = isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
+  const isRefreshing = isValidating && data && data.length === size;
+
   return {
-    dataPubliAllAmigosSwr: data,
+    dataPubliAllAmigosSwr: data?.flat() || [],
     isLoading,
-    setSize,
+    loadMore,
+    isReachingEnd,
+    isRefreshing,
     size,
     mutatePublicacionesUser: mutate,
   };
@@ -480,8 +500,9 @@ export function GetAllPublicacionesUser(isMutate = false) {
 export function GetPubliAmigo(id: string) {
   const setPublicacionesAmigo = useSetRecoilState(publicacionSearchUser);
   const token = getCookie("token");
+  const PAGE_SIZE = 10; // Tamaño constante de página
 
-  const option = {
+  const options = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -490,26 +511,50 @@ export function GetPubliAmigo(id: string) {
     credentials: "include",
   };
 
-  const { data, isLoading, setSize, size, mutate } = useSWRInfinite(
+  const { data, isLoading, setSize, size, mutate, isValidating, error } = useSWRInfinite(
     (pageIndex, previousPageData) => {
+      // Condición para detener la paginación
       if (previousPageData && !previousPageData.length) return null;
-      return `/user/amigos/publicaciones/${id}?offset=${pageIndex * 10}`;
+
+      return `/user/amigos/publicaciones/${id}?offset=${pageIndex * PAGE_SIZE}&limit=${PAGE_SIZE}`;
     },
-    (api) => fetchApiSwr(api, option),
-    {}
+    (api) => fetchApiSwr(api, options),
+    {
+      revalidateFirstPage: false,
+      initialSize: 1,
+      // Revalidar cuando cambia el ID
+      revalidateAll: id ? true : false,
+    }
   );
+
   useEffect(() => {
-    if (data?.length) {
+    if (data) {
       const flatArray = data.flat();
       setPublicacionesAmigo(flatArray);
     }
-  }, [data]);
+  }, [data, id]); // Añadir id como dependencia
+
+  // Función para cargar más publicaciones
+  const loadMore = () => {
+    if (!isLoading && !isReachingEnd) {
+      setSize(size + 1);
+    }
+  };
+
+  // Estados de control
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd = isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
+  const isRefreshing = isValidating && data && data.length === size;
 
   return {
-    dataPubliAmigo: data,
+    dataPubliAmigo: data?.flat() || [],
     isLoadingGetFriend: isLoading,
-    setSize,
-    size,
+    isError: error,
+    loadMore,
+    isReachingEnd,
+    isRefreshing: isRefreshing,
+    currentPage: size,
+    refreshPublicaciones: () => mutate(),
     mutatePublicacionesUser: mutate,
   };
 }
@@ -537,7 +582,6 @@ export function DeletePublic(id: number) {
 
   return { dataDelete: data, isLoadingDeletePubli: isLoading };
 }
-
 export async function CreatePublicacion(dataPubli: { description: string; img: File[] }) {
   const api = "/user/publicacion";
   const formData = new FormData();

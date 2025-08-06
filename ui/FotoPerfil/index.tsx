@@ -12,21 +12,23 @@ export default function FotoPerfil({
   return (
     <div
       className={` relative shrink-0 ${
-        className ? className : 'w-[40px] h-[40px]'
-      }  bg-primary  rounded-full`}>
+        className ? className : "w-[40px] h-[40px]"
+      }  bg-primary  rounded-full`}
+    >
       <img
-        src={(img == 'false' && '/user.webp') || img || '/user.webp'}
+        src={(img == "false" && "/user.webp") || img || "/user.webp"}
         height={40}
         width={40}
         className={`${
-          className ? className : 'w-[40px] h-[40px]'
-        }  rounded-full border-2 border-zinc-700 object-cover  hover:opacity-80 `}
+          className ? className : "w-[40px] h-[40px] hover:opacity-80"
+        }  rounded-full border-2 border-zinc-700 object-cover   `}
         alt='perfil'
         loading='lazy'
       />
       {connect ? (
         <div
-          className={` bg-green-500 w-[14px] h-[14px] rounded-full absolute bottom-[10%] right-[-5%] border-2 border-zinc-900`}></div>
+          className={` bg-green-500 w-[14px] h-[14px] rounded-full absolute bottom-[10%] right-[-5%] border-2 border-zinc-900`}
+        ></div>
       ) : null}
     </div>
   );

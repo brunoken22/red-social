@@ -1,26 +1,26 @@
-'use client';
-import dynamic from 'next/dynamic';
-import { DivAllChat } from '@/ui/container';
-import { DivTemMensaje, TemplMensaje, TemplChat, SpanNoti } from './styled';
-import { useRecoilValue } from 'recoil';
-import { user, isMenssage, isConnect, User, messagesWriting } from '@/lib/atom';
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { LuMessageSquare, LuUsers } from 'react-icons/lu';
-import { GetAllUserChat } from '@/lib/hook';
-import Link from 'next/link';
-import { LoaderRequest } from '../loader';
+"use client";
+import dynamic from "next/dynamic";
+import { DivAllChat } from "@/ui/container";
+import { DivTemMensaje, TemplMensaje, TemplChat, SpanNoti } from "./styled";
+import { useRecoilValue } from "recoil";
+import { user, isMenssage, isConnect, User, messagesWriting } from "@/lib/atom";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { LuMessageSquare, LuUsers } from "react-icons/lu";
+import { GetAllUserChat } from "@/lib/hook";
+import Link from "next/link";
+import { LoaderRequest } from "../loader";
 
-const TemplateChat = dynamic(() => import('./templateChat'), {
+const TemplateChat = dynamic(() => import("./templateChat"), {
   loading: () => <LoaderRequest />,
 });
-const Verification = dynamic(() => import('@/ui/verification'), {
+const Verification = dynamic(() => import("@/ui/verification"), {
   loading: () => <LoaderRequest />,
 });
-const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'), {
+const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"), {
   loading: () => <LoaderRequest />,
 });
-const Loader = dynamic(() => import('../loader').then((mod) => mod.Loader), {
+const Loader = dynamic(() => import("../loader").then((mod) => mod.Loader), {
   loading: () => <LoaderRequest />,
 });
 
@@ -30,7 +30,7 @@ export type MessageUserChat = {
   read?: boolean;
   fullName: string;
   img: string;
-  status: 'Enviado' | 'Recibido' | 'Leido';
+  status: "Enviado" | "Recibido" | "Leido";
   id: string;
   date?: Date;
   receip_id?: number;
@@ -46,13 +46,13 @@ export function TemMensaje() {
   const { data, isLoading } = GetAllUserChat();
 
   useEffect(() => {
-    const rtdbParams = params.get('rtdb') as any;
-    const imgParams = params.get('img') as string;
-    const fullNameParams = params.get('fullName') as string;
-    const idParams = params.get('id') as string;
+    const rtdbParams = params.get("rtdb") as any;
+    const imgParams = params.get("img") as string;
+    const fullNameParams = params.get("fullName") as string;
+    const idParams = params.get("id") as string;
 
     if (rtdbParams && idParams && fullNameParams) {
-      const miArrayRTDB = rtdbParams.split(',');
+      const miArrayRTDB = rtdbParams.split(",");
       const rtdbId = existenElementosSimilares(miArrayRTDB, dataUser.user.rtdb);
 
       setDataMensajeUser({
@@ -60,10 +60,12 @@ export function TemMensaje() {
         img: imgParams,
         id: idParams,
         rtdb: rtdbId,
-        status: 'Enviado',
+        status: "Enviado",
       });
     }
-  }, [params.get('fullName')]);
+  }, [params.get("fullName")]);
+
+  console.log("dataMessage", dataMessage);
   if (isLoading) return <Loader />;
   return (
     <DivTemMensaje>
@@ -71,8 +73,9 @@ export function TemMensaje() {
         <>
           <div
             className={`w-1/4  max-md:w-full ${
-              !dataMensajeUser?.id ? 'block ' : 'max-md:hidden block'
-            } h-[85vh] overflow-auto`}>
+              !dataMensajeUser?.id ? "block " : "max-md:hidden block"
+            } h-[85vh] overflow-auto`}
+          >
             {dataUser.user.id ? (
               <TemplMensaje mobile={true}>
                 <h2 className='text-2xl font-bold text-start'>Chats</h2>
@@ -86,8 +89,8 @@ export function TemMensaje() {
                           <button
                             className={`w-full  rounded-md dark:text-primary ${
                               e.id.toString() === dataMensajeUser?.id
-                                ? 'bg-light text-primary'
-                                : 'bg-primary dark:bg-darkComponet hover:opacity-70'
+                                ? "bg-light text-primary"
+                                : "bg-primary dark:bg-darkComponet hover:opacity-70"
                             } dark:transition-dark dark:shadow-dark  shadow-container `}
                             key={e.id}
                             onClick={() => {
@@ -96,9 +99,10 @@ export function TemMensaje() {
                                 img: e.img,
                                 id: e.id.toString(),
                                 rtdb: rtdbId as string,
-                                status: 'Enviado',
+                                status: "Enviado",
                               });
-                            }}>
+                            }}
+                          >
                             <DivAllChat>
                               <FotoPerfil
                                 img={e.img}
@@ -111,7 +115,7 @@ export function TemMensaje() {
 
                               <div className='flex flex-col  overflow-hidden'>
                                 <div className='flex gap-2 items-center'>
-                                  {' '}
+                                  {" "}
                                   <p className='m-0 text-start truncate '>{e.fullName}</p>
                                   {e.verification && <Verification publication={false} />}
                                 </div>
@@ -126,14 +130,15 @@ export function TemMensaje() {
                                       dataMessageUser?.id != dataUser.user.id &&
                                       dataMessageUser?.id == e.id &&
                                       !dataMessageUser?.read
-                                        ? 'font-black'
+                                        ? "font-black"
                                         : Number(dataMensajeUser?.id) === e.id
-                                        ? 'text-gray-300 dark:text-gray-300'
-                                        : 'text-gray-600 dark:text-gray-300'
-                                    }`}>
+                                        ? "text-gray-300 dark:text-gray-300"
+                                        : "text-gray-600 dark:text-gray-300"
+                                    }`}
+                                  >
                                     {dataMessage?.find((item) => item.rtdb == rtdbId)?.id ==
                                     dataUser.user.id
-                                      ? 'Tú: '
+                                      ? "Tú: "
                                       : null}
                                     {dataMessageUser?.message}
                                   </p>
@@ -152,7 +157,7 @@ export function TemMensaje() {
                         );
                       })
                     ) : (
-                      'Sin Chat'
+                      "Sin Chat"
                     )
                   ) : (
                     <LoaderRequest />
@@ -164,8 +169,9 @@ export function TemMensaje() {
 
           <div
             className={`w-3/4  max-md:w-full ${
-              !dataMensajeUser?.id ? 'block max-md:hidden' : ' block'
-            } h-[80vh]`}>
+              !dataMensajeUser?.id ? "block max-md:hidden" : " block"
+            } h-[80vh]`}
+          >
             {dataMensajeUser?.id ? (
               <TemplateChat
                 connect={
@@ -178,13 +184,13 @@ export function TemMensaje() {
                 id={dataUser.user.id}
                 close={() =>
                   setDataMensajeUser({
-                    rtdb: '',
-                    message: '',
+                    rtdb: "",
+                    message: "",
                     read: false,
-                    fullName: '',
-                    img: '',
-                    status: 'Enviado',
-                    id: '',
+                    fullName: "",
+                    img: "",
+                    status: "Enviado",
+                    id: "",
                   })
                 }
               />
@@ -217,7 +223,8 @@ export function TemMensaje() {
               </p>
               <Link
                 href='/amigos'
-                className='mt-5 inline-flex items-center px-6 py-3 bg-light text-primary font-semibold rounded-full transition-all duration-300 hover:shadow-lg hover:opacity-80'>
+                className='mt-5 inline-flex items-center px-6 py-3 bg-light text-primary font-semibold rounded-full transition-all duration-300 hover:shadow-lg hover:opacity-80'
+              >
                 <LuUsers className='mr-2' />
                 Agregar amigos
               </Link>

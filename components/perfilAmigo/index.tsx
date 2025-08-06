@@ -50,16 +50,16 @@ export function PerfilAmigo({ data }: { data: any }) {
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataUser = useRecoilValue(user);
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
-  const { dataPubliAmigo, isLoadingGetFriend, size, setSize, mutatePublicacionesUser } =
-    GetPubliAmigo(id as string);
+  const {
+    dataPubliAmigo,
+    isLoadingGetFriend,
+    isError,
+    loadMore,
+    isReachingEnd,
+    mutatePublicacionesUser,
+  } = GetPubliAmigo(id as string);
   const [isAmigo, setIsAmigo] = useState<"ACCEPTED" | "PENDING" | "REJECTED">();
 
-  useEffect(() => {
-    if (Number(id) === dataUser.user.id) {
-      push("/perfil");
-      return;
-    }
-  }, [dataUser]);
   useEffect(() => {
     if (data) {
       setIsAmigo(data.amigo);
@@ -96,13 +96,6 @@ export function PerfilAmigo({ data }: { data: any }) {
     setIsAmigo("REJECTED");
   };
 
-  const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (!dataPubliAmigo?.length) {
-      return;
-    }
-    setSize(size + 1);
-  };
   return (
     <>
       {!isLoadingGetFriend ? (
@@ -243,9 +236,9 @@ export function PerfilAmigo({ data }: { data: any }) {
                     <p className='text-center'>No hay publicaciones</p>
                   )
                 ) : null}
-                {dataPubliAmigo?.flat()?.length ? (
+                {!isReachingEnd && !isLoadingGetFriend ? (
                   <div className='text-center'>
-                    <ButtonMasPubli onClick={handleMasPubli}>Más</ButtonMasPubli>
+                    <ButtonMasPubli onClick={loadMore}>Más</ButtonMasPubli>
                   </div>
                 ) : null}
               </DivPublicaciones>

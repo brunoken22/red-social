@@ -67,7 +67,6 @@ export default function AmigosComponent() {
       return;
     }
   };
-
   const handleSolicitudEnv = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const id = e.currentTarget.id;
     setIsLoading(id);

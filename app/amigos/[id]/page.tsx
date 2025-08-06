@@ -3,6 +3,7 @@ import { fetchApiSwr } from "@/lib/api";
 import { Main } from "@/ui/container";
 import type { Metadata, ResolvingMetadata } from "next";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -65,7 +66,9 @@ export default async function ({ params }: { params: { id: string } }) {
     credentials: "include",
   };
   const data = await fetchApiSwr(api, option);
-
+  if (data.id_user === data.user.id) {
+    redirect("/perfil");
+  }
   return (
     <Main>
       <PerfilAmigo data={data} />

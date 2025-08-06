@@ -37,6 +37,7 @@ export default function PerfilUser() {
       reader.readAsDataURL(file);
     }
   }, []);
+
   return dataValor?.user?.id ? (
     <DivPerfilUser>
       <div>

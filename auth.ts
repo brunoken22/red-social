@@ -120,6 +120,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               headers: {
                 "Content-Type": "application/json",
               },
+              credentials: "include",
               body: JSON.stringify({
                 email: user.email,
                 fullName: user.name,

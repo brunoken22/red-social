@@ -59,7 +59,7 @@ export default function TemplateFriendRequest({
     <DivAllAmistades requestClassDuo={requestClassDuo}>
       <Link
         href={"/amigos/" + id}
-        className='h-full hover:opacity-60 max-md:m-auto max-sm:h-[120px] max-sm:w-[120px]    max-sm:rounded-full max-sm:overflow-hidden'
+        className='h-full hover:opacity-60 max-md:m-auto max-sm:h-[120px] max-sm:w-[120px]  bg-hoverPrimary w-full   max-sm:rounded-full max-sm:overflow-hidden'
       >
         {img ? (
           <img
@@ -69,8 +69,8 @@ export default function TemplateFriendRequest({
             loading='lazy'
           />
         ) : (
-          <div className='h-full flex justify-center items-end bg-hoverPrimary'>
-            <FaUser width={"100%"} height={"100%"} size={150} color='gray' />
+          <div className='h-full flex justify-center items-end'>
+            <FaUser size={"80%"} color='gray' />
           </div>
         )}
       </Link>

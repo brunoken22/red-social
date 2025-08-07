@@ -30,6 +30,7 @@ export function Notification() {
       );
       onValue(notificationRef, (snapshot) => {
         const valor = snapshot.val();
+
         if (valor) {
           const data: NotificationPublication[] = Object.values(valor);
 
@@ -37,6 +38,11 @@ export function Notification() {
             ...prev,
             limit: notificacionesUserAtom.limit,
             publicacion: data.reverse(),
+            isLoading: false,
+          }));
+        } else {
+          setNotificacionUserAtom((prev) => ({
+            ...prev,
             isLoading: false,
           }));
         }
@@ -52,7 +58,6 @@ export function Notification() {
       limit: prevPagePubli.limit + 10,
     }));
   };
-
   return (
     <DivPublicar className={` !justify-normal w-full mb-2`}>
       {!notificacionesUserAtom.isLoading
@@ -64,7 +69,7 @@ export function Notification() {
                 connect={
                   dataIsConnect.length
                     ? dataIsConnect.find(
-                        (isConnectUser: any) => isConnectUser.id == notification.fromUser
+                        (isConnectUser) => isConnectUser.id == notification.fromUser
                       )?.connect
                       ? true
                       : false

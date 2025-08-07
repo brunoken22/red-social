@@ -14,8 +14,8 @@ export default function TemplateNotification({
   return (
     <Link
       href={`/notificaciones/${notification.publicacionId}`}
-      className={`truncate p-2 rounded-md flex justify-start items-center w-full gap-2 ${
-        !notification.read ? "bg-hoverPrimary dark:bg-dark hover:opacity-75" : null
+      className={`truncate p-2 rounded-md flex justify-start items-center w-full gap-2 hover:opacity-60 ${
+        !notification.read ? "bg-hoverPrimary dark:bg-dark " : null
       }`}
     >
       {/* Imagen del usuario que generó la notificación */}

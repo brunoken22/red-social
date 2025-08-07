@@ -248,7 +248,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
         useConnectUser();
       }
       onMessage(messaging, (payload) => {
-        console.log("Este es el payload", payload);
         const { title, body } = payload.notification as NotificationPayload;
         if (!title || !body) return;
         new Notification(title, { body });

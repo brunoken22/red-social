@@ -58,6 +58,7 @@ export function Notification() {
       limit: prevPagePubli.limit + 10,
     }));
   };
+
   return (
     <DivPublicar className={` !justify-normal w-full mb-2`}>
       {!notificacionesUserAtom.isLoading

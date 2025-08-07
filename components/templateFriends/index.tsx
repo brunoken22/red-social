@@ -3,6 +3,8 @@ import dynamic from "next/dynamic";
 import { ButtonAgregar } from "@/ui/boton";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
+import { useState } from "react";
+import { HandleActionsFriend } from "../friendRequest";
 
 const LoaderRequest = dynamic(() => import("../loader").then((mod) => mod.LoaderRequest));
 
@@ -18,19 +20,19 @@ export default function TemplateFriendRequest({
   handleSolicitudAcep,
   handleSolicitudRecha,
   handleEliminarAmigo,
-  isLoading,
 }: {
   id: number;
   fullName: string;
   img: string;
   requestClassDuo: boolean;
   typeRequest: "suggestion" | "requestFriend" | "allFriend" | "requestSent";
-  handleSolicitudEnv: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleSolicitudAcep: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleSolicitudRecha: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleEliminarAmigo: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  isLoading: true | false;
+  handleSolicitudEnv: ({ id, setIsLoading }: HandleActionsFriend) => void;
+  handleSolicitudAcep: ({ id, setIsLoading }: HandleActionsFriend) => void;
+  handleSolicitudRecha: ({ id, setIsLoading }: HandleActionsFriend) => void;
+  handleEliminarAmigo: ({ id, setIsLoading }: HandleActionsFriend) => void;
 }) {
+  const [isLoading, setIsLoading] = useState<string | false>(false);
+
   return (
     <DivAllAmistades requestClassDuo={requestClassDuo}>
       <Link
@@ -61,27 +63,56 @@ export default function TemplateFriendRequest({
           {!isLoading ? (
             <>
               {typeRequest == "suggestion" ? (
-                <ButtonAgregar id={id} onClick={handleSolicitudEnv} bg={"blue"}>
+                <ButtonAgregar
+                  id={id}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                    handleSolicitudEnv({ id: e.currentTarget.id, setIsLoading })
+                  }
+                  bg={"blue"}
+                >
                   Añadir amigo
                 </ButtonAgregar>
               ) : null}
               {typeRequest == "requestFriend" ? (
                 <>
-                  <ButtonAgregar id={id} onClick={handleSolicitudAcep}>
+                  <ButtonAgregar
+                    id={id}
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                      handleSolicitudAcep({ id: e.currentTarget.id, setIsLoading })
+                    }
+                  >
                     Aceptar{" "}
                   </ButtonAgregar>
-                  <ButtonAgregar id={id} onClick={handleSolicitudRecha} bg='red'>
+                  <ButtonAgregar
+                    id={id}
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                      handleSolicitudRecha({ id: e.currentTarget.id, setIsLoading })
+                    }
+                    bg='red'
+                  >
                     Rechazar
                   </ButtonAgregar>
                 </>
               ) : null}
               {typeRequest == "allFriend" ? (
-                <ButtonAgregar id={id} onClick={handleEliminarAmigo} bg={"red"}>
+                <ButtonAgregar
+                  id={id}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                    handleEliminarAmigo({ id: e.currentTarget.id, setIsLoading })
+                  }
+                  bg={"red"}
+                >
                   Eliminar amigo
                 </ButtonAgregar>
               ) : null}
               {typeRequest == "requestSent" ? (
-                <ButtonAgregar id={id} onClick={handleSolicitudRecha} bg={"red"}>
+                <ButtonAgregar
+                  id={id}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                    handleSolicitudRecha({ id: e.currentTarget.id, setIsLoading })
+                  }
+                  bg={"red"}
+                >
                   Cancelar solicitud
                 </ButtonAgregar>
               ) : null}

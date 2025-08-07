@@ -1,5 +1,5 @@
 import { DivMain, ContainerMain } from "@/ui/container";
-import TemplateNotifiId from "@/components/templateNotificacion/notificationId";
+import TemplateNotifiId from "@/components/Notifications/notificationId";
 import { Span } from "@/components/span";
 import { Metadata } from "next";
 import { fetchApiSwr } from "@/lib/api";

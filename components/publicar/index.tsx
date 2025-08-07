@@ -1,41 +1,41 @@
-'use client';
-import dynamic from 'next/dynamic';
-import { DivPublicar } from '@/ui/container';
-import { useRecoilValue } from 'recoil';
-import { DivSubir, DivASubir, DivText, DivCrear } from './styled';
-import { useEffect, useState } from 'react';
-import { user, isConnect } from '@/lib/atom';
-import { SkeletonPlicate } from '@/ui/skeleton';
+"use client";
+import dynamic from "next/dynamic";
+import { DivPublicar } from "@/ui/container";
+import { useRecoilValue } from "recoil";
+import { DivSubir, DivASubir, DivText, DivCrear } from "./styled";
+import { useEffect, useState } from "react";
+import { user, isConnect } from "@/lib/atom";
+import { SkeletonPlicate } from "@/ui/skeleton";
 
-const ImageSubir = dynamic(() => import('@/ui/icons/image.svg'));
-const VideoSubir = dynamic(() => import('@/ui/icons/video.svg'));
+const ImageSubir = dynamic(() => import("@/ui/icons/image.svg"));
+const VideoSubir = dynamic(() => import("@/ui/icons/video.svg"));
 
 const NotificationToastStatus = dynamic(() =>
-  import('@/ui/toast').then((mod) => mod.NotificationToastStatus)
+  import("@/ui/toast").then((mod) => mod.NotificationToastStatus)
 );
-const Body = dynamic(() => import('@/ui/typography').then((mod) => mod.Body));
-const TemplateFormPublicar = dynamic(() => import('./templateFormPublicate'));
-const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
+const Body = dynamic(() => import("@/ui/typography").then((mod) => mod.Body));
+const TemplateFormPublicar = dynamic(() => import("./templateFormPublicate"));
+const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));
 
 export default function Publicar() {
   const [formClick, setFormClick] = useState(false);
   const dataValor = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);
   const [alert, setAlert] = useState<
-    { message: string; status: 'success' | 'error' | 'info' | 'warning' } | false
+    { message: string; status: "success" | "error" | "info" | "warning" } | false
   >(false);
 
   useEffect(() => {
     if (formClick) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
   }, [formClick]);
 
   return dataValor.user.id ? (
     <>
-      <DivPublicar className='w-full max-w-full'>
+      <DivPublicar className=' w-full max-w-full'>
         <DivText>
           <FotoPerfil
             img={dataValor?.user?.img}
@@ -58,7 +58,7 @@ export default function Publicar() {
               close={() => setFormClick(false)}
             />
           ) : null}
-          <DivASubir onClick={() => setAlert({ message: 'Proximamente', status: 'info' })}>
+          <DivASubir onClick={() => setAlert({ message: "Proximamente", status: "info" })}>
             <VideoSubir />
             <Body className='text-sm'>Video</Body>
           </DivASubir>

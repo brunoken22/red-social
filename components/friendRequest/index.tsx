@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { Section, DivSection, DivIcons, DivResponse, DivResult } from "./styled";
 import MyAmigos from "@/ui/icons/myAmigos.svg";
 import { ButtonNoti } from "@/ui/boton";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useRecoilValue } from "recoil";
 import {
   getAllAmigos,
@@ -17,7 +17,10 @@ import { GetFriendAccepted, GetFriendSend, GetFriendPending, GetFriendReceived }
 const TemplateFriendRequest = dynamic(() => import("../templateFriends"), {
   loading: () => <LoaderRequest />,
 });
-
+export type HandleActionsFriend = {
+  id: string;
+  setIsLoading: Dispatch<SetStateAction<string | false>>;
+};
 export default function AmigosComponent() {
   const dataAllUser = useRecoilValue(getSugerenciaAmigos);
   const dataAllAmigos = useRecoilValue(getAllAmigos);
@@ -27,7 +30,6 @@ export default function AmigosComponent() {
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);
   const [soliEnv, setSoliEnv] = useState(false);
-  const [isLoading, setIsLoading] = useState<string | false>(false);
 
   const { mutateAccepted } = GetFriendAccepted();
   const { mutatePending } = GetFriendPending();
@@ -67,8 +69,7 @@ export default function AmigosComponent() {
       return;
     }
   };
-  const handleSolicitudEnv = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const id = e.currentTarget.id;
+  const handleSolicitudEnv = async ({ id, setIsLoading }: HandleActionsFriend) => {
     setIsLoading(id);
     const createSolicitud = await import("@/lib/hook").then((mod) => mod.createSolicitud);
     await createSolicitud({
@@ -81,8 +82,7 @@ export default function AmigosComponent() {
 
     setIsLoading(false);
   };
-  const handleSolicitudAcep = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const id = e.currentTarget.id;
+  const handleSolicitudAcep = async ({ id, setIsLoading }: HandleActionsFriend) => {
     setIsLoading(id);
 
     const aceptarSolicitud = await import("@/lib/hook").then((mod) => mod.aceptarSolicitud);
@@ -94,8 +94,7 @@ export default function AmigosComponent() {
 
     setIsLoading(false);
   };
-  const handleSolicitudRecha = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const id = e.currentTarget.id;
+  const handleSolicitudRecha = async ({ id, setIsLoading }: HandleActionsFriend) => {
     setIsLoading(id);
     const rechazarSolicitud = await import("@/lib/hook").then((mod) => mod.rechazarSolicitud);
     await rechazarSolicitud({
@@ -108,8 +107,7 @@ export default function AmigosComponent() {
 
     setIsLoading(false);
   };
-  const handleEliminarAmigo = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const id = e.currentTarget.id;
+  const handleEliminarAmigo = async ({ id, setIsLoading }: HandleActionsFriend) => {
     setIsLoading(id);
     const eliminarAmigo = await import("@/lib/hook").then((mod) => mod.eliminarAmigo);
     await eliminarAmigo(Number(id));
@@ -200,9 +198,6 @@ export default function AmigosComponent() {
                       handleSolicitudAcep={handleSolicitudAcep}
                       handleSolicitudRecha={handleSolicitudRecha}
                       handleEliminarAmigo={handleEliminarAmigo}
-                      isLoading={
-                        typeof isLoading == "string" && Number(isLoading) == user.id ? true : false
-                      }
                     />
                   ))
                 : "Sin Usuarios"}
@@ -226,9 +221,6 @@ export default function AmigosComponent() {
                       handleSolicitudAcep={handleSolicitudAcep}
                       handleSolicitudRecha={handleSolicitudRecha}
                       handleEliminarAmigo={handleEliminarAmigo}
-                      isLoading={
-                        typeof isLoading == "string" && Number(isLoading) == user.id ? true : false
-                      }
                     />
                   ))
                 : "No hay solicitud de amistad"}
@@ -252,9 +244,6 @@ export default function AmigosComponent() {
                       handleSolicitudAcep={handleSolicitudAcep}
                       handleSolicitudRecha={handleSolicitudRecha}
                       handleEliminarAmigo={handleEliminarAmigo}
-                      isLoading={
-                        typeof isLoading == "string" && Number(isLoading) == user.id ? true : false
-                      }
                     />
                   ))
                 : "No tienes amigos"}
@@ -278,9 +267,6 @@ export default function AmigosComponent() {
                       handleSolicitudAcep={handleSolicitudAcep}
                       handleSolicitudRecha={handleSolicitudRecha}
                       handleEliminarAmigo={handleEliminarAmigo}
-                      isLoading={
-                        typeof isLoading == "string" && Number(isLoading) == user.id ? true : false
-                      }
                     />
                   ))
                 : "No enviastes solicitudes"}

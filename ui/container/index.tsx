@@ -32,7 +32,7 @@ export const DivPublicar = ({
 }) => (
   <div
     className={` bg-primary  
-   h-max  p-4 max-md:p-2 pb-2 flex flex-col justify-evenly gap-4 rounded-md shadow-container w-full  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center ${
+   h-max  p-2   grid flex-col justify-normal gap-4 rounded-md shadow-container w-full  dark:bg-darkComponet dark:text-primary dark:shadow-none text-center ${
      className ? className : " w-full"
    }`}
   >

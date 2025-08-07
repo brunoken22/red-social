@@ -1,38 +1,22 @@
-import React from 'react';
-import { DivSkeleton, PhotoSkeleton, SpanLuz, TextSkeleton } from './styled';
-import { DivHeadPerfil, DivFotoName, DivPublicaciones } from '@/components/perfilUser/styled';
-import { DivSubir, DivText } from '@/components/publicar/styled';
-import { DivAllChat, DivPublicar } from '../container';
-import { TemplChat } from '@/components/templateMensaje/styled';
+import React from "react";
+import { DivSkeleton, PhotoSkeleton, SpanLuz, TextSkeleton } from "./styled";
+import { DivHeadPerfil, DivFotoName, DivPublicaciones } from "@/components/perfilUser/styled";
+import { DivSubir, DivText } from "@/components/publicar/styled";
+import { DivAllChat, DivPublicar } from "../container";
+import { TemplChat } from "@/components/templateMensaje/styled";
 
 export function SkeletonNoti(props: React.ComponentProps<any>) {
   return (
-    <DivSkeleton {...props}>
-      <DivPublicaciones>
-        <DivPublicar>
-          <DivText>
-            <PhotoSkeleton className='w-[40px] h-[40px]'>
-              <SpanLuz></SpanLuz>
-            </PhotoSkeleton>
-            <TextSkeleton className='w-full h-[30px]'>
-              <SpanLuz></SpanLuz>
-            </TextSkeleton>
-          </DivText>
-        </DivPublicar>
-      </DivPublicaciones>
-      <DivPublicaciones>
-        <DivPublicar>
-          <DivText>
-            <PhotoSkeleton className='w-[40px] h-[40px]'>
-              <SpanLuz></SpanLuz>
-            </PhotoSkeleton>
-            <TextSkeleton className='w-full h-[30px] '>
-              <SpanLuz></SpanLuz>
-            </TextSkeleton>
-          </DivText>
-        </DivPublicar>
-      </DivPublicaciones>
-    </DivSkeleton>
+    <div className={`p-2`}>
+      <DivText>
+        <PhotoSkeleton className='w-[40px] h-[40px]'>
+          <SpanLuz></SpanLuz>
+        </PhotoSkeleton>
+        <TextSkeleton className='w-full h-[30px]'>
+          <SpanLuz></SpanLuz>
+        </TextSkeleton>
+      </DivText>
+    </div>
   );
 }
 export function SkeletonPerfil(props: React.ComponentProps<any>) {

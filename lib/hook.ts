@@ -334,46 +334,47 @@ export function GetAllUserChat() {
 
   return { data, isLoading };
 }
-export function NotificacionesUser(offset: number) {
-  const [notificacionesUserAtom, setNotificacionesUserAtom] = useRecoilState(notificacionesUser);
-  const api = `/user/notificaciones?offset=${offset}`;
+// ELMINAR ESTE ENDPOINT
+// export function NotificacionesUser(offset: number) {
+//   const [notificacionesUserAtom, setNotificacionesUserAtom] = useRecoilState(notificacionesUser);
+//   const api = `/user/notificaciones?offset=${offset}`;
 
-  const option = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  };
-  const token = getCookie("token");
-  const { data, isLoading } = useSWR(token ? api : null, (api) => fetchApiSwr(api, option), {
-    revalidateOnReconnect: true,
-    revalidateOnMount: true,
-    revalidateOnFocus: true,
-    refreshInterval: 10000,
-  });
+//   const option = {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     credentials: "include",
+//   };
+//   const token = getCookie("token");
+//   const { data, isLoading } = useSWR(token ? api : null, (api) => fetchApiSwr(api, option), {
+//     revalidateOnReconnect: true,
+//     revalidateOnMount: true,
+//     revalidateOnFocus: true,
+//     refreshInterval: 10000,
+//   });
 
-  useEffect(() => {
-    if (data && data?.publications) {
-      if (notificacionesUserAtom && notificacionesUserAtom.publicacion.length && offset !== 0) {
-        setNotificacionesUserAtom(() => ({
-          publicacion: [...notificacionesUserAtom.publicacion, ...data?.publications],
-          newPubliOPen: data.newPubliOPen + notificacionesUserAtom.newPubliOPen,
-        }));
-        return;
-      }
-      setNotificacionesUserAtom({
-        publicacion: [...data?.publications],
-        newPubliOPen: data.newPubliOPen,
-      });
-    }
-  }, [data]);
+//   useEffect(() => {
+//     if (data && data?.publications) {
+//       if (notificacionesUserAtom && notificacionesUserAtom.publicacion.length && offset !== 0) {
+//         setNotificacionesUserAtom(() => ({
+//           publicacion: [...notificacionesUserAtom.publicacion, ...data?.publications],
+//           newPubliOPen: data.newPubliOPen + notificacionesUserAtom.newPubliOPen,
+//         }));
+//         return;
+//       }
+//       setNotificacionesUserAtom({
+//         publicacion: [...data?.publications],
+//         newPubliOPen: data.newPubliOPen,
+//       });
+//     }
+//   }, [data]);
 
-  return {
-    dataNotiSwr: data?.publications,
-    isLoadingNotiSwr: isLoading,
-  };
-}
+//   return {
+//     dataNotiSwr: data,
+//     isLoadingNotiSwr: isLoading,
+//   };
+// }
 export function NotificacionesUserImmutable(offset: number) {
   const setNotificacionesUserAtom = useSetRecoilState(notificacionesUser);
   const token = getCookie("token");
@@ -397,6 +398,7 @@ export function NotificacionesUserImmutable(offset: number) {
       setNotificacionesUserAtom({
         publicacion: [...data?.publications],
         newPubliOPen: data.newPubliOPen,
+        isLoading: false,
       });
       return;
     }

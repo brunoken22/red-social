@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { ref, onValue, update, get, query, orderByChild, limitToLast } from "firebase/database";
+import { ref, onValue, update, get, query } from "firebase/database";
 import { messaging, obtenerTokenFCM, rtdb } from "@/lib/firebase";
 import "./style.css";
 import { usePathname } from "next/navigation";
@@ -18,12 +18,14 @@ import {
   notificacionesUser,
   messagesWriting,
   getAllAmigos,
+  NotificationPublication,
 } from "@/lib/atom";
 import Logo from "@/public/logo.svg";
 import { useDebouncedCallback } from "use-debounce";
 import { LoaderRequest } from "../loader";
 import { SkeletonNav } from "@/ui/skeleton";
 import { NotificationPayload, onMessage } from "firebase/messaging";
+
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"), {
   loading: () => <LoaderRequest />,
 });
@@ -227,7 +229,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
     });
   }, [dataUser?.user?.id]);
 
-  //----------------------- NOTIFICACIONES POR RTDB
+  //----------------------- NOTIFICACIONES POR RTDB Y NUEVOS mensajes
   useEffect(() => {
     if (dataUser.user.id) {
       if (!firstConect) {
@@ -245,27 +247,19 @@ export default function Header({ themeDate }: { themeDate: string }) {
         };
         useConnectUser();
       }
-      const notificationRef = query(
-        ref(rtdb, `/notifications/${dataUser.user.id}`),
-        orderByChild("timestamp"),
-        limitToLast(20)
-      );
       onMessage(messaging, (payload) => {
-        // console.log('Mensaje recibido en foreground:', payload);
+        console.log("Este es el payload", payload);
         const { title, body } = payload.notification as NotificationPayload;
         if (!title || !body) return;
         new Notification(title, { body });
       });
-      onValue(notificationRef, (snapshot) => {
+      const notificationAllRef = query(ref(rtdb, `/notifications/${dataUser.user.id}`));
+      onValue(notificationAllRef, (snapshot) => {
         const valor = snapshot.val();
         if (valor) {
-          const data = Object.values(valor);
-          // const newPubliOPen = data.filter((item: any) => !item.read).length;
-          // notificacionesUserAtom.newPubliOPen = newPubliOPen;
-          setNotificacionesUserAtom({
-            newPubliOPen: data.filter((noti: any) => !noti.read).length || 0,
-            publicacion: data as any,
-          });
+          const data: NotificationPublication[] = Object.values(valor);
+          const newPubliOPen = data.filter((noti) => !noti.read).length || 0;
+          setNotificacionesUserAtom((prev) => ({ ...prev, newPubliOPen: newPubliOPen }));
         }
       });
     }

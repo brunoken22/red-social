@@ -26,6 +26,7 @@ export type MessageWriting = {
 };
 
 export type NotificationPublication = {
+  id: string;
   type: "like" | "comment" | "reply";
   user_id: Number;
   publicacionId: Number;
@@ -110,11 +111,15 @@ export const messagesWriting = atom({
 export const notificacionesUser = atom<{
   publicacion: NotificationPublication[];
   newPubliOPen: number;
+  limit: number;
+  isLoading: boolean;
 }>({
   key: "notificacionesUser",
   default: {
     publicacion: [],
     newPubliOPen: 0,
+    limit: 10,
+    isLoading: true,
   },
 });
 export const isConnect = atom({

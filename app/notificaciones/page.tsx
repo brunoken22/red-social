@@ -1,27 +1,27 @@
-import { DivMain, ContainerMain } from '@/ui/container';
-import { TemNoti } from '@/components/templateNotificacion';
-import { Span } from '@/components/span';
-import { Metadata } from 'next';
+import { DivMain, ContainerMain } from "@/ui/container";
+import { Span } from "@/components/span";
+import { Metadata } from "next";
+import { Notification } from "@/components/Notifications";
 export const metadata: Metadata = {
-  title: 'Notificaciones | UniRed',
+  title: "Notificaciones | UniRed",
   description:
-    'Consulta tus notificaciones en UniRed y mantente al día con las actividades de tus amig@s.',
-  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+    "Consulta tus notificaciones en UniRed y mantente al día con las actividades de tus amig@s.",
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
 
   openGraph: {
-    title: 'Notificaciones | UniRed',
+    title: "Notificaciones | UniRed",
     description:
-      'Consulta tus notificaciones en UniRed y mantente al día con las actividades de tus amig@s.',
-    images: '/logo.webp',
-    url: 'https://unired.vercel.app/notificaciones',
-    type: 'website',
+      "Consulta tus notificaciones en UniRed y mantente al día con las actividades de tus amig@s.",
+    images: "/logo.webp",
+    url: "https://unired.vercel.app/notificaciones",
+    type: "website",
   },
   twitter: {
-    title: 'Notificaciones | UniRed',
+    title: "Notificaciones | UniRed",
     description:
-      'Consulta tus notificaciones en UniRed y mantente al día con las actividades de tus amig@s.',
-    creator: '@brunoken',
-    images: '/logo.webp',
+      "Consulta tus notificaciones en UniRed y mantente al día con las actividades de tus amig@s.",
+    creator: "@brunoken",
+    images: "/logo.webp",
   },
 };
 
@@ -29,7 +29,7 @@ export default function Notificaciones() {
   return (
     <DivMain>
       <ContainerMain>
-        <TemNoti />
+        <Notification />
         <Span />
       </ContainerMain>
     </DivMain>

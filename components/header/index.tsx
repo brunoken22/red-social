@@ -5,7 +5,7 @@ import { messaging, obtenerTokenFCM, rtdb } from "@/lib/firebase";
 import "./style.css";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { GetFriendAccepted, GetUser, useConnectionStatus } from "@/lib/hook";
+import { GetFriendAccepted, GetFriendReceived, GetUser, useConnectionStatus } from "@/lib/hook";
 import Link from "next/link";
 import { Menu } from "@/components/menu";
 import { useRecoilValue, useRecoilState } from "recoil";
@@ -60,7 +60,10 @@ export async function subscribeToPush() {
 export default function Header({ themeDate }: { themeDate: string }) {
   const [firstConect, setFirstConnect] = useState(false);
   GetUser();
-  GetFriendAccepted();
+  // GetFriendAccepted();
+
+  GetFriendReceived();
+
   const pathname = usePathname();
   const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
   const [dataUser, setDataUser] = useRecoilState(user);
@@ -76,6 +79,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const lastScrollY = useRef(0);
   const useAmigosAll = useRecoilValue(getAllAmigos);
   const modalRef = useRef<HTMLDivElement>(null);
+
   const useDebounce = useDebouncedCallback((query, search) => {
     search(query);
   }, 1000);

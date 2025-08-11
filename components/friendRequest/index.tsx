@@ -30,7 +30,6 @@ export default function AmigosComponent() {
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);
   const [soliEnv, setSoliEnv] = useState(false);
-
   const { mutateAccepted } = GetFriendAccepted();
   const { mutatePending } = GetFriendPending();
   const { mutateSend } = GetFriendSend();

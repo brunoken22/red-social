@@ -126,3 +126,8 @@ export const isConnect = atom({
   key: "isConnet",
   default: [] as Connect[],
 });
+
+export const openChatUser = atom({
+  key: "openChatUser",
+  default: "",
+});

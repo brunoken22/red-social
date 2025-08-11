@@ -19,6 +19,7 @@ import {
   messagesWriting,
   getAllAmigos,
   NotificationPublication,
+  openChatUser,
 } from "@/lib/atom";
 import Logo from "@/public/logo.svg";
 import { useDebouncedCallback } from "use-debounce";
@@ -60,8 +61,7 @@ export async function subscribeToPush() {
 export default function Header({ themeDate }: { themeDate: string }) {
   const [firstConect, setFirstConnect] = useState(false);
   GetUser();
-  // GetFriendAccepted();
-
+  GetFriendAccepted();
   GetFriendReceived();
 
   const pathname = usePathname();
@@ -79,7 +79,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const lastScrollY = useRef(0);
   const useAmigosAll = useRecoilValue(getAllAmigos);
   const modalRef = useRef<HTMLDivElement>(null);
-
+  const openChatUserValue = useRecoilValue(openChatUser);
   const useDebounce = useDebouncedCallback((query, search) => {
     search(query);
   }, 1000);
@@ -252,7 +252,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
         useConnectUser();
       }
       onMessage(messaging, (payload) => {
-        console.log("Este es el payload", payload);
+        if (payload.data?.room_id === openChatUserValue) return;
         const { title, body } = payload.notification as NotificationPayload;
         if (!title || !body) return;
         new Notification(title, { body });
@@ -267,7 +267,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
         }
       });
     }
-  }, [dataUser?.user?.id]);
+  }, [dataUser?.user?.id, openChatUserValue]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });

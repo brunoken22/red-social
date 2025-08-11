@@ -1,9 +1,7 @@
-import React from 'react';
+import React from "react";
 
 export const DivTemMensaje = ({ children }: { children: React.ReactNode }) => (
-  <div className='flex m-auto w-[1280px] max-md:w-full h-full justify-center gap-16 flex-nowrap'>
-    {children}
-  </div>
+  <div className='flex w-full h-full justify-center gap-4 flex-nowrap'>{children}</div>
 );
 
 export const TemplMensaje = ({
@@ -13,7 +11,7 @@ export const TemplMensaje = ({
   children: React.ReactNode;
   mobile: boolean;
 }) => (
-  <div className={`${!mobile ? 'max-xl:hidden' : 'block'}  flex flex-col gap-4 mb-4`}>
+  <div className={`${!mobile ? "max-xl:hidden" : "block"}  flex flex-col gap-4 mb-4`}>
     {children}
   </div>
 );
@@ -41,8 +39,9 @@ export const SpanNoti = ({ children }: { children: React.ReactNode }) => (
 export const Menssage = ({ children, isUser }: { children: React.ReactNode; isUser: boolean }) => (
   <p
     className={`inline-block p-2 rounded-[40px] max-w-full ${
-      isUser ? 'bg-[rgb(58,83,105)] dark:bg-[rgb(63,88,97)] ' : 'bg-[#575757]'
-    }`}>
+      isUser ? "bg-[rgb(58,83,105)] dark:bg-[rgb(63,88,97)] " : "bg-[#575757]"
+    }`}
+  >
     {children}
   </p>
 );

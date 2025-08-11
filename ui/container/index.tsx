@@ -48,7 +48,7 @@ export const DivAllChat = ({
   className?: string;
 }) => (
   <div
-    className={`${className} relative   flex gap-4 rounded-md flex-row items-center p-4   w-full`}
+    className={` relative   flex gap-4 rounded-md flex-row items-center p-4   w-full ${className}`}
   >
     {children}
   </div>

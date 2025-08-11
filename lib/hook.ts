@@ -72,9 +72,7 @@ export const useConnectionStatus = (user: User) => {
     // Escuchar cambios en la conexión
     const unsubscribe = onValue(connectedRef, (snapshot) => {
       if (snapshot.val() === true) {
-        // Marcar como conectado
         set(userStatusRef, isOnline);
-        // Configurar onDisconnect para marcar como desconectado
         onDisconnect(userStatusRef).set(isOffline);
         setStatus(true);
       } else {

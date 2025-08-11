@@ -2,8 +2,8 @@
 import dynamic from "next/dynamic";
 import { DivAllChat } from "@/ui/container";
 import { DivTemMensaje, TemplMensaje, TemplChat, SpanNoti } from "./styled";
-import { useRecoilValue } from "recoil";
-import { user, isMenssage, isConnect, User, messagesWriting } from "@/lib/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { user, isMenssage, isConnect, User, messagesWriting, openChatUser } from "@/lib/atom";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { LuMessageSquare, LuUsers } from "react-icons/lu";
@@ -44,6 +44,7 @@ export function TemMensaje() {
   const dataMessagesWriting = useRecoilValue(messagesWriting);
   const [dataMensajeUser, setDataMensajeUser] = useState<MessageUserChat>();
   const { data, isLoading } = GetAllUserChat();
+  const setOpenChatUserValue = useSetRecoilState(openChatUser);
 
   useEffect(() => {
     const rtdbParams = params.get("rtdb") as any;
@@ -62,14 +63,39 @@ export function TemMensaje() {
         rtdb: rtdbId,
         status: "Enviado",
       });
+      setOpenChatUserValue(rtdbId || "");
     }
   }, [params.get("fullName")]);
 
-  console.log("dataMessage", dataMessage);
   if (isLoading) return <Loader />;
+
+  // Función para ordenar los chats
+  const getSortedChats = () => {
+    if (!data) return [];
+
+    // Separamos en dos grupos: no leídos y el resto
+    const unreadChats: User[] = [];
+    const readChats: User[] = [];
+
+    data.forEach((user: User) => {
+      const rtdbId = existenElementosSimilares(user.rtdb, dataUser.user.rtdb as []);
+      const message = dataMessage?.find((item) => item.rtdb === rtdbId);
+
+      if (message && !message.read && message.id !== dataUser.user.id) {
+        unreadChats.push(user);
+      } else {
+        readChats.push(user);
+      }
+    });
+
+    // Concatenamos: primero no leídos, luego el resto en su orden original
+    return [...unreadChats, ...readChats];
+  };
+  const sortedData = getSortedChats();
+
   return (
     <DivTemMensaje>
-      {data?.length && !isLoading ? (
+      {sortedData?.length && !isLoading ? (
         <>
           <div
             className={`w-1/4  max-md:w-full ${
@@ -81,8 +107,8 @@ export function TemMensaje() {
                 <h2 className='text-2xl font-bold text-start'>Chats</h2>
                 <TemplChat>
                   {!isLoading ? (
-                    data.length ? (
-                      data.map((e: User) => {
+                    sortedData.length ? (
+                      sortedData.map((e: User) => {
                         const rtdbId = existenElementosSimilares(e.rtdb, dataUser.user.rtdb as []);
                         const dataMessageUser = dataMessage?.find((item) => item.rtdb == rtdbId);
                         return (
@@ -101,9 +127,10 @@ export function TemMensaje() {
                                 rtdb: rtdbId as string,
                                 status: "Enviado",
                               });
+                              setOpenChatUserValue(rtdbId || "");
                             }}
                           >
-                            <DivAllChat>
+                            <DivAllChat className='!gap-2'>
                               <FotoPerfil
                                 img={e.img}
                                 className='w-[40px] h-[40px]'
@@ -182,7 +209,7 @@ export function TemMensaje() {
                 }
                 dataMensajeUser={dataMensajeUser}
                 id={dataUser.user.id}
-                close={() =>
+                close={() => {
                   setDataMensajeUser({
                     rtdb: "",
                     message: "",
@@ -191,8 +218,9 @@ export function TemMensaje() {
                     img: "",
                     status: "Enviado",
                     id: "",
-                  })
-                }
+                  });
+                  setOpenChatUserValue("");
+                }}
               />
             ) : (
               <div className='flex flex-col items-center justify-center h-full'>
@@ -210,7 +238,7 @@ export function TemMensaje() {
             )}
           </div>
         </>
-      ) : !data?.length && isLoading ? (
+      ) : !sortedData?.length && !isLoading ? (
         <>
           <div className='flex flex-col items-center justify-center h-full'>
             <div className='text-center p-8 bg-white dark:bg-darkComponet rounded-lg shadow-md max-w-md'>

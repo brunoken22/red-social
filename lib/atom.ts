@@ -18,6 +18,7 @@ export type Message = {
   rtdb: string;
   message: string;
   id: number;
+  date: Date;
 };
 
 export type MessageWriting = {

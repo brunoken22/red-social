@@ -39,7 +39,7 @@ export const SpanNoti = ({ children }: { children: React.ReactNode }) => (
 export const Menssage = ({ children, isUser }: { children: React.ReactNode; isUser: boolean }) => (
   <p
     className={`inline-block p-2 rounded-[40px] max-w-full ${
-      isUser ? "bg-[rgb(58,83,105)] dark:bg-[rgb(63,88,97)] " : "bg-[#575757]"
+      isUser ? "bg-[#007bff]  " : "bg-[#575757]"
     }`}
   >
     {children}

@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import { DivAllChat } from "@/ui/container";
 import { DivTemMensaje, TemplMensaje, TemplChat, SpanNoti } from "./styled";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { user, isMenssage, isConnect, User, messagesWriting, openChatUser } from "@/lib/atom";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -32,7 +32,8 @@ export type MessageUserChat = {
   img: string;
   status: "Enviado" | "Recibido" | "Leido";
   id: string;
-  date?: Date;
+  date: Date | "";
+  lastChanged: Date | "";
   receip_id?: number;
 };
 
@@ -62,6 +63,8 @@ export function TemMensaje() {
         id: idParams,
         rtdb: rtdbId,
         status: "Enviado",
+        date: "",
+        lastChanged: "",
       });
       setOpenChatUserValue(rtdbId || "");
     }
@@ -74,25 +77,32 @@ export function TemMensaje() {
     if (!data) return [];
 
     // Separamos en dos grupos: no leídos y el resto
-    const unreadChats: User[] = [];
-    const readChats: User[] = [];
+    const unreadChats: Array<{ user: User; date: Date }> = [];
+    const readChats: Array<{ user: User; date: Date }> = [];
 
     data.forEach((user: User) => {
       const rtdbId = existenElementosSimilares(user.rtdb, dataUser.user.rtdb as []);
-      const message = dataMessage?.find((item) => item.rtdb === rtdbId);
+      const message = dataMessage.find((item) => item.rtdb === rtdbId);
 
-      if (message && !message.read && message.id !== dataUser.user.id) {
-        unreadChats.push(user);
-      } else {
-        readChats.push(user);
+      if (message) {
+        const messageDate = new Date(message.date);
+        if (!message.read && message.id !== dataUser.user.id) {
+          unreadChats.push({ user, date: messageDate });
+        } else {
+          readChats.push({ user, date: messageDate });
+        }
       }
     });
 
-    // Concatenamos: primero no leídos, luego el resto en su orden original
-    return [...unreadChats, ...readChats];
-  };
-  const sortedData = getSortedChats();
+    // Ordenamos cada grupo por fecha (más reciente primero)
+    unreadChats.sort((a, b) => b.date.getTime() - a.date.getTime());
+    readChats.sort((a, b) => b.date.getTime() - a.date.getTime());
 
+    // Concatenamos: primero no leídos ordenados por fecha, luego leídos ordenados por fecha
+    return [...unreadChats.map((item) => item.user), ...readChats.map((item) => item.user)];
+  };
+
+  const sortedData = getSortedChats();
   return (
     <DivTemMensaje>
       {sortedData?.length && !isLoading ? (
@@ -126,6 +136,8 @@ export function TemMensaje() {
                                 id: e.id.toString(),
                                 rtdb: rtdbId as string,
                                 status: "Enviado",
+                                date: dataMessageUser?.date || new Date(),
+                                lastChanged: dataMensajeUser?.lastChanged || "",
                               });
                               setOpenChatUserValue(rtdbId || "");
                             }}
@@ -201,12 +213,13 @@ export function TemMensaje() {
           >
             {dataMensajeUser?.id ? (
               <TemplateChat
-                connect={
-                  (dataIsConnect?.find((eConnect: any) => dataMensajeUser.id == eConnect.id)
-                    ?.connect &&
-                    true) ||
-                  false
+                isWriting={
+                  dataMessagesWriting?.find((item) => item.id == Number(dataMensajeUser?.id))
+                    ?.writing || false
                 }
+                connect={dataIsConnect?.find(
+                  (eConnect) => Number(dataMensajeUser.id) == eConnect.id
+                )}
                 dataMensajeUser={dataMensajeUser}
                 id={dataUser.user.id}
                 close={() => {
@@ -218,6 +231,8 @@ export function TemMensaje() {
                     img: "",
                     status: "Enviado",
                     id: "",
+                    date: "",
+                    lastChanged: "",
                   });
                   setOpenChatUserValue("");
                 }}

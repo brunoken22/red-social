@@ -1,31 +1,33 @@
-'use client';
-import { TemplSns, Menssage } from './styled';
-import FotoPerfil from '@/ui/FotoPerfil';
-import { Input } from '@/ui/input';
-import CloseSVG from '@/ui/icons/close.svg';
-import { Button } from '../publicar/styled';
-import Link from 'next/link';
-import { EnviarMessage } from '@/lib/hook';
-import { useEffect, useRef, useState } from 'react';
-import { rtdb } from '@/lib/firebase';
-import { ref, onValue, update, get } from 'firebase/database';
-import Linkify from '@/utils/formtText';
-import { MessageUserChat } from '.';
-import diferenteDate from '../templatePublicate/diferenteDate';
+"use client";
+import { TemplSns, Menssage } from "./styled";
+import FotoPerfil from "@/ui/FotoPerfil";
+import { Input } from "@/ui/input";
+import CloseSVG from "@/ui/icons/close.svg";
+import { Button } from "../publicar/styled";
+import Link from "next/link";
+import { EnviarMessage } from "@/lib/hook";
+import { useEffect, useRef, useState } from "react";
+import { rtdb } from "@/lib/firebase";
+import { ref, onValue, update, get } from "firebase/database";
+import Linkify from "@/utils/formtText";
+import { MessageUserChat } from ".";
+import diferenteDate from "../templatePublicate/diferenteDate";
 
 export default function TemplateChat({
   dataMensajeUser,
   id,
   close,
   connect,
+  isWriting,
 }: {
   dataMensajeUser: MessageUserChat;
   id: number;
   close: () => any;
-  connect: boolean;
+  connect: any;
+  isWriting: boolean;
 }) {
   const smsRef: any = useRef(null);
-  const [claveMessage, setclaveMessage] = useState('');
+  const [claveMessage, setclaveMessage] = useState("");
   const [messagesAll, setMessagesAll] = useState<MessageUserChat[] | []>([]);
 
   useEffect(() => {
@@ -51,11 +53,11 @@ export default function TemplateChat({
     };
 
     // Listener para cerrar el navegador o recargar
-    window.addEventListener('beforeunload', handleUnload);
+    window.addEventListener("beforeunload", handleUnload);
 
     return () => {
       unsubscribe();
-      window.removeEventListener('beforeunload', handleUnload);
+      window.removeEventListener("beforeunload", handleUnload);
       update(chatRoom, { isOpen: false, user: Number(id), writing: false });
     };
   }, [dataMensajeUser]);
@@ -66,9 +68,9 @@ export default function TemplateChat({
         const utlimoMensaje: any = messagesAll[messagesAll.length - 1];
         const chatroomData = ref(
           rtdb,
-          '/rooms/' + dataMensajeUser?.rtdb + '/messages/' + claveMessage
+          "/rooms/" + dataMensajeUser?.rtdb + "/messages/" + claveMessage
         );
-        const chatRoom = ref(rtdb, '/rooms/' + dataMensajeUser?.rtdb + '/' + id);
+        const chatRoom = ref(rtdb, "/rooms/" + dataMensajeUser?.rtdb + "/" + id);
         update(chatRoom, {
           isOpen: true,
           user: Number(id),
@@ -78,7 +80,7 @@ export default function TemplateChat({
             if (snap.exists()) {
               update(chatroomData, {
                 read: true,
-                status: 'Leido',
+                status: "Leido",
               })
                 .then((snap: any) => {
                   return snap;
@@ -110,19 +112,22 @@ export default function TemplateChat({
       fullName: dataMensajeUser.fullName,
       img: dataMensajeUser.img,
       message: target.message.value,
-      status: 'Enviado',
+      status: "Enviado",
       read: false,
       date: new Date(),
+      lastChanged: new Date(),
       receip_id: Number(dataMensajeUser.id),
     };
 
     const data = await EnviarMessage(messageUser);
     if (data) {
-      const chatRoom = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}/${id}`);
-      update(chatRoom, { writing: false });
-      return (target.message.value = '');
+      const chatRoom = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}`);
+      update(chatRoom, { update_at: new Date() });
+      const chatRoomUser = ref(rtdb, `/rooms/${dataMensajeUser?.rtdb}/${id}`);
+      update(chatRoomUser, { writing: false });
+      return (target.message.value = "");
     }
-    alert('Error al mandar mensaje');
+    alert("Error al mandar mensaje");
   };
   const handleChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -139,15 +144,30 @@ export default function TemplateChat({
     <TemplSns>
       <div className=' flex justify-between border-[1px] border-[#3b3b3b] p-2'>
         <div className='flex items-center gap-4 overflow-hidden'>
-          <Link href={'/amigos/' + dataMensajeUser.id}>
+          <Link href={"/amigos/" + dataMensajeUser.id}>
             <FotoPerfil
               className='w-[40px] h-[40px]'
-              img={dataMensajeUser.img || (dataMensajeUser.img == 'null' && '') || ''}
-              connect={connect}
+              img={dataMensajeUser.img || (dataMensajeUser.img == "null" && "") || ""}
+              connect={connect?.connect}
             />
           </Link>
-          <div className='flex items-center gap-2 overflow-hidden'>
-            <h5 className='truncate m-0'>{dataMensajeUser.fullName}</h5>
+          <div className='flex flex-col items-start overflow-hidden'>
+            <h5 className=' truncate m-0 '>{dataMensajeUser.fullName}</h5>
+            {!isWriting ? (
+              connect?.connect ? (
+                <p className='text-green-500 text-xs'>Conectado</p>
+              ) : (
+                <p className='text-gray-500 text-xs'>
+                  {connect?.lastChanged
+                    ? new Date(connect.lastChanged).toLocaleString("es-ES")
+                    : ""}
+                </p>
+              )
+            ) : (
+              <p className='text-[0.8rem] text-start text-green-600 m-0 p-0 animate-pulse '>
+                Escribiendo...
+              </p>
+            )}
           </div>
         </div>
         <Button onClick={() => close()}>
@@ -157,7 +177,8 @@ export default function TemplateChat({
       <div className='flex flex-col gap-4 h-full  border-[1px] border-[#3b3b3b]'>
         <div
           className='flex flex-col w-full text-primary gap-2 p-4  overflow-y-auto h-full'
-          ref={smsRef}>
+          ref={smsRef}
+        >
           {messagesAll
             ? messagesAll?.map((e: any, p: any) => {
                 return (
@@ -165,16 +186,18 @@ export default function TemplateChat({
                     key={p}
                     id={e.id}
                     style={{
-                      display: 'block',
-                      textAlign: e.id == id ? 'end' : 'start',
-                    }}>
+                      display: "block",
+                      textAlign: e.id == id ? "end" : "start",
+                    }}
+                  >
                     <Menssage isUser={e.id == id ? true : false}>
-                      <Linkify text={e.message || ''} />
+                      <Linkify text={e.message || ""} />
                     </Menssage>
                     <span
                       className={`text-[0.7rem] block  text-hoverPrimary ${
-                        e.id == id ? 'pr-2' : 'pl-2'
-                      }`}>
+                        e.id == id ? "pr-2" : "pl-2"
+                      }`}
+                    >
                       {diferenteDate(e.date)}
                     </span>
                   </div>
@@ -184,20 +207,22 @@ export default function TemplateChat({
           {messagesAll?.length > 0 && (messagesAll[messagesAll.length - 1] as any).id == id && (
             <p
               className={`text-end  text-[0.8rem] ${
-                messagesAll[messagesAll.length - 1].read ? 'text-light' : 'text-gray-500'
-              } -mt-2`}>
+                messagesAll[messagesAll.length - 1].read ? "text-light" : "text-gray-500"
+              } -mt-2`}
+            >
               {messagesAll[messagesAll.length - 1].read
-                ? ' ✔✔ Leido'
-                : messagesAll[messagesAll.length - 1].status === 'Enviado'
-                ? ' ✔ Enviado'
-                : ' ✔✔ Sin leer'}
+                ? " ✔✔ Leido"
+                : messagesAll[messagesAll.length - 1].status === "Enviado"
+                ? " ✔ Enviado"
+                : " ✔✔ Sin leer"}
             </p>
           )}
         </div>
         <div>
           <form
             onSubmit={handleSubmit}
-            className='flex items-center gap-4 p-4 text-secundary max-md:p-2'>
+            className='flex items-center gap-4 p-4 text-secundary max-md:p-2'
+          >
             <Input
               id='message'
               type='text'
@@ -208,7 +233,8 @@ export default function TemplateChat({
             <button
               type='submit'
               id={dataMensajeUser.rtdb}
-              className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70 shrink-[5] '>
+              className='w-full p-2 bg-light text-primary rounded-md hover:opacity-70 shrink-[5] '
+            >
               Enviar
             </button>
           </form>

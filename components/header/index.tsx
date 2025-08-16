@@ -231,7 +231,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
         setAllConnectAmigos(connecam);
       }
     });
-  }, [dataUser?.user?.id]);
+  }, [dataUser?.user?.id, useAmigosAll]);
 
   //----------------------- NOTIFICACIONES POR RTDB Y NUEVOS mensajes
   useEffect(() => {
@@ -255,7 +255,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
         if (payload.data?.room_id === openChatUserValue) return;
         const { title, body } = payload.notification as NotificationPayload;
         if (!title || !body) return;
-        new Notification(title, { body });
+        new Notification(title, { body, data: { url: "/perfil" } });
       });
       const notificationAllRef = query(ref(rtdb, `/notifications/${dataUser.user.id}`));
       onValue(notificationAllRef, (snapshot) => {
@@ -327,7 +327,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
           <nav className='flex justify-between items-center max-md:justify-between max-w-screen-lg m-auto'>
             <div className='flex gap-4 items-center '>
               <Link href={"/inicio"} aria-label='home'>
-                <Logo className='rounded-md fill-unired transition-dark' />
+                <Logo className='rounded-md fill-unired transition-dark bg-primary' />
               </Link>
               <div className='border-none relative max-md:hidden '>
                 {pathname !== "/search" && (
@@ -376,7 +376,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
         <DivContenedorConnect>
           <DivConectados onClick={() => setConnectAmigos(!connectAmigos)}>
-            <span>Conectados</span> <DivConnect />
+            <span className='text-primary'>Conectados</span> <DivConnect />
           </DivConectados>
           {connectAmigos ? (
             <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={dataIsConnect} />

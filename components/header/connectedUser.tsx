@@ -1,14 +1,10 @@
-import dynamic from 'next/dynamic';
-import {User} from '@/lib/atom';
-import {useRouter} from 'next/navigation';
+import dynamic from "next/dynamic";
+import { User } from "@/lib/atom";
+import { useRouter } from "next/navigation";
 
-const DivConnectAll = dynamic(() =>
-  import('./styled').then((mod) => mod.DivConnectAll)
-);
-const ButtonSmsConnect = dynamic(() =>
-  import('@/ui/boton').then((mod) => mod.ButtonSmsConnect)
-);
-const FotoPerfil = dynamic(() => import('@/ui/FotoPerfil'));
+const DivConnectAll = dynamic(() => import("./styled").then((mod) => mod.DivConnectAll));
+const ButtonSmsConnect = dynamic(() => import("@/ui/boton").then((mod) => mod.ButtonSmsConnect));
+const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));
 
 export default function ConnectedUsers({
   allConnectAmigos,
@@ -17,32 +13,33 @@ export default function ConnectedUsers({
   allConnectAmigos: User[];
   dataIsConnect: any;
 }) {
-  const {push} = useRouter();
+  const { push } = useRouter();
   return (
     <>
       <DivConnectAll>
         {allConnectAmigos.length ? (
-          allConnectAmigos.map((e) => (
+          allConnectAmigos.map((e, index) => (
             <ButtonSmsConnect
               key={e.id}
+              className={index !== allConnectAmigos.length - 1 ? "border-b border-gray-500" : ""}
               onClick={() =>
                 push(
-                  '/chat?fullName=' +
+                  "/chat?fullName=" +
                     e.fullName +
-                    '&rtdb=' +
+                    "&rtdb=" +
                     e.rtdb +
-                    '&id=' +
+                    "&id=" +
                     e.id +
-                    '&img=' +
+                    "&img=" +
                     e.img
                 )
-              }>
+              }
+            >
               <FotoPerfil
                 img={e.img}
                 className='h-[30px] w-[30px]'
                 connect={
-                  dataIsConnect?.find((eConnect: any) => e.id == eConnect.id)
-                    ?.connect && true
+                  dataIsConnect?.find((eConnect: any) => e.id == eConnect.id)?.connect && true
                 }
               />
 

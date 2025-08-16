@@ -39,14 +39,16 @@ export const ButtonSms = ({
 export const ButtonSmsConnect = ({
   children,
   onClick,
+  className,
 }: {
   children: React.ReactNode;
   onClick: () => any;
+  className: string;
 }) => (
   <button
     onClick={onClick}
     className={` flex items-center gap-2
-      text-primary rounded-md w-full h-auto m-[0.1rem] hover:opacity-70 p-4`}
+      text-primary  w-full h-auto m-[0.1rem] hover:opacity-70 p-4 ${className}`}
   >
     {children}
   </button>

@@ -28,6 +28,9 @@ class CustomAuthError extends CredentialsSignin {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  pages: {
+    error: "/iniciarSesion",
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,

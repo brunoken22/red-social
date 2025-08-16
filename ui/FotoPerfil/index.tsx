@@ -3,11 +3,13 @@ export default function FotoPerfil({
   img,
   connect,
   isBorder = false,
+  size,
 }: {
   className: string;
   img: string | undefined;
   connect?: boolean | undefined;
   isBorder?: boolean;
+  size?: string;
 }) {
   return (
     <div
@@ -27,7 +29,9 @@ export default function FotoPerfil({
       />
       {connect ? (
         <div
-          className={` bg-green-500 w-[14px] h-[14px] rounded-full absolute bottom-[2%] right-[-6%] border-2 border-zinc-900`}
+          className={` bg-green-500 w-[14px] h-[14px] rounded-full absolute bottom-[2%] right-[-6%] border-2 border-zinc-900 ${
+            size ? " w-[21px] h-[21px]  bottom-[2%] right-[2%] " : ""
+          }`}
         ></div>
       ) : null}
     </div>

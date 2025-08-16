@@ -50,14 +50,9 @@ export function PerfilAmigo({ data }: { data: any }) {
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataUser = useRecoilValue(user);
   const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
-  const {
-    dataPubliAmigo,
-    isLoadingGetFriend,
-    isError,
-    loadMore,
-    isReachingEnd,
-    mutatePublicacionesUser,
-  } = GetPubliAmigo(id as string);
+  const { isLoadingGetFriend, loadMore, isReachingEnd, mutatePublicacionesUser } = GetPubliAmigo(
+    id as string
+  );
   const [isAmigo, setIsAmigo] = useState<"ACCEPTED" | "PENDING" | "REJECTED">();
 
   useEffect(() => {
@@ -115,6 +110,7 @@ export function PerfilAmigo({ data }: { data: any }) {
                     {data?.user?.id && (
                       <FotoPerfil
                         className='w-[120px] h-[120px]'
+                        size='xl'
                         img={data?.user?.img}
                         connect={
                           dataIsConnect?.find((e: any) => e.id == data?.user?.id)?.connect && true

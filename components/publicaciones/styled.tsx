@@ -4,7 +4,7 @@ export const DivPerfil = ({
 }: {
   children: React.ReactNode;
   className?: string;
-}) => <div className={`flex gap-4  ${className}`}>{children}</div>;
+}) => <div className={`flex gap-2  ${className}`}>{children}</div>;
 
 export const DivSpan = ({ children }: { children: React.ReactNode }) => (
   <span className='block text-[0.7rem] '>{children}</span>
@@ -22,7 +22,8 @@ export const SpanIco = ({
   <span
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
-    className=' text-[0.7rem]  flex items-center justify-center gap-[0.2rem] mb-[0.2rem] relative h-[20px]'>
+    className=' text-[0.7rem]  flex items-center justify-center gap-[0.2rem] mb-[0.2rem] relative h-[20px]'
+  >
     {children}
   </span>
 );
@@ -36,7 +37,8 @@ export const ButtonOpenImage = ({
 }) => (
   <button
     onClick={onClick}
-    className='w-full  text-transparent border-none hover:opacity-70 overflow-hidden'>
+    className='w-full  text-transparent border-none hover:opacity-70 overflow-hidden'
+  >
     {children}
   </button>
 );
@@ -76,8 +78,9 @@ export const BottonLike = ({
     disabled={disabled}
     onClick={disabled ? () => {} : onClick}
     className={` border-none  flex items-center gap-2 text-[0.8rem] p-2 hover:backdrop-contrast-50 rounded-md  ${
-      like ? 'dark:text-[#7696fd] text-[#063ef5]' : 'text-secundary dark:text-primary'
-    } ${disabled ? 'opacity-70 hover:backdrop-contrast-100' : ''}`}>
+      like ? "dark:text-[#7696fd] text-[#063ef5]" : "text-secundary dark:text-primary"
+    } ${disabled ? "opacity-70 hover:backdrop-contrast-100" : ""}`}
+  >
     {children}
   </button>
 );
@@ -97,7 +100,8 @@ export const BottonComentar = ({
     id={id}
     type={type}
     onClick={onClick}
-    className='bg-transparent border-none text-secundary flex items-center gap-2 text-[0.8rem] p-2 hover:bg-primary hover:rounded-md '>
+    className='bg-transparent border-none text-secundary flex items-center gap-2 text-[0.8rem] p-2 hover:bg-primary hover:rounded-md '
+  >
     {children}
   </button>
 );
@@ -117,9 +121,10 @@ export const BottonSendComentario = ({
     onClick={onClick}
     className={`bg-transparent  flex items-center justify-center h-full rounded-md border-solid border-[1px]  border-gray-400  ${
       disabled
-        ? 'opacity-70 fill-gray-400 hover:fill-gray-400 hover:border-gray-400 dark:fill-gray-400'
-        : 'hover:border-gray-600 dark:hover:border-gray-100 dark:fill-white dark:hover:fill-light hover:fill-light'
-    }`}>
+        ? "opacity-70 fill-gray-400 hover:fill-gray-400 hover:border-gray-400 dark:fill-gray-400"
+        : "hover:border-gray-600 dark:hover:border-gray-100 dark:fill-white dark:hover:fill-light hover:fill-light"
+    }`}
+  >
     {children}
   </button>
 );
@@ -144,7 +149,8 @@ export const ButtonOpenDelete = ({
   <button
     aria-label='deletePublication'
     onClick={onClick}
-    className='flex gap-[0.2rem] bg-transparent border-none hover:opacity-70 h-[35px] w-[35px] justify-center items-center hover:backdrop-contrast-50 hover:rounded-full'>
+    className='flex gap-[0.2rem] bg-transparent border-none hover:opacity-70 h-[35px] w-[35px] justify-center items-center hover:backdrop-contrast-50 hover:rounded-full'
+  >
     {children}
   </button>
 );
@@ -162,7 +168,8 @@ export const ButtonDelete = ({
 }) => (
   <button
     onClick={onClick}
-    className='absolute bg-secundary text-primary dark:bg-primary dark:text-secundary  border-none mt-2 p-2 pl-4 pr-4 right-0 hover:opacity-70 '>
+    className='absolute bg-secundary text-primary dark:bg-primary dark:text-secundary  border-none mt-2 p-2 pl-4 pr-4 right-0 hover:opacity-70 '
+  >
     {children}
   </button>
 );
@@ -176,7 +183,8 @@ export const ButtonMasPubli = ({
 }) => (
   <button
     onClick={onClick}
-    className='border-none bg-transparent  hover:opacity-70 dark:text-primary p-2 w-full'>
+    className='border-none bg-transparent  hover:opacity-70 dark:text-primary p-2 w-full'
+  >
     {children}
   </button>
 );

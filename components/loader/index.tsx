@@ -1,7 +1,6 @@
-'use client';
-import Ring from '@uiball/loaders/dist/components/Ring';
-import { DivLoader, ImageLogo } from './styled';
-import { useState } from 'react';
+"use client";
+import { DivLoader, ImageLogo } from "./styled";
+import { useState } from "react";
 
 export function Loader() {
   const [loadingText, setLoadingText] = useState(false);
@@ -26,7 +25,7 @@ export function Loader() {
 export function LoaderComponent() {
   return (
     <DivLoader>
-      <Ring size={40} lineWeight={5} speed={2} color='black' />
+      <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-light' />
     </DivLoader>
   );
 }
@@ -34,7 +33,7 @@ export function LoaderComponent() {
 export function LoaderRequest() {
   return (
     <div className='flex items-center justify-center'>
-      <Ring size={40} lineWeight={5} speed={2} color='#5495e3' />
+      <div className='animate-spin rounded-full h-7 w-7 border-b-4 border-light' />
     </div>
   );
 }

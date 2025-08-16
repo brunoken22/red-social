@@ -1,28 +1,29 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
-import { cookies } from 'next/headers';
-import Layout from '@/components/layout';
-const poppins = Poppins({ weight: '400', subsets: ['latin'] });
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import "./globals.css";
+import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
+import { cookies } from "next/headers";
+import Layout from "@/components/layout";
+const poppins = Poppins({ weight: "400", subsets: ["latin"] });
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
-  title: 'UniRed',
-  description: 'Red social',
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
+  title: "UniRed",
+  description: "Red social",
   keywords:
-    'La red social líder para conectar con amigos, compartir fotos. Únete hoy mismo y forma parte de nuestra comunidad.',
+    "La red social líder para conectar con amigos, compartir fotos. Únete hoy mismo y forma parte de nuestra comunidad.",
   facebook: {
-    appId: '501335862562150',
+    appId: "501335862562150",
   },
-  manifest: '/manifest.json',
+  manifest: "/manifest.json",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const theme = cookies().get('theme')?.value || 'false';
+  const theme = cookies().get("theme")?.value || "false";
 
   return (
-    <html lang='es' className={`${theme !== 'true' ? '' : 'dark'}`}>
+    <html lang='es' className={`${theme !== "true" ? "" : "dark"}`}>
       <head>
         <meta
           name='google-site-verification'
@@ -35,6 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={`${poppins.className} dark:bg-dark dark:text-white dark:transition-dark`}>
         <Layout themeDate={theme}>{children}</Layout>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

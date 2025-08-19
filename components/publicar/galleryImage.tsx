@@ -1,167 +1,183 @@
-import React from 'react';
-import LightGallery from 'lightgallery/react';
-import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import lgZoom from 'lightgallery/plugins/zoom';
-import lgFullScreen from 'lightgallery/plugins/fullscreen';
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-thumbnail.css';
-import 'lightgallery/css/lg-zoom.css';
-import 'lightgallery/css/lg-fullscreen.css';
+import React, { useState, useEffect } from "react";
+import LightGallery from "lightgallery/react";
+import lgThumbnail from "lightgallery/plugins/thumbnail";
+import lgZoom from "lightgallery/plugins/zoom";
+import lgFullScreen from "lightgallery/plugins/fullscreen";
+import lgVideo from "lightgallery/plugins/video";
+import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-thumbnail.css";
+import "lightgallery/css/lg-zoom.css";
+import "lightgallery/css/lg-fullscreen.css";
+import "lightgallery/css/lg-video.css";
+import { FaPlay } from "react-icons/fa";
+import { Media } from "@/lib/atom";
+import "./style.css";
 
-export default function GalleryServiceId({
-  images = [],
-  isOne = false,
-}: {
-  images: string[];
-  isOne?: boolean;
-}) {
-  const firstThreeImages = images.slice(0, 3);
+export default function GalleryMedia({ media = [] }: { media: Media[] }) {
+  const firstThreeMedia = media.slice(0, 3);
+  const [videoThumbnails, setVideoThumbnails] = useState<Record<string, string>>({});
 
-  return (
-    <LightGallery
-      plugins={[lgThumbnail, lgZoom, lgFullScreen]}
-      selector='.gallery-item'
-      licenseKey='D4194FDD-48924833-A54AECA3-D6F8E646'
-      zoomFromOrigin={false}
-      exThumbImage='data-external-thumb-image'>
-      <div className='grid grid-cols-12 gap-2 pr-1 pl-1'>
-        {/* Una sola imagen */}
-        {firstThreeImages.length === 1 && (
-          <div className='col-span-12 overflow-hidden'>
-            <a
-              href={firstThreeImages[0]}
-              data-external-thumb-image={firstThreeImages[0]}
-              data-sub-html={`<h6 class='text-sm text-light'>Imagen única</h6>`}
-              className='gallery-item hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-              <div className='aspect-w-16 aspect-h-9'>
+  // Función para generar miniaturas de videos locales
+  const generateVideoThumbnail = (videoUrl: string): Promise<string> => {
+    return new Promise((resolve) => {
+      const video = document.createElement("video");
+      const canvas = document.createElement("canvas");
+      video.src = videoUrl;
+      video.crossOrigin = "anonymous";
+      video.addEventListener("loadedmetadata", () => {
+        video.currentTime = 0.5; // Capturar frame a medio segundo
+      });
+      video.addEventListener("seeked", () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL("image/jpeg"));
+        } else {
+          resolve("");
+        }
+      });
+      video.addEventListener("error", () => {
+        resolve(""); // Fallback si hay error
+      });
+    });
+  };
+
+  // Efecto para generar miniaturas de videos
+  useEffect(() => {
+    const generateThumbnails = async () => {
+      const thumbnails: Record<string, string> = {};
+
+      for (const item of media) {
+        if (item.type === "video" && !item.url.includes("youtube") && !item.url.includes("vimeo")) {
+          try {
+            const thumbnail = await generateVideoThumbnail(item.url);
+            if (thumbnail) {
+              thumbnails[item.url] = thumbnail;
+            }
+          } catch (error) {
+            console.error("Error generating thumbnail for", item.url, error);
+          }
+        }
+      }
+
+      setVideoThumbnails(thumbnails);
+    };
+
+    generateThumbnails();
+  }, [media]);
+
+  const renderMediaItem = (item: Media, index: number) => {
+    const isVideo = item.type === "video";
+    const thumbnailUrl = isVideo
+      ? videoThumbnails[item.url] || getCloudinaryThumbnail(item.url)
+      : item.url;
+
+    return (
+      <a
+        key={`${item.url}-${index}`}
+        href={item.url}
+        data-src={item.url}
+        data-thumb={thumbnailUrl}
+        data-iframe={isVideo}
+        data-sub-html={`<h6 class="text-sm text-light">${isVideo ? "Video" : "Imagen"} ${
+          index + 1
+        }</h6>`}
+        className={`gallery-item block w-full h-full group relative hover:opacity-70 overflow-hidden transition-all duration-300 ${
+          isVideo ? "lg-video-item" : ""
+        }`}
+        data-poster={isVideo ? thumbnailUrl : undefined}
+      >
+        <div className='w-full h-full relative'>
+          {isVideo ? (
+            <>
+              {thumbnailUrl ? (
                 <img
-                  src={firstThreeImages[0]}
-                  alt='Image 1'
+                  src={thumbnailUrl}
+                  alt={`Video thumbnail ${index + 1}`}
                   className='rounded-lg object-cover w-full h-full'
                 />
+              ) : (
+                <div className='rounded-lg bg-gray-800 w-full h-full flex items-center justify-center'>
+                  <FaPlay className='text-white text-4xl' />
+                </div>
+              )}
+              <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 group-hover:bg-opacity-50 transition-all'>
+                <div className='bg-white bg-opacity-80 p-3 rounded-full'>
+                  <FaPlay className='text-light text-lg' />
+                </div>
               </div>
-            </a>
-          </div>
-        )}
+            </>
+          ) : (
+            <img
+              src={item.url}
+              alt={`Media ${index + 1}`}
+              className='rounded-lg object-cover w-full h-full'
+              loading='lazy'
+            />
+          )}
+        </div>
+      </a>
+    );
+  };
 
-        {/* Dos imágenes */}
-        {firstThreeImages.length === 2 && (
-          <>
-            <div className='col-span-12 md:col-span-6 overflow-hidden'>
-              <a
-                href={firstThreeImages[0]}
-                data-external-thumb-image={firstThreeImages[0]}
-                data-sub-html={`<h6 class='text-sm text-light'>Imagen 1</h6>`}
-                className='gallery-item hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-                <div className='aspect-w-16 aspect-h-9'>
-                  <img
-                    src={firstThreeImages[0]}
-                    alt='Image 1'
-                    className='rounded-lg object-cover w-full h-full'
-                  />
-                </div>
-              </a>
-            </div>
-            <div className='col-span-12 md:col-span-6 overflow-hidden'>
-              <a
-                href={firstThreeImages[1]}
-                data-external-thumb-image={firstThreeImages[1]}
-                data-sub-html={`<h6 class='text-sm text-light'>Imagen 2</h6>`}
-                className='gallery-item flex w-full h-full hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-                <div className='aspect-w-16 aspect-h-9'>
-                  <img
-                    src={firstThreeImages[1]}
-                    alt='Image 2'
-                    className='rounded-lg object-cover w-full h-full'
-                  />
-                </div>
-              </a>
-            </div>
-          </>
-        )}
+  return (
+    <div className='w-full'>
+      <LightGallery
+        plugins={[lgThumbnail, lgZoom, lgFullScreen, lgVideo]}
+        selector='.gallery-item'
+        licenseKey='D4194FDD-48924833-A54AECA3-D6F8E646'
+        zoomFromOrigin={false}
+        videojs={true}
+        addClass='lg-video-container'
+        mode='lg-fade'
+        fullScreen={true}
+        autoplayVideoOnSlide={true}
+        loadYouTubeThumbnail={false}
+        thumbnail={true}
+        exThumbImage='data-thumb'
+        actualSize={false}
+        videojsOptions={{}}
+      >
+        <div className='grid grid-cols-12 gap-2 px-1 w-full'>
+          {firstThreeMedia.length === 1 && (
+            <div className='col-span-12 h-full'>{renderMediaItem(firstThreeMedia[0], 0)}</div>
+          )}
 
-        {/* Tres imágenes */}
-        {firstThreeImages.length === 3 && (
-          <>
-            <div className='col-span-12 md:col-span-8 overflow-hidden'>
-              <a
-                href={firstThreeImages[0]}
-                data-external-thumb-image={firstThreeImages[0]}
-                data-sub-html={`<h6 class='text-sm text-light'>Imagen 1</h6>`}
-                className='gallery-item hover:opacity-70 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-                <div className='aspect-w-16 aspect-h-9 h-full'>
-                  <img
-                    src={firstThreeImages[0]}
-                    alt='Image 1'
-                    className='rounded-lg object-cover w-full h-full'
-                  />
-                </div>
-              </a>
-            </div>
-            <div className='max-md:h-[100px] col-span-12 md:col-span-4 flex flex-row gap-2 md:flex-col overflow-hidden'>
-              <a
-                href={firstThreeImages[1]}
-                data-external-thumb-image={firstThreeImages[1]}
-                className='gallery-item flex w-full h-full hover:opacity-70 flex-1 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-                <div className='aspect-w-1 aspect-h-1 md:aspect-w-full md:aspect-h-9 w-full '>
-                  <img
-                    src={firstThreeImages[1]}
-                    alt='Image 2'
-                    className='rounded-lg object-cover w-full h-full'
-                  />
-                </div>
-              </a>
-              <a
-                href={firstThreeImages[2]}
-                data-external-thumb-image={firstThreeImages[2]}
-                className='gallery-item flex w-full h-full hover:opacity-70 flex-1 hover:scale-105 overflow-hidden hover:ease-in duration-300'>
-                <div className='aspect-w-1 aspect-h-1 md:aspect-w-full md:aspect-h-9 w-full'>
-                  <img
-                    src={firstThreeImages[2]}
-                    alt='Image 3'
-                    className='rounded-lg object-cover w-full h-full'
-                  />
-                </div>
-              </a>
-            </div>
-          </>
-        )}
-      </div>
-    </LightGallery>
+          {firstThreeMedia.length === 2 && (
+            <>
+              <div className='col-span-12 md:col-span-6 h-full'>
+                {renderMediaItem(firstThreeMedia[0], 0)}
+              </div>
+              <div className='col-span-12 md:col-span-6 h-full'>
+                {renderMediaItem(firstThreeMedia[1], 1)}
+              </div>
+            </>
+          )}
+
+          {firstThreeMedia.length === 3 && (
+            <>
+              <div className='col-span-12 md:col-span-8 h-full'>
+                {renderMediaItem(firstThreeMedia[0], 0)}
+              </div>
+              <div className='col-span-12 md:col-span-4 flex flex-col gap-2 h-full'>
+                <div className='flex-1 h-full'>{renderMediaItem(firstThreeMedia[1], 1)}</div>
+                <div className='flex-1 h-full'>{renderMediaItem(firstThreeMedia[2], 2)}</div>
+              </div>
+            </>
+          )}
+        </div>
+      </LightGallery>
+    </div>
   );
 }
 
-{
-  /* Slider para las imágenes o videos restantes */
-}
-{
-  /* {remainingMedia.length > 0 && (
-          <div className="col-span-12 mt-4">
-            <Swiper
-              modules={[Navigation, Pagination]}
-              spaceBetween={10}
-              slidesPerView={2}
-              breakpoints={{
-                640: { slidesPerView: 3 },
-                768: { slidesPerView: 4 },
-                1024: { slidesPerView: 6 },
-              }}
-              navigation
-              pagination={{ clickable: true }}
-              className="swiper-container"
-            >
-              {remainingMedia.map((item, index) => (
-                <SwiperSlide key={index}>
-                  <a href={item} className="gallery-item">
-                    <img
-                      src={item}
-                      alt={`Media ${index + 4}`}
-                      className="rounded-lg object-cover w-full h-full"
-                    />
-                  </a>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        )} */
+// Función específica para Cloudinary
+function getCloudinaryThumbnail(videoUrl: string): string {
+  if (videoUrl.includes("res.cloudinary.com/video/upload")) {
+    // Reemplaza el formato de video por una imagen jpg
+    return videoUrl.replace(/\.mp4|\.webm|\.mov/, ".jpg") + "?_a=BAJ";
+  }
+  return "";
 }

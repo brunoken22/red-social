@@ -1,9 +1,13 @@
 import { atom } from "recoil";
+export type Media = {
+  type: "image" | "video";
+  url: string;
+};
 
 export type Publicacion = {
   id: number;
   description: string;
-  img: string[];
+  media: Media[];
   createdAt: string;
   updatedAt: string;
   likePublics: [];

@@ -1,13 +1,13 @@
-'use client';
-import dynamic from 'next/dynamic';
-import { user, publicacionAmigos } from '@/lib/atom';
-import { useRecoilValue } from 'recoil';
-import { GetAllPublicaciones } from '@/lib/hook';
-import { SkeletonPublicacionAll } from '@/ui/skeleton';
-import { useCallback, useEffect, useRef } from 'react';
+"use client";
+import dynamic from "next/dynamic";
+import { user, publicacionAmigos } from "@/lib/atom";
+import { useRecoilValue } from "recoil";
+import { GetAllPublicaciones } from "@/lib/hook";
+import { SkeletonPublicacionAll } from "@/ui/skeleton";
+import { useCallback, useEffect, useRef } from "react";
 
 const ThemplatePubli = dynamic(
-  () => import('../templatePublicate').then((mod) => mod.ThemplatePubli),
+  () => import("../templatePublicate").then((mod) => mod.ThemplatePubli),
   { loading: () => <SkeletonPublicacionAll /> }
 );
 
@@ -18,17 +18,7 @@ export default function PublicacionesAll() {
 
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const { dataPubliAllAmigosSwr, isLoadingAllAmigos, size, setSize, mutate } =
-    GetAllPublicaciones();
-
-  const handleMasPubli = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    if (dataPubliAllAmigosSwr?.[dataPubliAllAmigosSwr.length - 1]?.length === 0) {
-      return;
-    }
-    setSize(size + 1);
-  };
+  const { dataPubliAllAmigosSwr, isLoadingAllAmigos, setSize, mutate } = GetAllPublicaciones();
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -46,7 +36,7 @@ export default function PublicacionesAll() {
 
     observer.current = new IntersectionObserver(handleObserver, {
       root: null,
-      rootMargin: '0px',
+      rootMargin: "0px",
       threshold: 0.7,
     });
 
@@ -69,12 +59,13 @@ export default function PublicacionesAll() {
                 {publicacionesAmigos.map((item) => (
                   <div
                     key={item.id}
-                    className='bg-primary flex flex-col gap-4 rounded-md   max-md:w-auto  dark:bg-darkComponet dark:text-primary '>
+                    className='bg-primary flex flex-col gap-4 rounded-md   max-md:w-auto  dark:bg-darkComponet dark:text-primary '
+                  >
                     <ThemplatePubli
                       mutate={mutate}
                       vereficationUser={dataUser.user.verification}
                       description={item.description}
-                      img={item.img}
+                      media={item.media}
                       fecha={item.createdAt}
                       like={item.likePublics}
                       comentarios={item.commentPublis}
@@ -88,7 +79,7 @@ export default function PublicacionesAll() {
                 ))}
                 {dataPubliAllAmigosSwr?.[dataPubliAllAmigosSwr.length - 1]?.length > 0 ? (
                   <div ref={loadMoreRef} className='text-center m-4'>
-                    <p className='text-gray-400'>Cargando más publicaciones...</p>{' '}
+                    <p className='text-gray-400'>Cargando más publicaciones...</p>{" "}
                   </div>
                 ) : null}
               </>

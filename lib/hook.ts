@@ -517,7 +517,7 @@ export async function CreatePublicacion(dataPubli: { description: string; img: F
 
   // Agregamos las imágenes (pueden ser múltiples)
   dataPubli.img.forEach((file) => {
-    formData.append("images", file); // 'images' debe coincidir con el nombre que espera Multer en el backend
+    formData.append("media", file); // 'images' debe coincidir con el nombre que espera Multer en el backend
   });
 
   const option = {

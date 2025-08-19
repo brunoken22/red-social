@@ -14,7 +14,7 @@ import {
   DivUserLikes,
 } from "@/components/publicaciones/styled";
 import Like from "@/ui/icons/like.svg";
-import { isConnect } from "@/lib/atom";
+import { isConnect, Media } from "@/lib/atom";
 import { useRecoilValue } from "recoil";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -23,7 +23,7 @@ import diferenteDate from "./diferenteDate";
 import { useDebouncedCallback } from "use-debounce";
 import Linkify from "@/utils/formtText";
 import { LoaderRequest } from "../loader";
-import GalleryServiceId from "../publicar/galleryImage";
+import GalleryMedia from "../publicar/galleryImage";
 import { IoMdShare } from "react-icons/io";
 import { FaMessage } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
@@ -44,7 +44,7 @@ const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"), { loading: () => <Lo
 export function ThemplatePubli(props: {
   description?: string;
   vereficationUser: boolean;
-  img?: string[];
+  media?: Media[];
   fecha: string;
   like: any[];
   comentarios: any[];
@@ -194,7 +194,7 @@ export function ThemplatePubli(props: {
           <Linkify text={props.description || ""} />
         </p>
       ) : null}
-      {props.img?.length ? <GalleryServiceId images={props.img} /> : null}
+      {props.media?.length ? <GalleryMedia media={props.media} /> : null}
       {/* <DivCantidad>
         {totalLike > 0 && (
           <SpanIco onMouseEnter={() => setUserLikes(true)} onMouseLeave={() => setUserLikes(false)}>

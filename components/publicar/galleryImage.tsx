@@ -11,7 +11,6 @@ import "lightgallery/css/lg-fullscreen.css";
 import "lightgallery/css/lg-video.css";
 import { FaPlay } from "react-icons/fa";
 import { Media } from "@/lib/atom";
-import "./style.css";
 
 export default function GalleryMedia({ media = [] }: { media: Media[] }) {
   const firstThreeMedia = media.slice(0, 3);
@@ -80,8 +79,8 @@ export default function GalleryMedia({ media = [] }: { media: Media[] }) {
         href={item.url}
         data-src={item.url}
         data-thumb={thumbnailUrl}
-        data-iframe={isVideo}
-        data-sub-html={`<h6 class="text-sm text-light">${isVideo ? "Video" : "Imagen"} ${
+        data-iframe={isVideo ? "true" : undefined}
+        data-sub-html={`<h6 class="text-sm text-primary">${isVideo ? "Video" : "Imagen"} ${
           index + 1
         }</h6>`}
         className={`gallery-item block w-full h-full group relative hover:opacity-70 overflow-hidden transition-all duration-300 ${
@@ -128,17 +127,14 @@ export default function GalleryMedia({ media = [] }: { media: Media[] }) {
         plugins={[lgThumbnail, lgZoom, lgFullScreen, lgVideo]}
         selector='.gallery-item'
         licenseKey='D4194FDD-48924833-A54AECA3-D6F8E646'
-        zoomFromOrigin={false}
-        videojs={true}
-        addClass='lg-video-container'
-        mode='lg-fade'
-        fullScreen={true}
-        autoplayVideoOnSlide={true}
-        loadYouTubeThumbnail={false}
-        thumbnail={true}
-        exThumbImage='data-thumb'
-        actualSize={false}
-        videojsOptions={{}}
+        // zoomFromOrigin={false}
+        // videojs={true}
+        // addClass='lg-video-container'
+        // mode='lg-fade'
+        // fullScreen={true}
+        // autoplayVideoOnSlide={true}
+        // loadYouTubeThumbnail={false}
+        // thumbnail={true}
       >
         <div className='grid grid-cols-12 gap-2 px-1 w-full'>
           {firstThreeMedia.length === 1 && (

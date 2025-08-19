@@ -168,7 +168,7 @@ export const ButtonDelete = ({
 }) => (
   <button
     onClick={onClick}
-    className='absolute bg-secundary text-primary dark:bg-primary dark:text-secundary  border-none mt-2 p-2 pl-4 pr-4 right-0 hover:opacity-70 '
+    className='absolute bg-secundary text-primary dark:bg-primary dark:text-secundary  border-none mt-2 p-2 pl-4 pr-4 right-0 hover:opacity-70 z-50'
   >
     {children}
   </button>

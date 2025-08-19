@@ -194,32 +194,12 @@ export function ThemplatePubli(props: {
           <Linkify text={props.description || ""} />
         </p>
       ) : null}
-      {props.media?.length ? <GalleryMedia media={props.media} /> : null}
-      {/* <DivCantidad>
-        {totalLike > 0 && (
-          <SpanIco onMouseEnter={() => setUserLikes(true)} onMouseLeave={() => setUserLikes(false)}>
-            <DivSpan>{totalLike} Me gusta</DivSpan>
-            {userLikes && (
-              <DivUserLikes>
-                {props.like.map((e: any) => (
-                  <div
-                    key={e.id}
-                    className='w-full whitespace-nowrap overflow-hidden text-ellipsis m-0'>
-                    {e.user.id !== props.userId ? e.user.fullName : 'Tú'}
-                  </div>
-                ))}
-              </DivUserLikes>
-            )}
-            <Like className='fill-[#fff]' style={iconConLike} />
-          </SpanIco>
-        )}
 
-        {props.comentarios?.length > 0 && (
-          <SpanIco>
-            <DivSpan>{props.comentarios.length} Comentarios</DivSpan>
-          </SpanIco>
-        )}
-      </DivCantidad> */}
+      {props.media?.length ? (
+        <div className=''>
+          <GalleryMedia media={props.media} />{" "}
+        </div>
+      ) : null}
 
       <DivInteractuar>
         {/* Sección Me gusta */}

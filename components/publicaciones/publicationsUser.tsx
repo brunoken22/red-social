@@ -15,8 +15,7 @@ export function PublicacionesUser() {
   const publicacionesUser = useRecoilValue(publicacionUser);
   const dataUser = useRecoilValue(user);
 
-  const { dataPubliAllAmigosSwr, isLoading, loadMore, isReachingEnd, mutatePublicacionesUser } =
-    GetAllPublicacionesUser();
+  const { isLoading, loadMore, isReachingEnd, mutatePublicacionesUser } = GetAllPublicacionesUser();
 
   return (
     <div className='flex flex-col gap-4 pb-3'>

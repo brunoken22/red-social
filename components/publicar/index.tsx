@@ -58,7 +58,7 @@ export default function Publicar() {
               close={() => setFormClick(false)}
             />
           ) : null}
-          <DivASubir onClick={() => setAlert({ message: "Proximamente", status: "info" })}>
+          <DivASubir onClick={() => setFormClick(true)}>
             <VideoSubir />
             <Body className='text-sm'>Video</Body>
           </DivASubir>

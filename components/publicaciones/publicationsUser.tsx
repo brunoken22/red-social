@@ -29,7 +29,7 @@ export function PublicacionesUser() {
                   mutate={mutatePublicacionesUser}
                   vereficationUser={dataUser.user.verification}
                   description={item.description}
-                  img={item.img}
+                  media={item.media}
                   fecha={item.createdAt}
                   like={item.likePublics}
                   comentarios={item.commentPublis}

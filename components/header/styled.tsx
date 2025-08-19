@@ -12,7 +12,7 @@ export const DivConnectAll = ({ children }: { children: React.ReactNode }) => (
 
 export const DivContenedorConnect = ({ children }: { children: React.ReactNode }) => (
   <div
-    className={`fixed bottom-0 right-[1%] text-secundary w-[250px] z-10 max-md:hidden  bg-light  rounded-tr-[10px] rounded-tl-[10px]`}
+    className={`fixed bottom-0 right-[1%] text-secundary w-[250px] z-10 max-md:hidden  bg-light  rounded-tr-[10px] rounded-tl-[10px] dark:shadow-dark shadow-containerConnect  `}
   >
     {children}
   </div>

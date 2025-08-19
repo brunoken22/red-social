@@ -22,7 +22,7 @@ export default function NotificationId({ notification }: { notification: Publica
           <ThemplatePubli
             vereficationUser={dataUser.user?.verification}
             description={notification.description}
-            img={notification.img}
+            media={notification.media}
             fecha={notification.createdAt}
             like={notification.likePublics}
             comentarios={notification.commentPublis}

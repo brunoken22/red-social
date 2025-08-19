@@ -71,7 +71,7 @@ export function ThemplatePubli(props: {
     const likeODisLike = (await import("@/lib/hook")).likeODisLike;
     await likeODisLike(props.idPublicacion.toString());
   }, 500);
-  const { dataDelete } = DeletePublic(publiId);
+  const { dataDelete, isLoadingDeletePubli } = DeletePublic(publiId);
 
   useEffect(() => {
     const isLike =
@@ -134,7 +134,7 @@ export function ThemplatePubli(props: {
   const displayText = isExpanded ? props.description : props?.description?.slice(0, 500);
 
   return (
-    <div className='w-full '>
+    <div className={`w-full relative`}>
       <DivPefilDelete>
         <DivPerfil>
           {props.user && props.user?.id !== props.userId ? (
@@ -324,6 +324,17 @@ export function ThemplatePubli(props: {
           id={props.id}
           connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
         />
+      ) : null}
+      {isLoadingDeletePubli ? (
+        <div
+          className={`${
+            isLoadingDeletePubli
+              ? "absolute inset-0 backdrop-brightness-50	flex justify-center items-center rounded-md"
+              : ""
+          }`}
+        >
+          <LoaderRequest />
+        </div>
       ) : null}
     </div>
   );

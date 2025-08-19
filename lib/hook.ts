@@ -485,6 +485,7 @@ export function GetPubliAmigo(id: string) {
 }
 export function DeletePublic(id: number) {
   const [publicacionesUser, setPublicacionesUser] = useRecoilState(publicacionUser);
+  const [isProcessing, setIsProcessing] = useState(false); // ← Estado adicional
   const api = "/user/publicacion/" + id;
   const token = getCookie("token");
 
@@ -496,16 +497,29 @@ export function DeletePublic(id: number) {
     },
     credentials: "include",
   };
-  const { data, isLoading } = useSWR(id > -1 ? api : null, (url) => fetchApiSwr(url, option));
-  useEffect(() => {
-    if (data) {
-      const newPublic =
-        publicacionesUser && publicacionesUser.filter((publi: Publicacion) => publi.id != id);
-      setPublicacionesUser(newPublic);
-    }
-  }, [data]);
 
-  return { dataDelete: data, isLoadingDeletePubli: isLoading };
+  const { data, isLoading } = useSWR(id > -1 ? api : null, (url) => fetchApiSwr(url, option));
+
+  useEffect(() => {
+    if (id > -1) {
+      setIsProcessing(true);
+      if (!isLoading) {
+        if (data) {
+          const newPublic =
+            publicacionesUser && publicacionesUser.filter((publi: Publicacion) => publi.id != id);
+
+          setPublicacionesUser(newPublic);
+        } else {
+          setIsProcessing(false);
+        }
+      }
+    }
+  }, [data, id, isLoading]);
+
+  return {
+    dataDelete: data,
+    isLoadingDeletePubli: isProcessing,
+  };
 }
 export async function CreatePublicacion(dataPubli: { description: string; img: File[] }) {
   const api = "/user/publicacion";

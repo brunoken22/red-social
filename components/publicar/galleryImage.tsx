@@ -145,7 +145,9 @@ export default function GalleryMedia({ media = [] }: { media: Media[] }) {
       >
         <div className='grid grid-cols-12 gap-2 px-1 w-full'>
           {firstThreeMedia.length === 1 && (
-            <div className='col-span-12 h-full'>{renderMediaItem(firstThreeMedia[0], 0)}</div>
+            <div className='col-span-12 h-full max-h-[500px]'>
+              {renderMediaItem(firstThreeMedia[0], 0)}
+            </div>
           )}
 
           {firstThreeMedia.length === 2 && (

@@ -32,7 +32,6 @@ export function ImageSVG({
     setDataUrl((prev) => prev.filter((_, i) => i !== index));
   };
 
-  console.log(dataUrl);
   return (
     <>
       <Dropzone

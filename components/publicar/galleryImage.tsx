@@ -127,14 +127,21 @@ export default function GalleryMedia({ media = [] }: { media: Media[] }) {
         plugins={[lgThumbnail, lgZoom, lgFullScreen, lgVideo]}
         selector='.gallery-item'
         licenseKey='D4194FDD-48924833-A54AECA3-D6F8E646'
-        // zoomFromOrigin={false}
-        // videojs={true}
-        // addClass='lg-video-container'
-        // mode='lg-fade'
-        // fullScreen={true}
-        // autoplayVideoOnSlide={true}
-        // loadYouTubeThumbnail={false}
-        // thumbnail={true}
+        zoomFromOrigin={false}
+        videojs={true}
+        addClass='lg-video-container'
+        mode='lg-fade'
+        fullScreen={true}
+        autoplayVideoOnSlide={true}
+        loadYouTubeThumbnail={false}
+        thumbnail={true}
+        mobileSettings={{
+          controls: true,
+          showCloseIcon: true,
+          download: true,
+          rotate: false,
+          share: false,
+        }}
       >
         <div className='grid grid-cols-12 gap-2 px-1 w-full'>
           {firstThreeMedia.length === 1 && (

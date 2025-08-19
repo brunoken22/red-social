@@ -90,12 +90,15 @@ export default function TemplateFormPublicar({
             </div>
             <textarea
               id='description'
-              maxLength={1000}
+              maxLength={9000}
               placeholder={`En qué estás pensando ${fullName.split(" ")[0]}?`}
               className='flex-1 bg-transparent relative z-10 mt-8 mb-8 max-md:mt-4 max-md:mb-4 text-start p-2 outline-none overflow-auto min-h-[150px] resize-none placeholder:text-2xl'
               value={text}
               onChange={handleInput}
             ></textarea>
+            <span className='text-start text-xs mb-2 mt-2 text-gray-400'>
+              Máximo de 9000 caracteres
+            </span>
             <div>
               <div className='bg-hoverPrimary dark:bg-dark rounded-md p-4'>
                 <ImageSVG setDataUrl={setDataUrl} dataUrl={dataUrl}></ImageSVG>

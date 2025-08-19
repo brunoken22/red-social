@@ -66,7 +66,7 @@ export function ThemplatePubli(props: {
   const [publiId, setPubliId] = useState<number>(-1);
   const [totalLike, setTotalLike] = useState(props.like?.length || 0);
   const [userLikes, setUserLikes] = useState<boolean>(false);
-
+  const [isExpanded, setIsExpanded] = useState(false);
   const debounced = useDebouncedCallback(async () => {
     const likeODisLike = (await import("@/lib/hook")).likeODisLike;
     await likeODisLike(props.idPublicacion.toString());
@@ -129,6 +129,10 @@ export function ThemplatePubli(props: {
       alert("Enlace copiado al portapapeles");
     }
   };
+
+  const needsToggle = props?.description?.length ? props?.description?.length > 500 : "";
+  const displayText = isExpanded ? props.description : props?.description?.slice(0, 500);
+
   return (
     <div className='w-full '>
       <DivPefilDelete>
@@ -189,10 +193,20 @@ export function ThemplatePubli(props: {
           </div>
         ) : null}
       </DivPefilDelete>
-      {props.description?.length ? (
-        <p className='p-6 pt-0 pb-1 text-[0.9rem] font-thin'>
-          <Linkify text={props.description || ""} />
-        </p>
+      {props.description?.length && displayText ? (
+        <div className='p-6 pt-0 pb-1 text-[0.9rem] font-thin break-words overflow-hidden'>
+          <p className='max-w-full whitespace-pre-wrap overflow-wrap-break-word'>
+            <Linkify text={displayText} />
+          </p>
+          {needsToggle && (
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className='text-blue-500 hover:text-blue-700 font-medium mt-1 focus:outline-none'
+            >
+              {isExpanded ? "Leer menos" : "Leer más"}
+            </button>
+          )}
+        </div>
       ) : null}
 
       {props.media?.length ? (

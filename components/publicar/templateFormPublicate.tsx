@@ -77,7 +77,6 @@ export default function TemplateFormPublicar({
         await mutate();
       }
     } catch (error) {
-      console.error("Error creating publication:", error);
     } finally {
       setIsLoading(false);
       close();

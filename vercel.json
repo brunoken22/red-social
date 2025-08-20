@@ -1,9 +1,0 @@
-{
-  "functions": {
-    "*.js": {
-      "maxDuration": 30,
-      "memory": 3008,
-      "maxRequestBodySize": 104857600
-    }
-  }
-}

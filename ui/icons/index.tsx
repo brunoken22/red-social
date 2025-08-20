@@ -42,7 +42,7 @@ export function ImageSVG({
         }}
         multiple={true}
         maxFiles={3}
-        maxSize={30 * 1024 * 1024}
+        maxSize={20 * 1024 * 1024}
         validator={(file) => {
           if (file.type.startsWith("video/") && file.size > 100 * 1024 * 1024) {
             return {

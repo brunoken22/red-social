@@ -118,9 +118,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
     requestNotificationPermission();
 
-    const audio = new Audio("/notification.mp3");
-    audio.load();
-
     const unsubscribes = dataUser.user.rtdb.map((item) => {
       const chatrooms = ref(rtdb, "/rooms/" + item + "/messages");
 

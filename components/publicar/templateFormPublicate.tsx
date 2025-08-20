@@ -38,6 +38,7 @@ export default function TemplateFormPublicar({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        if (isLoading) return;
         close();
       }
     };
@@ -47,7 +48,7 @@ export default function TemplateFormPublicar({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isLoading]);
 
   const handleInput = (event: any) => {
     const textContent = event.target.value;
@@ -103,7 +104,8 @@ export default function TemplateFormPublicar({
               <div className='bg-hoverPrimary dark:bg-dark rounded-md p-4'>
                 <ImageSVG setDataUrl={setDataUrl} dataUrl={dataUrl}></ImageSVG>
               </div>
-              <p className='text-xs mb-2 mt-1'>Máximo de 3 imagenes y videos</p>
+              <p className='text-sm  mt-1'>Máximo de 3 imagenes o videos</p>
+              <span className='text-xs mb-2   text-gray-400'>Máximo de 30MB cada archivo</span>
             </div>
             <DivButton>
               <ButtonPublicar

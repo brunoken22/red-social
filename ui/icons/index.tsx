@@ -43,6 +43,15 @@ export function ImageSVG({
         multiple={true}
         maxFiles={3}
         maxSize={30 * 1024 * 1024}
+        validator={(file) => {
+          if (file.type.startsWith("video/") && file.size > 100 * 1024 * 1024) {
+            return {
+              code: "video-too-large",
+              message: "Los videos no deben exceder 100MB",
+            };
+          }
+          return null;
+        }}
       >
         {({ getRootProps, getInputProps }) => (
           <section className='flex items-center justify-center flex-col'>

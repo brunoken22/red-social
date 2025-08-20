@@ -126,12 +126,10 @@ export const DivButton = ({ children }: { children: React.ReactNode }) => (
 
 export const ButtonPublicar = ({
   children,
-  color,
   disabled,
   className,
 }: {
   children: React.ReactNode;
-  color: string;
   disabled: boolean;
   className?: string;
 }) => (
@@ -139,7 +137,7 @@ export const ButtonPublicar = ({
     type='submit'
     disabled={disabled}
     className={`w-full p-2 text-primary ${
-      color ? "bg-light  cursor-pointer" : "bg-[#3e485e] cursor-not-allowed"
+      !disabled ? "bg-light  cursor-pointer" : "bg-[#3e485e] cursor-not-allowed"
     } border-none rounded-md hover:opacity-70 ${className ? className : ""}`}
   >
     {children}

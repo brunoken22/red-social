@@ -108,10 +108,7 @@ export default function TemplateFormPublicar({
               <span className='text-xs mb-2   text-gray-400'>Máximo de 30MB cada archivo</span>
             </div>
             <DivButton>
-              <ButtonPublicar
-                color={text || dataUrl.length.toString()}
-                disabled={!text && !dataUrl ? true : false}
-              >
+              <ButtonPublicar disabled={text.length || dataUrl.length ? false : true}>
                 Publicar
               </ButtonPublicar>
             </DivButton>

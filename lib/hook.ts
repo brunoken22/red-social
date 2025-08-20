@@ -1,5 +1,4 @@
 import useSWR, { mutate } from "swr";
-import useSWRImmutable from "swr/immutable";
 import useSWRInfinite from "swr/infinite";
 import { fetchApiSwr } from "./api";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -11,7 +10,6 @@ import {
   getAllSolicitudesEnviadas,
   publicacionAmigos,
   publicacionSearchUser,
-  notificacionesUser,
   Publicacion,
   getSugerenciaAmigos,
   User,

@@ -3,6 +3,7 @@ import { GetAllPublicaciones, GetAllPublicacionesUser } from "@/lib/hook";
 import dynamic from "next/dynamic";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { compressFiles } from "@/lib/compressMedia";
 const Verification = dynamic(() => import("@/ui/verification"));
 const CloseSvg = dynamic(() => import("@/ui/icons/close.svg"));
 const Loader = dynamic(() => import("../loader").then((mod) => mod.Loader));
@@ -58,18 +59,29 @@ export default function TemplateFormPublicar({
   const handleClickForm = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    const CreatePublicacion = (await import("@/lib/hook")).CreatePublicacion;
-    await CreatePublicacion({
-      description: text,
-      img: dataUrl,
-    });
-    if (pathname === "/perfil") {
-      await mutatePublicacionesUser();
-    } else {
-      await mutate();
+
+    try {
+      const CreatePublicacion = (await import("@/lib/hook")).CreatePublicacion;
+
+      // Comprimir archivos antes de enviar
+      const compressedFiles = await compressFiles(dataUrl);
+
+      await CreatePublicacion({
+        description: text,
+        img: compressedFiles,
+      });
+
+      if (pathname === "/perfil") {
+        await mutatePublicacionesUser();
+      } else {
+        await mutate();
+      }
+    } catch (error) {
+      console.error("Error creating publication:", error);
+    } finally {
+      setIsLoading(false);
+      close();
     }
-    setIsLoading(false);
-    close();
   };
 
   return (

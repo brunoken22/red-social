@@ -10,6 +10,8 @@
     "dev-https": "next dev --experimental-https"
   },
   "dependencies": {
+    "@ffmpeg/core": "^0.12.10",
+    "@ffmpeg/ffmpeg": "^0.12.15",
     "@types/node": "20.4.10",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",

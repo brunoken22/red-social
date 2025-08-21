@@ -32,6 +32,7 @@ type Solicitud = {
   userId?: number;
 };
 import { getDatabase, ref, onValue, onDisconnect, set } from "firebase/database";
+import { fetchApiClient } from "./apiClient";
 
 export async function userConnectPushPWA(userConnect: any) {
   const option = {
@@ -93,10 +94,8 @@ export async function logOut() {
       "Content-Type": "application/json",
     },
   };
-  console.log(option);
 
   const data = await fetchApiSwr(api, option);
-  console.log(data);
   if (data) {
     setCookie("token", "");
   }
@@ -541,7 +540,7 @@ export async function CreatePublicacion(dataPubli: { description: string; img: F
     body: formData,
   };
 
-  const dataNotiSwr = await fetchApiSwr(api, option);
+  const dataNotiSwr = await fetchApiClient(api, option);
   return dataNotiSwr;
 }
 export async function createSolicitud(dataSoli: Solicitud) {

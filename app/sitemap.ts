@@ -1,8 +1,29 @@
 // app/sitemap.ts
 import { MetadataRoute } from "next";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+const Api_url = process.env.NEXT_PUBLIC_PORT || "https://red-social-node-production.up.railway.app";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://unired.vercel.app";
+  const response = await fetch(`${Api_url}/api/users/sitemap`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  const sitemapIdsUser = data.map((user: { id: string }) => ({
+    url: `${baseUrl}/contacto/amigos/${user.id}`,
+    lastModified: new Date(),
+    changeFrequency: "yearly" as const,
+    priority: 0.7,
+  }));
 
   return [
     {
@@ -11,29 +32,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 1,
     },
-    // {
-    //   url: `${baseUrl}/amigos`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'monthly' as const,
-    //   priority: 0.8,
-    // },
-    // {
-    //   url: `${baseUrl}/chat`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'daily' as const,
-    //   priority: 0.9,
-    // },
-    // {
-    //   url: `${baseUrl}/configuracion`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'monthly' as const,
-    //   priority: 0.5,
-    // },
     {
       url: `${baseUrl}/contacto`,
       lastModified: new Date(),
       changeFrequency: "yearly" as const,
-      priority: 0.3,
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/crearCuenta`,
@@ -41,35 +44,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly" as const,
       priority: 0.7,
     },
-    // {
-    //   url: `${baseUrl}/iniciarSesion`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'yearly' as const,
-    //   priority: 0.7,
-    // },
-    // {
-    //   url: `${baseUrl}/inicio`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'daily' as const,
-    //   priority: 1,
-    // },
-    // {
-    //   url: `${baseUrl}/notificaciones`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'daily' as const,
-    //   priority: 0.8,
-    // },
-    // {
-    //   url: `${baseUrl}/perfil`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'weekly' as const,
-    //   priority: 0.8,
-    // },
-    // {
-    //   url: `${baseUrl}/search`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'daily' as const,
-    //   priority: 0.7,
-    // },
+    ...sitemapIdsUser,
   ];
 }

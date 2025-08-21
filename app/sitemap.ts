@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const data = await response.json();
 
   const sitemapIdsUser = data.map((user: { id: string }) => ({
-    url: `${baseUrl}/contacto/amigos/${user.id}`,
+    url: `${baseUrl}/amigos/${user.id}`,
     lastModified: new Date(),
     changeFrequency: "yearly" as const,
     priority: 0.7,

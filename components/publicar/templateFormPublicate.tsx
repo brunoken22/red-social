@@ -62,10 +62,7 @@ export default function TemplateFormPublicar({
 
     try {
       const CreatePublicacion = (await import("@/lib/hook")).CreatePublicacion;
-
-      // Comprimir archivos antes de enviar
       const compressedFiles = await compressFiles(dataUrl);
-
       await CreatePublicacion({
         description: text,
         img: compressedFiles,
@@ -76,7 +73,6 @@ export default function TemplateFormPublicar({
       } else {
         await mutate();
       }
-    } catch (error) {
     } finally {
       setIsLoading(false);
       close();

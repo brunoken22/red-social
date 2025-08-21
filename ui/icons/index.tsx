@@ -1,20 +1,16 @@
-import dynamic from "next/dynamic";
+import React, { memo } from "react";
 import { useCallback, useState } from "react";
-import Dropzone from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import { FaPhotoVideo } from "react-icons/fa";
-import { MdDelete, MdOutlineFileUpload } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 
-const LoaderComponent = dynamic(() =>
-  import("@/components/loader").then((mod) => mod.LoaderComponent)
-);
-
-export function ImageSVG({
-  setDataUrl,
-  dataUrl,
-}: {
+// Interface para las props
+interface ImageSVGProps {
   setDataUrl: React.Dispatch<React.SetStateAction<File[]>>;
   dataUrl: File[];
-}) {
+}
+
+const ImageSVG = memo(({ setDataUrl, dataUrl }: ImageSVGProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onDrop = useCallback(
@@ -28,100 +24,87 @@ export function ImageSVG({
     [setDataUrl]
   );
 
-  const handleRemove = (index: number) => {
-    setDataUrl((prev) => prev.filter((_, i) => i !== index));
-  };
+  const handleRemove = useCallback(
+    (index: number) => {
+      setDataUrl((prev) => prev.filter((_, i) => i !== index));
+    },
+    [setDataUrl]
+  );
 
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [".png", ".jpeg", ".jpg", ".webp"],
+      "video/*": [".mp4", ".webm", ".mov"],
+    },
+    multiple: true,
+    maxFiles: 3,
+    maxSize: 25 * 1024 * 1024,
+  });
   return (
     <>
-      <Dropzone
-        onDrop={onDrop}
-        accept={{
-          "image/*": [".png", ".jpeg", ".jpg", ".webp"],
-          "video/*": [".mp4", ".webm", ".mov"],
-        }}
-        multiple={true}
-        maxFiles={3}
-        maxSize={20 * 1024 * 1024}
-        validator={(file) => {
-          if (file.type.startsWith("video/") && file.size > 100 * 1024 * 1024) {
-            return {
-              code: "video-too-large",
-              message: "Los videos no deben exceder 100MB",
-            };
-          }
-          return null;
-        }}
-      >
-        {({ getRootProps, getInputProps }) => (
-          <section className='flex items-center justify-center flex-col'>
-            {dataUrl?.length < 3 ? (
-              <div
-                {...getRootProps()}
-                className='p-4 max-md:p-2 cursor-pointer flex items-center flex-col w-full hover:opacity-70'
-              >
-                <input {...getInputProps()} />
-                <FaPhotoVideo size={"4rem"} className='text-light' />
-                <p className='opacity-80 max-md:text-[0.9rem]'>
-                  <strong>Agregar Fotos o Videos</strong> <br />o Arrastra y suelta
-                </p>
-              </div>
-            ) : null}
-
-            {dataUrl.length > 0 && (
-              <div className='w-full space-y-2'>
-                {dataUrl.map((file, index) => {
-                  const previewUrl = URL.createObjectURL(file);
-                  const isVideo = file.type.startsWith("video/");
-
-                  return (
-                    <div key={index} className='relative group w-full h-28'>
-                      {isVideo ? (
-                        <video
-                          src={previewUrl}
-                          controls={false}
-                          className='p-2 w-full h-28 object-cover'
-                          muted
-                          loop
-                        />
-                      ) : (
-                        <img
-                          src={previewUrl}
-                          alt='preview'
-                          className='p-2 w-full h-28 object-cover'
-                        />
-                      )}
-
-                      <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300'>
-                        <button
-                          onClick={() => {
-                            URL.revokeObjectURL(previewUrl);
-                            handleRemove(index);
-                          }}
-                          className='p-2 text-red-500 bg-white bg-opacity-75 rounded transition-opacity duration-300 opacity-0 group-hover:opacity-100 flex items-center'
-                        >
-                          <MdDelete />
-                          Eliminar
-                        </button>
-                      </div>
-
-                      {isVideo && (
-                        <div className='absolute bottom-4 right-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs'>
-                          Video
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </section>
+      <section className='flex items-center justify-center flex-col'>
+        {dataUrl?.length < 3 && (
+          <div
+            {...getRootProps()}
+            className='p-4 max-md:p-2 cursor-pointer flex items-center flex-col w-full hover:opacity-70'
+          >
+            <input {...getInputProps()} />
+            <FaPhotoVideo size={"4rem"} className='text-light' />
+            <p className='opacity-80 max-md:text-[0.9rem]'>
+              <strong>Agregar Fotos o Videos</strong> <br />o Arrastra y suelta
+            </p>
+          </div>
         )}
-      </Dropzone>
-      {isLoading && <LoaderComponent />}
+
+        {dataUrl.length > 0 && (
+          <div className='w-full space-y-2'>
+            {dataUrl.map((file, index) => {
+              const previewUrl = URL.createObjectURL(file);
+              const isVideo = file.type.startsWith("video/");
+
+              return (
+                <div key={`${file.name}-${index}`} className='relative group w-full h-28'>
+                  {isVideo ? (
+                    <video
+                      src={previewUrl}
+                      controls={false}
+                      className='p-2 w-full h-28 object-cover'
+                      muted
+                      loop
+                    />
+                  ) : (
+                    <img src={previewUrl} alt='preview' className='p-2 w-full h-28 object-cover' />
+                  )}
+
+                  <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300'>
+                    <button
+                      onClick={() => {
+                        URL.revokeObjectURL(previewUrl);
+                        handleRemove(index);
+                      }}
+                      className='p-2 text-red-500 bg-white bg-opacity-75 rounded transition-opacity duration-300 opacity-0 group-hover:opacity-100 flex items-center'
+                    >
+                      <MdDelete />
+                      Eliminar
+                    </button>
+                  </div>
+
+                  {isVideo && (
+                    <div className='absolute bottom-4 right-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs'>
+                      Video
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
+      {isLoading && <div>Cargando...</div>}
     </>
   );
-}
+});
 
 export function SendComentPubli() {
   return (
@@ -136,3 +119,4 @@ export function SendComentPubli() {
     </svg>
   );
 }
+export { ImageSVG };

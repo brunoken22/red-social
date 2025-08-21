@@ -11,7 +11,7 @@ const compressFiles = async (files: File[]): Promise<File[]> => {
       }
       return file;
     } catch (error) {
-      console.error(`Error procesando ${file.name}:`, error);
+      // console.error(`Error procesando ${file.name}:`, error);
       return file;
     }
   });
@@ -42,7 +42,7 @@ const compressImage = async (file: File): Promise<File> => {
 
 // NUEVA: Manejo de videos (mantiene como video)
 const handleVideo = async (videoFile: File): Promise<File> => {
-  const MAX_VIDEO_SIZE = 10 * 1024 * 1024; // 10MB
+  const MAX_VIDEO_SIZE = 30 * 1024 * 1024; // 30MB
 
   // Si el video es menor al límite, dejarlo como está
   if (videoFile.size <= MAX_VIDEO_SIZE) {
@@ -55,7 +55,7 @@ const handleVideo = async (videoFile: File): Promise<File> => {
   );
 
   // Opción 1: Lanzar error para manejarlo en el UI
-  throw new Error(`El video ${videoFile.name} es demasiado grande. Máximo permitido: 10MB`);
+  throw new Error(`El video ${videoFile.name} es demasiado grande. Máximo permitido: 30MB`);
 
   // Opción 2: Devolver null y filtrar después
   // return null as unknown as File; // Luego filtrar los null

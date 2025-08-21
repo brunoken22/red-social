@@ -65,12 +65,10 @@ export default async function ({ params }: { params: { id: string } }) {
     },
     credentials: "include",
   };
-  console.log("DATA DE API", api);
   const data = await fetchApiSwr(api, option);
-  // if (data?.id_user === data?.user?.id) {
-  //   redirect("/perfil");
-  // }
-  console.log("DATA DE API", data);
+  if (data?.id_user === data?.user?.id) {
+    redirect("/perfil");
+  }
 
   return (
     <Main>

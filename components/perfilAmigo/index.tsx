@@ -120,9 +120,9 @@ export function PerfilAmigo({ data }: { data: any }) {
                     )}
                     <div className='max-md:flex max-md:items-center items-end  max-md:flex-col  '>
                       <div className='flex gap-2 items-center'>
-                        <h2 className='font-semibold text-2xl max-w-[250px] whitespace-nowrap overflow-hidden text-ellipsis'>
+                        <h1 className='font-semibold text-2xl max-w-[250px] whitespace-nowrap overflow-hidden text-ellipsis'>
                           {data?.user?.fullName}
-                        </h2>
+                        </h1>
                         {data.user.verification ? <Verification publication={false} /> : null}
                       </div>
                       {useAmigosAll.data && useAmigosAll.data.length ? (

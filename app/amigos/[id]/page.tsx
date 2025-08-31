@@ -31,7 +31,7 @@ export async function generateMetadata(
 
   return {
     title: data?.user?.fullName ? data?.user?.fullName + " | UniRed" : "Usuario no existe | Unired",
-    description: `Usuario ${data?.user?.fullName || "unired"} de unired`,
+    description: `Conoce el perfil de ${data?.user?.fullName} de UniRed.`,
     metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
 
     openGraph: {

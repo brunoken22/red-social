@@ -20,20 +20,17 @@ export default async function Notificaciones({ params }: { params: { id: string 
     },
     credentials: "include",
   };
-
   const notification: Publicacion = await fetchApiSwr(api, option);
-  if (notification.id) {
-    const apiViewNotification = `/user/notificaciones/${params.id}`;
-    const optionViewNotification = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    };
 
-    await fetchApiSwr(apiViewNotification, optionViewNotification);
-  }
+  const apiViewNotification = `/user/notificaciones/${params.id}`;
+  const optionViewNotification = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  };
+  await fetchApiSwr(apiViewNotification, optionViewNotification);
 
   return (
     <DivMain>

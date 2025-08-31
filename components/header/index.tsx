@@ -26,6 +26,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { LoaderRequest } from "../loader";
 import { SkeletonNav } from "@/ui/skeleton";
 import { NotificationPayload, onMessage } from "firebase/messaging";
+import { SearchBoxProps } from "react-instantsearch";
 
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"), {
   loading: () => <LoaderRequest />,
@@ -333,6 +334,11 @@ export default function Header({ themeDate }: { themeDate: string }) {
                     id='searchAlgolia'
                     placeholder='UniRed'
                     queryHook={useDebounce}
+                    autoFocus
+                    classNames={{
+                      root: "MyCustomSearchBox",
+                      form: "MyCustomSearchBoxForm MyCustomSearchBoxForm--subclass",
+                    }}
                   />
                 )}
                 <SearchUser />

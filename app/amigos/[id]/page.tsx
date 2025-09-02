@@ -34,6 +34,20 @@ export async function generateMetadata(
     ...metadataImport,
     title: data?.user?.fullName ? data?.user?.fullName + " | UniRed" : "Usuario no existe | Unired",
     description: `Conoce el perfil de ${data?.user?.fullName} de UniRed.`,
+    keywords: [
+      "UniRed",
+      "Red Social",
+      "Amigos",
+      "Conectar",
+      "Perfil de Usuario",
+      "Comunidad",
+      "Interacción Social",
+      "Bruno Ken",
+      data?.user?.fullName || "Usuario",
+    ],
+    alternates: {
+      canonical: `https://unired.vercel.app/amigos/${data?.user?.id || 0}`,
+    },
     openGraph: {
       images: [data?.user?.img || "/user.webp", ...previousImages],
       title: data?.user?.fullName ? data?.user?.fullName + " | UniRed" : "Unired",

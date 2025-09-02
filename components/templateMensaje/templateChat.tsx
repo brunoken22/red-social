@@ -146,6 +146,7 @@ export default function TemplateChat({
         <div className='flex items-center gap-4 overflow-hidden'>
           <Link href={"/amigos/" + dataMensajeUser.id}>
             <FotoPerfil
+              title={dataMensajeUser.fullName}
               className='w-[40px] h-[40px]'
               img={dataMensajeUser.img || (dataMensajeUser.img == "null" && "") || ""}
               connect={connect?.connect}

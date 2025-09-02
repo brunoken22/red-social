@@ -19,7 +19,12 @@ export default function TemplateNotification({
       }`}
     >
       {/* Imagen del usuario que generó la notificación */}
-      <FotoPerfil className='w-[40px] h-[40px]' img={notification.img} connect={connect} />
+      <FotoPerfil
+        className='w-[40px] h-[40px]'
+        title={notification.fullName}
+        img={notification.img}
+        connect={connect}
+      />
 
       {/* Mensaje según el tipo de notificación */}
       <p className='flex flex-wrap justify-start items-center text-sm dark:text-gray-400 text-gray-700 leading-tight line-clamp-2 text-wrap w-full  text-start'>

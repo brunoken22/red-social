@@ -96,6 +96,7 @@ export default function GalleryMedia({ media = [] }: { media: Media[] }) {
                   src={thumbnailUrl}
                   alt={`Video thumbnail ${index + 1}`}
                   className='rounded-lg object-cover w-full h-full'
+                  title={`Video thumbnail ${index + 1}`}
                 />
               ) : (
                 <div className='rounded-lg bg-gray-800 w-full h-full flex items-center justify-center'>
@@ -114,6 +115,7 @@ export default function GalleryMedia({ media = [] }: { media: Media[] }) {
               alt={`Media ${index + 1}`}
               className='rounded-lg object-cover w-full h-full'
               loading='lazy'
+              title={`Media ${index + 1}`}
             />
           )}
         </div>

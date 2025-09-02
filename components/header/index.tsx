@@ -358,6 +358,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
                 className='m-0 bg-transparent border-none relative z-50'
               >
                 <FotoPerfil
+                  title={dataUser.user.fullName}
                   className='w-[40px] h-[40px] hover:opacity-70'
                   img={dataUser.user.img}
                   connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true}

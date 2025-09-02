@@ -4,12 +4,14 @@ export default function FotoPerfil({
   connect,
   isBorder = false,
   size,
+  title,
 }: {
   className: string;
   img: string | undefined;
   connect?: boolean | undefined;
   isBorder?: boolean;
   size?: string;
+  title: string;
 }) {
   return (
     <div
@@ -26,6 +28,7 @@ export default function FotoPerfil({
         }  rounded-full border-2 border-zinc-700 object-cover   `}
         alt='perfil'
         loading='lazy'
+        title={title}
       />
       {connect ? (
         <div

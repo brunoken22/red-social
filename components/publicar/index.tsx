@@ -38,6 +38,7 @@ export default function Publicar() {
       <DivPublicar className=' w-full max-w-full'>
         <DivText>
           <FotoPerfil
+            title={dataValor.user.fullName}
             img={dataValor?.user?.img}
             className='w-[40px] h-[40px]'
             connect={dataIsConnect?.find((e: any) => e.id == dataValor?.user?.id)?.connect && true}

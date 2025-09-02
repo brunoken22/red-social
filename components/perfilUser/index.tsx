@@ -78,7 +78,12 @@ export default function PerfilUser() {
                   </div>
                 )}
               </Dropzone>
-              <FotoPerfil className='w-[120px] h-[120px]' img={dataValor.user.img} isBorder />
+              <FotoPerfil
+                className='w-[120px] h-[120px]'
+                img={dataValor.user.img}
+                title={dataValor.user.fullName}
+                isBorder
+              />
             </div>
             <div className='max-md:flex max-md:items-center items-end max-md:flex-col '>
               <div className='flex gap-2 items-center'>

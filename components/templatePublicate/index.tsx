@@ -143,6 +143,7 @@ export function ThemplatePubli(props: {
                 img={props?.user?.img}
                 className='h-[40px] w-[40px]  '
                 connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
+                title={props.user.fullName}
               ></FotoPerfil>
             </Link>
           ) : (
@@ -150,6 +151,7 @@ export function ThemplatePubli(props: {
               img={props?.user?.img}
               className='h-[40px] w-[40px]'
               connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
+              title={props.user.fullName}
             ></FotoPerfil>
           )}
           <div className='flex flex-col '>

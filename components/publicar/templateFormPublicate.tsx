@@ -86,7 +86,7 @@ export default function TemplateFormPublicar({
           <Form onSubmit={handleClickForm}>
             <div className='flex gap-4 items-start font-bold justify-between w-full'>
               <div className='flex gap-4 items-center'>
-                <FotoPerfil className='w-[50px] h-[50px]' img={image} />
+                <FotoPerfil className='w-[50px] h-[50px]' img={image} title={fullName} />
                 <div className='flex items-center gap-2'>
                   <h3 className='text-xl'>{fullName}</h3>
                   {verification ? <Verification publication={false} /> : null}

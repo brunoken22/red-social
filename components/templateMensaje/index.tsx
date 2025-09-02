@@ -145,6 +145,7 @@ export function TemMensaje() {
                             <DivAllChat className='!gap-2'>
                               <FotoPerfil
                                 img={e.img}
+                                title={e.fullName}
                                 className='w-[40px] h-[40px]'
                                 connect={
                                   dataIsConnect?.find((eConnect: any) => e.id == eConnect.id)

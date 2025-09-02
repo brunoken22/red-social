@@ -103,6 +103,7 @@ export function PerfilAmigo({ data }: { data: any }) {
                     src='/portafolio.webp'
                     alt='portada'
                     className='rounded-md w-full h-full object-cover'
+                    title='Portada del usuario'
                   />
                 </div>
                 <DivHeadPerfil>
@@ -115,6 +116,7 @@ export function PerfilAmigo({ data }: { data: any }) {
                         connect={
                           dataIsConnect?.find((e: any) => e.id == data?.user?.id)?.connect && true
                         }
+                        title={data?.user?.fullName}
                         isBorder
                       />
                     )}
@@ -126,9 +128,9 @@ export function PerfilAmigo({ data }: { data: any }) {
                         {data.user.verification ? <Verification publication={false} /> : null}
                       </div>
                       {useAmigosAll.data && useAmigosAll.data.length ? (
-                        <div className='max-md:mb-2 mb-0 -mt-1'>
+                        <h2 className='max-md:mb-2 mb-0 -mt-1'>
                           {useAmigosAll.data.length + " amigos"}
-                        </div>
+                        </h2>
                       ) : (
                         <div className='max-md:mb-2 mb-0 -mt-1'>No hay amigos</div>
                       )}

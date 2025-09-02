@@ -41,6 +41,7 @@ export default function ConnectedUsers({
                 connect={
                   dataIsConnect?.find((eConnect: any) => e.id == eConnect.id)?.connect && true
                 }
+                title={e.fullName}
               />
 
               <span className='text-black whitespace-nowrap overflow-hidden text-ellipsis'>

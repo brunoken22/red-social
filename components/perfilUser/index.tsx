@@ -6,7 +6,7 @@ import Publicar from "../publicar";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { getAllAmigos, user } from "@/lib/atom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { modificarUser, optimizarImage } from "@/lib/hook";
 import Dropzone from "react-dropzone";
 import { MdEdit } from "react-icons/md";
@@ -19,10 +19,9 @@ const PublicacionesUser = dynamic(() =>
 );
 
 export default function PerfilUser() {
-  const dataValor = useRecoilValue(user);
+  const [dataValor, setUserData] = useRecoilState(user);
   const [isLoading, setIsLoading] = useState(false);
   const useAmigosAll = useRecoilValue(getAllAmigos);
-
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
       setIsLoading(true);
@@ -31,7 +30,8 @@ export default function PerfilUser() {
       reader.onload = async () => {
         const result = reader.result as string;
         const imageOptimizate = await optimizarImage(result);
-        await modificarUser({ img: imageOptimizate });
+        const responseImg = await modificarUser({ img: imageOptimizate });
+        setUserData((prev) => ({ ...prev, user: { ...prev.user, img: responseImg } }));
         setIsLoading(false);
       };
       reader.readAsDataURL(file);

@@ -36,7 +36,7 @@ export function PublicacionesUser() {
                   id={item.userId}
                   idPublicacion={item.id}
                   userId={dataUser.user.id}
-                  user={item.user}
+                  user={{ ...item.user, img: dataUser.user.img }}
                 />
               </DivAllPublicaciones>
             ))}

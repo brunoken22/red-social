@@ -118,11 +118,7 @@ export async function modificarUser(dataUser: DataUser) {
     dataUser?.fullName || dataUser?.email || dataUser?.password || dataUser?.img
       ? await fetchApiSwr(api, option)
       : null;
-
-  if (dataMod) {
-    await mutate("/user/token");
-  }
-  return dataMod;
+  return dataMod?.user?.img;
 }
 export async function sendResetPassword(dataUser: DataUser) {
   const api = "/user/send-reset-password";

@@ -1,5 +1,6 @@
 import { PerfilAmigo } from "@/components/perfilAmigo";
 import { fetchApiSwr } from "@/lib/api";
+import metadataImport from "@/lib/metadatos";
 import { Main } from "@/ui/container";
 import type { Metadata, ResolvingMetadata } from "next";
 import { cookies } from "next/headers";
@@ -30,10 +31,9 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
+    ...metadataImport,
     title: data?.user?.fullName ? data?.user?.fullName + " | UniRed" : "Usuario no existe | Unired",
     description: `Conoce el perfil de ${data?.user?.fullName} de UniRed.`,
-    metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
-
     openGraph: {
       images: [data?.user?.img || "/user.webp", ...previousImages],
       title: data?.user?.fullName ? data?.user?.fullName + " | UniRed" : "Unired",

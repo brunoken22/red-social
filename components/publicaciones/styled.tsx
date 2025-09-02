@@ -119,10 +119,10 @@ export const BottonSendComentario = ({
     disabled={disabled}
     aria-label='Comentar'
     onClick={onClick}
-    className={`bg-transparent  flex items-center justify-center h-full rounded-md border-solid border-[1px]  border-gray-400  ${
+    className={`bg-transparent  flex items-center justify-center   rounded-full w-[40px] h-[40px] border-solid border-[1px]  border-gray-400  ${
       disabled
         ? "opacity-70 fill-gray-400 hover:fill-gray-400 hover:border-gray-400 dark:fill-gray-400"
-        : "hover:border-gray-600 dark:hover:border-gray-100 dark:fill-white dark:hover:fill-light hover:fill-light"
+        : "hover:hover:border-light dark:fill-white dark:hover:fill-light hover:text-light"
     }`}
   >
     {children}
@@ -130,7 +130,7 @@ export const BottonSendComentario = ({
 );
 
 export const DivAñadirComentar = ({ children }: { children: React.ReactNode }) => (
-  <div className='rounded-md w-full  p-2 grid items-center text-[0.9rem] grid-cols-[repeat(1,90%_10%)] focus:border-2 focus:border-red-500 gap-2'>
+  <div className='rounded-md w-full  p-2 grid items-center text-[0.9rem] grid-cols-[repeat(1,1fr_auto)] focus:border-2 focus:border-red-500 gap-2 '>
     {children}
   </div>
 );

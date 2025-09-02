@@ -114,7 +114,7 @@ export const DivCrear = ({
 }) => (
   <button
     onClick={onClick}
-    className={`w-[88%]  rounded-md p-2 flex items-center hover:opacity-70  bg-hoverPrimary dark:bg-darkComponetLight`}
+    className={`w-full  rounded-md p-2 flex items-center hover:opacity-70  bg-hoverPrimary dark:bg-darkComponetLight`}
   >
     {children}
   </button>

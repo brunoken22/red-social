@@ -13,6 +13,7 @@ import {
 } from "@/lib/atom";
 import { LoaderRequest } from "../loader";
 import { GetFriendAccepted, GetFriendSend, GetFriendPending, GetFriendReceived } from "@/lib/hook";
+import { DivNotificacionActi } from "../header/styled";
 
 const TemplateFriendRequest = dynamic(() => import("../templateFriends"), {
   loading: () => <LoaderRequest />,
@@ -140,10 +141,13 @@ export default function AmigosComponent() {
               onClick={handleClick}
               id='soli'
               open={soliAmis}
-              className={`w-auto  !opacity-100 ${
+              className={`w-auto relative  !opacity-100 ${
                 soliAmis ? "bg-light text-primary  !opacity-100 !cursor-default " : ""
               }  `}
             >
+              {dataAllSoliReci ? (
+                <DivNotificacionActi>{dataAllSoliReci.length}</DivNotificacionActi>
+              ) : null}
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />
                 {"+"}

@@ -21,12 +21,11 @@ import {
   NotificationPublication,
   openChatUser,
 } from "@/lib/atom";
-import Logo from "@/public/logo.svg";
 import { useDebouncedCallback } from "use-debounce";
 import { LoaderRequest } from "../loader";
 import { SkeletonNav } from "@/ui/skeleton";
 import { NotificationPayload, onMessage } from "firebase/messaging";
-import { SearchBoxProps } from "react-instantsearch";
+import LogoPage from "@/ui/logo";
 
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"), {
   loading: () => <LoaderRequest />,
@@ -324,8 +323,8 @@ export default function Header({ themeDate }: { themeDate: string }) {
         >
           <nav className='flex justify-between items-center max-md:justify-between max-w-screen-lg m-auto'>
             <div className='flex gap-4 items-center '>
-              <Link href={"/inicio"} aria-label='home'>
-                <Logo className='rounded-md fill-unired transition-dark bg-primary' />
+              <Link href={"/"} title='logo' aria-label='logo' className='w-auto m-auto'>
+                <LogoPage />
               </Link>
               <div className='border-none relative max-md:hidden '>
                 {pathname !== "/search" && (
@@ -390,8 +389,8 @@ export default function Header({ themeDate }: { themeDate: string }) {
     ) : (
       <header className='bg-primary dark:bg-darkComponet dark:text-white text-secondary p-4 '>
         <div className='flex justify-between items-center max-md:justify-between max-w-screen-lg m-auto'>
-          <Link href={"/"} aria-label='logo unired' title='logo unired'>
-            <Logo className='rounded-md fill-unired transition-dark' />
+          <Link href={"/"} title='logo' aria-label='logo' className='w-auto m-auto'>
+            <LogoPage />
           </Link>
           <nav>
             <ul className='flex space-x-4'>

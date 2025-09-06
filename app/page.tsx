@@ -2,6 +2,7 @@ import Link from "next/link";
 import Logo from "@/public/logo.svg";
 import { Metadata } from "next";
 import metadataImport from "@/lib/metadatos";
+import LogoPage from "@/ui/logo";
 
 export const metadata: Metadata = {
   ...metadataImport,
@@ -29,7 +30,7 @@ export default async function Page() {
       <header className='bg-primary dark:bg-darkComponet dark:text-white text-secondary p-4 '>
         <div className='container mx-auto flex justify-between items-center '>
           <Link href={"/"} title='logo unired'>
-            <Logo className='rounded-md fill-unired transition-dark' />
+            <LogoPage />
           </Link>
           <nav>
             <ul className='flex space-x-4 flex-wrap'>

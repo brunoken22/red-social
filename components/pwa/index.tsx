@@ -92,11 +92,11 @@ export default function PWAInstaller() {
               Ahora no
             </button>
           </div>
-          {isIOS && (
+          {/* {isIOS && (
             <div className='mt-3 text-xs text-gray-400'>
               <p>En iOS: toca el ícono de compartir (⎋) y luego "Agregar a pantalla de inicio"</p>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

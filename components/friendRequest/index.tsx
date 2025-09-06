@@ -146,7 +146,9 @@ export default function AmigosComponent() {
               }  `}
             >
               {dataAllSoliReci ? (
-                <DivNotificacionActi>{dataAllSoliReci.length}</DivNotificacionActi>
+                dataAllSoliReci.length ? (
+                  <DivNotificacionActi>{dataAllSoliReci.length}</DivNotificacionActi>
+                ) : null
               ) : null}
               <DivIcons className='max-md:hidden'>
                 <MyAmigos />

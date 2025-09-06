@@ -90,7 +90,6 @@ export function PerfilAmigo({ data }: { data: any }) {
     await eliminarAmigo(Number(id));
     setIsAmigo("REJECTED");
   };
-
   return (
     <>
       {!isLoadingGetFriend ? (
@@ -127,9 +126,9 @@ export function PerfilAmigo({ data }: { data: any }) {
                         </h1>
                         {data.user.verification ? <Verification publication={false} /> : null}
                       </div>
-                      {useAmigosAll.data && useAmigosAll.data.length ? (
+                      {data.user.rtdb?.length ? (
                         <h2 className='max-md:mb-2 mb-0 -mt-1'>
-                          {useAmigosAll.data.length + " amigos"}
+                          {data.user.rtdb?.length + " amigos"}
                         </h2>
                       ) : (
                         <div className='max-md:mb-2 mb-0 -mt-1'>No hay amigos</div>

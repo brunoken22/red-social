@@ -389,7 +389,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
     ) : (
       <header className='bg-primary dark:bg-darkComponet dark:text-white text-secondary p-4 '>
         <div className='flex justify-between items-center max-md:justify-between max-w-screen-lg m-auto'>
-          <Link href={"/"} title='logo' aria-label='logo' className='w-auto m-auto'>
+          <Link href={"/"} title='logo' aria-label='logo' className='contents w-auto m-auto'>
             <LogoPage />
           </Link>
           <nav>

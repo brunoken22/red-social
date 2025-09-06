@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Logo from "@/public/logo.svg";
 import { Metadata } from "next";
 import metadataImport from "@/lib/metadatos";
 import LogoPage from "@/ui/logo";

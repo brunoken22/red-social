@@ -61,12 +61,14 @@ export function Span() {
             <div className='flex justify-center gap-3'>
               <Link
                 href='https://github.com/brunoken22'
+                aria-label='github'
                 className='p-2 rounded-lg bg-hoverPrimary dark:bg-zinc-700 hover:opacity-60'
               >
                 <FaGithub className='w-5 h-5 dark:text-primary text-secundary' />
               </Link>
               <Link
                 href='https://www.linkedin.com/in/brunoken18/'
+                aria-label='linkedin'
                 className='p-2 rounded-lg bg-hoverPrimary dark:bg-zinc-700 hover:opacity-60 '
               >
                 <FaLinkedin className='w-5 h-5 dark:text-primary text-secundary' />

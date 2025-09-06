@@ -4,6 +4,8 @@ import { RecoilRoot } from "recoil";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { SkeletonNav } from "@/ui/skeleton";
+import InstallPWA from "../pwa";
+
 const Header = dynamic(() => import("@/components/header"), { loading: () => <SkeletonNav /> });
 
 export default function RecoilRootLayout({
@@ -29,6 +31,7 @@ export default function RecoilRootLayout({
       >
         {children}
       </div>
+      <InstallPWA />
     </RecoilRoot>
   );
 }

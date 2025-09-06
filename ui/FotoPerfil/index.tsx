@@ -23,7 +23,7 @@ export default function FotoPerfil({
         src={(img == "false" && "/user.webp") || img || "/user.webp"}
         height={40}
         width={40}
-        className={`bg-primary ${
+        className={`bg-light ${
           className ? className : "w-[40px] h-[40px] hover:opacity-80"
         }  rounded-full border-2 border-zinc-700 object-cover   `}
         alt='perfil'

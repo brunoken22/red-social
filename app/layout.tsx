@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     appId: "501335862562150",
   },
   manifest: "/manifest.json",
+  verification: {
+    google: "CnmK8AWJQTO2MYQ5J7dOu9_dhCFy-ttErrYHDEWbOyw",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -25,10 +28,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang='es' className={`${theme !== "true" ? "" : "dark"}`}>
       <head>
-        <meta
-          name='google-site-verification'
-          content='CnmK8AWJQTO2MYQ5J7dOu9_dhCFy-ttErrYHDEWbOyw'
-        />
         <link rel='preconnect' href='https://red-social-node.onrender.com' />
         <link rel='preconnect' href='https://res.cloudinary.com' />
         <meta name='color-scheme' content='only light' />

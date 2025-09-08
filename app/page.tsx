@@ -7,20 +7,6 @@ export const metadata: Metadata = {
   ...metadataImport,
   title: "Bienvenid@ a UniRed",
   description: "Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)",
-
-  openGraph: {
-    title: "Bienvenid@ a UniRed",
-    description: "Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)",
-    images: "/logo.webp",
-    url: "https://unired.vercel.app/",
-    type: "website",
-  },
-  twitter: {
-    title: "Bienvenid@ a UniRed",
-    description: "Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)",
-    creator: "@brunoken",
-    images: "/logo.webp",
-  },
 };
 
 export default async function Page() {

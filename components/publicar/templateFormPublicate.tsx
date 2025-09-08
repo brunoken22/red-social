@@ -32,6 +32,7 @@ export default function TemplateFormPublicar({
   const [isLoading, setIsLoading] = useState(false);
   const { mutate } = GetAllPublicaciones(true);
   const { mutatePublicacionesUser } = GetAllPublicacionesUser(true);
+
   const pathname = usePathname();
 
   const modalRef = useRef<HTMLDivElement>(null); // Referencia al modal para saber si el clic ocurrió dentro o fuera

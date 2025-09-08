@@ -20,6 +20,19 @@ export const metadata: Metadata = {
   verification: {
     google: "CnmK8AWJQTO2MYQ5J7dOu9_dhCFy-ttErrYHDEWbOyw",
   },
+  openGraph: {
+    title: "Bienvenid@ a UniRed",
+    description: "Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)",
+    images: "/icon512_rounded.png",
+    url: "https://unired.vercel.app/",
+    type: "website",
+  },
+  twitter: {
+    title: "Bienvenid@ a UniRed",
+    description: "Conéctate con amigos y descubre nuevas personas en nuestra red social(UniRed)",
+    creator: "@brunoken",
+    images: "/icon512_rounded.png",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

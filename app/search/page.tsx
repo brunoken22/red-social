@@ -1,22 +1,22 @@
-import { Metadata } from 'next';
-import SearchMobile from '@/components/searchMobile';
+import { Metadata } from "next";
+import SearchMobile from "@/components/searchMobile";
 export const metadata: Metadata = {
-  title: 'Buscador | UniRed',
-  description: 'Buscador de amig@s',
-  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+  title: "Buscador | UniRed",
+  description: "Buscador de amig@s",
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
 
   openGraph: {
-    title: 'Buscador | UniRed',
-    description: 'Encuentra y conecta con tus amig@s o descubre nuevas personas en UniRed.',
-    images: '/logo.webp',
-    url: 'https://unired.vercel.app/search',
-    type: 'website',
+    title: "Buscador | UniRed",
+    description: "Encuentra y conecta con tus amig@s o descubre nuevas personas en UniRed.",
+    images: "/icon512_rounded.png",
+    url: "https://unired.vercel.app/search",
+    type: "website",
   },
   twitter: {
-    title: 'Buscador | UniRed',
-    description: 'Encuentra y conecta con tus amig@s o descubre nuevas personas en UniRed.',
-    creator: '@brunoken',
-    images: '/logo.webp',
+    title: "Buscador | UniRed",
+    description: "Encuentra y conecta con tus amig@s o descubre nuevas personas en UniRed.",
+    creator: "@brunoken",
+    images: "/icon512_rounded.png",
   },
 };
 export default function Search() {

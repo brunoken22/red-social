@@ -69,7 +69,7 @@ export default function PWAInstaller() {
     <div className='fixed bottom-16 right-4 bg-primary dark:bg-darkComponet shadow-lg rounded-lg p-4 max-w-sm dark:text-primary '>
       <div className='flex items-start'>
         <div className='flex-shrink-0'>
-          <img src='/logo.webp' alt='Unired' className='h-10 w-10' />
+          <img src='/icon512_rounded.png' alt='Unired' className='h-10 w-10' />
         </div>
         <div className='ml-3'>
           <h3 className='text-sm font-semibold '>Instalar Unired</h3>

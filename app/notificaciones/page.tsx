@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: "Notificaciones | UniRed",
     description:
       "Consulta tus notificaciones en UniRed y mantente al día con las actividades de tus amig@s.",
-    images: "/logo.webp",
+    images: "/icon512_rounded.png",
     url: "https://unired.vercel.app/notificaciones",
     type: "website",
   },
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description:
       "Consulta tus notificaciones en UniRed y mantente al día con las actividades de tus amig@s.",
     creator: "@brunoken",
-    images: "/logo.webp",
+    images: "/icon512_rounded.png",
   },
 };
 

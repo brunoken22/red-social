@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Crear cuenta | UniRed",
     description: "Únete a UniRed y comienza a conectarte con amig@s y descubrir contenido nuevo.",
-    images: "/logo.webp",
+    images: "/icon512_rounded.png",
     url: "https://unired.vercel.app/crearCuenta",
     type: "website",
   },
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: "Crear cuenta | UniRed",
     description: "Únete a UniRed y comienza a conectarte con amig@s y descubrir contenido nuevo.",
     creator: "@brunoken",
-    images: "/logo.webp",
+    images: "/icon512_rounded.png",
   },
 };
 

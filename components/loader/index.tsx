@@ -11,7 +11,7 @@ export function Loader() {
 
   return (
     <DivLoader>
-      <ImageLogo src='/logo.webp' alt='logo' />
+      <ImageLogo src='/icon512_rounded.png' alt='logo' />
       {loadingText ? (
         <p>
           Esto puede tardar hasta 1 minuto <br />

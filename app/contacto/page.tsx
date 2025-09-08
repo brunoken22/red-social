@@ -1,25 +1,25 @@
-import ContactForm from '@/components/contactForm';
-import { Metadata } from 'next';
+import ContactForm from "@/components/contactForm";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Contacto | UniRed',
-  description: 'Contacto',
-  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+  title: "Contacto | UniRed",
+  description: "Contacto",
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
 
   openGraph: {
-    title: 'Contacto | UniRed',
+    title: "Contacto | UniRed",
     description:
-      'Ponte en contacto con nosotros para enviar tus comentarios, reportar errores o hacer preguntas sobre UniRed.',
-    images: '/logo.webp',
-    url: 'https://unired.vercel.app/contacto',
-    type: 'website',
+      "Ponte en contacto con nosotros para enviar tus comentarios, reportar errores o hacer preguntas sobre UniRed.",
+    images: "/icon512_rounded.png",
+    url: "https://unired.vercel.app/contacto",
+    type: "website",
   },
   twitter: {
-    title: 'Contacto | UniRed',
+    title: "Contacto | UniRed",
     description:
-      'Ponte en contacto con nosotros para enviar tus comentarios, reportar errores o hacer preguntas sobre UniRed.',
-    creator: '@brunoken',
-    images: '/logo.webp',
+      "Ponte en contacto con nosotros para enviar tus comentarios, reportar errores o hacer preguntas sobre UniRed.",
+    creator: "@brunoken",
+    images: "/icon512_rounded.png",
   },
 };
 

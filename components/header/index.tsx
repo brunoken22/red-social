@@ -146,7 +146,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
                 //   const options = {
                 //     body: ultimoMensaje.message,
                 //     icon: ultimoMensaje.img, // Icono que se muestra en la notificación
-                //     image: '/logo.webp', // Imagen en tamaño completo (puede ser más grande)
+                //     image: '/icon512_rounded.png', // Imagen en tamaño completo (puede ser más grande)
                 //     title: ultimoMensaje.fullName,
                 //     badge: ultimoMensaje.img, // Icono pequeño que aparece en la barra de notificación
                 //   };

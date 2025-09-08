@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Inicia sesión | UniRed",
     description:
       "Accede a tu cuenta de UniRed para conectarte con amig@s y descubrir contenido nuevo.",
-    images: "/logo.webp",
+    images: "/icon512_rounded.png",
     url: "https://unired.vercel.app/iniciarSesion",
     type: "website",
   },
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     description:
       "Accede a tu cuenta de UniRed para conectarte con amig@s y descubrir contenido nuevo.",
     creator: "@brunoken",
-    images: "/logo.webp",
+    images: "/icon512_rounded.png",
   },
 };
 

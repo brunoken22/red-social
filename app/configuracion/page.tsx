@@ -1,24 +1,24 @@
-import { Span } from '@/components/span';
-import { ContainerMain, DivMain } from '@/ui/container';
-import { Metadata } from 'next';
-import { ConfigPerfil } from '@/components/configuracionPerfil';
+import { Span } from "@/components/span";
+import { ContainerMain, DivMain } from "@/ui/container";
+import { Metadata } from "next";
+import { ConfigPerfil } from "@/components/configuracionPerfil";
 export const metadata: Metadata = {
-  title: 'Configuración | UniRed',
-  description: 'Administra tu cuenta, privacidad y preferencias en UniRed.',
-  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+  title: "Configuración | UniRed",
+  description: "Administra tu cuenta, privacidad y preferencias en UniRed.",
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
 
   openGraph: {
-    title: 'Configuración | UniRed',
-    description: 'Administra tu cuenta, privacidad y preferencias en UniRed.',
-    images: '/logo.webp',
-    url: 'https://unired.vercel.app/configuracion',
-    type: 'website',
+    title: "Configuración | UniRed",
+    description: "Administra tu cuenta, privacidad y preferencias en UniRed.",
+    images: "/icon512_rounded.png",
+    url: "https://unired.vercel.app/configuracion",
+    type: "website",
   },
   twitter: {
-    title: 'Configuración | UniRed',
-    description: 'Administra tu cuenta, privacidad y preferencias en UniRed.',
-    creator: '@brunoken',
-    images: '/logo.webp',
+    title: "Configuración | UniRed",
+    description: "Administra tu cuenta, privacidad y preferencias en UniRed.",
+    creator: "@brunoken",
+    images: "/icon512_rounded.png",
   },
 };
 

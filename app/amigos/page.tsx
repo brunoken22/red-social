@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Amigos | UniRed",
     description: "Encuentra y conecta con nuevos amig@s en UniRed.",
-    images: "/logo.webp",
+    images: "/icon512_rounded.png",
     url: "https://unired.vercel.app/amigos",
     type: "website",
   },
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: "Amigos | UniRed",
     description: "Encuentra y conecta con nuevos amig@s en UniRed.",
     creator: "@brunoken",
-    images: "/logo.webp",
+    images: "/icon512_rounded.png",
   },
 };
 

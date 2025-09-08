@@ -13,14 +13,17 @@ import {
 import { LoaderRequest } from "../loader";
 import { GetFriendAccepted, GetFriendSend, GetFriendPending, GetFriendReceived } from "@/lib/hook";
 import { DivNotificacionActi } from "../header/styled";
+import { FiUserPlus, FiUsers, FiUserCheck, FiSend } from "react-icons/fi";
 
 const TemplateFriendRequest = dynamic(() => import("../templateFriends"), {
   loading: () => <LoaderRequest />,
 });
+
 export type HandleActionsFriend = {
   id: string;
   setIsLoading: Dispatch<SetStateAction<string | false>>;
 };
+
 export default function AmigosComponent() {
   const dataAllUser = useRecoilValue(getSugerenciaAmigos);
   const dataAllAmigos = useRecoilValue(getAllAmigos);
@@ -37,37 +40,14 @@ export default function AmigosComponent() {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (e.currentTarget.id == "suge") {
-      setSugerencia(true);
-      setSoliAmis(false);
-      setAllAmig(false);
-      setSoliEnv(false);
-      return;
-    }
-    if (e.currentTarget.id == "soli") {
-      setSoliAmis(true);
-      setSugerencia(false);
-      setAllAmig(false);
-      setSoliEnv(false);
+    const targetId = e.currentTarget.id;
 
-      return;
-    }
-    if (e.currentTarget.id == "all") {
-      setAllAmig(true);
-      setSugerencia(false);
-      setSoliAmis(false);
-      setSoliEnv(false);
-
-      return;
-    }
-    if (e.currentTarget.id == "SoliEnv") {
-      setAllAmig(false);
-      setSugerencia(false);
-      setSoliEnv(true);
-      setSoliAmis(false);
-      return;
-    }
+    setSugerencia(targetId === "suge");
+    setSoliAmis(targetId === "soli");
+    setAllAmig(targetId === "all");
+    setSoliEnv(targetId === "SoliEnv");
   };
+
   const handleSolicitudEnv = async ({ id, setIsLoading }: HandleActionsFriend) => {
     setIsLoading(id);
     const createSolicitud = await import("@/lib/hook").then((mod) => mod.createSolicitud);
@@ -78,21 +58,20 @@ export default function AmigosComponent() {
     await mutateReceived();
     await mutateAccepted();
     await mutatePending();
-
     setIsLoading(false);
   };
+
   const handleSolicitudAcep = async ({ id, setIsLoading }: HandleActionsFriend) => {
     setIsLoading(id);
-
     const aceptarSolicitud = await import("@/lib/hook").then((mod) => mod.aceptarSolicitud);
     await aceptarSolicitud(Number(id));
     await mutateSend();
     await mutateReceived();
     await mutateAccepted();
     await mutatePending();
-
     setIsLoading(false);
   };
+
   const handleSolicitudRecha = async ({ id, setIsLoading }: HandleActionsFriend) => {
     setIsLoading(id);
     const rechazarSolicitud = await import("@/lib/hook").then((mod) => mod.rechazarSolicitud);
@@ -103,9 +82,9 @@ export default function AmigosComponent() {
     await mutateReceived();
     await mutateAccepted();
     await mutatePending();
-
     setIsLoading(false);
   };
+
   const handleEliminarAmigo = async ({ id, setIsLoading }: HandleActionsFriend) => {
     setIsLoading(id);
     const eliminarAmigo = await import("@/lib/hook").then((mod) => mod.eliminarAmigo);
@@ -132,15 +111,12 @@ export default function AmigosComponent() {
               } `}
             >
               <DivIcons className='max-md:hidden'>
-                <img
-                  src='/icons/myAmigos.svg'
-                  alt='Sugerencia de amistad'
-                  title='Sugerencia de amistad'
-                />{" "}
+                <FiUserPlus className='inline mr-1' size='26' />
                 {">"}
               </DivIcons>
               Sugerencia de amistad
             </ButtonNoti>
+
             <ButtonNoti
               onClick={handleClick}
               id='soli'
@@ -149,21 +125,16 @@ export default function AmigosComponent() {
                 soliAmis ? "bg-light text-primary  !opacity-100 !cursor-default " : ""
               }  `}
             >
-              {dataAllSoliReci ? (
-                dataAllSoliReci.length ? (
-                  <DivNotificacionActi>{dataAllSoliReci.length}</DivNotificacionActi>
-                ) : null
-              ) : null}
+              {dataAllSoliReci?.length > 0 && (
+                <DivNotificacionActi>{dataAllSoliReci.length}</DivNotificacionActi>
+              )}
               <DivIcons className='max-md:hidden'>
-                <img
-                  src='/icons/myAmigos.svg'
-                  alt='Solicitud de amistad'
-                  title='Solicitud de amistad'
-                />
+                <FiUserPlus className='inline mr-1' size='26' />
                 {"+"}
               </DivIcons>
               Solicitud de amistad
             </ButtonNoti>
+
             <ButtonNoti
               onClick={handleClick}
               id='all'
@@ -173,10 +144,11 @@ export default function AmigosComponent() {
               }`}
             >
               <DivIcons className='max-md:hidden'>
-                <img src='/icons/myAmigos.svg' alt=' Todos tus amigos' title=' Todos tus amigos' />
+                <FiUsers className='inline mr-1' size='26' />
               </DivIcons>
               Todos tus amigos
             </ButtonNoti>
+
             <ButtonNoti
               onClick={handleClick}
               id='SoliEnv'
@@ -186,20 +158,21 @@ export default function AmigosComponent() {
               } `}
             >
               <DivIcons className='max-md:hidden'>
-                <img src='/icons/myAmigos.svg' alt='Solicitud Enviado' title='Solicitud Enviado' />
+                <FiSend className='inline mr-1' size='26' />
               </DivIcons>
               Solicitud Enviado
             </ButtonNoti>
           </div>
         </div>
       </DivSection>
+
       <DivResult>
-        {sugerencia && !soliAmis && !allAmig ? (
+        {sugerencia && (
           <>
             <h3 className='font-semibold text-start text-xl mb-4'>Sugerencias de amistad</h3>
             <DivResponse>
               {dataAllUser?.length > 0
-                ? dataAllUser?.map((user) => (
+                ? dataAllUser.map((user) => (
                     <TemplateFriendRequest
                       key={user.id}
                       id={user.id}
@@ -216,8 +189,9 @@ export default function AmigosComponent() {
                 : "Sin Usuarios"}
             </DivResponse>
           </>
-        ) : null}
-        {soliAmis ? (
+        )}
+
+        {soliAmis && (
           <>
             <h3 className='font-semibold text-start  text-xl mb-4'>Solicitudes de amistad</h3>
             <DivResponse>
@@ -239,8 +213,9 @@ export default function AmigosComponent() {
                 : "No hay solicitud de amistad"}
             </DivResponse>
           </>
-        ) : null}
-        {allAmig ? (
+        )}
+
+        {allAmig && (
           <>
             <h3 className='font-semibold text-start  text-xl mb-4 mt-0'>Todos tus amigos</h3>
             <DivResponse>
@@ -262,8 +237,9 @@ export default function AmigosComponent() {
                 : "No tienes amigos"}
             </DivResponse>
           </>
-        ) : null}
-        {soliEnv ? (
+        )}
+
+        {soliEnv && (
           <>
             <h3 className='font-semibold text-start  text-xl mb-4  mt-0'>Solicitud Enviado</h3>
             <DivResponse>
@@ -285,7 +261,7 @@ export default function AmigosComponent() {
                 : "No enviastes solicitudes"}
             </DivResponse>
           </>
-        ) : null}
+        )}
       </DivResult>
     </Section>
   );

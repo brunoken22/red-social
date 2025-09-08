@@ -23,8 +23,16 @@ import { DivAllPublicaciones } from "@/ui/container";
 import { ButtonAgregar } from "@/ui/boton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { FaSignInAlt } from "react-icons/fa"; // Icono de entrada
-import { FiUser, FiSearch } from "react-icons/fi";
+import { FaSignInAlt, FaUserFriends } from "react-icons/fa";
+import {
+  FiUser,
+  FiSearch,
+  FiMessageSquare,
+  FiUserPlus,
+  FiUserX,
+  FiTrash2,
+  FiCheck,
+} from "react-icons/fi";
 import { SkeletonPublicacionAll } from "@/ui/skeleton";
 
 const Verification = dynamic(() => import("@/ui/verification"));
@@ -89,6 +97,7 @@ export function PerfilAmigo({ data }: { data: any }) {
     await eliminarAmigo(Number(id));
     setIsAmigo("REJECTED");
   };
+
   return (
     <>
       {!isLoadingGetFriend ? (
@@ -126,11 +135,15 @@ export function PerfilAmigo({ data }: { data: any }) {
                         {data.user.verification ? <Verification publication={false} /> : null}
                       </div>
                       {data.user.rtdb?.length ? (
-                        <h2 className='max-md:mb-2 mb-0 -mt-1'>
+                        <h2 className='max-md:mb-2 mb-0 -mt-1 flex items-center gap-1'>
+                          <FaUserFriends className='inline' />
                           {data.user.rtdb?.length + " amigos"}
                         </h2>
                       ) : (
-                        <div className='max-md:mb-2 mb-0 -mt-1'>No hay amigos</div>
+                        <div className='max-md:mb-2 mb-0 -mt-1 flex items-center gap-1'>
+                          <FiUser className='inline' />
+                          No hay amigos
+                        </div>
                       )}
                     </div>
                   </DivFotoNameLink>
@@ -140,7 +153,7 @@ export function PerfilAmigo({ data }: { data: any }) {
                         <>
                           {isAmigo == "ACCEPTED" ? (
                             <Link
-                              className=' p-2 rounded-lg text-primary flex items-center gap-1 backdrop-contrast-[0.4] hover:backdrop-contrast-[0.1]'
+                              className='p-2 rounded-lg text-primary flex items-center gap-1 backdrop-contrast-[0.4] hover:backdrop-contrast-[0.1]'
                               href={
                                 "/chat?fullName=" +
                                 data.user.fullName +
@@ -152,12 +165,7 @@ export function PerfilAmigo({ data }: { data: any }) {
                                 (data.user.img ? data.user.img : "")
                               }
                             >
-                              <img
-                                src='/icons/chat.svg'
-                                alt='Mensaje'
-                                title='Mensaje'
-                                className='fill-primary w-[20px] text-nowrap'
-                              />
+                              <FiMessageSquare className='w-5 h-5' />
                               Mensaje
                             </Link>
                           ) : null}
@@ -168,8 +176,19 @@ export function PerfilAmigo({ data }: { data: any }) {
                                 isAmigo == "ACCEPTED" ? handleEliminarAmigo : handleSolicitudEnv
                               }
                               bg={isAmigo !== "REJECTED" ? "red" : "blue"}
+                              className='flex items-center gap-1'
                             >
-                              {isAmigo == "ACCEPTED" ? "Eliminar Amigo" : "Agregar"}
+                              {isAmigo == "ACCEPTED" ? (
+                                <>
+                                  <FiUserX className='w-4 h-4' />
+                                  Eliminar Amigo
+                                </>
+                              ) : (
+                                <>
+                                  <FiUserPlus className='w-4 h-4' />
+                                  Agregar
+                                </>
+                              )}
                             </ButtonAgregar>
                           ) : isAmigo == "PENDING" &&
                             soliReci?.find((user) => user.id == data?.user.id) ? (
@@ -178,10 +197,17 @@ export function PerfilAmigo({ data }: { data: any }) {
                                 id={data?.user?.id}
                                 onClick={handleSolicitudRecha}
                                 bg='red'
+                                className='flex items-center gap-1'
                               >
+                                <FiTrash2 className='w-4 h-4' />
                                 Eliminar solicitud
                               </ButtonAgregar>
-                              <ButtonAgregar id={data?.user?.id} onClick={handleSolicitudAcep}>
+                              <ButtonAgregar
+                                id={data?.user?.id}
+                                onClick={handleSolicitudAcep}
+                                className='flex items-center gap-1'
+                              >
+                                <FiCheck className='w-4 h-4' />
                                 Aceptar
                               </ButtonAgregar>
                             </DivButtonEliAcep>
@@ -190,7 +216,9 @@ export function PerfilAmigo({ data }: { data: any }) {
                               id={data?.user?.id}
                               onClick={handleSolicitudRecha}
                               bg='red'
+                              className='flex items-center gap-1'
                             >
+                              <FiTrash2 className='w-4 h-4' />
                               Eliminar solicitud
                             </ButtonAgregar>
                           )}
@@ -245,7 +273,7 @@ export function PerfilAmigo({ data }: { data: any }) {
               </DivPublicaciones>
             </DivPerfilUser>
           ) : (
-            <div className='flex items-center justify-center  bg-gray-100 dark:bg-gray-900 m-auto'>
+            <div className='flex items-center justify-center bg-gray-100 dark:bg-gray-900 m-auto'>
               <div className='p-8 bg-white dark:bg-gray-800 rounded-lg shadow-md max-w-md w-full'>
                 <FiUser className='w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-6' />
                 <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-4 text-center'>

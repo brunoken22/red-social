@@ -1,10 +1,14 @@
-export default function Verification({publication}: {publication: boolean}) {
+import { FaCheckCircle } from "react-icons/fa";
+
+export default function Verification({ publication }: { publication: boolean }) {
   return (
     <span
-      className={`bg-blue-500 rounded-full text-primary  flex items-center justify-center ${
-        publication ? 'w-3 h-3  text-[0.5rem]' : 'w-4 h-4  text-[0.7rem]'
-      }`}>
-      ✔
+      className={`text-blue-500 flex items-center justify-center ${
+        publication ? "text-sm" : "text-base"
+      }`}
+      title='Verificado'
+    >
+      <FaCheckCircle />
     </span>
   );
 }

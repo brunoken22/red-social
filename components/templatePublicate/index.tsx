@@ -24,17 +24,10 @@ import Linkify from "@/utils/formtText";
 import { LoaderRequest } from "../loader";
 import GalleryMedia from "../publicar/galleryImage";
 import { IoMdShare } from "react-icons/io";
-import { FaMessage } from "react-icons/fa6";
-import { AiFillLike } from "react-icons/ai";
-
-const iconConLike = {
-  height: " 20px",
-  width: " 20px",
-  border: "1px solid #ddd",
-  borderRadius: "50%",
-  padding: "2px",
-  backgroundColor: "#5a81ff",
-};
+import { FaRegComment, FaComment } from "react-icons/fa";
+import { IoHeart, IoHeartOutline } from "react-icons/io5";
+import { FaEllipsisH } from "react-icons/fa";
+import { FiShare2, FiUser } from "react-icons/fi";
 
 const Verification = dynamic(() => import("@/ui/verification"));
 const Comment = dynamic(() => import("./comment"));
@@ -103,11 +96,9 @@ export function ThemplatePubli(props: {
     e.preventDefault();
     if (!comentario) {
       setComentario(true);
-      e.target.style.fill = "#84e981";
       return;
     }
     setComentario(false);
-    e.target.style.fill = "#ddd";
   };
   const handleShare = async () => {
     if (navigator.share) {
@@ -176,9 +167,7 @@ export function ThemplatePubli(props: {
               onClick={() => setOpenDelete(!openDelete)}
               aria-label='EliminarContet'
             >
-              <ContentDelete />
-              <ContentDelete />
-              <ContentDelete />
+              <FaEllipsisH className='text-gray-600 dark:text-gray-300' />
             </ButtonOpenDelete>
             {openDelete && (
               <ButtonDelete
@@ -231,20 +220,17 @@ export function ThemplatePubli(props: {
                     {props.like.map((e: any) => (
                       <div
                         key={e.id}
-                        className='w-full whitespace-nowrap overflow-hidden text-ellipsis m-0'
+                        className='w-full whitespace-nowrap overflow-hidden text-ellipsis m-0 flex items-center gap-1'
                       >
+                        <FiUser className='inline' size='20' />
                         {e.user.id !== props.userId ? e.user.fullName : "Tú"}
                       </div>
                     ))}
                   </DivUserLikes>
                 )}
-                <img
-                  src='/icons/like.svg'
-                  alt='Dar Like'
-                  title='Dar Like'
-                  className='fill-[#fff]'
-                  style={iconConLike}
-                />
+                <div className='p-1 rounded-full bg-blue-500 text-white'>
+                  <IoHeart size='9' />
+                </div>
               </SpanIco>
             ) : props?.comentarios.length ? (
               <SpanIco>
@@ -259,13 +245,11 @@ export function ThemplatePubli(props: {
             like={like === "like"}
             id={props.idPublicacion.toString()}
           >
-            <AiFillLike
-              className={`text-base ${
-                like === "like"
-                  ? "fill-[#063ef5] dark:fill-[#7696fd]"
-                  : "dark:fill-[#ddd] fill-[#919191]"
-              }`}
-            />
+            {like === "like" ? (
+              <IoHeart className='text-blue-500 dark:text-blue-400' size='20' />
+            ) : (
+              <IoHeartOutline className='dark:text-gray-300 text-gray-500' size='20' />
+            )}
             Me gusta
           </BottonLike>
         </div>
@@ -288,11 +272,11 @@ export function ThemplatePubli(props: {
             type='button'
             id={"comentario" + Number(props.idPublicacion)}
           >
-            <FaMessage
-              className={`text-base ${
-                comentario ? "fill-[#84e981]" : "dark:fill-[#ddd] fill-[#919191]"
-              }`}
-            />
+            {comentario ? (
+              <FaComment className='text-green-500' size='20' />
+            ) : (
+              <FaRegComment className='dark:text-gray-300 text-gray-500' size='20' />
+            )}
             Comentar
           </BottonLike>
         </div>
@@ -312,7 +296,7 @@ export function ThemplatePubli(props: {
             id={"comentario" + Number(props.idPublicacion)}
             className='border-none flex items-center gap-2 text-[0.8rem] p-2 hover:backdrop-contrast-50 rounded-md'
           >
-            <IoMdShare className='text-base' />
+            <FiShare2 className='text-base' size='20' />
             Compartir
           </button>
         </div>

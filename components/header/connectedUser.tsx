@@ -22,18 +22,7 @@ export default function ConnectedUsers({
             <ButtonSmsConnect
               key={e.id}
               className={index !== allConnectAmigos.length - 1 ? "border-b border-gray-500" : ""}
-              onClick={() =>
-                push(
-                  "/chat?fullName=" +
-                    e.fullName +
-                    "&rtdb=" +
-                    e.rtdb +
-                    "&id=" +
-                    e.id +
-                    "&img=" +
-                    e.img
-                )
-              }
+              onClick={() => push("/chat?" + "id=" + e.id)}
             >
               <FotoPerfil
                 img={e.img}

@@ -154,16 +154,7 @@ export function PerfilAmigo({ data }: { data: any }) {
                           {isAmigo == "ACCEPTED" ? (
                             <Link
                               className='p-2 rounded-lg text-primary flex items-center gap-1 backdrop-contrast-[0.4] hover:backdrop-contrast-[0.1]'
-                              href={
-                                "/chat?fullName=" +
-                                data.user.fullName +
-                                "&rtdb=" +
-                                data.user.rtdb +
-                                "&id=" +
-                                data.user.id +
-                                "&img=" +
-                                (data.user.img ? data.user.img : "")
-                              }
+                              href={"/chat?" + "id=" + data.user.id}
                             >
                               <FiMessageSquare className='w-5 h-5' />
                               Mensaje

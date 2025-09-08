@@ -5,7 +5,7 @@ import { DivTemMensaje, TemplMensaje, TemplChat, SpanNoti } from "./styled";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { user, isMenssage, isConnect, User, messagesWriting, openChatUser } from "@/lib/atom";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { LuMessageSquare, LuUsers } from "react-icons/lu";
 import { GetAllUserChat } from "@/lib/hook";
 import Link from "next/link";
@@ -36,9 +36,17 @@ export type MessageUserChat = {
   lastChanged: Date | "";
   receip_id?: number;
 };
+export type QueryParamsType = string;
 
-export function TemMensaje() {
-  const params = useSearchParams();
+export function TemMensaje({
+  userChat,
+}: {
+  userChat: {
+    user: { id: number; fullName: string; img: string; rtdb: string };
+    chat_rtdb: string;
+  } | null;
+}) {
+  const { replace } = useRouter();
   const dataUser = useRecoilValue(user);
   const dataIsConnect = useRecoilValue(isConnect);
   const dataMessage = useRecoilValue(isMenssage);
@@ -47,29 +55,62 @@ export function TemMensaje() {
   const { data, isLoading } = GetAllUserChat();
   const setOpenChatUserValue = useSetRecoilState(openChatUser);
 
+  // Cerrar chat del usuario [ID]
+  const handleCloseChat = () => {
+    setDataMensajeUser({
+      rtdb: "",
+      message: "",
+      read: false,
+      fullName: "",
+      img: "",
+      status: "Enviado",
+      id: "",
+      date: "",
+      lastChanged: "",
+    });
+    setOpenChatUserValue("");
+    replace("/chat");
+  };
+
   useEffect(() => {
-    const rtdbParams = params.get("rtdb") as any;
-    const imgParams = params.get("img") as string;
-    const fullNameParams = params.get("fullName") as string;
-    const idParams = params.get("id") as string;
+    if (userChat?.user) {
+      const rtdbParams = userChat?.chat_rtdb;
+      const imgParams = userChat?.user.img;
+      const fullNameParams = userChat?.user.fullName;
+      const idParams = userChat?.user.id.toString();
 
-    if (rtdbParams && idParams && fullNameParams) {
-      const miArrayRTDB = rtdbParams.split(",");
-      const rtdbId = existenElementosSimilares(miArrayRTDB, dataUser.user.rtdb);
+      if (rtdbParams && idParams && fullNameParams) {
+        const miArrayRTDB = rtdbParams.split(",");
+        const rtdbId = existenElementosSimilares(miArrayRTDB, dataUser.user.rtdb);
 
-      setDataMensajeUser({
-        fullName: fullNameParams,
-        img: imgParams,
-        id: idParams,
-        rtdb: rtdbId,
-        status: "Enviado",
-        date: "",
-        lastChanged: "",
-      });
+        setDataMensajeUser({
+          fullName: fullNameParams,
+          img: imgParams || "/user.webp",
+          id: idParams,
+          rtdb: rtdbId,
+          status: "Enviado",
+          date: "",
+          lastChanged: "",
+        });
 
-      setOpenChatUserValue(rtdbId || "");
+        setOpenChatUserValue(rtdbId || "");
+      }
     }
-  }, [params.get("fullName")]);
+  }, [userChat]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleCloseChat();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   if (isLoading) return <Loader />;
 
@@ -225,20 +266,7 @@ export function TemMensaje() {
                 )}
                 dataMensajeUser={dataMensajeUser}
                 id={dataUser.user.id}
-                close={() => {
-                  setDataMensajeUser({
-                    rtdb: "",
-                    message: "",
-                    read: false,
-                    fullName: "",
-                    img: "",
-                    status: "Enviado",
-                    id: "",
-                    date: "",
-                    lastChanged: "",
-                  });
-                  setOpenChatUserValue("");
-                }}
+                close={() => handleCloseChat()}
               />
             ) : (
               <div className='flex flex-col items-center justify-center h-full'>

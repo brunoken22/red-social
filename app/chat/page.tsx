@@ -1,6 +1,8 @@
 import { TemMensaje } from "@/components/templateMensaje";
+import { fetchApiSwr } from "@/lib/api";
 import { DivMain } from "@/ui/container";
 import { Metadata } from "next";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Chat | UniRed",
@@ -22,10 +24,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Mensaje() {
+export default async function Mensaje({ searchParams }: { searchParams: { id: string } }) {
+  const token = cookies().get("token")?.value;
+  let userChat;
+  if (searchParams.id) {
+    userChat = await fetchApiSwr(`/user/amigos/${searchParams.id}`, {
+      method: "GET",
+      authorization: `Bearer ${token}`,
+    });
+  }
   return (
     <DivMain>
-      <TemMensaje></TemMensaje>
+      <TemMensaje
+        userChat={userChat && typeof userChat !== "string" && userChat.chat_rtdb ? userChat : null}
+      />
     </DivMain>
   );
 }

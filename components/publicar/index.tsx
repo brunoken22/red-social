@@ -6,6 +6,7 @@ import { DivSubir, DivASubir, DivText, DivCrear } from "./styled";
 import { useEffect, useState } from "react";
 import { user, isConnect } from "@/lib/atom";
 import { SkeletonPlicate } from "@/ui/skeleton";
+import { FiImage, FiVideo, FiEdit3 } from "react-icons/fi";
 
 const NotificationToastStatus = dynamic(() =>
   import("@/ui/toast").then((mod) => mod.NotificationToastStatus)
@@ -32,7 +33,7 @@ export default function Publicar() {
 
   return dataValor.user.id ? (
     <>
-      <DivPublicar className=' w-full max-w-full'>
+      <DivPublicar className='w-full max-w-full'>
         <DivText>
           <FotoPerfil
             title={dataValor.user.fullName}
@@ -41,14 +42,18 @@ export default function Publicar() {
             connect={dataIsConnect?.find((e: any) => e.id == dataValor?.user?.id)?.connect && true}
           />
           <DivCrear onClick={() => setFormClick(true)}>
-            <p>Crear publicacion</p>
+            <div className='flex items-center gap-2'>
+              <FiEdit3 className='text-gray-500' />
+              <p>Crear publicación</p>
+            </div>
           </DivCrear>
         </DivText>
         <DivSubir>
           <DivASubir onClick={() => setFormClick(true)}>
-            <img src='/icons/image.svg' alt='Foto' title='Foto' />{" "}
+            <FiImage className='text-green-500 text-lg' size={24} />
             <Body className='text-sm'>Foto</Body>
           </DivASubir>
+
           {formClick ? (
             <TemplateFormPublicar
               fullName={dataValor.user.fullName}
@@ -57,8 +62,9 @@ export default function Publicar() {
               close={() => setFormClick(false)}
             />
           ) : null}
+
           <DivASubir onClick={() => setFormClick(true)}>
-            <img src='/icons/video.svg' alt='Video' title='Video' />
+            <FiVideo className='text-red-500 text-lg' size={24} />
             <Body className='text-sm'>Video</Body>
           </DivASubir>
         </DivSubir>

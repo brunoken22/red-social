@@ -14,7 +14,7 @@ import {
   isConnect,
   getAllSolicitudesRecibidas,
   publicacionSearchUser,
-  getAllAmigos,
+  // getAllAmigos,
 } from "@/lib/atom";
 import { useRecoilValue } from "recoil";
 import { GetPubliAmigo } from "@/lib/hook";
@@ -52,7 +52,7 @@ const ThemplatePubli = dynamic(
 export function PerfilAmigo({ data }: { data: any }) {
   const { id } = useParams();
   const { push } = useRouter();
-  const useAmigosAll = useRecoilValue(getAllAmigos);
+  // const useAmigosAll = useRecoilValue(getAllAmigos);
   const dataIsConnect = useRecoilValue(isConnect);
   const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
   const dataUser = useRecoilValue(user);

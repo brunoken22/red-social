@@ -21,7 +21,6 @@ import { GetPubliAmigo } from "@/lib/hook";
 import { useParams } from "next/navigation";
 import { DivAllPublicaciones } from "@/ui/container";
 import { ButtonAgregar } from "@/ui/boton";
-import MessageSvg from "@/ui/icons/chat.svg";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaSignInAlt } from "react-icons/fa"; // Icono de entrada
@@ -153,7 +152,12 @@ export function PerfilAmigo({ data }: { data: any }) {
                                 (data.user.img ? data.user.img : "")
                               }
                             >
-                              <MessageSvg className='fill-primary w-[20px] text-nowrap' />
+                              <img
+                                src='/icons/chat.svg'
+                                alt='Mensaje'
+                                title='Mensaje'
+                                className='fill-primary w-[20px] text-nowrap'
+                              />
                               Mensaje
                             </Link>
                           ) : null}

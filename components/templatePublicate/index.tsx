@@ -13,7 +13,6 @@ import {
   ButtonOpenDelete,
   DivUserLikes,
 } from "@/components/publicaciones/styled";
-import Like from "@/ui/icons/like.svg";
 import { isConnect, Media } from "@/lib/atom";
 import { useRecoilValue } from "recoil";
 import Link from "next/link";
@@ -239,7 +238,13 @@ export function ThemplatePubli(props: {
                     ))}
                   </DivUserLikes>
                 )}
-                <Like className='fill-[#fff]' style={iconConLike} />
+                <img
+                  src='/icons/like.svg'
+                  alt='Dar Like'
+                  title='Dar Like'
+                  className='fill-[#fff]'
+                  style={iconConLike}
+                />
               </SpanIco>
             ) : props?.comentarios.length ? (
               <SpanIco>

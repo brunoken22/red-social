@@ -5,7 +5,6 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { compressFiles } from "@/lib/compressMedia";
 const Verification = dynamic(() => import("@/ui/verification"));
-const CloseSvg = dynamic(() => import("@/ui/icons/close.svg"));
 const Loader = dynamic(() => import("../loader").then((mod) => mod.Loader));
 const DivForm = dynamic(() => import("./styled").then((mod) => mod.DivForm));
 const Form = dynamic(() => import("./styled").then((mod) => mod.Form));
@@ -13,7 +12,7 @@ const Button = dynamic(() => import("./styled").then((mod) => mod.Button));
 const DivButton = dynamic(() => import("./styled").then((mod) => mod.DivButton));
 const ButtonPublicar = dynamic(() => import("./styled").then((mod) => mod.ButtonPublicar));
 
-const ImageSVG = dynamic(() => import("@/ui/icons").then((mod) => mod.ImageSVG));
+const ImageSVG = dynamic(() => import("@/public/icons").then((mod) => mod.ImageSVG));
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));
 
 export default function TemplateFormPublicar({
@@ -94,7 +93,7 @@ export default function TemplateFormPublicar({
                 </div>
               </div>
               <Button onClick={() => close()}>
-                <CloseSvg />
+                <img src='/icons/close.svg' alt='Cerrar ventana' title='Cerrar ventana' />
               </Button>
             </div>
             <textarea

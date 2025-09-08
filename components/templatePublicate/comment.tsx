@@ -9,7 +9,7 @@ import { useState } from "react";
 const NotificationToastStatus = dynamic(() =>
   import("@/ui/toast").then((mod) => mod.NotificationToastStatus)
 );
-const SendComentPubli = dynamic(() => import("@/ui/icons").then((mod) => mod.SendComentPubli));
+const SendComentPubli = dynamic(() => import("@/public/icons").then((mod) => mod.SendComentPubli));
 
 const TemplateComment = dynamic(() => import("./templatecomment"));
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));

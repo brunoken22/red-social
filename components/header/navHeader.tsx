@@ -1,11 +1,8 @@
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-import Home from '@/ui/icons/home.svg';
-import Amigos from '@/ui/icons/amigos.svg';
-import Chat from '@/ui/icons/chat.svg';
-import Notificaciones from '@/ui/icons/notificaciones.svg';
-import Search from '@/ui/icons/search.svg';
-import { DivNotificacionActi } from './styled';
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { DivNotificacionActi } from "./styled";
+import { FiSearch, FiHome, FiUsers, FiMessageSquare, FiBell } from "react-icons/fi";
+
 export default function NavegationUrl({
   amigos,
   message,
@@ -16,80 +13,69 @@ export default function NavegationUrl({
   notification: number | undefined;
 }) {
   const pathname = usePathname();
-  const className = 'relative';
-  const isOpen = 'p-2 bg-light rounded-full';
+  const className = "relative";
+  const isOpen = "p-2 bg-light rounded-full";
+
+  const navegationsUrl = [
+    {
+      pathname: "/search",
+      icon: FiSearch,
+      title: "Buscar",
+      md: "hidden",
+    },
+    {
+      pathname: "/inicio",
+      icon: FiHome,
+      title: "Inicio",
+    },
+    {
+      pathname: "/amigos",
+      icon: FiUsers,
+      title: "Amigos",
+      notification: amigos,
+    },
+    {
+      pathname: "/chat",
+      icon: FiMessageSquare,
+      title: "Chat",
+      notification: message,
+    },
+    {
+      pathname: "/notificaciones",
+      icon: FiBell,
+      title: "Notificaciones",
+      notification: notification,
+    },
+  ];
+
   return (
     <div className='flex justify-evenly items-center gap-8 max-md:gap-4'>
-      <Link href={'/search'} aria-label='search'>
-        <span className={`hidden  max-md:block ${pathname == '/search' ? isOpen : ''} `}>
-          <Search
-            className={`${
-              pathname == '/search'
-                ? 'fill-white w-[20px] h-[20px]'
-                : 'hover:opacity-70 dark:fill-gray-200 fill-gray-600 '
-            }`}
-          />
-        </span>
-      </Link>
-      <Link
-        href={'/inicio'}
-        aria-label='home'
-        className={`${pathname == '/inicio' ? isOpen : ''} ${className}`}>
-        <span>
-          <Home
-            className={`${
-              pathname == '/inicio'
-                ? 'fill-white w-[20px] h-[20px]'
-                : 'hover:opacity-70 dark:fill-gray-200 fill-gray-600 '
-            }`}
-          />
-        </span>
-      </Link>
-      <Link
-        href={'/amigos'}
-        aria-label='amigos'
-        className={`${pathname == '/amigos' ? isOpen : ''} ${className}`}>
-        {amigos ? <DivNotificacionActi>{amigos}</DivNotificacionActi> : null}
-        <span>
-          <Amigos
-            className={`${
-              pathname == '/amigos'
-                ? ' fill-white  w-[20px] h-[20px]'
-                : 'hover:opacity-70 dark:fill-gray-200 fill-gray-600'
-            }`}
-          />
-        </span>
-      </Link>
-      <Link
-        href={'/chat'}
-        aria-label='mensaje'
-        className={`${pathname == '/chat' ? isOpen : ''} ${className}`}>
-        {message > 0 && <DivNotificacionActi>{message}</DivNotificacionActi>}
-        <span>
-          <Chat
-            className={`${
-              pathname == '/chat'
-                ? 'fill-white w-[20px] h-[20px]'
-                : 'hover:opacity-70 dark:fill-gray-200 fill-gray-600 '
-            }`}
-          />{' '}
-        </span>
-      </Link>
-      <Link
-        href={'/notificaciones'}
-        aria-label='notificaciones'
-        className={`${pathname == '/notificaciones' ? isOpen : ''} ${className}`}>
-        {notification ? <DivNotificacionActi>{notification}</DivNotificacionActi> : null}
-        <span>
-          <Notificaciones
-            className={`${
-              pathname == '/notificaciones'
-                ? 'fill-white  w-[20px] h-[20px]'
-                : 'hover:opacity-70 dark:fill-gray-200 fill-gray-600 '
-            }`}
-          />{' '}
-        </span>
-      </Link>
+      {navegationsUrl.map((item, index) => {
+        const IconComponent = item.icon;
+        return (
+          <Link
+            key={index}
+            href={item.pathname}
+            aria-label={item.title}
+            title={item.title}
+            className={`${item.pathname === "/search" ? "hidden max-md:block" : ""} ${
+              pathname === item.pathname ? isOpen : ""
+            } ${className}`}
+          >
+            {item.notification ? (
+              <DivNotificacionActi>{item.notification}</DivNotificacionActi>
+            ) : null}
+            <IconComponent
+              size={26}
+              className={`${
+                pathname === item.pathname
+                  ? "text-white w-5 h-5"
+                  : "hover:opacity-70 dark:text-gray-200 text-gray-600"
+              }`}
+            />
+          </Link>
+        );
+      })}
     </div>
   );
 }

@@ -2,7 +2,6 @@
 import { TemplSns, Menssage } from "./styled";
 import FotoPerfil from "@/ui/FotoPerfil";
 import { Input } from "@/ui/input";
-import CloseSVG from "@/ui/icons/close.svg";
 import { Button } from "../publicar/styled";
 import Link from "next/link";
 import { EnviarMessage } from "@/lib/hook";
@@ -172,7 +171,7 @@ export default function TemplateChat({
           </div>
         </div>
         <Button onClick={() => close()}>
-          <CloseSVG />
+          <img src='/icons/close.svg' alt='Cerrar ventana' title='Cerrar ventana' />
         </Button>
       </div>
       <div className='flex flex-col gap-4 h-full  border-[1px] border-[#3b3b3b]'>

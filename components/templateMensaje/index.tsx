@@ -66,6 +66,7 @@ export function TemMensaje() {
         date: "",
         lastChanged: "",
       });
+
       setOpenChatUserValue(rtdbId || "");
     }
   }, [params.get("fullName")]);
@@ -103,6 +104,7 @@ export function TemMensaje() {
   };
 
   const sortedData = getSortedChats();
+
   return (
     <DivTemMensaje>
       {sortedData?.length && !isLoading ? (

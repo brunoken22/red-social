@@ -1,6 +1,21 @@
 /** @type {import('next').NextConfig} */
-const withSvgr = require("next-svgr");
 
-const nextConfig = withSvgr({});
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
+      },
+    ],
+  },
+};
 
 module.exports = nextConfig;

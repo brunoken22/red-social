@@ -1,7 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
 import { Section, DivSection, DivIcons, DivResponse, DivResult } from "./styled";
-import MyAmigos from "@/ui/icons/myAmigos.svg";
 import { ButtonNoti } from "@/ui/boton";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -133,7 +132,12 @@ export default function AmigosComponent() {
               } `}
             >
               <DivIcons className='max-md:hidden'>
-                <MyAmigos /> {">"}
+                <img
+                  src='/icons/myAmigos.svg'
+                  alt='Sugerencia de amistad'
+                  title='Sugerencia de amistad'
+                />{" "}
+                {">"}
               </DivIcons>
               Sugerencia de amistad
             </ButtonNoti>
@@ -151,7 +155,11 @@ export default function AmigosComponent() {
                 ) : null
               ) : null}
               <DivIcons className='max-md:hidden'>
-                <MyAmigos />
+                <img
+                  src='/icons/myAmigos.svg'
+                  alt='Solicitud de amistad'
+                  title='Solicitud de amistad'
+                />
                 {"+"}
               </DivIcons>
               Solicitud de amistad
@@ -165,7 +173,7 @@ export default function AmigosComponent() {
               }`}
             >
               <DivIcons className='max-md:hidden'>
-                <MyAmigos />
+                <img src='/icons/myAmigos.svg' alt=' Todos tus amigos' title=' Todos tus amigos' />
               </DivIcons>
               Todos tus amigos
             </ButtonNoti>
@@ -178,7 +186,7 @@ export default function AmigosComponent() {
               } `}
             >
               <DivIcons className='max-md:hidden'>
-                <MyAmigos />
+                <img src='/icons/myAmigos.svg' alt='Solicitud Enviado' title='Solicitud Enviado' />
               </DivIcons>
               Solicitud Enviado
             </ButtonNoti>

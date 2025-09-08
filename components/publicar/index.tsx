@@ -7,9 +7,6 @@ import { useEffect, useState } from "react";
 import { user, isConnect } from "@/lib/atom";
 import { SkeletonPlicate } from "@/ui/skeleton";
 
-const ImageSubir = dynamic(() => import("@/ui/icons/image.svg"));
-const VideoSubir = dynamic(() => import("@/ui/icons/video.svg"));
-
 const NotificationToastStatus = dynamic(() =>
   import("@/ui/toast").then((mod) => mod.NotificationToastStatus)
 );
@@ -49,7 +46,8 @@ export default function Publicar() {
         </DivText>
         <DivSubir>
           <DivASubir onClick={() => setFormClick(true)}>
-            <ImageSubir /> <Body className='text-sm'>Foto</Body>
+            <img src='/icons/image.svg' alt='Foto' title='Foto' />{" "}
+            <Body className='text-sm'>Foto</Body>
           </DivASubir>
           {formClick ? (
             <TemplateFormPublicar
@@ -60,7 +58,7 @@ export default function Publicar() {
             />
           ) : null}
           <DivASubir onClick={() => setFormClick(true)}>
-            <VideoSubir />
+            <img src='/icons/video.svg' alt='Video' title='Video' />
             <Body className='text-sm'>Video</Body>
           </DivASubir>
         </DivSubir>

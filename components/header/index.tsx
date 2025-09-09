@@ -26,6 +26,7 @@ import { LoaderRequest } from "../loader";
 import { SkeletonNav } from "@/ui/skeleton";
 import { NotificationPayload, onMessage } from "firebase/messaging";
 import LogoPage from "@/ui/logo";
+import Head from "next/head";
 
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"), {
   loading: () => <LoaderRequest />,
@@ -76,10 +77,13 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const [menu, setMenu] = useState(false);
   const [theme, setThemes] = useState<string>(themeDate);
   const [openNav, setOpenNav] = useState(true);
+  const [newMessage, setNewMessage] = useState("");
   const lastScrollY = useRef(0);
   const useAmigosAll = useRecoilValue(getAllAmigos);
   const modalRef = useRef<HTMLDivElement>(null);
+  const originalTitle = useRef<string>("");
   const openChatUserValue = useRecoilValue(openChatUser);
+
   const useDebounce = useDebouncedCallback((query, search) => {
     search(query);
   }, 1000);
@@ -232,39 +236,105 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
   //----------------------- NOTIFICACIONES POR RTDB Y NUEVOS mensajes
   useEffect(() => {
-    if (dataUser.user.id) {
-      if (!firstConect) {
-        const useConnectUser = async () => {
-          const registration = await subscribeToPush();
-          const tokenFCM = await obtenerTokenFCM(registration);
+    if (!dataUser.user.id) return;
 
-          if (!tokenFCM) return;
-          const userConnectPushPWA = (await import("@/lib/hook")).userConnectPushPWA;
-          await userConnectPushPWA({
-            userId: dataUser.user.id,
-            tokenFCM,
-          });
-          setFirstConnect(true);
-        };
-        useConnectUser();
+    const broadcastChannel = new BroadcastChannel("fcm_messages");
+
+    // Escuchar mensajes de otros tabs o del service worker
+    broadcastChannel.onmessage = (event) => {
+      if (event.data.type === "NEW_MESSAGE" && document.hidden) {
+        setNewMessage(event.data.payload?.notification?.title || "");
       }
-      onMessage(messaging, (payload) => {
-        if (payload.data?.room_id === openChatUserValue) return;
-        const { title, body } = payload.notification as NotificationPayload;
-        if (!title || !body) return;
-        new Notification(title, { body, data: { url: "/perfil" } });
-      });
-      const notificationAllRef = query(ref(rtdb, `/notifications/${dataUser.user.id}`));
-      onValue(notificationAllRef, (snapshot) => {
-        const valor = snapshot.val();
-        if (valor) {
-          const data: NotificationPublication[] = Object.values(valor);
-          const newPubliOPen = data.filter((noti) => !noti.read).length || 0;
-          setNotificacionesUserAtom((prev) => ({ ...prev, newPubliOPen: newPubliOPen }));
-        }
-      });
+
+      // ✅ AGREGAR ESTO PARA MENSAJES DEL SERVICE WORKER
+      if (event.data.type === "NEW_MESSAGE_BACKGROUND" && document.hidden) {
+        setNewMessage(event.data.payload?.notification?.title || "");
+      }
+    };
+
+    if (!firstConect) {
+      const useConnectUser = async () => {
+        const registration = await subscribeToPush();
+        const tokenFCM = await obtenerTokenFCM(registration);
+
+        if (!tokenFCM) return;
+        const userConnectPushPWA = (await import("@/lib/hook")).userConnectPushPWA;
+        await userConnectPushPWA({
+          userId: dataUser.user.id,
+          tokenFCM,
+        });
+        setFirstConnect(true);
+      };
+      useConnectUser();
     }
-  }, [dataUser?.user?.id, openChatUserValue]);
+
+    // Solo manejar mensajes en foreground
+    onMessage(messaging, (payload) => {
+      // Si el chat abierto es diferente, mostrar notificación
+      if (payload.data?.room_id !== openChatUserValue) {
+        const { title, body } = payload.notification || {};
+        if (title && body) {
+          new Notification(title, { body, data: { url: "/perfil" } });
+        }
+      }
+
+      // Broadcast a otros tabs
+      broadcastChannel.postMessage({
+        type: "NEW_MESSAGE",
+        payload: payload,
+      });
+    });
+
+    const notificationAllRef = query(ref(rtdb, `/notifications/${dataUser.user.id}`));
+    onValue(notificationAllRef, (snapshot) => {
+      const valor = snapshot.val();
+      if (valor) {
+        const data: NotificationPublication[] = Object.values(valor);
+        const newPubliOPen = data.filter((noti) => !noti.read).length || 0;
+        setNotificacionesUserAtom((prev) => ({ ...prev, newPubliOPen: newPubliOPen }));
+      }
+    });
+
+    // Cleanup
+    return () => {
+      broadcastChannel.close();
+    };
+  }, [dataUser?.user?.id, openChatUserValue, firstConect]);
+
+  // MODIFICANDO EL TITLE DE LA PAGINA POR MENSAJE
+  // MODIFICANDO EL TITLE DE LA PAGINA POR MENSAJE
+  useEffect(() => {
+    const originalTitle = document.title;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        // Restaurar título original inmediatamente
+        document.title = originalTitle;
+
+        // Limpiar mensaje después de un breve delay para evitar parpadeo
+        timeoutId = setTimeout(() => {
+          setNewMessage("");
+        }, 1000);
+      } else if (newMessage) {
+        // Cambiar título cuando hay mensaje y la pestaña está oculta
+        document.title = newMessage;
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // También cambiar título inmediatamente si llega mensaje y estamos en background
+    if (document.hidden && newMessage) {
+      document.title = newMessage;
+    }
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.title = originalTitle;
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [newMessage]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });

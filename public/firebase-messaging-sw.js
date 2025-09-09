@@ -18,13 +18,23 @@ const messaging = firebase.messaging();
 
 // Muestra notificaciones cuando la app está en segundo plano
 messaging.onBackgroundMessage((payload) => {
-  console.log("[firebase-messaging-sw.js] Recibido mensaje en background: ", payload);
+  // console.log("[firebase-messaging-sw.js] Recibido mensaje en background: ", payload);
 
   const notificationTitle = payload.notification.title;
+
   const notificationOptions = {
     body: payload.notification.body,
     icon: payload.notification.image || "/icon512_maskable.png",
+    data: { url: payload.data?.url || "/" },
   };
+
+  // ✅ ENVIAR MENSAJE AL BROADCAST CHANNEL PARA LA APP
+  const broadcastChannel = new BroadcastChannel("fcm_messages");
+  broadcastChannel.postMessage({
+    type: "NEW_MESSAGE_BACKGROUND",
+    payload: payload,
+  });
+  broadcastChannel.close();
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
@@ -38,7 +48,8 @@ self.addEventListener(
       archiveEmail();
     } else {
       // User selected (e.g., clicked in) the main body of notification.
-      clients.openWindow("/perfil");
+      // clients.openWindow("/perfil");
+      event.waitUntil(clients.openWindow(event.notification.data.url));
     }
   },
   false

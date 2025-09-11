@@ -334,7 +334,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
       document.title = originalTitle;
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [newMessage]);
+  }, [newMessage, document.title]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });

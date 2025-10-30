@@ -3,7 +3,7 @@ import TemplateNotifiId from "@/components/Notifications/notificationId";
 import { Span } from "@/components/span";
 import { Metadata } from "next";
 import { fetchApiSwr } from "@/lib/api";
-import { Publicacion } from "@/lib/atom";
+import { Publication } from "@/lib/store";
 
 export const metadata: Metadata = {
   title: "Notificaciones | UniRed",
@@ -11,8 +11,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
 };
 
-export default async function Notificaciones({ params }: { params: { id: string } }) {
-  const api = "/user/publicacion/" + params.id;
+export default async function Notificaciones({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+
+  const api = "/user/publicacion/" + id;
   const option = {
     method: "GET",
     headers: {
@@ -20,9 +22,8 @@ export default async function Notificaciones({ params }: { params: { id: string 
     },
     credentials: "include",
   };
-  const notification: Publicacion = await fetchApiSwr(api, option);
-
-  const apiViewNotification = `/user/notificaciones/${params.id}`;
+  const notification: Publication = await fetchApiSwr(api, option);
+  const apiViewNotification = `/user/notificaciones/${id}`;
   const optionViewNotification = {
     method: "POST",
     headers: {
@@ -31,7 +32,6 @@ export default async function Notificaciones({ params }: { params: { id: string 
     credentials: "include",
   };
   await fetchApiSwr(apiViewNotification, optionViewNotification);
-
   return (
     <DivMain>
       <ContainerMain>

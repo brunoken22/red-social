@@ -2,14 +2,20 @@
 import dynamic from "next/dynamic";
 import { DivAllChat } from "@/ui/container";
 import { DivTemMensaje, TemplMensaje, TemplChat, SpanNoti } from "./styled";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { user, isMenssage, isConnect, User, messagesWriting, openChatUser } from "@/lib/atom";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LuMessageSquare, LuUsers } from "react-icons/lu";
 import { GetAllUserChat } from "@/lib/hook";
 import Link from "next/link";
 import { LoaderRequest } from "../loader";
+import {
+  useIsConnected,
+  useMessagesUserStore,
+  useMessageWritingStore,
+  useOpenChatUser,
+  User,
+  useUser,
+} from "@/lib/store";
 
 const TemplateChat = dynamic(() => import("./templateChat"), {
   loading: () => <LoaderRequest />,
@@ -47,13 +53,14 @@ export function TemMensaje({
   } | null;
 }) {
   const { replace } = useRouter();
-  const dataUser = useRecoilValue(user);
-  const dataIsConnect = useRecoilValue(isConnect);
-  const dataMessage = useRecoilValue(isMenssage);
-  const dataMessagesWriting = useRecoilValue(messagesWriting);
+  const user = useUser((state) => state.user);
+  const connected = useIsConnected((state) => state.connected);
+  const messages = useMessagesUserStore((state) => state.messages);
+  const messagesWriting = useMessageWritingStore((state) => state.messagesWriting);
+
   const [dataMensajeUser, setDataMensajeUser] = useState<MessageUserChat>();
   const { data, isLoading } = GetAllUserChat();
-  const setOpenChatUserValue = useSetRecoilState(openChatUser);
+  const setOpenChatUserValue = useOpenChatUser((state) => state.setChatUser);
 
   // Cerrar chat del usuario [ID]
   const handleCloseChat = () => {
@@ -81,7 +88,7 @@ export function TemMensaje({
 
       if (rtdbParams && idParams && fullNameParams) {
         const miArrayRTDB = rtdbParams.split(",");
-        const rtdbId = existenElementosSimilares(miArrayRTDB, dataUser.user.rtdb);
+        const rtdbId = existenElementosSimilares(miArrayRTDB, user.rtdb);
 
         setDataMensajeUser({
           fullName: fullNameParams,
@@ -123,12 +130,12 @@ export function TemMensaje({
     const readChats: Array<{ user: User; date: Date }> = [];
 
     data.forEach((user: User) => {
-      const rtdbId = existenElementosSimilares(user.rtdb, dataUser.user.rtdb as []);
-      const message = dataMessage.find((item) => item.rtdb === rtdbId);
+      const rtdbId = existenElementosSimilares(user.rtdb, user.rtdb as []);
+      const message = messages.find((item) => item.rtdb === rtdbId);
 
       if (message) {
         const messageDate = new Date(message.date);
-        if (!message.read && message.id !== dataUser.user.id) {
+        if (!message.read && message.id !== user.id) {
           unreadChats.push({ user, date: messageDate });
         } else {
           readChats.push({ user, date: messageDate });
@@ -146,6 +153,7 @@ export function TemMensaje({
 
   const sortedData = getSortedChats();
 
+  console.log("Chat usuarios: ", messages, data);
   return (
     <DivTemMensaje>
       {sortedData?.length && !isLoading ? (
@@ -155,15 +163,15 @@ export function TemMensaje({
               !dataMensajeUser?.id ? "block " : "max-md:hidden block"
             } h-[85vh] overflow-auto`}
           >
-            {dataUser.user.id ? (
+            {user.id ? (
               <TemplMensaje mobile={true}>
                 <h2 className='text-2xl font-bold text-start'>Chats</h2>
                 <TemplChat>
                   {!isLoading ? (
                     sortedData.length ? (
                       sortedData.map((e: User) => {
-                        const rtdbId = existenElementosSimilares(e.rtdb, dataUser.user.rtdb as []);
-                        const dataMessageUser = dataMessage?.find((item) => item.rtdb == rtdbId);
+                        const rtdbId = existenElementosSimilares(e.rtdb, user.rtdb as []);
+                        const dataMessageUser = messages.find((item) => item.rtdb == rtdbId);
                         return (
                           <button
                             className={`w-full  rounded-md dark:text-primary ${
@@ -191,8 +199,8 @@ export function TemMensaje({
                                 title={e.fullName}
                                 className='w-[40px] h-[40px]'
                                 connect={
-                                  dataIsConnect?.find((eConnect: any) => e.id == eConnect.id)
-                                    ?.connect && true
+                                  connected.find((eConnect: any) => e.id == eConnect.id)?.connect &&
+                                  true
                                 }
                               />
 
@@ -203,14 +211,14 @@ export function TemMensaje({
                                   {e.verification && <Verification publication={false} />}
                                 </div>
 
-                                {dataMessagesWriting?.find((item) => item.id == e.id)?.writing ? (
+                                {messagesWriting.find((item) => item.id == e.id)?.writing ? (
                                   <p className='text-[0.8rem] text-start text-green-600 m-0 p-0 animate-pulse '>
                                     Escribiendo...
                                   </p>
                                 ) : (
                                   <p
                                     className={`text-[0.8rem] text-start truncate ${
-                                      dataMessageUser?.id != dataUser.user.id &&
+                                      dataMessageUser?.id != user.id &&
                                       dataMessageUser?.id == e.id &&
                                       !dataMessageUser?.read
                                         ? "font-black"
@@ -219,19 +227,17 @@ export function TemMensaje({
                                         : "text-gray-600 dark:text-gray-300"
                                     }`}
                                   >
-                                    {dataMessage?.find((item) => item.rtdb == rtdbId)?.id ==
-                                    dataUser.user.id
+                                    {messages.find((item) => item.rtdb == rtdbId)?.id == user.id
                                       ? "Tú: "
                                       : null}
                                     {dataMessageUser?.message}
                                   </p>
                                 )}
                               </div>
-                              {dataMessageUser?.id != dataUser.user.id &&
-                              dataMessageUser?.id == e.id ? (
+                              {dataMessageUser?.id != user.id && dataMessageUser?.id == e.id ? (
                                 !dataMessageUser?.read ? (
                                   <SpanNoti>
-                                    {dataMessage?.filter((user) => user.id == e.id).length}
+                                    {messages.filter((user) => user.id == e.id).length}
                                   </SpanNoti>
                                 ) : null
                               ) : null}
@@ -258,14 +264,12 @@ export function TemMensaje({
             {dataMensajeUser?.id ? (
               <TemplateChat
                 isWriting={
-                  dataMessagesWriting?.find((item) => item.id == Number(dataMensajeUser?.id))
-                    ?.writing || false
+                  messagesWriting.find((item) => item.id == Number(dataMensajeUser?.id))?.writing ||
+                  false
                 }
-                connect={dataIsConnect?.find(
-                  (eConnect) => Number(dataMensajeUser.id) == eConnect.id
-                )}
+                connect={connected.find((eConnect) => Number(dataMensajeUser.id) == eConnect.id)}
                 dataMensajeUser={dataMensajeUser}
-                id={dataUser.user.id}
+                id={user.id}
                 close={() => handleCloseChat()}
               />
             ) : (

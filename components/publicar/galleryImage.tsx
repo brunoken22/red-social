@@ -10,7 +10,7 @@ import "lightgallery/css/lg-zoom.css";
 import "lightgallery/css/lg-fullscreen.css";
 import "lightgallery/css/lg-video.css";
 import { FaPlay } from "react-icons/fa";
-import { Media } from "@/lib/atom";
+import { Media } from "@/lib/store";
 
 export default function GalleryMedia({ media = [] }: { media: Media[] }) {
   const firstThreeMedia = media.slice(0, 3);

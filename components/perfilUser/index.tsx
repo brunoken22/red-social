@@ -5,11 +5,10 @@ import { DivPerfilUser, DivHeadPerfil, DivFotoName, DivButton, DivPublicaciones 
 import Publicar from "../publicar";
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import { getAllAmigos, user } from "@/lib/atom";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { modificarUser, optimizarImage } from "@/lib/hook";
 import Dropzone from "react-dropzone";
 import { MdEdit } from "react-icons/md";
+import { useFriendAll, useUser } from "@/lib/store";
 
 const Verification = dynamic(() => import("@/ui/verification"));
 const Loader = dynamic(() => import("../loader").then((mod) => mod.Loader));
@@ -19,9 +18,10 @@ const PublicacionesUser = dynamic(() =>
 );
 
 export default function PerfilUser() {
-  const [dataValor, setUserData] = useRecoilState(user);
+  const user = useUser((state) => state.user);
+  const setUser = useUser((state) => state.setUser);
+  const friendAll = useFriendAll((state) => state.friendAll);
   const [isLoading, setIsLoading] = useState(false);
-  const useAmigosAll = useRecoilValue(getAllAmigos);
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
       setIsLoading(true);
@@ -31,14 +31,14 @@ export default function PerfilUser() {
         const result = reader.result as string;
         const imageOptimizate = await optimizarImage(result);
         const responseImg = await modificarUser({ img: imageOptimizate });
-        setUserData((prev) => ({ ...prev, user: { ...prev.user, img: responseImg } }));
+        setUser({ ...user, img: responseImg });
         setIsLoading(false);
       };
       reader.readAsDataURL(file);
     }
   }, []);
 
-  return dataValor?.user?.id ? (
+  return user.id ? (
     <DivPerfilUser>
       <div>
         <div className='w-full aspect-[16/9] max-h-[350px] max-md:aspect-[4/3] max-md:max-h-[200px]'>
@@ -80,20 +80,20 @@ export default function PerfilUser() {
               </Dropzone>
               <FotoPerfil
                 className='w-[120px] h-[120px]'
-                img={dataValor.user.img}
-                title={dataValor.user.fullName}
+                img={user.img}
+                title={user.fullName}
                 isBorder
               />
             </div>
             <div className='max-md:flex max-md:items-center items-end max-md:flex-col '>
               <div className='flex gap-2 items-center'>
                 <h2 className='font-semibold text-2xl max-w-[250px] whitespace-nowrap overflow-hidden text-ellipsis'>
-                  {dataValor?.user?.fullName}
+                  {user.fullName}
                 </h2>
-                {dataValor.user.verification ? <Verification publication={false} /> : null}
+                {user.verification ? <Verification publication={false} /> : null}
               </div>
-              {useAmigosAll.data.length ? (
-                <div className='max-md:mb-2 mb-0 -mt-1'>{useAmigosAll.data.length + " amigos"}</div>
+              {friendAll.length ? (
+                <div className='max-md:mb-2 mb-0 -mt-1'>{friendAll.length + " amigos"}</div>
               ) : null}
             </div>
           </DivFotoName>
@@ -110,7 +110,7 @@ export default function PerfilUser() {
       </div>
       <DivPublicaciones>
         <Publicar />
-        <PublicacionesUser />
+        <PublicacionesUser user={user} />
       </DivPublicaciones>
       {isLoading ? <Loader /> : null}
     </DivPerfilUser>

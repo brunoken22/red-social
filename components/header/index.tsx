@@ -4,29 +4,28 @@ import { ref, onValue, update, get, query } from "firebase/database";
 import { messaging, obtenerTokenFCM, rtdb } from "@/lib/firebase";
 import "./style.css";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GetFriendAccepted, GetFriendReceived, GetUser, useConnectionStatus } from "@/lib/hook";
 import Link from "next/link";
 import { Menu } from "@/components/menu";
-import { useRecoilValue, useRecoilState } from "recoil";
-import {
-  user,
-  getAllSolicitudesRecibidas,
-  isMenssage,
-  isConnect,
-  Connect,
-  notificacionesUser,
-  messagesWriting,
-  getAllAmigos,
-  NotificationPublication,
-  openChatUser,
-} from "@/lib/atom";
 import { useDebouncedCallback } from "use-debounce";
 import { LoaderRequest } from "../loader";
 import { SkeletonNav } from "@/ui/skeleton";
-import { NotificationPayload, onMessage } from "firebase/messaging";
+import { onMessage } from "firebase/messaging";
 import LogoPage from "@/ui/logo";
-import Head from "next/head";
+import {
+  Connect,
+  Message,
+  NotificationPublication,
+  useFriendAll,
+  useIsConnected,
+  useMessagesUserStore,
+  useMessageWritingStore,
+  useNotificationUser,
+  useOpenChatUser,
+  useReceivedUserStore,
+  useUser,
+} from "@/lib/store";
 
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"), {
   loading: () => <LoaderRequest />,
@@ -46,6 +45,7 @@ const DivContenedorConnect = dynamic(
     loading: () => <LoaderRequest />,
   }
 );
+
 const SearchUser = dynamic(() => import("../searchUsers").then((mod) => mod.SearchUser));
 const SearchBox = dynamic(() => import("react-instantsearch").then((mod) => mod.SearchBox));
 const ConnectedUsers = dynamic(() => import("./connectedUser"));
@@ -66,12 +66,18 @@ export default function Header({ themeDate }: { themeDate: string }) {
   GetFriendReceived();
 
   const pathname = usePathname();
-  const [dataMessage, setDataMessage] = useRecoilState(isMenssage);
-  const [dataUser, setDataUser] = useRecoilState(user);
-  const [dataIsConnect, setIsConnect] = useRecoilState(isConnect);
-  const [dataMessagesWriting, setMessagesWriting] = useRecoilState(messagesWriting);
-  const [notificacionesUserAtom, setNotificacionesUserAtom] = useRecoilState(notificacionesUser);
-  const dataSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
+  // const [dataUser, setDataUser] = useRecoilState(user);
+  const { user, isLoading } = useUser();
+  const setUser = useUser((state) => state.setUser);
+  const isConnected = useIsConnected((state) => state.connected);
+  const setIsConnected = useIsConnected((state) => state.setIsConnected);
+  const messages = useMessagesUserStore((state) => state.messages);
+  const setMessagesUser = useMessagesUserStore((state) => state.setMessagesUser);
+  const messagesWriting = useMessageWritingStore((state) => state.messagesWriting);
+  const setMessagesWritingUser = useMessageWritingStore((state) => state.setMessagesWritingUser);
+  const notificationUser = useNotificationUser((state) => state.notificationUser);
+  const setNotificationUser = useNotificationUser((state) => state.setNotificationUser);
+  const receivedUsers = useReceivedUserStore((store) => store.receivedUsers);
   const [allConnectAmigos, setAllConnectAmigos] = useState([]);
   const [connectAmigos, setConnectAmigos] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -79,15 +85,13 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const [openNav, setOpenNav] = useState(true);
   const [newMessage, setNewMessage] = useState("");
   const lastScrollY = useRef(0);
-  const useAmigosAll = useRecoilValue(getAllAmigos);
+  const { friendAll } = useFriendAll();
   const modalRef = useRef<HTMLDivElement>(null);
-  const originalTitle = useRef<string>("");
-  const openChatUserValue = useRecoilValue(openChatUser);
-
+  const openChatUser = useOpenChatUser((state) => state.value);
   const useDebounce = useDebouncedCallback((query, search) => {
     search(query);
   }, 1000);
-  useConnectionStatus(dataUser.user);
+  useConnectionStatus(user);
 
   useEffect(() => {
     const cookieResponse = async () => {
@@ -103,7 +107,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   }, [theme]);
 
   useEffect(() => {
-    if (!dataUser?.user?.id) return;
+    if (!user?.id) return;
 
     const requestNotificationPermission = async () => {
       if (!("Notification" in window)) {
@@ -112,17 +116,13 @@ export default function Header({ themeDate }: { themeDate: string }) {
       }
 
       if (Notification.permission === "default") {
-        try {
-          await Notification.requestPermission();
-        } catch (err) {
-          // console.error('Error solicitando permiso de notificaciones:', err);
-        }
+        await Notification.requestPermission();
       }
     };
 
     requestNotificationPermission();
 
-    const unsubscribes = dataUser.user.rtdb.map((item) => {
+    const unsubscribes = user.rtdb.map((item) => {
       const chatrooms = ref(rtdb, "/rooms/" + item + "/messages");
 
       return onValue(chatrooms, (snapshot) => {
@@ -134,13 +134,13 @@ export default function Header({ themeDate }: { themeDate: string }) {
             const keys = Object.keys(valor);
             const lastKey = keys[keys.length - 1];
             const userdataRef = ref(rtdb, "/rooms/" + item);
-            get(userdataRef).then((user) => {
-              const data = user.val();
-              const isOpen = data[dataUser.user.id];
+            get(userdataRef).then((userData) => {
+              const data = userData.val();
+              const isOpen = data[user.id];
 
               if (
                 (isOpen && isOpen.isOpen) ||
-                ultimoMensaje.id == dataUser.user.id ||
+                ultimoMensaje.id == user.id ||
                 ultimoMensaje.status == "Recibido"
               ) {
                 return;
@@ -158,24 +158,25 @@ export default function Header({ themeDate }: { themeDate: string }) {
                 // }
               }
             });
-            if (ultimoMensaje.id !== dataUser.user.id && ultimoMensaje.status === "Enviado") {
+            if (ultimoMensaje.id !== user.id && ultimoMensaje.status === "Enviado") {
               const mensajeRef = ref(rtdb, `/rooms/${item}/messages/${lastKey}`);
               update(mensajeRef, { status: "Recibido" });
             }
-            setDataMessage((prev) => {
-              if (prev.length) {
-                const findMessageRtdbEqual = prev.find((message) => message.rtdb === item);
+            const lastet_messages = (): Message[] => {
+              if (messages.length) {
+                const findMessageRtdbEqual = messages.find((message) => message.rtdb === item);
                 if (findMessageRtdbEqual) {
-                  return prev.map((message) =>
+                  return messages.map((message) =>
                     message.rtdb === item ? { ...ultimoMensaje, rtdb: item } : message
                   );
                 } else {
-                  return [...prev, { ...ultimoMensaje, rtdb: item }];
+                  return [...messages, { ...ultimoMensaje, rtdb: item }];
                 }
               } else {
                 return [{ ...ultimoMensaje, rtdb: item }];
               }
-            });
+            };
+            setMessagesUser([...messages, ...lastet_messages()]);
           }
         }
       });
@@ -185,22 +186,22 @@ export default function Header({ themeDate }: { themeDate: string }) {
     return () => {
       unsubscribes.forEach((unsubscribe) => unsubscribe());
     };
-  }, [dataUser?.user?.rtdb]);
+  }, [user.rtdb]);
 
   useEffect(() => {
-    if (!dataUser?.user?.id) return;
-    const unsubscribes = dataUser.user.rtdb.map((item) => {
+    if (!user.id) return;
+    const unsubscribes = user.rtdb.map((item) => {
       const chatrooms = ref(rtdb, "/rooms/" + item);
 
       return onValue(chatrooms, (snapshot) => {
         const valor = snapshot.val();
         if (valor) {
           const valores = Object.keys(valor) // Obtener todas las claves
-            .filter((key: any) => !isNaN(key) && Number(key) !== dataUser.user.id) // Filtrar las numéricas que no coincidan con el ID
+            .filter((key: any) => !isNaN(key) && Number(key) !== user.id) // Filtrar las numéricas que no coincidan con el ID
             .map((key) => valor[key]);
           if (valores[0]) {
-            setMessagesWriting([
-              ...dataMessagesWriting,
+            setMessagesWritingUser([
+              ...messagesWriting,
               { id: valores[0].user, writing: valores[0].writing },
             ]);
           }
@@ -212,31 +213,28 @@ export default function Header({ themeDate }: { themeDate: string }) {
     return () => {
       unsubscribes.forEach((unsubscribe) => unsubscribe());
     };
-  }, [dataUser?.user?.rtdb]);
+  }, [user.rtdb]);
 
   useEffect(() => {
-    if (!dataUser?.user?.id) return;
+    if (!user?.id) return;
     const connectRef = ref(rtdb, "/connect");
     onValue(connectRef, async (snapshot: any) => {
       const valor = snapshot.val();
       if (valor) {
         const dataConnect: any = Object.values(valor);
-        setIsConnect(dataConnect);
+        setIsConnected(dataConnect);
         const connecam = dataConnect.filter((e: Connect) => {
-          return (
-            e.id != Number(dataUser.user.id) &&
-            e.connect &&
-            useAmigosAll.data.find((user) => user.id === e.id)
-          );
+          return e.id != Number(user.id) && e.connect && friendAll.find((user) => user.id === e.id);
         });
         setAllConnectAmigos(connecam);
       }
     });
-  }, [dataUser?.user?.id, useAmigosAll]);
+  }, [user.id, friendAll]);
 
-  //----------------------- NOTIFICACIONES POR RTDB Y NUEVOS mensajes
+  // ----------------------- NOTIFICACIONES POR RTDB Y NUEVOS mensajes
+
   useEffect(() => {
-    if (!dataUser.user.id) return;
+    if (!user.id) return;
 
     const broadcastChannel = new BroadcastChannel("fcm_messages");
 
@@ -260,7 +258,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
         if (!tokenFCM) return;
         const userConnectPushPWA = (await import("@/lib/hook")).userConnectPushPWA;
         await userConnectPushPWA({
-          userId: dataUser.user.id,
+          userId: user.id,
           tokenFCM,
         });
         setFirstConnect(true);
@@ -271,7 +269,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
     // Solo manejar mensajes en foreground
     onMessage(messaging, (payload) => {
       // Si el chat abierto es diferente, mostrar notificación
-      if (payload.data?.room_id !== openChatUserValue) {
+      if (payload.data?.room_id !== openChatUser) {
         const { title, body } = payload.notification || {};
         if (title && body) {
           new Notification(title, { body, data: { url: "/perfil" } });
@@ -285,13 +283,13 @@ export default function Header({ themeDate }: { themeDate: string }) {
       });
     });
 
-    const notificationAllRef = query(ref(rtdb, `/notifications/${dataUser.user.id}`));
+    const notificationAllRef = query(ref(rtdb, `/notifications/${user.id}`));
     onValue(notificationAllRef, (snapshot) => {
       const valor = snapshot.val();
       if (valor) {
         const data: NotificationPublication[] = Object.values(valor);
-        const newPubliOPen = data.filter((noti) => !noti.read).length || 0;
-        setNotificacionesUserAtom((prev) => ({ ...prev, newPubliOPen: newPubliOPen }));
+        const newPubliOpen = data.filter((noti) => !noti.read).length || 0;
+        setNotificationUser({ ...notificationUser, newPubliOpen });
       }
     });
 
@@ -299,9 +297,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
     return () => {
       broadcastChannel.close();
     };
-  }, [dataUser?.user?.id, openChatUserValue, firstConect]);
-
-  // MODIFICANDO EL TITLE DE LA PAGINA POR MENSAJE
+  }, [user.id, openChatUser, firstConect]);
   // MODIFICANDO EL TITLE DE LA PAGINA POR MENSAJE
   useEffect(() => {
     const originalTitle = document.title;
@@ -365,10 +361,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
 
     const login = getCookieValue("token"); // Busca la cookie 'login'
     if (login || login === null || login === undefined) {
-      setDataUser((prev) => ({
-        isLoading: prev.isLoading,
-        user: prev.user,
-      }));
+      return;
     }
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
@@ -383,8 +376,8 @@ export default function Header({ themeDate }: { themeDate: string }) {
     };
   }, []);
 
-  return !dataUser?.isLoading ? (
-    dataUser?.user?.id ? (
+  return !isLoading ? (
+    user?.id ? (
       <>
         <header
           className={`${
@@ -410,16 +403,13 @@ export default function Header({ themeDate }: { themeDate: string }) {
                     }}
                   />
                 )}
-                <SearchUser />
+                {/* <SearchUser /> */}
               </div>
             </div>
             <NavegationUrl
-              amigos={dataSoliReci?.length}
-              message={
-                dataMessage.filter((message) => !message.read && message.id != dataUser.user.id)
-                  .length
-              }
-              notification={notificacionesUserAtom?.newPubliOPen}
+              amigos={receivedUsers.length}
+              message={messages.filter((message) => !message.read && message.id != user.id).length}
+              notification={notificationUser.newPubliOpen}
             />
             <div className='relative ' ref={modalRef}>
               <button
@@ -427,10 +417,10 @@ export default function Header({ themeDate }: { themeDate: string }) {
                 className='m-0 bg-transparent border-none relative z-50'
               >
                 <FotoPerfil
-                  title={dataUser.user.fullName}
+                  title={user.fullName}
                   className='w-[40px] h-[40px] hover:opacity-70'
-                  img={dataUser.user.img}
-                  connect={dataIsConnect?.find((e: any) => e.id == dataUser.user?.id) && true}
+                  img={user.img}
+                  connect={isConnected?.find((e: any) => e.id == user?.id) && true}
                 />
               </button>
               {menu ? (
@@ -439,8 +429,8 @@ export default function Header({ themeDate }: { themeDate: string }) {
                   theme={theme}
                   themebutton={(data: string) => setThemes(data)}
                   click={(data: boolean) => setMenu(data)}
-                  userImg={dataUser.user.img}
-                  userName={dataUser.user.fullName.split(" ")[0]}
+                  userImg={user.img}
+                  userName={user.fullName.split(" ")[0]}
                 />
               ) : null}
             </div>
@@ -452,7 +442,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
             <span className='text-primary'>Conectados</span> <DivConnect />
           </DivConectados>
           {connectAmigos ? (
-            <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={dataIsConnect} />
+            <ConnectedUsers allConnectAmigos={allConnectAmigos} dataIsConnect={isConnected} />
           ) : null}
         </DivContenedorConnect>
       </>

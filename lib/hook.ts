@@ -1,23 +1,25 @@
 import useSWR, { mutate } from "swr";
 import useSWRInfinite from "swr/infinite";
 import { fetchApiSwr } from "./api";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  user,
-  publicacionUser,
-  getAllSolicitudesRecibidas,
-  getAllAmigos,
-  getAllSolicitudesEnviadas,
-  publicacionAmigos,
-  publicacionSearchUser,
-  Publicacion,
-  getSugerenciaAmigos,
-  User,
-} from "@/lib/atom";
+
 import { useEffect, useState } from "react";
 import { urltoBlob, filetoDataURL, compressAccurately } from "image-conversion";
 import { getCookie, setCookie } from "cookies-next";
 import { MessageUserChat } from "@/components/templateMensaje";
+import { getDatabase, ref, onValue, onDisconnect, set } from "firebase/database";
+import { fetchApiClient } from "./apiClient";
+import {
+  Publication,
+  useFriendAll,
+  usePublicationsFriendStore,
+  usePublicationsSearchStore,
+  usePublicationUser,
+  User,
+  useReceivedUserStore,
+  useSendUserStore,
+  useSuggestionUserStore,
+  useUser,
+} from "./store";
 
 type DataUser = {
   fullName?: string;
@@ -27,12 +29,11 @@ type DataUser = {
   accessToken?: string;
   code?: string;
 };
+
 type Solicitud = {
   amigoId?: number;
   userId?: number;
 };
-import { getDatabase, ref, onValue, onDisconnect, set } from "firebase/database";
-import { fetchApiClient } from "./apiClient";
 
 export async function userConnectPushPWA(userConnect: any) {
   const option = {
@@ -162,7 +163,7 @@ export async function resetPassword(dataUser: DataUser) {
   return dataMod;
 }
 export function GetUser() {
-  const setUserData = useSetRecoilState(user);
+  const { setUser, user } = useUser();
   const token = getCookie("token");
   const user_info = "/user/info";
 
@@ -181,32 +182,20 @@ export function GetUser() {
       refreshInterval: 100000,
     }
   );
-
   useEffect(() => {
     if (isLoading) return;
-    if (!token)
-      setUserData((prev) => ({
-        ...prev,
-        isLoading: false,
-      }));
+    if (!token) setUser(user);
     if (dataUser?.id) {
-      setUserData({
-        isLoading: false,
-        user: dataUser,
-      });
-      return;
+      setUser(dataUser);
     } else {
-      setUserData((prev) => ({
-        ...prev,
-        isLoading: false,
-      }));
+      setUser(user);
     }
   }, [dataUser]);
 
   return { dataUser, isLoading };
 }
 export function GetFriendAccepted() {
-  const setAmigosAllData = useSetRecoilState(getAllAmigos);
+  const setFriendAll = useFriendAll((state) => state.setFriendAll);
   const token = getCookie("token");
   // if (!token) return;
   const friend_accepted = "/user/friendAccepted";
@@ -226,12 +215,14 @@ export function GetFriendAccepted() {
 
   useEffect(() => {
     if (isLoading) return;
-    setAmigosAllData({ isLoading: false, data: data });
+    // setFriendAll({ isLoading: false, data: data });
+    setFriendAll(data);
   }, [data]);
   return { data, isLoading, mutateAccepted: mutate };
 }
 export function GetFriendPending() {
-  const setGetSugerenciaAmigosData = useSetRecoilState(getSugerenciaAmigos);
+  const setSuggustionUserStore = useSuggestionUserStore((state) => state.setSuggustionUserStore);
+  // const setGetSugerenciaAmigosData = useSetRecoilState(getSugerenciaAmigos);
   const token = getCookie("token");
   // if (!token) return;
   const friend_accepted = "/user/friendPending";
@@ -251,12 +242,14 @@ export function GetFriendPending() {
 
   useEffect(() => {
     if (isLoading) return;
-    setGetSugerenciaAmigosData(data);
+    setSuggustionUserStore(data);
   }, [data]);
   return { data, isLoading, mutatePending: mutate };
 }
 export function GetFriendSend() {
-  const setSoliAllEnv = useSetRecoilState(getAllSolicitudesEnviadas);
+  const setSendUserStore = useSendUserStore((state) => state.setSendUserStore);
+
+  // const setSoliAllEnv = useSetRecoilState(getAllSolicitudesEnviadas);
   const token = getCookie("token");
   // if (!token) return
 
@@ -277,13 +270,14 @@ export function GetFriendSend() {
 
   useEffect(() => {
     if (isLoading) return;
-    setSoliAllEnv(data);
+    setSendUserStore(data);
   }, [data]);
 
   return { data, isLoading, mutateSend: mutate };
 }
 export function GetFriendReceived() {
-  const setSoliAllReci = useSetRecoilState(getAllSolicitudesRecibidas);
+  const setReceivedUserStore = useReceivedUserStore((state) => state.setReceivedUserStore);
+
   const token = getCookie("token");
   // if (!token) return;
   const friend_accepted = "/user/friendReci";
@@ -303,7 +297,7 @@ export function GetFriendReceived() {
 
   useEffect(() => {
     if (isLoading) return;
-    setSoliAllReci(data);
+    setReceivedUserStore(data);
   }, [data]);
   return { data, isLoading, mutateReceived: mutate };
 }
@@ -326,7 +320,7 @@ export function GetAllUserChat() {
   return { data, isLoading };
 }
 export function GetAllPublicaciones(isMutate = false) {
-  const setPublicacionesAllAmigos = useSetRecoilState(publicacionAmigos);
+  const setPublicationUser = usePublicationsFriendStore((store) => store.setPublicationUser);
   const token = getCookie("token");
 
   const option = {
@@ -348,7 +342,7 @@ export function GetAllPublicaciones(isMutate = false) {
   useEffect(() => {
     if (data && data.length) {
       const flatArray = data.flat();
-      setPublicacionesAllAmigos(flatArray);
+      setPublicationUser(flatArray);
     }
   }, [data]);
 
@@ -360,8 +354,9 @@ export function GetAllPublicaciones(isMutate = false) {
     mutate,
   };
 }
-export function GetAllPublicacionesUser(isMutate = false) {
-  const setPublicacionesUser = useSetRecoilState(publicacionUser);
+export function GetAllPublicacionesUser() {
+  const setPublicationUser = usePublicationUser((store) => store.setPublicationUser);
+
   const token = getCookie("token");
   const PAGE_SIZE = 10; // Tamaño de página constante
 
@@ -391,7 +386,7 @@ export function GetAllPublicacionesUser(isMutate = false) {
   useEffect(() => {
     if (data) {
       const flatArray = data.flat();
-      setPublicacionesUser(flatArray);
+      setPublicationUser(flatArray);
     }
   }, [data]);
 
@@ -416,7 +411,7 @@ export function GetAllPublicacionesUser(isMutate = false) {
   };
 }
 export function GetPubliAmigo(id: string) {
-  const setPublicacionesAmigo = useSetRecoilState(publicacionSearchUser);
+  const setPublicationFriend = usePublicationsSearchStore((state) => state.setPublicationSearch);
   const token = getCookie("token");
   const PAGE_SIZE = 10; // Tamaño constante de página
 
@@ -448,7 +443,7 @@ export function GetPubliAmigo(id: string) {
   useEffect(() => {
     if (data) {
       const flatArray = data.flat();
-      setPublicacionesAmigo(flatArray);
+      setPublicationFriend(flatArray);
     }
   }, [data, id]); // Añadir id como dependencia
 
@@ -477,8 +472,9 @@ export function GetPubliAmigo(id: string) {
   };
 }
 export function DeletePublic(id: number) {
-  const [publicacionesUser, setPublicacionesUser] = useRecoilState(publicacionUser);
-  const [isProcessing, setIsProcessing] = useState(false); // ← Estado adicional
+  const publications = usePublicationUser((state) => state.publications);
+  const setPublicationUser = usePublicationUser((state) => state.setPublicationUser);
+  const [isProcessing, setIsProcessing] = useState(false);
   const api = "/user/publicacion/" + id;
   const token = getCookie("token");
 
@@ -499,9 +495,8 @@ export function DeletePublic(id: number) {
       if (!isLoading) {
         if (data) {
           const newPublic =
-            publicacionesUser && publicacionesUser.filter((publi: Publicacion) => publi.id != id);
-
-          setPublicacionesUser(newPublic);
+            publications && publications.filter((publi: Publication) => publi.id != id);
+          setPublicationUser(newPublic);
         } else {
           setIsProcessing(false);
         }

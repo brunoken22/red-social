@@ -36,8 +36,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const theme = cookies().get("theme")?.value || "false";
-
+  const theme = (await cookies()).get("theme")?.value || "false";
   return (
     <html lang='es' className={`${theme !== "true" ? "" : "dark"}`}>
       <head>

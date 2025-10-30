@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     images: "/icon512_rounded.png",
   },
 };
+
 export default function Home() {
   return (
     <main>

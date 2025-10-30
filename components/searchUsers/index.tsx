@@ -3,8 +3,7 @@
 import dynamic from "next/dynamic";
 import { useHits, useSearchBox } from "react-instantsearch";
 import type { Hit } from "instantsearch.js";
-import { isConnect } from "@/lib/atom";
-import { useRecoilValue } from "recoil";
+import { useIsConnected } from "@/lib/store";
 
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));
 const Verification = dynamic(() => import("@/ui/verification"));
@@ -21,7 +20,11 @@ export function SearchUser() {
         hits.length ? (
           <Hits
             hitComponent={Hit}
-            className='dark:text-primary text-secundary  bg-primary dark:bg-dark p-2'
+            classNames={{
+              root: "dark:text-primary text-secondary bg-primary dark:bg-dark p-2",
+              list: "dark:text-primary text-secondary",
+              item: "bg-primary dark:bg-dark",
+            }}
           />
         ) : (
           <p className='absolute bg-[#ff4a3d] p-4'>No se encontraron resultado</p>
@@ -34,7 +37,7 @@ type HitProps = {
   hit: Hit;
 };
 function Hit({ hit }: HitProps) {
-  const dataIsConnect = useRecoilValue(isConnect);
+  const connected = useIsConnected((state) => state.connected);
   return (
     <Link className='w-full hover:opacity-70' href={"/amigos/" + hit.objectID}>
       <DivLinkUser>
@@ -42,7 +45,7 @@ function Hit({ hit }: HitProps) {
           className='w-[40px] h-[40px]'
           title={hit.fullName}
           img={hit.img}
-          connect={dataIsConnect?.find((eConnect: any) => hit.id == eConnect.id)?.connect && true}
+          connect={connected?.find((eConnect: any) => hit.id == eConnect.id)?.connect && true}
         ></FotoPerfil>
         <div className='flex items-center gap-2 overflow-hidden'>
           <p className='whitespace-nowrap overflow-hidden text-ellipsis'>{hit.fullName}</p>

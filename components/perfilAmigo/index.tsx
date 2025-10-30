@@ -9,14 +9,6 @@ import {
   DivButtonEliAcep,
 } from "../perfilUser/styled";
 import { useEffect, useState } from "react";
-import {
-  user,
-  isConnect,
-  getAllSolicitudesRecibidas,
-  publicacionSearchUser,
-  // getAllAmigos,
-} from "@/lib/atom";
-import { useRecoilValue } from "recoil";
 import { GetPubliAmigo } from "@/lib/hook";
 import { useParams } from "next/navigation";
 import { DivAllPublicaciones } from "@/ui/container";
@@ -34,6 +26,12 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import { SkeletonPublicacionAll } from "@/ui/skeleton";
+import {
+  useIsConnected,
+  usePublicationsSearchStore,
+  useReceivedUserStore,
+  useUser,
+} from "@/lib/store";
 
 const Verification = dynamic(() => import("@/ui/verification"));
 const LoaderRequest = dynamic(() => import("../loader").then((mod) => mod.LoaderRequest));
@@ -52,11 +50,10 @@ const ThemplatePubli = dynamic(
 export function PerfilAmigo({ data }: { data: any }) {
   const { id } = useParams();
   const { push } = useRouter();
-  // const useAmigosAll = useRecoilValue(getAllAmigos);
-  const dataIsConnect = useRecoilValue(isConnect);
-  const soliReci = useRecoilValue(getAllSolicitudesRecibidas);
-  const dataUser = useRecoilValue(user);
-  const publicacionesAmigo = useRecoilValue(publicacionSearchUser);
+  const user = useUser((state) => state.user);
+  const connected = useIsConnected((state) => state.connected);
+  const receivedUsers = useReceivedUserStore((state) => state.receivedUsers);
+  const publications = usePublicationsSearchStore((state) => state.publication);
   const { isLoadingGetFriend, loadMore, isReachingEnd, mutatePublicacionesUser } = GetPubliAmigo(
     id as string
   );
@@ -121,7 +118,7 @@ export function PerfilAmigo({ data }: { data: any }) {
                         size='xl'
                         img={data?.user?.img}
                         connect={
-                          dataIsConnect?.find((e: any) => e.id == data?.user?.id)?.connect && true
+                          connected.find((e: any) => e.id == data?.user?.id)?.connect && true
                         }
                         title={data?.user?.fullName}
                         isBorder
@@ -149,7 +146,7 @@ export function PerfilAmigo({ data }: { data: any }) {
                   </DivFotoNameLink>
                   <div className='flex gap-2 items-center max-md:flex-col  flex-row'>
                     {!isLoadingGetFriend ? (
-                      dataUser.user.id ? (
+                      user.id ? (
                         <>
                           {isAmigo == "ACCEPTED" ? (
                             <Link
@@ -182,7 +179,7 @@ export function PerfilAmigo({ data }: { data: any }) {
                               )}
                             </ButtonAgregar>
                           ) : isAmigo == "PENDING" &&
-                            soliReci?.find((user) => user.id == data?.user.id) ? (
+                            receivedUsers?.find((user) => user.id == data?.user.id) ? (
                             <DivButtonEliAcep>
                               <ButtonAgregar
                                 id={data?.user?.id}
@@ -232,22 +229,22 @@ export function PerfilAmigo({ data }: { data: any }) {
                 </DivHeadPerfil>
               </div>
               <DivPublicaciones>
-                {publicacionesAmigo ? (
-                  publicacionesAmigo.length ? (
-                    publicacionesAmigo.map((item) => (
+                {publications ? (
+                  publications.length ? (
+                    publications.map((item) => (
                       <DivAllPublicaciones key={item.id}>
                         <ThemplatePubli
                           mutate={mutatePublicacionesUser}
-                          vereficationUser={dataUser.user?.verification}
+                          vereficationUser={user?.verification}
                           description={item.description}
                           media={item.media}
                           fecha={item.createdAt}
                           like={item.likePublics}
                           comentarios={item.commentPublis}
-                          imgUserPro={dataUser?.user?.img}
+                          imgUserPro={user?.img}
                           id={item.userId}
                           idPublicacion={item.id}
-                          userId={dataUser?.user?.id}
+                          userId={user?.id}
                           user={item.user}
                         />
                       </DivAllPublicaciones>

@@ -1,5 +1,5 @@
+import { User } from "@/lib/store";
 import dynamic from "next/dynamic";
-import { User } from "@/lib/atom";
 import { useRouter } from "next/navigation";
 
 const DivConnectAll = dynamic(() => import("./styled").then((mod) => mod.DivConnectAll));

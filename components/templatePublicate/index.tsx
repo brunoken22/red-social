@@ -8,13 +8,10 @@ import {
   BottonLike,
   SpanIco,
   DivPefilDelete,
-  ContentDelete,
   ButtonDelete,
   ButtonOpenDelete,
   DivUserLikes,
 } from "@/components/publicaciones/styled";
-import { isConnect, Media } from "@/lib/atom";
-import { useRecoilValue } from "recoil";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DeletePublic } from "@/lib/hook";
@@ -23,11 +20,11 @@ import { useDebouncedCallback } from "use-debounce";
 import Linkify from "@/utils/formtText";
 import { LoaderRequest } from "../loader";
 import GalleryMedia from "../publicar/galleryImage";
-import { IoMdShare } from "react-icons/io";
 import { FaRegComment, FaComment } from "react-icons/fa";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import { FaEllipsisH } from "react-icons/fa";
 import { FiShare2, FiUser } from "react-icons/fi";
+import { Media, useIsConnected } from "@/lib/store";
 
 const Verification = dynamic(() => import("@/ui/verification"));
 const Comment = dynamic(() => import("./comment"));
@@ -54,7 +51,7 @@ export function ThemplatePubli(props: {
       : false
   );
   const [openDelete, setOpenDelete] = useState(false);
-  const dataIsConnect = useRecoilValue(isConnect);
+  const connected = useIsConnected((state) => state.connected);
   const [publiId, setPubliId] = useState<number>(-1);
   const [totalLike, setTotalLike] = useState(props.like?.length || 0);
   const [userLikes, setUserLikes] = useState<boolean>(false);
@@ -92,6 +89,7 @@ export function ThemplatePubli(props: {
     }
     await debounced();
   };
+
   const handleClickOpenComen = (e: any) => {
     e.preventDefault();
     if (!comentario) {
@@ -100,6 +98,7 @@ export function ThemplatePubli(props: {
     }
     setComentario(false);
   };
+
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -132,7 +131,7 @@ export function ThemplatePubli(props: {
               <FotoPerfil
                 img={props?.user?.img}
                 className='h-[40px] w-[40px]  '
-                connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
+                connect={connected.find((e: any) => e.id == props.id)?.connect && true}
                 title={props.user.fullName}
               ></FotoPerfil>
             </Link>
@@ -140,7 +139,7 @@ export function ThemplatePubli(props: {
             <FotoPerfil
               img={props?.user?.img}
               className='h-[40px] w-[40px]'
-              connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
+              connect={connected.find((e: any) => e.id == props.id)?.connect && true}
               title={props.user.fullName}
             ></FotoPerfil>
           )}
@@ -313,7 +312,7 @@ export function ThemplatePubli(props: {
           imgUserPro={props.imgUserPro}
           userId={props.userId}
           id={props.id}
-          connect={dataIsConnect?.find((e: any) => e.id == props.id)?.connect && true}
+          connect={connected.find((e: any) => e.id == props.id)?.connect && true}
         />
       ) : null}
       {isLoadingDeletePubli ? (

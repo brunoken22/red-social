@@ -1,12 +1,11 @@
 "use client";
 import dynamic from "next/dynamic";
 import { DivPublicar } from "@/ui/container";
-import { useRecoilValue } from "recoil";
 import { DivSubir, DivASubir, DivText, DivCrear } from "./styled";
 import { useEffect, useState } from "react";
-import { user, isConnect } from "@/lib/atom";
 import { SkeletonPlicate } from "@/ui/skeleton";
 import { FiImage, FiVideo, FiEdit3 } from "react-icons/fi";
+import { useIsConnected, useUser } from "@/lib/store";
 
 const NotificationToastStatus = dynamic(() =>
   import("@/ui/toast").then((mod) => mod.NotificationToastStatus)
@@ -17,8 +16,8 @@ const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));
 
 export default function Publicar() {
   const [formClick, setFormClick] = useState(false);
-  const dataValor = useRecoilValue(user);
-  const dataIsConnect = useRecoilValue(isConnect);
+  const { user, isLoading } = useUser();
+  const connected = useIsConnected((state) => state.connected);
   const [alert, setAlert] = useState<
     { message: string; status: "success" | "error" | "info" | "warning" } | false
   >(false);
@@ -31,15 +30,15 @@ export default function Publicar() {
     }
   }, [formClick]);
 
-  return dataValor.user.id ? (
+  return !isLoading ? (
     <>
       <DivPublicar className='w-full max-w-full'>
         <DivText>
           <FotoPerfil
-            title={dataValor.user.fullName}
-            img={dataValor?.user?.img}
+            title={user.fullName}
+            img={user?.img}
             className='w-[40px] h-[40px]'
-            connect={dataIsConnect?.find((e: any) => e.id == dataValor?.user?.id)?.connect && true}
+            connect={connected.find((e: any) => e.id == user?.id)?.connect && true}
           />
           <DivCrear onClick={() => setFormClick(true)}>
             <div className='flex items-center gap-2'>
@@ -56,9 +55,9 @@ export default function Publicar() {
 
           {formClick ? (
             <TemplateFormPublicar
-              fullName={dataValor.user.fullName}
-              image={dataValor.user.img}
-              verification={dataValor.user.verification}
+              fullName={user.fullName}
+              image={user.img}
+              verification={user.verification}
               close={() => setFormClick(false)}
             />
           ) : null}

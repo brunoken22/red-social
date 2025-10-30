@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { RecoilRoot } from "recoil";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { SkeletonNav } from "@/ui/skeleton";
@@ -20,7 +19,7 @@ export default function RecoilRootLayout({
     pathname !== "/iniciarSesion" && pathname !== "/crearCuenta" && pathname !== "/";
 
   return (
-    <RecoilRoot>
+    <>
       {comparationPathname ? <Header themeDate={dateTheme} /> : null}
       <div
         className={` ${
@@ -32,6 +31,6 @@ export default function RecoilRootLayout({
         {children}
       </div>
       <InstallPWA />
-    </RecoilRoot>
+    </>
   );
 }

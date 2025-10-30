@@ -70,7 +70,7 @@ export async function generateMetadata(
 
 export default async function ({ params }: { params: { id: string } }) {
   const api = `/user/amigos/${params.id}`;
-  const token = cookies().get("token")?.value;
+  const token = (await cookies()).get("token")?.value;
   const option = {
     method: "GET",
     headers: {

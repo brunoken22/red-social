@@ -75,7 +75,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
 
             if (data?.user?.id) {
-              cookies().set("token", data.token);
+              (await cookies()).set("token", data.token);
             }
             return data;
           } else {
@@ -91,7 +91,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             const data = credentials?.email ? await fetchApiSwr(api, option) : null;
 
             if (data?.user?.id) {
-              cookies().set("token", data.token);
+              (await cookies()).set("token", data.token);
             }
             return data;
           }
@@ -137,7 +137,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             } else {
               const data = await response.json();
               if (data.token) {
-                cookies().set("token", data.token);
+                (await cookies()).set("token", data.token);
                 token.backendToken = data.token;
               }
             }
@@ -151,7 +151,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id;
       }
 
-      const token_auth = cookies().get("token")?.value;
+      const token_auth = (await cookies()).get("token")?.value;
       if (!token_auth) return null;
 
       return token;

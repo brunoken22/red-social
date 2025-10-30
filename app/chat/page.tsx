@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Mensaje({ searchParams }: { searchParams: { id: string } }) {
-  const token = cookies().get("token")?.value;
+  const token = (await cookies()).get("token")?.value;
   let userChat;
   if (searchParams.id) {
     userChat = await fetchApiSwr(`/user/amigos/${searchParams.id}`, {

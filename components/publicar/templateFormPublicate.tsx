@@ -30,7 +30,7 @@ export default function TemplateFormPublicar({
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { mutate } = GetAllPublicaciones(true);
-  const { mutatePublicacionesUser } = GetAllPublicacionesUser(true);
+  const { mutatePublicacionesUser } = GetAllPublicacionesUser();
 
   const pathname = usePathname();
 

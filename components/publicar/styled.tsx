@@ -77,34 +77,6 @@ export const Button = ({
   </button>
 );
 
-export const InputP = ({
-  children,
-  text,
-  onInput,
-  suppressContentEditableWarning,
-  contentEditable,
-  placeholder,
-}: {
-  text: boolean;
-  onInput: (e: any) => any;
-  suppressContentEditableWarning: boolean;
-  contentEditable: boolean;
-  placeholder: string;
-  children?: React.ReactNode;
-}) => (
-  <p
-    suppressContentEditableWarning={suppressContentEditableWarning}
-    contentEditable={contentEditable}
-    onInput={onInput}
-    className={`outline-none w-full p-2  ${
-      text ? "before:text-[#696969]" : ""
-    } placeholder:text-red-600`}
-    placeholder={placeholder}
-  >
-    {children ? children : ""}
-  </p>
-);
-
 export const DivCrear = ({
   children,
   onClick,

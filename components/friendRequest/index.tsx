@@ -3,17 +3,16 @@ import dynamic from "next/dynamic";
 import { Section, DivSection, DivIcons, DivResponse, DivResult } from "./styled";
 import { ButtonNoti } from "@/ui/boton";
 import { Dispatch, SetStateAction, useState } from "react";
-import { useRecoilValue } from "recoil";
-import {
-  getAllAmigos,
-  getAllSolicitudesRecibidas,
-  getAllSolicitudesEnviadas,
-  getSugerenciaAmigos,
-} from "@/lib/atom";
 import { LoaderRequest } from "../loader";
 import { GetFriendAccepted, GetFriendSend, GetFriendPending, GetFriendReceived } from "@/lib/hook";
 import { DivNotificacionActi } from "../header/styled";
-import { FiUserPlus, FiUsers, FiUserCheck, FiSend } from "react-icons/fi";
+import { FiUserPlus, FiUsers, FiSend } from "react-icons/fi";
+import {
+  useFriendAll,
+  useReceivedUserStore,
+  useSendUserStore,
+  useSuggestionUserStore,
+} from "@/lib/store";
 
 const TemplateFriendRequest = dynamic(() => import("../templateFriends"), {
   loading: () => <LoaderRequest />,
@@ -25,18 +24,20 @@ export type HandleActionsFriend = {
 };
 
 export default function AmigosComponent() {
-  const dataAllUser = useRecoilValue(getSugerenciaAmigos);
-  const dataAllAmigos = useRecoilValue(getAllAmigos);
-  const dataAllSoliReci = useRecoilValue(getAllSolicitudesRecibidas);
-  const dataAllSoliEnv = useRecoilValue(getAllSolicitudesEnviadas);
+  const suggestioonUsers = useSuggestionUserStore((state) => state.suggestioonUsers);
+  const receivedUsers = useReceivedUserStore((state) => state.receivedUsers);
+  const senderUsers = useSendUserStore((state) => state.senderUsers);
+  const friendAll = useFriendAll((state) => state.friendAll);
+
   const [sugerencia, setSugerencia] = useState(false);
   const [soliAmis, setSoliAmis] = useState(true);
   const [allAmig, setAllAmig] = useState(false);
   const [soliEnv, setSoliEnv] = useState(false);
+
   const { mutateAccepted } = GetFriendAccepted();
+  const { mutateReceived } = GetFriendReceived();
   const { mutatePending } = GetFriendPending();
   const { mutateSend } = GetFriendSend();
-  const { mutateReceived } = GetFriendReceived();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -125,8 +126,8 @@ export default function AmigosComponent() {
                 soliAmis ? "bg-light text-primary  !opacity-100 !cursor-default " : ""
               }  `}
             >
-              {dataAllSoliReci?.length > 0 && (
-                <DivNotificacionActi>{dataAllSoliReci.length}</DivNotificacionActi>
+              {receivedUsers.length > 0 && (
+                <DivNotificacionActi>{receivedUsers.length}</DivNotificacionActi>
               )}
               <DivIcons className='max-md:hidden'>
                 <FiUserPlus className='inline mr-1' size='26' />
@@ -171,8 +172,8 @@ export default function AmigosComponent() {
           <>
             <h3 className='font-semibold text-start text-xl mb-4'>Sugerencias de amistad</h3>
             <DivResponse>
-              {dataAllUser?.length > 0
-                ? dataAllUser.map((user) => (
+              {suggestioonUsers.length > 0
+                ? suggestioonUsers.map((user) => (
                     <TemplateFriendRequest
                       key={user.id}
                       id={user.id}
@@ -195,8 +196,8 @@ export default function AmigosComponent() {
           <>
             <h3 className='font-semibold text-start  text-xl mb-4'>Solicitudes de amistad</h3>
             <DivResponse>
-              {dataAllSoliReci?.length > 0
-                ? dataAllSoliReci.map((user) => (
+              {receivedUsers.length > 0
+                ? receivedUsers.map((user) => (
                     <TemplateFriendRequest
                       key={user.id}
                       id={user.id}
@@ -219,8 +220,8 @@ export default function AmigosComponent() {
           <>
             <h3 className='font-semibold text-start  text-xl mb-4 mt-0'>Todos tus amigos</h3>
             <DivResponse>
-              {dataAllAmigos.data?.length > 0
-                ? dataAllAmigos.data.map((user) => (
+              {friendAll.length > 0
+                ? friendAll.map((user) => (
                     <TemplateFriendRequest
                       key={user.id}
                       id={user.id}
@@ -243,8 +244,8 @@ export default function AmigosComponent() {
           <>
             <h3 className='font-semibold text-start  text-xl mb-4  mt-0'>Solicitud Enviado</h3>
             <DivResponse>
-              {dataAllSoliEnv?.length > 0
-                ? dataAllSoliEnv.map((user) => (
+              {senderUsers.length > 0
+                ? senderUsers.map((user) => (
                     <TemplateFriendRequest
                       key={user.id}
                       id={user.id}

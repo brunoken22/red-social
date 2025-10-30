@@ -46,8 +46,8 @@ const DivContenedorConnect = dynamic(
   }
 );
 
-const SearchUser = dynamic(() => import("../searchUsers").then((mod) => mod.SearchUser));
 const SearchBox = dynamic(() => import("react-instantsearch").then((mod) => mod.SearchBox));
+const SearchUser = dynamic(() => import("../searchUsers").then((mod) => mod.SearchUser));
 const ConnectedUsers = dynamic(() => import("./connectedUser"));
 const NavegationUrl = dynamic(() => import("./navHeader"));
 
@@ -66,9 +66,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   GetFriendReceived();
 
   const pathname = usePathname();
-  // const [dataUser, setDataUser] = useRecoilState(user);
   const { user, isLoading } = useUser();
-  const setUser = useUser((state) => state.setUser);
   const isConnected = useIsConnected((state) => state.connected);
   const setIsConnected = useIsConnected((state) => state.setIsConnected);
   const messages = useMessagesUserStore((state) => state.messages);
@@ -232,7 +230,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
   }, [user.id, friendAll]);
 
   // ----------------------- NOTIFICACIONES POR RTDB Y NUEVOS mensajes
-
   useEffect(() => {
     if (!user.id) return;
 
@@ -298,6 +295,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
       broadcastChannel.close();
     };
   }, [user.id, openChatUser, firstConect]);
+
   // MODIFICANDO EL TITLE DE LA PAGINA POR MENSAJE
   useEffect(() => {
     const originalTitle = document.title;
@@ -391,19 +389,21 @@ export default function Header({ themeDate }: { themeDate: string }) {
               </Link>
               <div className='border-none relative max-md:hidden '>
                 {pathname !== "/search" && (
-                  <SearchBox
-                    aria-label='searchAlgolia'
-                    id='searchAlgolia'
-                    placeholder='UniRed'
-                    queryHook={useDebounce}
-                    autoFocus
-                    classNames={{
-                      root: "MyCustomSearchBox",
-                      form: "MyCustomSearchBoxForm MyCustomSearchBoxForm--subclass",
-                    }}
-                  />
+                  <>
+                    <SearchBox
+                      aria-label='searchAlgolia'
+                      id='searchAlgolia'
+                      placeholder='UniRed'
+                      queryHook={useDebounce}
+                      autoFocus
+                      classNames={{
+                        root: "MyCustomSearchBox",
+                        form: "MyCustomSearchBoxForm MyCustomSearchBoxForm--subclass",
+                      }}
+                    />
+                    <SearchUser />
+                  </>
                 )}
-                {/* <SearchUser /> */}
               </div>
             </div>
             <NavegationUrl

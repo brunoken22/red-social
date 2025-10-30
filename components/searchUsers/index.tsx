@@ -14,9 +14,11 @@ const DivLinkUser = dynamic(() => import("./styled").then((mod) => mod.DivLinkUs
 export function SearchUser() {
   const { hits } = useHits();
   const { query } = useSearchBox();
+  console.log("Esto es la query: ", query);
+  console.log("Esto es hits: ", hits.length);
   return (
     <div className='relative'>
-      {query ? (
+      {query.trim() ? (
         hits.length ? (
           <Hits
             hitComponent={Hit}

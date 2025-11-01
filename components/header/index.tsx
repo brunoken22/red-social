@@ -8,7 +8,6 @@ import { useEffect, useRef, useState } from "react";
 import { GetFriendAccepted, GetFriendReceived, GetUser, useConnectionStatus } from "@/lib/hook";
 import Link from "next/link";
 import { Menu } from "@/components/menu";
-import { useDebouncedCallback } from "use-debounce";
 import { LoaderRequest } from "../loader";
 import { SkeletonNav } from "@/ui/skeleton";
 import { onMessage } from "firebase/messaging";
@@ -26,6 +25,7 @@ import {
   useReceivedUserStore,
   useUser,
 } from "@/lib/store";
+import { SearchUsers } from "../searchUsers";
 
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"), {
   loading: () => <LoaderRequest />,
@@ -46,8 +46,6 @@ const DivContenedorConnect = dynamic(
   }
 );
 
-const SearchBox = dynamic(() => import("react-instantsearch").then((mod) => mod.SearchBox));
-const SearchUser = dynamic(() => import("../searchUsers").then((mod) => mod.SearchUser));
 const ConnectedUsers = dynamic(() => import("./connectedUser"));
 const NavegationUrl = dynamic(() => import("./navHeader"));
 
@@ -86,9 +84,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const { friendAll } = useFriendAll();
   const modalRef = useRef<HTMLDivElement>(null);
   const openChatUser = useOpenChatUser((state) => state.value);
-  const useDebounce = useDebouncedCallback((query, search) => {
-    search(query);
-  }, 300);
+
   useConnectionStatus(user);
 
   useEffect(() => {
@@ -388,22 +384,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
                 <LogoPage />
               </Link>
               <div className='border-none relative max-md:hidden '>
-                {pathname !== "/search" && (
-                  <>
-                    <SearchBox
-                      aria-label='searchAlgolia'
-                      id='searchAlgolia'
-                      placeholder='UniRed'
-                      queryHook={useDebounce}
-                      autoFocus
-                      classNames={{
-                        root: "MyCustomSearchBox",
-                        form: "MyCustomSearchBoxForm MyCustomSearchBoxForm--subclass",
-                      }}
-                    />
-                    <SearchUser />
-                  </>
-                )}
+                {pathname !== "/search" && <SearchUsers />}
               </div>
             </div>
             <NavegationUrl

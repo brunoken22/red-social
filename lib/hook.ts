@@ -275,6 +275,26 @@ export function GetFriendSend() {
 
   return { data, isLoading, mutateSend: mutate };
 }
+
+export async function getSearchUsers(search: string) {
+  const token = getCookie("token");
+
+  const url = "/user/search?search=" + search;
+
+  const option = {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const data = await fetchApiSwr(url, option);
+
+  return data;
+}
+
 export function GetFriendReceived() {
   const setReceivedUserStore = useReceivedUserStore((state) => state.setReceivedUserStore);
 

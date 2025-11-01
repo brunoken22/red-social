@@ -117,7 +117,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           try {
             // URL corregida - usando solo BACKEND_URL
             const backendUrl = process.env.NEXT_PUBLIC_PORT || "http://localhost:3001";
-            console.log("ESTE ES EL BACKENDURL: ", backendUrl);
             const response = await fetch(`${backendUrl}/api/auth-google`, {
               method: "POST",
               headers: {

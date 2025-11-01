@@ -1,57 +1,136 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useHits, useSearchBox } from "react-instantsearch";
-import type { Hit } from "instantsearch.js";
-import { useIsConnected } from "@/lib/store";
+import { useIsConnected, User } from "@/lib/store";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getSearchUsers } from "@/lib/hook";
+import { useDebouncedCallback } from "use-debounce";
 
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));
 const Verification = dynamic(() => import("@/ui/verification"));
 const Link = dynamic(() => import("next/link"));
 
-const Hits = dynamic(() => import("react-instantsearch").then((mod) => mod.Hits));
 const DivLinkUser = dynamic(() => import("./styled").then((mod) => mod.DivLinkUser));
-export function SearchUser() {
-  const { results, items } = useHits();
-  const { query } = useSearchBox();
-  console.log("Esto es hits: ", items?.length);
+
+export function SearchUsers() {
+  const inputSearchRef = useRef<HTMLInputElement | null>(null);
+  const [search, setSearch] = useState("");
+  const [users, setUsers] = useState({
+    hidden: false,
+    loading: true,
+    users: [],
+  });
+
+  const useDebounce = useDebouncedCallback((value: string) => {
+    setSearch(value);
+  }, 300);
+
+  useEffect(() => {
+    const getSearch = async () => {
+      if (search.trim()) {
+        const responseData = await getSearchUsers(search);
+        setUsers(() => ({ users: responseData.data, loading: false, hidden: false }));
+      }
+    };
+    getSearch();
+  }, [search]);
+
+  const updateFocusState = useCallback(() => {
+    const input = inputSearchRef.current;
+    if (input) {
+      const hasFocus = document.activeElement === input;
+
+      if (!hasFocus) {
+        setUsers((prev) => ({ ...prev, hidden: true }));
+      } else if (users.users.length > 0) {
+        setUsers((prev) => ({ ...prev, hidden: false }));
+      }
+    }
+  }, [users.users.length]);
+
+  // Efecto para detectar cambios de focus en el documento
+  useEffect(() => {
+    const handleFocusChange = () => {
+      updateFocusState();
+    };
+
+    document.addEventListener("focusin", handleFocusChange);
+    document.addEventListener("focusout", handleFocusChange);
+
+    return () => {
+      document.removeEventListener("focusin", handleFocusChange);
+      document.removeEventListener("focusout", handleFocusChange);
+    };
+  }, [updateFocusState]);
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+    if (!value.trim()) {
+      setUsers((users) => ({ ...users, loading: false }));
+      setSearch("");
+      return;
+    }
+    setUsers((users) => ({ ...users, loading: true }));
+    useDebounce(value);
+  };
+
+  const handleClearSearch = () => {
+    setSearch("");
+    setUsers(() => ({
+      loading: true,
+      users: [],
+      hidden: false,
+    }));
+  };
+
   return (
-    <div className='relative'>
-      {query.trim() ? (
-        results?.hits.length ? (
-          <Hits
-            hitComponent={Hit}
-            classNames={{
-              root: "dark:text-primary text-secondary bg-primary dark:bg-dark p-2",
-              list: "dark:text-primary text-secondary",
-              item: "bg-primary dark:bg-dark",
-            }}
-          />
-        ) : (
-          <p className='absolute bg-[#ff4a3d] p-4'>No se encontraron resultado</p>
-        )
+    <>
+      <input
+        type='text'
+        ref={inputSearchRef}
+        onChange={handleChangeSearch}
+        placeholder='UniRed'
+        className='text-primary dark:text-black p-2 '
+      />
+      {search.trim() && !users.hidden ? (
+        <div className='relative'>
+          <div className='absolute inset-0 '>
+            <div
+              className={`dark:bg-darkComponet bg-primary p-2  my-3 flex flex-col gap-3  ${
+                !users.loading && !users.users.length ? " bg-[#ff4a3d]" : ""
+              }`}
+            >
+              {users.loading ? (
+                <p>Cargando...</p>
+              ) : users.users.length ? (
+                users.users.map((user: User) => (
+                  <TemplateUser user={user} key={user.id} clear={handleClearSearch} />
+                ))
+              ) : (
+                <p className=' '>No se encontraron resultado</p>
+              )}
+            </div>
+          </div>
+        </div>
       ) : null}
-    </div>
+    </>
   );
 }
-type HitProps = {
-  hit: Hit;
-};
 
-function Hit({ hit }: HitProps) {
+function TemplateUser({ user, clear }: { user: User; clear: () => void }) {
   const connected = useIsConnected((state) => state.connected);
   return (
-    <Link className='w-full hover:opacity-70' href={"/amigos/" + hit.objectID}>
+    <Link onClick={clear} className='w-full hover:opacity-70' href={"/amigos/" + user.id}>
       <DivLinkUser>
         <FotoPerfil
           className='w-[40px] h-[40px]'
-          title={hit.fullName}
-          img={hit.img}
-          connect={connected?.find((eConnect: any) => hit.id == eConnect.id)?.connect && true}
+          title={user.fullName}
+          img={user.img}
+          connect={connected?.find((eConnect: any) => user.id == eConnect.id)?.connect && true}
         ></FotoPerfil>
         <div className='flex items-center gap-2 overflow-hidden'>
-          <p className='whitespace-nowrap overflow-hidden text-ellipsis'>{hit.fullName}</p>
-          {hit.verification ? <Verification publication={true} /> : null}
+          <p className='whitespace-nowrap overflow-hidden text-ellipsis'>{user.fullName}</p>
+          {user.verification ? <Verification publication={true} /> : null}
         </div>
       </DivLinkUser>
     </Link>

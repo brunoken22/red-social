@@ -153,7 +153,6 @@ export function TemMensaje({
 
   const sortedData = getSortedChats();
 
-  console.log("Chat usuarios: ", messages, data);
   return (
     <DivTemMensaje>
       {sortedData?.length && !isLoading ? (

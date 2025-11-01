@@ -46,10 +46,8 @@ export default function PWAInstaller() {
     const { outcome } = await deferredPrompt.userChoice;
 
     if (outcome === "accepted") {
-      console.log("Usuario aceptó la instalación");
       localStorage.setItem("pwaInstalled", "true");
     } else {
-      console.log("Usuario rechazó la instalación");
       localStorage.setItem("pwaPromptDismissed", "true");
     }
 

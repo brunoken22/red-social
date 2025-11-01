@@ -12,14 +12,13 @@ const Link = dynamic(() => import("next/link"));
 const Hits = dynamic(() => import("react-instantsearch").then((mod) => mod.Hits));
 const DivLinkUser = dynamic(() => import("./styled").then((mod) => mod.DivLinkUser));
 export function SearchUser() {
-  const { hits } = useHits();
+  const { results, items } = useHits();
   const { query } = useSearchBox();
-  console.log("Esto es la query: ", query);
-  console.log("Esto es hits: ", hits.length);
+  console.log("Esto es hits: ", items?.length);
   return (
     <div className='relative'>
       {query.trim() ? (
-        hits.length ? (
+        results?.hits.length ? (
           <Hits
             hitComponent={Hit}
             classNames={{
@@ -38,6 +37,7 @@ export function SearchUser() {
 type HitProps = {
   hit: Hit;
 };
+
 function Hit({ hit }: HitProps) {
   const connected = useIsConnected((state) => state.connected);
   return (

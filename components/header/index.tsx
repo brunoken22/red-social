@@ -88,7 +88,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
   const openChatUser = useOpenChatUser((state) => state.value);
   const useDebounce = useDebouncedCallback((query, search) => {
     search(query);
-  }, 1000);
+  }, 300);
   useConnectionStatus(user);
 
   useEffect(() => {

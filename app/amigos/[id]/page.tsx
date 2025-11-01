@@ -68,8 +68,9 @@ export async function generateMetadata(
   };
 }
 
-export default async function ({ params }: { params: { id: string } }) {
-  const api = `/user/amigos/${params.id}`;
+export default async function ({ params }: { params: Promise<{ id: string }> }) {
+  const id = (await params).id;
+  const api = `/user/amigos/${id}`;
   const token = (await cookies()).get("token")?.value;
   const option = {
     method: "GET",

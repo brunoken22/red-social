@@ -1,18 +1,12 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-const SearchBox = dynamic(() =>
-  import('react-instantsearch').then((mod) => mod.SearchBox)
-);
-const SearchUser = dynamic(() =>
-  import('../searchUsers').then((mod) => mod.SearchUser)
-);
+import dynamic from "next/dynamic";
+const SearchUsers = dynamic(() => import("../searchUsers").then((mod) => mod.SearchUsers));
 
 export default function SearchMobile() {
   return (
     <div className='relative'>
-      <SearchBox placeholder='UniRed' />
-      <SearchUser />
+      <SearchUsers />
     </div>
   );
 }

@@ -123,7 +123,7 @@ export function ThemplatePubli(props: {
   const displayText = isExpanded ? props.description : props?.description?.slice(0, 500);
 
   return (
-    <div className={`w-full relative`}>
+    <div className={`w-full relative `}>
       <DivPefilDelete>
         <DivPerfil>
           {props.user && props.user?.id !== props.userId ? (

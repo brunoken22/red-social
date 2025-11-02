@@ -44,7 +44,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel='preconnect' href='https://res.cloudinary.com' />
         <meta name='color-scheme' content='only light' />
       </head>
-      <body className={`${poppins.className} dark:bg-dark dark:text-white dark:transition-dark`}>
+      <body
+        className={`${poppins.className} bg-[rgb(207_207_207)] dark:bg-dark dark:text-white dark:transition-dark`}
+      >
         <Layout themeDate={theme}>{children}</Layout>
         <SpeedInsights />
         <Analytics />

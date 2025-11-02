@@ -24,11 +24,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Mensaje({ searchParams }: { searchParams: { id: string } }) {
+export default async function Mensaje({ searchParams }: { searchParams: Promise<{ id: string }> }) {
   const token = (await cookies()).get("token")?.value;
+  const id = (await searchParams).id;
   let userChat;
-  if (searchParams.id) {
-    userChat = await fetchApiSwr(`/user/amigos/${searchParams.id}`, {
+  if (id) {
+    userChat = await fetchApiSwr(`/user/amigos/${id}`, {
       method: "GET",
       authorization: `Bearer ${token}`,
     });

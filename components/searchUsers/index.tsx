@@ -9,8 +9,6 @@ import { useRouter } from "next/navigation";
 
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));
 const Verification = dynamic(() => import("@/ui/verification"));
-const Link = dynamic(() => import("next/link"));
-
 const DivLinkUser = dynamic(() => import("./styled").then((mod) => mod.DivLinkUser));
 
 export function SearchUsers() {
@@ -105,7 +103,7 @@ export function SearchUsers() {
         ref={inputSearchRef}
         onChange={handleChangeSearch}
         placeholder='UniRed'
-        className='text-primary dark:text-black p-2 '
+        className=' text-black p-2 border border-black rounded-md'
       />
       {search.trim() && !users.hidden ? (
         <div className='relative'>

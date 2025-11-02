@@ -14,25 +14,38 @@ const app = initializeApp({
 });
 
 const rtdb = getDatabase(app);
-const messaging = getMessaging(app);
 
-export async function obtenerTokenFCM(registration: any): Promise<string | null> {
+// Inicializar messaging solo en el cliente
+let messaging: ReturnType<typeof getMessaging> | null = null;
+
+if (typeof window !== "undefined") {
+  messaging = getMessaging(app);
+}
+
+export async function obtenerTokenFCM(
+  registration?: ServiceWorkerRegistration
+): Promise<string | null> {
+  // Verificar que estamos en el cliente y messaging está inicializado
+  if (typeof window === "undefined" || !messaging) {
+    console.warn("Firebase Messaging no está disponible en el servidor");
+    return null;
+  }
+
   const vapid_key =
     "BBH1PK-gbIo_gq8Hk_E2xs1XWJZyFrUMepYSPIuAbGuffy_EshYcDTNJ511zK5em9FMfaUq7GJfAUwWr_2Q261U";
+
   try {
     const token = await getToken(messaging, {
       vapidKey: vapid_key,
       serviceWorkerRegistration: registration,
     });
 
-    if (token) {
-      return token;
-    } else {
-      return null;
-    }
+    return token || null;
   } catch (error) {
+    console.error("Error obteniendo token FCM:", error);
     return null;
   }
 }
 
+// Exportar messaging condicionalmente
 export { rtdb, messaging };

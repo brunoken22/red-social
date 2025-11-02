@@ -260,21 +260,23 @@ export default function Header({ themeDate }: { themeDate: string }) {
     }
 
     // Solo manejar mensajes en foreground
-    onMessage(messaging, (payload) => {
-      // Si el chat abierto es diferente, mostrar notificación
-      if (payload.data?.room_id !== openChatUser) {
-        const { title, body } = payload.notification || {};
-        if (title && body) {
-          new Notification(title, { body, data: { url: "/perfil" } });
+    if (messaging) {
+      onMessage(messaging, (payload) => {
+        // Si el chat abierto es diferente, mostrar notificación
+        if (payload.data?.room_id !== openChatUser) {
+          const { title, body } = payload.notification || {};
+          if (title && body) {
+            new Notification(title, { body, data: { url: "/perfil" } });
+          }
         }
-      }
 
-      // Broadcast a otros tabs
-      broadcastChannel.postMessage({
-        type: "NEW_MESSAGE",
-        payload: payload,
+        // Broadcast a otros tabs
+        broadcastChannel.postMessage({
+          type: "NEW_MESSAGE",
+          payload: payload,
+        });
       });
-    });
+    }
 
     const notificationAllRef = query(ref(rtdb, `/notifications/${user.id}`));
     onValue(notificationAllRef, (snapshot) => {
@@ -324,7 +326,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
       document.title = originalTitle;
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [newMessage, document.title]);
+  }, [newMessage]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });

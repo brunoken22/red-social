@@ -2,9 +2,10 @@
 
 import dynamic from "next/dynamic";
 import { useIsConnected, User } from "@/lib/store";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getSearchUsers } from "@/lib/hook";
 import { useDebouncedCallback } from "use-debounce";
+import { useRouter } from "next/navigation";
 
 const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));
 const Verification = dynamic(() => import("@/ui/verification"));
@@ -13,6 +14,7 @@ const Link = dynamic(() => import("next/link"));
 const DivLinkUser = dynamic(() => import("./styled").then((mod) => mod.DivLinkUser));
 
 export function SearchUsers() {
+  const { push } = useRouter();
   const inputSearchRef = useRef<HTMLInputElement | null>(null);
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState({
@@ -35,33 +37,33 @@ export function SearchUsers() {
     getSearch();
   }, [search]);
 
-  const updateFocusState = useCallback(() => {
-    const input = inputSearchRef.current;
-    if (input) {
-      const hasFocus = document.activeElement === input;
+  // const updateFocusState = useCallback(() => {
+  //   const input = inputSearchRef.current;
+  //   if (input) {
+  //     const hasFocus = document.activeElement === input;
 
-      if (!hasFocus) {
-        setUsers((prev) => ({ ...prev, hidden: true }));
-      } else if (users.users.length > 0) {
-        setUsers((prev) => ({ ...prev, hidden: false }));
-      }
-    }
-  }, [users.users.length]);
+  //     if (!hasFocus) {
+  //       setUsers((prev) => ({ ...prev, hidden: true }));
+  //     } else if (users.users.length > 0) {
+  //       setUsers((prev) => ({ ...prev, hidden: false }));
+  //     }
+  //   }
+  // }, [users.users.length]);
 
   // Efecto para detectar cambios de focus en el documento
-  useEffect(() => {
-    const handleFocusChange = () => {
-      updateFocusState();
-    };
+  // useEffect(() => {
+  //   const handleFocusChange = () => {
+  //     updateFocusState();
+  //   };
 
-    document.addEventListener("focusin", handleFocusChange);
-    document.addEventListener("focusout", handleFocusChange);
+  //   document.addEventListener("focusin", handleFocusChange);
+  //   document.addEventListener("focusout", handleFocusChange);
 
-    return () => {
-      document.removeEventListener("focusin", handleFocusChange);
-      document.removeEventListener("focusout", handleFocusChange);
-    };
-  }, [updateFocusState]);
+  //   return () => {
+  //     document.removeEventListener("focusin", handleFocusChange);
+  //     document.removeEventListener("focusout", handleFocusChange);
+  //   };
+  // }, [updateFocusState]);
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
@@ -74,13 +76,26 @@ export function SearchUsers() {
     useDebounce(value);
   };
 
-  const handleClearSearch = () => {
-    setSearch("");
-    setUsers(() => ({
-      loading: true,
-      users: [],
-      hidden: false,
-    }));
+  // setSearch("");
+  // if (inputSearchRef.current) {
+  //   inputSearchRef.current.value = "";
+  // }
+  const handleClearSearch = (id: number) => {
+    // Navegar inmediatamente
+    push("/amigos/" + id);
+
+    // Limpiar el estado en el próximo ciclo de evento
+    requestAnimationFrame(() => {
+      setSearch("");
+      if (inputSearchRef.current) {
+        inputSearchRef.current.value = "";
+      }
+      setUsers({
+        loading: true,
+        users: [],
+        hidden: true,
+      });
+    });
   };
 
   return (
@@ -117,10 +132,10 @@ export function SearchUsers() {
   );
 }
 
-function TemplateUser({ user, clear }: { user: User; clear: () => void }) {
+function TemplateUser({ user, clear }: { user: User; clear: (id: number) => void }) {
   const connected = useIsConnected((state) => state.connected);
   return (
-    <Link onClick={clear} className='w-full hover:opacity-70' href={"/amigos/" + user.id}>
+    <button className='w-full hover:opacity-70' onClick={() => clear(user.id)}>
       <DivLinkUser>
         <FotoPerfil
           className='w-[40px] h-[40px]'
@@ -133,6 +148,6 @@ function TemplateUser({ user, clear }: { user: User; clear: () => void }) {
           {user.verification ? <Verification publication={true} /> : null}
         </div>
       </DivLinkUser>
-    </Link>
+    </button>
   );
 }

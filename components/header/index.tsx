@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import { ref, onValue, update, get, query } from "firebase/database";
 import { messaging, obtenerTokenFCM, rtdb } from "@/lib/firebase";
-import "./style.css";
+// import "./style.css";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GetFriendAccepted, GetFriendReceived, GetUser, useConnectionStatus } from "@/lib/hook";
@@ -372,6 +372,7 @@ export default function Header({ themeDate }: { themeDate: string }) {
     };
   }, []);
 
+  console.log("ESTE ES EL ISLOADING: ", isLoading, user?.id);
   return !isLoading ? (
     user?.id ? (
       <>

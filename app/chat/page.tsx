@@ -1,8 +1,12 @@
-import { TemMensaje } from "@/components/templateMensaje";
+import dynamic from "next/dynamic";
 import { fetchApiSwr } from "@/lib/api";
 import { DivMain } from "@/ui/container";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
+
+const TemMensaje = dynamic(() =>
+  import("@/components/templateMensaje").then((mod) => mod.TemMensaje)
+);
 
 export const metadata: Metadata = {
   title: "Chat | UniRed",

@@ -83,27 +83,25 @@ export function SearchUsers() {
     push("/amigos/" + id);
 
     // Limpiar el estado en el próximo ciclo de evento
-    requestAnimationFrame(() => {
-      setSearch("");
-      if (inputSearchRef.current) {
-        inputSearchRef.current.value = "";
-      }
-      setUsers({
-        loading: true,
-        users: [],
-        hidden: true,
-      });
+    setSearch("");
+    if (inputSearchRef.current) {
+      inputSearchRef.current.value = "";
+    }
+    setUsers({
+      loading: true,
+      users: [],
+      hidden: true,
     });
   };
 
   return (
-    <>
+    <div>
       <input
         type='text'
         ref={inputSearchRef}
         onChange={handleChangeSearch}
         placeholder='UniRed'
-        className=' text-black p-2 border border-black rounded-md'
+        className='w-full text-black p-2 border border-black rounded-md'
       />
       {search.trim() && !users.hidden ? (
         <div className='relative'>
@@ -126,7 +124,7 @@ export function SearchUsers() {
           </div>
         </div>
       ) : null}
-    </>
+    </div>
   );
 }
 

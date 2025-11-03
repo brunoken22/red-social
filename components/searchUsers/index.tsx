@@ -1,15 +1,13 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useIsConnected, User } from "@/lib/store";
 import { useEffect, useRef, useState } from "react";
 import { getSearchUsers } from "@/lib/hook";
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "next/navigation";
-
-const FotoPerfil = dynamic(() => import("@/ui/FotoPerfil"));
-const Verification = dynamic(() => import("@/ui/verification"));
-const DivLinkUser = dynamic(() => import("./styled").then((mod) => mod.DivLinkUser));
+import Verification from "@/ui/verification";
+import FotoPerfil from "@/ui/FotoPerfil";
+import { DivLinkUser } from "./styled";
 
 export function SearchUsers() {
   const { push } = useRouter();
@@ -20,6 +18,7 @@ export function SearchUsers() {
     loading: true,
     users: [],
   });
+  const connected = useIsConnected((state) => state.connected);
 
   const useDebounce = useDebouncedCallback((value: string) => {
     setSearch(value);
@@ -79,7 +78,6 @@ export function SearchUsers() {
   //   inputSearchRef.current.value = "";
   // }
   const handleClearSearch = (id: number) => {
-    // Navegar inmediatamente
     push("/amigos/" + id);
 
     // Limpiar el estado en el próximo ciclo de evento
@@ -115,7 +113,29 @@ export function SearchUsers() {
                 <p>Cargando...</p>
               ) : users.users.length ? (
                 users.users.map((user: User) => (
-                  <TemplateUser user={user} key={user.id} clear={handleClearSearch} />
+                  <button
+                    className='w-full hover:opacity-70'
+                    onClick={() => handleClearSearch(user.id)}
+                  >
+                    <DivLinkUser>
+                      <FotoPerfil
+                        className='w-[40px] h-[40px]'
+                        title={user.fullName}
+                        img={user.img}
+                        connect={
+                          connected?.find((eConnect) => user.id == eConnect.id)?.connect
+                            ? true
+                            : false
+                        }
+                      />
+                      <div className='flex items-center gap-2 overflow-hidden'>
+                        <p className='whitespace-nowrap overflow-hidden text-ellipsis'>
+                          {user.fullName}
+                        </p>
+                        {user.verification ? <Verification publication={true} /> : null}
+                      </div>
+                    </DivLinkUser>
+                  </button>
                 ))
               ) : (
                 <p className=' '>No se encontraron resultado</p>
@@ -125,25 +145,5 @@ export function SearchUsers() {
         </div>
       ) : null}
     </div>
-  );
-}
-
-function TemplateUser({ user, clear }: { user: User; clear: (id: number) => void }) {
-  const connected = useIsConnected((state) => state.connected);
-  return (
-    <button className='w-full hover:opacity-70' onClick={() => clear(user.id)}>
-      <DivLinkUser>
-        <FotoPerfil
-          className='w-[40px] h-[40px]'
-          title={user.fullName}
-          img={user.img}
-          connect={connected?.find((eConnect: any) => user.id == eConnect.id)?.connect && true}
-        ></FotoPerfil>
-        <div className='flex items-center gap-2 overflow-hidden'>
-          <p className='whitespace-nowrap overflow-hidden text-ellipsis'>{user.fullName}</p>
-          {user.verification ? <Verification publication={true} /> : null}
-        </div>
-      </DivLinkUser>
-    </button>
   );
 }

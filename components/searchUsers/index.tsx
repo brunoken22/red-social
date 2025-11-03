@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Verification from "@/ui/verification";
 import FotoPerfil from "@/ui/FotoPerfil";
 import { DivLinkUser } from "./styled";
+import { IoMdCloseCircle } from "react-icons/io";
 
 export function SearchUsers() {
   const { push } = useRouter();
@@ -73,10 +74,6 @@ export function SearchUsers() {
     useDebounce(value);
   };
 
-  // setSearch("");
-  // if (inputSearchRef.current) {
-  //   inputSearchRef.current.value = "";
-  // }
   const handleClearSearch = (id: number) => {
     push("/amigos/" + id);
 
@@ -92,15 +89,36 @@ export function SearchUsers() {
     });
   };
 
+  const handleClearInput = () => {
+    setSearch("");
+    if (inputSearchRef.current) {
+      inputSearchRef.current.value = "";
+    }
+    setUsers(() => ({
+      users: [],
+      hidden: true,
+      loading: false,
+    }));
+  };
+
   return (
     <div>
-      <input
-        type='text'
-        ref={inputSearchRef}
-        onChange={handleChangeSearch}
-        placeholder='UniRed'
-        className='min-w-[300px] w-full text-black p-2 border border-black rounded-md'
-      />
+      <div className='relative  flex justify-center items-center'>
+        <input
+          type='text'
+          ref={inputSearchRef}
+          onChange={handleChangeSearch}
+          placeholder='UniRed'
+          className='min-w-[300px] w-full text-black p-2 border border-black rounded-md'
+        />
+        {search.trim() ? (
+          <div className='absolute  flex justify-center items-center bg-white top-1 right-1 bottom-1'>
+            <button className=' hover:opacity-60  mx-2' onClick={handleClearInput}>
+              <IoMdCloseCircle size={25} color='red' />
+            </button>
+          </div>
+        ) : null}
+      </div>
       {search.trim() && !users.hidden ? (
         <div className='relative '>
           <div className='absolute left-0 right-0 top-0 '>

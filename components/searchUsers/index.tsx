@@ -99,13 +99,13 @@ export function SearchUsers() {
         ref={inputSearchRef}
         onChange={handleChangeSearch}
         placeholder='UniRed'
-        className='w-full text-black p-2 border border-black rounded-md'
+        className='min-w-[300px] w-full text-black p-2 border border-black rounded-md'
       />
       {search.trim() && !users.hidden ? (
-        <div className='relative'>
-          <div className='absolute inset-0 '>
+        <div className='relative '>
+          <div className='absolute left-0 right-0 top-0 '>
             <div
-              className={`dark:bg-darkComponet bg-primary p-2  my-3 flex flex-col gap-3  ${
+              className={`h-full  max-h-[90dvh] overflow-auto dark:bg-darkComponet bg-primary p-2  my-3 flex flex-col gap-3 mb-4 ${
                 !users.loading && !users.users.length ? " bg-[#ff4a3d]" : ""
               }`}
             >
@@ -114,6 +114,7 @@ export function SearchUsers() {
               ) : users.users.length ? (
                 users.users.map((user: User) => (
                   <button
+                    key={user.id}
                     className='w-full hover:opacity-70'
                     onClick={() => handleClearSearch(user.id)}
                   >

@@ -372,7 +372,6 @@ export default function Header({ themeDate }: { themeDate: string }) {
     };
   }, []);
 
-  console.log("ESTE ES EL ISLOADING: ", isLoading, user?.id);
   return !isLoading ? (
     user?.id ? (
       <>

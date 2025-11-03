@@ -1,5 +1,4 @@
 "use client";
-
 import { useIsConnected, User } from "@/lib/store";
 import { useEffect, useRef, useState } from "react";
 import { getSearchUsers } from "@/lib/hook";

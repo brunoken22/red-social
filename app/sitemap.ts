@@ -2,6 +2,7 @@
 import { MetadataRoute } from "next";
 
 const Api_url = process.env.NEXT_PUBLIC_PORT || "https://red-social-node-production.up.railway.app";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://unired.vercel.app";
   const response = await fetch(`${Api_url}/api/users/sitemap`, {

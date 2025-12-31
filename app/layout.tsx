@@ -45,7 +45,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <meta name='color-scheme' content='only light' />
       </head>
       <body
-        className={`${poppins.className} bg-[rgb(207_207_207)] dark:bg-dark dark:text-white dark:transition-dark`}
+        className={`${poppins.className} bg-[#f9f9f9] dark:bg-dark dark:text-white dark:transition-dark`}
       >
         <Layout themeDate={theme}>{children}</Layout>
         <SpeedInsights />

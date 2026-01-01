@@ -67,18 +67,28 @@ const ImageSVG = memo(({ setDataUrl, dataUrl }: ImageSVGProps) => {
               return (
                 <div key={`${file.name}-${index}`} className='relative group w-full h-28'>
                   {isVideo ? (
-                    <video
-                      src={previewUrl}
-                      controls={false}
-                      className='p-2 w-full h-28 object-cover'
-                      muted
-                      loop
-                    />
+                    <>
+                      <video
+                        src={previewUrl}
+                        controls={false}
+                        className='p-2 w-full h-28 object-cover'
+                        muted
+                        loop
+                      />
+                      <div className='absolute bottom-4 right-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs'>
+                        Video
+                      </div>
+                    </>
                   ) : (
-                    <img src={previewUrl} alt='preview' className='p-2 w-full h-28 object-cover' />
+                    <img
+                      src={previewUrl}
+                      alt='preview'
+                      height={150}
+                      className='p-2 w-full h-28 object-cover'
+                    />
                   )}
 
-                  <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300'>
+                  <div className='absolute inset-0 flex items-center justify-center bg-black/50 bg-opacity-0 group-hover:bg-black/90 transition-all duration-300'>
                     <button
                       onClick={() => {
                         URL.revokeObjectURL(previewUrl);
@@ -90,12 +100,6 @@ const ImageSVG = memo(({ setDataUrl, dataUrl }: ImageSVGProps) => {
                       Eliminar
                     </button>
                   </div>
-
-                  {isVideo && (
-                    <div className='absolute bottom-4 right-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs'>
-                      Video
-                    </div>
-                  )}
                 </div>
               );
             })}

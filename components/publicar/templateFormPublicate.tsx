@@ -108,7 +108,7 @@ export default function TemplateFormPublicar({
               Máximo de 9000 caracteres
             </span>
             <div>
-              <div className='bg-hoverPrimary dark:bg-dark rounded-md p-4'>
+              <div className='bg-hoverPrimary dark:bg-dark rounded-md p-4 h-52 overflow-auto'>
                 <ImageSVG setDataUrl={setDataUrl} dataUrl={dataUrl}></ImageSVG>
               </div>
               <p className='text-sm  mt-1'>Máximo de 3 imagenes o videos</p>

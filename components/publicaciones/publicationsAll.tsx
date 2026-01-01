@@ -46,7 +46,6 @@ export default function PublicacionesAll() {
     };
   }, [handleObserver]);
 
-  console.log(publication);
   return (
     <div className='flex flex-col gap-4 pb-3'>
       {isLoadingAllAmigos && isLoading ? (
